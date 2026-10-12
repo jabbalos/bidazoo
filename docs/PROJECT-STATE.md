@@ -10,12 +10,20 @@ If this file and another doc disagree about status, fix the other doc.
 | --- | --- |
 | Checkpoint A (foundation) | Complete |
 | Checkpoint B (first playable server-authoritative slice) | **COMPLETE and Studio-PC validated** |
-| Checkpoint C (five-starter presentation) | **Implemented; NOT Studio-PC validated.** Verified only in a development sandbox with a supplementary Chromium (see below). |
+| Checkpoint C (five-starter presentation) | **COMPLETE and Studio-PC validated** (October 12, 2026) |
 | Pre-beta hardening | **NOT authorized.** A separate checkpoint that needs explicit approval. |
 
 ## Baselines and commits
 
 - **Accepted application baseline:** `01b7d41` (Checkpoint B).
+- **Accepted Checkpoint C game implementation:** `7042f8f` ("feat(zoo-sprint): Checkpoint C - five
+  locked starters, presentation only"). Presentation-only: no change to `apps/api`, `database`,
+  `packages/contracts`, `packages/learning-core`, or `packages/game-sdk`.
+- **Checkpoint C officially validated commit:** `01752a1df4a4c0dbce41415027971b41540cb4dd`. It
+  differs from `7042f8f` only by a documentation and reference-art addition
+  (`docs/reference-art/bidazoo-character-roster-reference.png`); no application, game, schema, API,
+  database, learning, or test code differs. (Reported from the Studio run; see
+  [STUDIO-VALIDATION.md](STUDIO-VALIDATION.md).)
 - **`d0345bf`:** validation tooling and docs on top of that baseline (portable PostgreSQL for the
   Studio runner). This is the commit the official validation tested. It changed no application,
   game, schema, or test code.
@@ -39,11 +47,27 @@ persists in `localStorage` and old `panda`/`monkey`/`lion` values fall back to D
 implemented. No server, database, contracts, or learning-core code changed. Details:
 [CHANGELOG.md](CHANGELOG.md).
 
-Checkpoint C verification (development sandbox, **not** the Studio PC): Vitest unit 51 passed;
-integration 88 passed with 3 todo; Playwright 40 passed on 4 viewports using a supplementary
-Chromium 153. The official run on the Studio PC with the pinned Chromium is still required.
+Checkpoint C was first verified in a development sandbox on a supplementary Chromium 153 (not
+official), then **officially validated on the Studio PC** (see below).
 
 ## Validation evidence (official, passed)
+
+### Checkpoint C
+
+Run `20261012-114342` on the Studio PC, commit `01752a1df4a4c0dbce41415027971b41540cb4dd`
+(Checkpoint C implementation `7042f8f` plus a documentation and reference-art addition only):
+
+- Vitest: unit 51 passed (51); integration 88 passed with 3 todo (91).
+- Playwright: 40 passed, 0 failed, 0 flaky, 0 skipped; no retries; Playwright 1.64.0, Chromium
+  156.0.8078.4 (official pinned build); 4 viewports.
+- PostgreSQL 16.15 portable; `npm ci`, database creation, migrations, startup, and shutdown passed.
+- Overall PASS, exit code 0.
+- The runner printed two count warnings only because its approved counts still reflect Checkpoint B
+  (integration expected 81, now 88; Playwright expected 24, now 40). The increases are the
+  intentional Checkpoint C tests, not failures. Updating the runner's expected counts is a separate,
+  not-yet-made tooling change.
+
+### Checkpoint B
 
 Run `20261012-092607` on the Studio PC, normal (non-elevated) user, commit
 `d0345bf860d6abdab2e2d197e5dc5f6f5ce51a8e`:
@@ -80,7 +104,7 @@ Do not weaken or redesign these without explicit approval. Details in
 No rate limiting and unbounded guest creation; no Content-Security-Policy or remaining browser
 security headers; clearing the guest cookie loses progress and there is no recovery or claim path;
 mastery days use UTC; network latency counts toward response time; a replayed answer shows current
-mastery; placeholder art; real-device performance unmeasured; no audit logging, backups, or
+mastery; character art is code-drawn transitional art, not final; Click (the host) is not implemented; real-device performance unmeasured; no audit logging, backups, or
 retention jobs; children's-data privacy and legal review is still needed before real use.
 
 ## Deferred hardening (not authorized)

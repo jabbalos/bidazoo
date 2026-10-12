@@ -2,6 +2,25 @@
 
 All notable changes, by checkpoint. Dates use US format.
 
+## Checkpoint C closure: Studio-PC validated (October 12, 2026)
+
+Documentation only. No application, game, schema, API, database, learning, test, or tooling code
+changed.
+
+- Checkpoint C passed official Studio-PC validation: run `20261012-114342`, commit
+  `01752a1df4a4c0dbce41415027971b41540cb4dd`.
+- Game implementation commit: `7042f8f`. The validated commit differs from it only by the
+  documentation and reference-art addition `docs/reference-art/bidazoo-character-roster-reference.png`.
+- Results: Vitest unit 51 passed (51); integration 88 passed, 3 todo (91); Playwright 40 passed,
+  0 failed, 0 flaky, 0 skipped, no retries, 4 viewports; Playwright 1.64.0, Chromium 156.0.8078.4
+  (official pinned build); PostgreSQL 16.15 portable; `npm ci`, database creation, migrations,
+  startup, and shutdown all passed; exit code 0.
+- The runner warned that integration (expected 81, now 88) and Playwright (expected 24, now 40)
+  differ from its Checkpoint B approved counts. These are the intentional Checkpoint C test
+  additions. The runner's expected counts have not been updated.
+- `01b7d41` remains the accepted Checkpoint B application baseline.
+- All known limitations and deferred hardening items are unchanged (see PROJECT-STATE.md).
+
 ## Checkpoint C: five starters, presentation only (October 12, 2026)
 
 Presentation-only change to `games/zoo-sprint` and its tests. No change to `apps/api`, `database`,
@@ -30,13 +49,11 @@ ownership enforcement.
 - The old Panda/Monkey/Lion menu e2e test was replaced by the stronger tests above; its "no
   scrolling" assertion was relaxed per the grid decision (vertical scroll is allowed on small phones).
 
-### Verification (not Studio-PC validated)
+### Verification
 
-- Typecheck, build, and client-bundle leak scan passed. Vitest: unit 51 passed; integration 88
-  passed with 3 todo.
-- Playwright: 40 passed across 4 viewports, run in a development sandbox on a supplementary
-  Chromium 153 (the pinned Chromium could not be downloaded there). This is **not** the official
-  Studio-PC run.
+- Development sandbox: typecheck, build, and client-bundle leak scan passed; Vitest unit 51 and
+  integration 88 (3 todo) passed; Playwright 40 passed on a supplementary Chromium 153. Not official.
+- **Official Studio-PC validation passed**; see the closure entry above.
 
 ### Not done
 

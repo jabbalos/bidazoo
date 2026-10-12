@@ -1,12 +1,45 @@
 # Studio PC validation (official Playwright run)
 
-Status: **COMPLETE. Official validation passed on the Studio PC on October 12, 2026.** The
-accepted Checkpoint B application baseline is commit `01b7d41`. The commit that was tested is
-`d0345bf`, which adds only the validation tooling (and docs) on top of that baseline. The earlier
+Status: **COMPLETE. Official validation passed on the Studio PC on October 12, 2026, for both
+Checkpoint B and Checkpoint C.** The accepted Checkpoint B application baseline is commit
+`01b7d41`; the Checkpoint C game implementation is `7042f8f`. The Checkpoint C record comes first
+below, then the Checkpoint B record.
+
+For Checkpoint B, the commit that was tested is `d0345bf`, which adds only the validation tooling (and docs) on top of that baseline. The earlier
 supplementary run (24/24 on Chromium 141, a different build) is superseded and was never official
 validation.
 
-## Validation record (official run, passed)
+## Checkpoint C validation record (official run, passed)
+
+Source: the local run folder `.validation-logs\20261012-114342` on the Studio PC (git-ignored, so
+the evidence is recorded here).
+
+| Item | Result |
+| --- | --- |
+| Date and shell | October 12, 2026, run folder `20261012-114342` |
+| Git commit tested | `01752a1df4a4c0dbce41415027971b41540cb4dd` |
+| Checkpoint C implementation commit | `7042f8f` ("feat(zoo-sprint): Checkpoint C - five locked starters, presentation only") |
+| Difference between the two | Documentation and reference art only: `docs/reference-art/bidazoo-character-roster-reference.png`. No application, game, schema, API, database, learning, or test code differs. |
+| Vitest (unit) | 51 passed (51) |
+| Vitest (integration, real PostgreSQL) | 88 passed, 3 todo (91) |
+| Playwright | 40 passed, 0 failed, 0 flaky, 0 skipped; 4 projects (360x640, 390x844, 820x1180, 1440x900) |
+| Retries | None |
+| Playwright version | 1.64.0 |
+| Chromium | 156.0.8078.4 (Playwright's official pinned build) |
+| PostgreSQL | 16.15, portable |
+| Steps | `npm ci` PASS; database creation PASS; migrations PASS; PostgreSQL startup and shutdown PASS |
+| Overall | **PASS**; exit code 0 |
+
+The runner emitted two warnings only because its approved baseline counts still reflect
+Checkpoint B: integration expected 81 (now 88) and Playwright expected 24 (now 40). The increases
+are the intentional Checkpoint C test additions (7 roster integration tests; 10 e2e tests per
+viewport instead of 6), not failures. The runner's expected counts have not been updated yet.
+
+Conclusion: **Checkpoint C is complete and Studio-PC validated.** Checkpoint B's accepted baseline
+`01b7d41` and its record below are preserved. The limitations and deferred hardening items below
+are unchanged.
+
+## Checkpoint B validation record (official run, passed)
 
 Source: the local run folder `.validation-logs\20261012-092607` (`SUMMARY.txt` and
 `playwright-results.json`). `.validation-logs/` is git-ignored, so the evidence is recorded here
@@ -36,8 +69,8 @@ the result and is not the official record.
 
 Conclusion: **Checkpoint B is complete and Studio-PC validated.** The application baseline is still
 `01b7d41`. Carried-forward limitations (below) are unchanged and accepted. Pre-beta hardening is a
-separate checkpoint that is **not** authorized. (Checkpoint C was later implemented; it is **not**
-covered by this validation record and has not been run on the Studio PC.)
+separate checkpoint that is **not** authorized. (Checkpoint C was implemented afterward and is
+validated separately; see the Checkpoint C record above.)
 
 The rest of this document is the procedure to repeat the validation.
 
@@ -318,7 +351,8 @@ Remove-Item Env:DATABASE_URL, Env:TEST_DATABASE_URL, Env:CI -ErrorAction Silentl
 
 No rate limiting; guest creation is unbounded; clearing the guest cookie loses guest progress;
 mastery day boundaries use UTC; network latency counts toward authoritative response time; no
-Content-Security-Policy header; placeholder art; real-device performance is unmeasured.
+Content-Security-Policy header; character art is code-drawn transitional art, not final; Click (the
+host) is not implemented; real-device performance is unmeasured.
 
 ## Priority before any public-facing beta (not authorized yet)
 
@@ -333,7 +367,7 @@ These belong to a separate hardening checkpoint that needs explicit approval.
 
 ## Visual direction
 
-The placeholder visuals may later be replaced by the locked BidaZoo character system and UI design
+The transitional code-drawn visuals may later be replaced by the final BidaZoo character art and UI design
 (the locked character decisions are recorded in [CHARACTER-BIBLE.md](CHARACTER-BIBLE.md)).
 That replacement must preserve the current API and gameplay contracts and must not change the
 accepted architecture (session ownership, served-question model, attempt idempotency, reward

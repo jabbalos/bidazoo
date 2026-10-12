@@ -287,9 +287,11 @@ target is at least 44 CSS px; nothing needs hover.
 A fake clock (`FakeClock`) drives timing and multi-day mastery tests. Test files run serially
 (`fileParallelism: false`) because they share one database.
 
-Playwright status: **official validation passed on the Studio PC on October 12, 2026** (24 of 24
-tests, Playwright 1.64.0 with its pinned Chromium 156.0.8078.4, no retries, tested commit
-`d0345bf`). The earlier supplementary run on a different Chromium build is superseded. The full
+Playwright status: **official validation passed on the Studio PC on October 12, 2026**, for
+Checkpoint B (24 of 24 tests, commit `d0345bf`) and again for Checkpoint C (40 of 40 tests, 51 unit
+and 88 integration Vitest tests, commit `01752a1`, which differs from the Checkpoint C
+implementation `7042f8f` only by documentation and reference art); Playwright 1.64.0 with its
+pinned Chromium 156.0.8078.4, no retries. The earlier supplementary run on a different Chromium build is superseded. The full
 record is in [STUDIO-VALIDATION.md](STUDIO-VALIDATION.md).
 
 ## 12. Deployment direction
