@@ -17,7 +17,7 @@ An educational-game platform for kids. Games are fun; **learning progress is dec
 | [docs/GAME-SDK.md](docs/GAME-SDK.md) | The boundary between a game and the platform |
 | [docs/PRODUCT.md](docs/PRODUCT.md) | Product intent and scope |
 | [docs/REFERENCE-REVIEW.md](docs/REFERENCE-REVIEW.md) | What BidaZoo may and may not take from Hop Quest and Fact Crew |
-| [docs/STUDIO-VALIDATION.md](docs/STUDIO-VALIDATION.md) | Exact Studio-PC procedure for the official Playwright run, plus carried-forward limitations and pre-beta hardening priorities |
+| [docs/STUDIO-VALIDATION.md](docs/STUDIO-VALIDATION.md) | Studio-PC procedure for the official Playwright run (one command: `scripts\validate-studio.bat -PortablePostgres`), plus carried-forward limitations and pre-beta hardening priorities |
 | [docs/CHANGELOG.md](docs/CHANGELOG.md) | What changed, by checkpoint |
 
 ## Requirements

@@ -2,6 +2,38 @@
 
 All notable changes, by checkpoint. Dates use US format.
 
+## Tooling after Checkpoint B: portable PostgreSQL for Studio validation (October 12, 2026)
+
+Tooling and docs only. No application, game, schema, or test code changed; the accepted
+Checkpoint B baseline (`01b7d41`) is untouched.
+
+### Added
+
+- `scripts\validate-studio.bat -PortablePostgres`: the Studio validation runner can supply its own
+  isolated PostgreSQL 16 (portable Windows x64 binaries the user downloads once, kept under
+  `%USERPROFILE%\BidaZoo-pg`), so no system-wide PostgreSQL install is needed. 127.0.0.1 only, port
+  54329 by default, trust authentication on that loopback-only throwaway cluster, started with
+  `pg_ctl` and stopped (only if this run started it) on pass, fail, or Ctrl+C. No elevation, no
+  Windows service, no PATH change, no process kill. `-PortableRoot` and `-PgPort` adjust location
+  and port. Setup failures exit with code 2.
+- The validation summary reports the PostgreSQL mode, version, host, port, portable root, cluster
+  status, whether this run started the server, and whether shutdown succeeded.
+- `docs/STUDIO-VALIDATION.md` leads with the one-command recommended path; the installed-PostgreSQL
+  path stays documented as the alternative.
+
+### Changed
+
+- The database cleanup question (and `-Cleanup`) now runs before the final summary instead of after
+  it, because the portable server must still be running for the drops and the summary reports the
+  shutdown result. Cleanup rules are unchanged.
+- The "psql not found" message now suggests `-PortablePostgres`.
+- The writable-folder probe file is removed with `-Force` (needed only where dot-files are hidden).
+
+### Not verified
+
+- The runner has still never run on Windows. See "Static checks" in `docs/STUDIO-VALIDATION.md` for
+  what was exercised in the Linux sandbox and what only the Studio PC can show.
+
 ## Checkpoint B: first playable server-authoritative vertical slice (October 11, 2026)
 
 ### Added

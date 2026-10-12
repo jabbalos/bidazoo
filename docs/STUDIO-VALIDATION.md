@@ -8,7 +8,79 @@ validation and must not be reported as such.
 Commands are PowerShell, run from the repository root. Nothing here touches Hop Quest, Fact Crew,
 Accounts, Caddy, Cloudflare, or any production database.
 
-## One-click runner (recommended)
+## RECOMMENDED: one command, no PostgreSQL install
+
+```text
+scripts\validate-studio.bat -PortablePostgres
+```
+
+This avoids installing PostgreSQL globally. The runner uses a **portable PostgreSQL 16** that lives
+in its own folder (`%USERPROFILE%\BidaZoo-pg`), runs as your normal user, creates no Windows
+service, changes no PATH or system setting, and listens on `127.0.0.1` only (port `54329`). It
+initializes a throwaway cluster, starts it, runs the whole validation, and stops the server it
+started. Your other PostgreSQL installs (if any) are never touched.
+
+**One-time setup (about two minutes).** The runner does not download anything by itself, because
+EnterpriseDB publishes the binaries only behind a changing download link and this tool refuses to
+guess a URL.
+
+1. Open <https://www.enterprisedb.com/download-postgresql-binaries> and, under "Binaries from
+   installer", download **PostgreSQL 16.x for Windows x86-64** (a ZIP). Use only that page, over HTTPS.
+2. Save the ZIP into `%USERPROFILE%\BidaZoo-pg` (create the folder if needed). A copy left in your
+   Downloads folder is found too. The file name looks like `postgresql-16.x-...-windows-x64-binaries.zip`.
+   If you prefer, extract it yourself so that `%USERPROFILE%\BidaZoo-pg\pgsql\bin\pg_ctl.exe` exists.
+3. Run `scripts\validate-studio.bat -PortablePostgres`. If the ZIP is not there yet, the runner
+   prints these same steps and stops with exit code `2` before doing anything else.
+
+On the first run it extracts the ZIP (printing its SHA-256), runs `initdb` (user `postgres`, UTF8,
+trust authentication), starts the server with `pg_ctl`, waits with `pg_isready`, and then validates.
+Later runs reuse the same folder. No password is needed or asked for.
+
+**Why trust authentication is acceptable here.** It is used only because this cluster (a) listens on
+`127.0.0.1` exclusively, (b) uses a non-default port, (c) holds throwaway validation data, and
+(d) is separate from every other PostgreSQL. The runner also checks `pg_hba.conf` and refuses to
+start a cluster that would allow trust from anything but loopback. Do not reuse this cluster for
+anything else.
+
+**What it will and will not do to PostgreSQL.**
+
+- It only ever starts and stops the cluster in `<portable root>\data` that carries its own marker
+  file (`BIDAZOO-VALIDATION-CLUSTER.txt`). A different cluster in that folder is refused and left
+  untouched. It never uses `taskkill`, `Stop-Process`, or any kill by name or ID.
+- It stops the server (`pg_ctl ... stop`) only if **this run started it**, whether validation passed
+  or failed, and also if you press Ctrl+C. If your own earlier run left the portable server running,
+  the runner reuses it and leaves it running, and says so in the summary.
+- If port 54329 is busy, it stops with exit code `2` and names the owner. It never kills or moves
+  anything. Choose another port with `-PgPort 54330` (1024-65535; `5432`, `3001`, and `4173` are refused).
+- If the server cannot be initialized or started, it prints the relevant log and exits with `2`
+  (an environment problem, not a BidaZoo test failure). Test failures keep exit code `1`.
+- `-Cleanup` still drops only `bidazoo_test` and `bidazoo_e2e`. **It never deletes the portable
+  folder.** To remove everything when you are completely done, first make sure the portable server is
+  stopped (the runner stops it itself), then delete the folder yourself:
+  `Remove-Item -Recurse -Force "$env:USERPROFILE\BidaZoo-pg"`.
+
+Examples (all arguments pass through the batch file unchanged):
+
+```text
+scripts\validate-studio.bat -PortablePostgres
+scripts\validate-studio.bat -PortablePostgres -Cleanup
+scripts\validate-studio.bat -PortablePostgres -PgPort 54330
+scripts\validate-studio.bat -PortablePostgres -PortableRoot "D:\Tools\BidaZoo-pg"
+```
+
+The summary then adds: PostgreSQL mode (Portable), version, host, port, portable root, cluster
+status, whether this run started the server, and whether shutdown succeeded. Logs of each portable
+step (`initdb`, start, readiness, stop) are in the run's `.validation-logs\<timestamp>\` folder, and
+the server's own log is `<portable root>\pg.log`. Neither is ever deleted by the runner.
+
+## Alternative: use a PostgreSQL 16 you installed yourself
+
+`scripts\validate-studio.bat` without `-PortablePostgres` needs `psql` on PATH (or under
+`C:\Program Files\PostgreSQL\<version>\bin`) and a running PostgreSQL 16 with a superuser. It
+creates and drops only the two throwaway databases and never starts or stops your server.
+Everything below (switches, steps, exit codes) applies to both modes unless noted.
+
+## One-click runner
 
 `scripts\validate-studio.bat` (double-click, or run from Windows Terminal) launches
 `scripts\validate-studio.ps1` from the repository root, as **your normal, non-elevated user**,
@@ -37,9 +109,12 @@ Switches (all pass through the batch file):
 | `-Recreate` | If `bidazoo_test` or `bidazoo_e2e` already exist, drop and recreate **exactly those two names** after you type `yes`. Without it, existing databases stop the run so earlier evidence is never overwritten. |
 | `-Cleanup` | Drop the two throwaway databases at the end, **only if validation passed**. If it failed they are kept. |
 | `-NoPrompt` | Never ask questions. |
+| `-PortablePostgres` | Use the isolated portable PostgreSQL 16 described above. Forces host `127.0.0.1` and user `postgres` (a conflicting `-PgHost` or `-PgUser` stops the run); the port defaults to `54329`; no password. |
+| `-PortableRoot` | Folder for the portable binaries and cluster. Default `%USERPROFILE%\BidaZoo-pg`. Folders under `Program Files` or the Windows folder are refused. |
 
 Without `-Cleanup`, an interactive run asks at the end whether to delete the two databases
-(default: No).
+(default: No). That question comes before the final summary, so the summary is the last thing on
+screen (and the portable server is stopped after the databases are handled).
 
 What it does, in order:
 
@@ -48,6 +123,8 @@ What it does, in order:
 2. Confirms ports 3001 and 4173 are free (and refuses to continue if not; it never kills anything).
 3. Clears `PW_CHROMIUM_EXECUTABLE` and other overriding variables **for this process only**, and sets `CI=1`.
 4. `npm ci`, then `npx playwright install chromium` (the official build).
+4a. With `-PortablePostgres`: finds or extracts the portable binaries, initializes the throwaway
+   cluster if needed, starts it, and waits until it accepts connections (exit `2` on any failure).
 5. Creates `bidazoo_test` and `bidazoo_e2e` and migrates both. It never touches any other database.
 6. `npm test` against `bidazoo_test` (51 unit, 81 integration, 3 todo are *reported* for comparison).
 7. `npm run test:e2e -w @bidazoo/tests -- --reporter=list,json` against `bidazoo_e2e`
@@ -76,6 +153,10 @@ the normal flow needs elevation. The runner checks two things up front:
   yourself. If `npm ci` or the Chromium install fails with a permission error (`EPERM`, `EACCES`,
   `Access is denied`), it prints the matching log lines and the same hint.
 
+The portable mode adds no elevation either: it never creates a Windows service, never edits PATH
+(not even for this process), and never modifies any installed PostgreSQL. If you start it from an
+elevated shell it warns, as above.
+
 Logs for each run are written to `.validation-logs\<timestamp>\` (git-ignored), including
 `SUMMARY.txt` and `playwright-results.json`. Playwright's own failure evidence is in
 `tests\test-results\`. The runner never deletes logs or test evidence.
@@ -88,6 +169,16 @@ audited for destructive and elevation commands (none besides the exact-name, con
 drops). The runner has **not** been executed end to end
 on Windows (the sandbox is Linux and has no Windows networking cmdlets), so its first real run is
 on the Studio PC. If it misbehaves there, the manual procedure below still applies.
+
+`-PortablePostgres` was additionally exercised in the Linux sandbox against a real PostgreSQL 16 with
+`npm`, `npx`, and `node` stubbed: initialize, start, readiness, database create/migrate/drop, stop,
+reuse of an already-running portable cluster, port collision, a failing test run (exit `1`), a
+crash mid-run (server still stopped), refusal of a foreign or non-empty data folder, a wrong major
+version, a non-loopback `pg_hba.conf`, conflicting switches, and an unrelated PostgreSQL left running
+and untouched. What that could **not** cover, and what the first Studio run must show: Windows
+paths and `.exe` names, `Expand-Archive` on the real EDB ZIP, Windows PowerShell 5.1 behavior,
+`pg_ctl`/`initdb` running as a normal Windows user, Windows Defender or firewall prompts, and
+whether the real ZIP's layout is `pgsql\bin` (the runner also searches a few folders deeper).
 
 ## Manual procedure
 
@@ -107,7 +198,8 @@ is on those ports. (It also allows one retry; a test that passes only on retry s
 
 ## 1. Prerequisites
 
-Node 22.12 or newer, npm 10+, Git, and a local PostgreSQL 16 with a superuser you control. Use
+Node 22.12 or newer, npm 10+, Git, and PostgreSQL 16 (the one-click runner can supply a portable one
+with `-PortablePostgres`; otherwise a local PostgreSQL 16 with a superuser you control). Use
 **new, throwaway databases** named below. Never point these at a database with real data.
 
 ## 2. Get the exact baseline

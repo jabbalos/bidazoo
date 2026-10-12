@@ -35,3 +35,6 @@ Thumbs.db
 
 # Studio validation run logs
 .validation-logs/
+
+# BidaZoo portable PostgreSQL (Studio validation); binaries must never be committed
+BidaZoo-pg/
