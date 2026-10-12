@@ -3,6 +3,7 @@ import type { TypeBoxTypeProvider } from '@fastify/type-provider-typebox';
 import Fastify, { type FastifyInstance, type FastifyServerOptions } from 'fastify';
 import type { AppContext } from './context';
 import { installHttpHooks } from './http/hooks';
+import { deviceCookieName } from './modules/identity/devices';
 import { installRateLimiting, type RateLimitConfig } from './http/rate-limit';
 import type { TrustProxySetting } from './http/trust-proxy';
 import { modules } from './modules';
@@ -54,7 +55,10 @@ export function buildApp(options: BuildAppOptions): FastifyInstance {
 
   installHttpHooks(app, options.ctx?.allowedOrigins ?? [], options.hstsMaxAgeSeconds ?? 0);
   void app.register(cookie);
-  installRateLimiting(app, options.rateLimits, { cookieName: options.ctx?.cookie.name ?? 'bidazoo_guest' });
+  installRateLimiting(app, options.rateLimits, {
+    cookieName: options.ctx?.cookie.name ?? 'bidazoo_guest',
+    deviceCookieName: options.ctx?.identity ? deviceCookieName(options.ctx.cookie.secure) : undefined,
+  });
 
   void app.register(healthRoutes, { checks: options.checks });
 

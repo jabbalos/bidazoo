@@ -93,6 +93,12 @@ declare module 'fastify' {
 export interface RateLimitInstallOptions {
   /** Name of the guest cookie, used to key per-guest limits. */
   cookieName: string;
+  /**
+   * Name of the trusted-device cookie, set only when family identity is enabled. A request that
+   * carries a well-formed device cookie is limited per DEVICE, so children on separate
+   * devices behind one school or home IP do not share one address bucket.
+   */
+  deviceCookieName?: string | undefined;
 }
 
 /** Registers the plugin and decorators. With `config` undefined, limiting is off (no-ops). */
@@ -109,9 +115,18 @@ export function installRateLimiting(
 
   void app.register(rateLimit, { global: false, cache: config.cacheSize });
 
-  /** Per-guest key: a hash of the cookie value (never the raw credential), else the client IP. */
+  /**
+   * Per-client key: a hash of the device cookie, else of the guest cookie (never the raw
+   * credential), else the client IP. Only a well-formed device value is trusted as a key (so
+   * junk cannot mint buckets from the device namespace). Forged or rotated cookies buy no extra
+   * allowance beyond the per-IP backstop (`apiPerIp`), which is untouched and applies to every
+   * request regardless of cookies.
+   */
   const guestKey = (request: FastifyRequest): string => {
-    const cookie = (request.cookies as Record<string, string | undefined> | undefined)?.[options.cookieName];
+    const cookies = request.cookies as Record<string, string | undefined> | undefined;
+    const device = options.deviceCookieName ? cookies?.[options.deviceCookieName] : undefined;
+    if (device && /^[A-Za-z0-9_-]{43}$/.test(device)) return `d:${sha256(device)}`;
+    const cookie = cookies?.[options.cookieName];
     return cookie ? `g:${sha256(cookie)}` : `ip:${request.ip}`;
   };
   const tooMany = (): ApiError => new ApiError(429, 'rate_limited');

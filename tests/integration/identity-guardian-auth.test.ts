@@ -1,7 +1,7 @@
 import { createHash } from 'node:crypto';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { ApiPaths } from '@bidazoo/contracts';
-import { HAS_DB, TestBrowser, countRows, makeHarness, sql, type Harness } from './support/harness';
+import { HAS_DB, countRows, deviceBrowser, makeHarness, sql, type Harness } from './support/harness';
 
 let counter = 0;
 const uniqueEmail = (tag = 'g') => `${tag}-${Date.now().toString(36)}-${(counter += 1)}@example.test`;
@@ -16,11 +16,10 @@ function tokenFor(h: Harness, to: string): string {
   return match[1];
 }
 
-const browserFor = (h: Harness) => new TestBrowser(h.app, h.ctx.cookie.name, h.ctx.cookie.secure ? '__Host-bidazoo_device' : 'bidazoo_device');
+const browserFor = (h: Harness) => deviceBrowser(h);
 
 async function requestLink(h: Harness, email: string, ip?: string) {
-  const b = browserFor(h);
-  b.remoteAddress = ip;
+  const b = deviceBrowser(h, ip);
   const res = await b.request('POST', ApiPaths.guardianEmailLinks, { email });
   await h.identity?.mail.idle();
   return res;

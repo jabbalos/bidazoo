@@ -326,13 +326,20 @@ export function uniqueEmail(tag = 'g'): string {
   return `${tag}-${Date.now().toString(36)}-${identityCounter}@example.test`;
 }
 
+let addressCounter = 0;
+/** A distinct private address per call, so identity tests do not share per-client throttles by accident. */
+export function freshAddress(): string {
+  addressCounter += 1;
+  return `10.${200 + (Math.floor(addressCounter / 65536) % 50)}.${Math.floor(addressCounter / 256) % 256}.${(addressCounter % 254) + 1}`;
+}
+
 export function deviceBrowser(h: Harness, remoteAddress?: string): TestBrowser {
   const browser = new TestBrowser(
     h.app,
     h.ctx.cookie.name,
     h.ctx.cookie.secure ? '__Host-bidazoo_device' : 'bidazoo_device',
   );
-  browser.remoteAddress = remoteAddress;
+  browser.remoteAddress = remoteAddress ?? freshAddress();
   return browser;
 }
 

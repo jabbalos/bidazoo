@@ -6,9 +6,11 @@ import { ApiPaths, ErrorResponseSchema, GuestResponseSchema } from '@bidazoo/con
 import { playSessions } from '@bidazoo/database/schema';
 import type { AppContext } from '../../context';
 import { getTotals } from '../rewards/ledger';
-import { createGuest, findGuestByToken, type GuestIdentity } from './service';
+import { resolvePlayer } from './resolver';
+import { createGuest, type GuestIdentity } from './service';
 import { errors } from '../../http/errors';
 import { registerFamilyRoutes } from './family-routes';
+import { registerDeviceRoutes } from './device-routes';
 import { registerGuardianRoutes } from './guardian-routes';
 
 const EmptyBody = Type.Object({}, { additionalProperties: false });
@@ -43,6 +45,7 @@ export function registerIdentityRoutes(app: FastifyInstance, ctx: AppContext): v
   if (ctx.identity) {
     registerGuardianRoutes(app, ctx, ctx.identity);
     registerFamilyRoutes(app, ctx);
+    registerDeviceRoutes(app, ctx, ctx.identity);
   }
 
   // Idempotent "make sure I have a guest identity". A valid cookie returns the same player, so
@@ -56,7 +59,9 @@ export function registerIdentityRoutes(app: FastifyInstance, ctx: AppContext): v
       },
     },
     async (request, reply) => {
-      let guest = await findGuestByToken(ctx, request.cookies[ctx.cookie.name]);
+      // A trusted device with a chosen child answers as that child (no guest is created); a device
+      // with no child and no guest gets 409 profile_required rather than a silently new guest.
+      let guest = await resolvePlayer(ctx, request);
       if (!guest) {
         // A refresh with a valid cookie never reaches here, so it never counts against creation
         // limits. This check precedes the first write: a throttled request creates nothing.
@@ -79,7 +84,7 @@ export function registerIdentityRoutes(app: FastifyInstance, ctx: AppContext): v
     ApiPaths.me,
     { schema: { response: { 200: GuestResponseSchema, '4xx': ErrorResponseSchema, '5xx': ErrorResponseSchema } } },
     async (request, reply) => {
-      const guest = await findGuestByToken(ctx, request.cookies[ctx.cookie.name]);
+      const guest = await resolvePlayer(ctx, request);
       if (!guest) throw errors.unauthenticated();
       return reply.code(200).send(await profile(ctx, guest));
     },

@@ -1,6 +1,7 @@
 import type { FastifyPluginAsync, FastifyRequest } from 'fastify';
 import { errors } from '../../http/errors';
 import type { AppContext, ModuleOptions } from '../../context';
+import { resolvePlayer } from './resolver';
 import { createGuest, findGuestByToken, type GuestIdentity } from './service';
 import { registerIdentityRoutes } from './routes';
 
@@ -18,7 +19,7 @@ export const identityModule: FastifyPluginAsync<ModuleOptions> = async (app, opt
 
 /** Used by other modules (plain function call inside the monolith). Throws 401 if not a guest. */
 export async function requireGuest(ctx: AppContext, request: FastifyRequest): Promise<GuestIdentity> {
-  const guest = await findGuestByToken(ctx, request.cookies[ctx.cookie.name]);
+  const guest = await resolvePlayer(ctx, request);
   if (!guest) throw errors.unauthenticated();
   return guest;
 }
