@@ -16,6 +16,8 @@
     "dev": "node --env-file-if-exists=../../.env --watch --import tsx src/server.ts",
     "build": "node build.mjs",
     "start": "node --env-file-if-exists=../../.env dist/server.js",
+    "legacy:load": "node --env-file-if-exists=../../.env --import tsx src/cli/legacy-load.ts",
+    "legacy:claim-code": "node --env-file-if-exists=../../.env --import tsx src/cli/legacy-claim-code.ts",
     "typecheck": "tsc -p tsconfig.json"
   },
   "dependencies": {

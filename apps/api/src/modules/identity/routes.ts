@@ -12,6 +12,7 @@ import { errors } from '../../http/errors';
 import { registerFamilyRoutes } from './family-routes';
 import { registerDeviceRoutes } from './device-routes';
 import { registerGuardianRoutes } from './guardian-routes';
+import { registerLegacyRoutes } from './legacy-routes';
 
 const EmptyBody = Type.Object({}, { additionalProperties: false });
 
@@ -46,6 +47,7 @@ export function registerIdentityRoutes(app: FastifyInstance, ctx: AppContext): v
     registerGuardianRoutes(app, ctx, ctx.identity);
     registerFamilyRoutes(app, ctx, ctx.identity);
     registerDeviceRoutes(app, ctx, ctx.identity);
+    registerLegacyRoutes(app, ctx, ctx.identity);
   }
 
   // Idempotent "make sure I have a guest identity". A valid cookie returns the same player, so

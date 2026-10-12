@@ -30,6 +30,8 @@ export type AuditAction =
   | 'pin.locked'
   | 'legacy.batch_loaded'
   | 'legacy.claim_code_issued'
+  | 'legacy.claim_code_redeemed'
+  | 'legacy.claim_code_revoked'
   | 'legacy.family_claimed'
   | 'legacy.kid_linked';
 

@@ -345,7 +345,8 @@ export function deviceBrowser(h: Harness, remoteAddress?: string): TestBrowser {
 
 /** The sign-in token in the newest email to `to`. */
 export function linkTokenFor(h: Harness, to: string): string {
-  const message = h.mailer.lastTo(to);
+  // Mail goes to the normalized address, whatever spelling the test used.
+  const message = h.mailer.lastTo(to.normalize('NFKC').trim().toLowerCase());
   const match = message ? /#t=([A-Za-z0-9_-]{43})/.exec(message.text) : null;
   if (!match?.[1]) throw new Error(`no sign-in link mailed to ${to}`);
   return match[1];

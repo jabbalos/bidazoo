@@ -36,3 +36,8 @@ export { FakeMailer } from './mail';
 export type { MailMessage, Mailer } from './mail';
 export { deviceCookieName } from './devices';
 export { normalizeEmail } from './email';
+export {
+  ManifestError, hashLegacyClaimCode, issueLegacyClaimCode, legacyMatchFor, loadLegacyManifest,
+  parseLegacyManifest, revokeLegacyClaimCodes,
+} from './legacy-manifest';
+export { deriveIdentityKeys } from './crypto';
