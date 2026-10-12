@@ -1,7 +1,7 @@
 # Security
 
 Status: Checkpoint B (October 11, 2026) plus Checkpoint D, the public-beta security gate (October 12, 2026;
-**implemented, not yet Studio-PC validated**). This documents the rules and what is enforced today.
+**complete and Studio-PC validated** on commit `52547a3`, October 12, 2026). This documents the rules and what is enforced today.
 It is not a substitute for a security or legal review before real children use the product.
 
 ## The trust model

@@ -1,9 +1,43 @@
 # Studio PC validation (official Playwright run)
 
-Status: **COMPLETE. Official validation passed on the Studio PC on October 12, 2026, for both
-Checkpoint B and Checkpoint C.** The accepted Checkpoint B application baseline is commit
-`01b7d41`; the Checkpoint C game implementation is `7042f8f`. The Checkpoint C record comes first
-below, then the Checkpoint B record.
+Status: **COMPLETE. Official validation passed on the Studio PC on October 12, 2026, for
+Checkpoints B, C, and D.** The accepted Checkpoint B application baseline is commit `01b7d41`; the
+Checkpoint C game implementation is `7042f8f`; the Checkpoint D exact validated commit is
+`52547a356bdde6397c4b576381c30efff05e1d6e`. The Checkpoint D record comes first below, then
+Checkpoint C, then Checkpoint B.
+
+## Checkpoint D validation record (official run, passed)
+
+Source: the local run folder `.validation-logs\20261012-130626` on the Studio PC (git-ignored, so the
+evidence is recorded here). Command: `scripts\validate-studio.bat -PortablePostgres`, normal
+(non-elevated) user, Playwright's pinned Chromium.
+
+| Item | Result |
+| --- | --- |
+| Date and shell | October 12, 2026, run folder `20261012-130626` |
+| Git commit tested (exact validated commit) | `52547a356bdde6397c4b576381c30efff05e1d6e` ("tooling: Studio validator runs build, client bundle scan, and live API playthrough") |
+| Checkpoint D commits | `524f2e8` implementation; `2eb2970` tests; `abde130` validator counts; `7dd9136` documentation (pending-validation state); `52547a3` validator tooling update (validated commit) |
+| Vitest (unit) | 51 passed (51) |
+| Vitest (integration, real PostgreSQL) | 115 passed, 3 todo (118) |
+| Playwright | 56 passed, 0 failed, 0 flaky; 4 projects (360x640, 390x844, 820x1180, 1440x900) |
+| Retries | None |
+| Playwright version | 1.64.0 |
+| Chromium | 156.0.8078.4 (Playwright's official pinned build) |
+| PostgreSQL | 16.15, portable, isolated and BidaZoo-owned, 127.0.0.1:54329; shutdown succeeded |
+| Production build | PASS |
+| Client bundle scan (`npm run scan:client`) | **CLEAN**: 3 files, 1,228,557 bytes, 20 forbidden markers checked |
+| Live API playthrough (`npm run playthrough`) | **ALL CHECKS PASSED**, 39 PASS lines |
+| Steps | `npm ci` PASS; Chromium install PASS; database creation PASS; migrations PASS; Vitest PASS; Playwright PASS; build PASS; scan PASS; playthrough PASS |
+| Validator count warnings | None |
+| Overall | **PASS**; validator exit code 0 |
+
+The security and rate-limit suites are part of those totals, and every Playwright test ran under the
+enforced client CSP with the guard that fails on any CSP violation, console error, page error, or
+429/503. The closure documentation commit that records this result came after `52547a3` and was not
+itself Studio validated.
+
+Conclusion: **Checkpoint D is complete and Studio-PC validated.** The Checkpoint C and Checkpoint B
+records below are unchanged.
 
 For Checkpoint B, the commit that was tested is `d0345bf`, which adds only the validation tooling (and docs) on top of that baseline. The earlier
 supplementary run (24/24 on Chromium 141, a different build) is superseded and was never official
@@ -372,20 +406,20 @@ host) is not implemented; real-device performance is unmeasured.
 
 ## Priority before any public-facing beta
 
-1. Rate limiting: **implemented in Checkpoint D; Studio validation pending.**
-2. Guest-creation abuse limits: **implemented in Checkpoint D; Studio validation pending.**
-3. Content-Security-Policy and the remaining browser security headers: **implemented in Checkpoint D;
-   Studio validation pending.**
+1. Rate limiting: **done in Checkpoint D; Studio validated October 12, 2026.**
+2. Guest-creation abuse limits: **done in Checkpoint D; Studio validated October 12, 2026.**
+3. Content-Security-Policy and the remaining browser security headers: **done in Checkpoint D; Studio
+   validated October 12, 2026.**
 4. Official Playwright validation on the Studio PC: **done October 12, 2026** (see the validation record above).
 5. Real-device performance checks (not authorized yet).
 6. A deliberate guest-account recovery and claim strategy (not authorized yet).
 
-## Checkpoint D: what the Studio run must establish
+## Checkpoint D: what the Studio run established (criteria; result is in the record above)
 
-Checkpoint D is **not closed** until the official run (`scripts\validate-studio.bat -PortablePostgres`,
-normal user, Playwright's pinned Chromium) is recorded here with its exact commit. The runner now
+Checkpoint D closed when the official run (`scripts\validate-studio.bat -PortablePostgres`, normal
+user, Playwright's pinned Chromium) passed on `52547a3` and was recorded here. The runner
 expects 51 unit, 115 integration, 3 todo, and 56 Playwright (4 viewports); a count warning after the
-update means something changed. Confirm:
+update would have meant something changed. The run confirmed:
 
 - Vitest 51 unit and 115 integration (+3 todo) pass, with no count warnings. The integration tests
   include "a throttled request mutates nothing" (row counts and ledger totals unchanged), the
@@ -399,7 +433,7 @@ update means something changed. Confirm:
   (`npm run playthrough`, run by the runner against its own API instance and `bidazoo_e2e`) reports
   `ALL CHECKS PASSED`. All three are run and logged by the runner (`12-`, `13-`, `15-` logs).
 
-Record the validated commit hash and the run folder here when it passes.
+These criteria were all met; see the Checkpoint D validation record at the top of this file.
 
 ## Visual direction
 

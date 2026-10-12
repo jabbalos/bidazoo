@@ -2,11 +2,29 @@
 
 All notable changes, by checkpoint. Dates use US format.
 
-## Checkpoint D: public-beta security gate (October 12, 2026; implemented, awaiting Studio validation)
+## Checkpoint D closure: Studio-PC validated (October 12, 2026)
+
+Documentation only. Checkpoint D (public-beta security gate) is **COMPLETE**. The exact commit that
+was Studio validated is `52547a356bdde6397c4b576381c30efff05e1d6e` (the validator tooling update on
+top of `7dd9136`); this closure documentation commit came after it and was not itself validated.
+Official run: October 12, 2026, run folder `.validation-logs\20261012-130626`, normal user,
+`scripts\validate-studio.bat -PortablePostgres`, exit code 0, overall PASS, no count warnings.
+
+- Unit 51 passed; integration 115 passed + 3 todo; Playwright 56 passed, 4 projects, 0 failed,
+  0 flaky, no retries.
+- Playwright 1.64.0; Chromium 156.0.8078.4; PostgreSQL 16.15 (portable, 127.0.0.1:54329, shutdown ok).
+- Production build PASS; client bundle scan CLEAN (3 files, 1,228,557 bytes, 20 forbidden markers);
+  live API playthrough ALL CHECKS PASSED (39 PASS lines).
+- Checkpoint D history: `524f2e8` implementation, `2eb2970` tests, `abde130` validator counts,
+  `7dd9136` documentation (pending-validation state), `52547a3` validator tooling update (build,
+  `scan:client`, and live API playthrough steps; docs) and exact validated commit.
+- Status wording that said "awaiting Studio validation" in the entry below is superseded by this entry.
+
+## Checkpoint D: public-beta security gate (October 12, 2026; implemented; validated, see the closure entry above)
 
 No change to gameplay, question generation, grading, `served_at` timing, idempotency, mastery, XP,
 coins, session completion, guest identity, or ownership. Commits `524f2e8` (implementation),
-`2eb2970` (tests), `abde130` (validator counts), plus the documentation commit.
+`2eb2970` (tests), `abde130` (validator counts), `7dd9136` (documentation), `52547a3` (validator tooling).
 
 ### Added
 
@@ -36,11 +54,11 @@ coins, session completion, guest identity, or ownership. Commits `524f2e8` (impl
   baseline `01b7d41` unchanged).
 - `.env.example` documents the new variables.
 
-### Verification (NOT Studio-PC validated)
+### Verification before the official run (sandbox only; the official Studio-PC result is in the closure entry above)
 
 - Sandbox, supplementary Chromium 153: Vitest unit 51, integration 115 (+3 todo); Playwright 56 of
   56 on four viewports, no retries, no flaky; `scan:client` clean; live API playthrough passed.
-- Closure requires an official Studio-PC run. This entry is not a closure.
+- Closed by the official Studio-PC run recorded in the closure entry above. This sandbox entry is not itself the validation.
 
 ### Known limits
 

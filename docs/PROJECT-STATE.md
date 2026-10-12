@@ -11,7 +11,7 @@ If this file and another doc disagree about status, fix the other doc.
 | Checkpoint A (foundation) | Complete |
 | Checkpoint B (first playable server-authoritative slice) | **COMPLETE and Studio-PC validated** |
 | Checkpoint C (five-starter presentation) | **COMPLETE and Studio-PC validated** (October 12, 2026) |
-| Checkpoint D (public-beta security gate) | **IMPLEMENTED, NOT COMPLETE.** Awaiting the official Studio-PC validation run. Do not treat as closed. |
+| Checkpoint D (public-beta security gate) | **COMPLETE and Studio-PC validated** (October 12, 2026; exact validated commit `52547a356bdde6397c4b576381c30efff05e1d6e`) |
 | Real-device performance, guest recovery, Click, final art | **NOT authorized.** Separate later checkpoints. |
 
 ## Baselines and commits
@@ -115,7 +115,7 @@ abuse limits are in-process and best-effort (tumbling windows, lost on restart, 
 mastery; character art is code-drawn transitional art, not final; Click (the host) is not implemented; real-device performance unmeasured; no audit logging, backups, or
 retention jobs; children's-data privacy and legal review is still needed before real use.
 
-## Checkpoint D: public-beta security gate (implemented; Studio validation pending)
+## Checkpoint D: public-beta security gate (COMPLETE; Studio-PC validated)
 
 Approved scope: rate limiting (per-IP guest creation, per-guest session start and answers, an
 API-wide per-IP backstop), a service-wide emergency new-guest breaker, explicit proxy trust
@@ -124,23 +124,32 @@ client. Every limit is environment-configurable; no hosting provider is assumed.
 default numbers: [SECURITY.md](SECURITY.md) ("Public-beta protections").
 
 - **Commits (in order, on top of `67975bf`):** `524f2e8` implementation, `2eb2970` tests, `abde130`
-  validator counts, then the documentation commit that records this section.
+  validator counts, `7dd9136` Checkpoint D documentation (pending-validation state), `52547a3`
+  validator tooling update (adds the production build, `scan:client`, and the live API playthrough to
+  the Studio runner). **`52547a3` is the exact commit that was Studio validated.** The closure
+  documentation commit that records the result came after it and was not itself validated.
 - **No change to** gameplay, question generation, grading, `served_at` timing, idempotency, mastery,
   XP, coins, session completion, guest identity, or ownership. The only package outside `apps/api`,
   `apps/play`, and the game's accessibility mirror that changed is `packages/contracts` (two new error
   codes, `rate_limited` and `service_busy`). `learning-core` and `game-sdk` are untouched. Checkpoint D
   is independently revertible without reverting Checkpoint C.
-- **Sandbox verification (NOT Studio-PC validation):** Vitest unit 51 passed; integration 115 passed,
+- **Earlier sandbox verification (NOT Studio-PC validation; superseded by the official run below):** Vitest unit 51 passed; integration 115 passed,
   3 todo; Playwright 56 passed, 0 flaky, 0 retries, on all four viewports with the CSP enforced and
   zero violations, console errors, or throttled calls, using a supplementary Chromium 153;
   `scan:client` clean; the live API playthrough passed.
-- **Closure requires** an official Studio-PC run (see [STUDIO-VALIDATION.md](STUDIO-VALIDATION.md)),
-  recording the exact commit. The validator's expected counts were updated to 51 / 115 (+3 todo) / 56
-  in `abde130`.
+- **Official Studio-PC validation (October 12, 2026), PASSED**, run folder
+  `.validation-logs\20261012-130626`, commit `52547a356bdde6397c4b576381c30efff05e1d6e`: unit 51
+  passed; integration 115 passed, 3 todo; Playwright 56 passed across 4 projects, 0 failed, 0 flaky,
+  no retries; Playwright 1.64.0, Chromium 156.0.8078.4, PostgreSQL 16.15 (portable, 127.0.0.1:54329,
+  shutdown succeeded); production build PASS; client bundle scan **CLEAN** (3 files, 1,228,557
+  bytes, 20 forbidden markers checked); live API playthrough **ALL CHECKS PASSED** (39 PASS lines);
+  no validator count warnings; validator exit code 0. Full record:
+  [STUDIO-VALIDATION.md](STUDIO-VALIDATION.md). The validator's expected counts (51 / 115 + 3 todo / 56
+  / 4 projects) were set in `abde130`.
 
 ## Deferred (not authorized)
 
-After Checkpoint D validates, in order: real-device performance checks; a deliberate guest-account
+With Checkpoint D closed, in order (none authorized yet): real-device performance checks; a deliberate guest-account
 recovery and claim strategy; the Click host character; final character art. Also still open:
 CAPTCHA, a shared (multi-process) limiter store, distributed-attack defense, audit logging, backups,
 retention, and children's-data legal review. (Official Playwright validation, rate limiting, guest
