@@ -1,6 +1,7 @@
 <#
 .SYNOPSIS
-  One-click Studio PC validation for the BidaZoo Checkpoint B baseline (commit 01b7d41).
+  One-click Studio PC validation for BidaZoo (Checkpoint B baseline 01b7d41 and later;
+  expected counts are for Checkpoint C: 51 unit, 88 integration, 3 todo, 40 Playwright).
 
 .DESCRIPTION
   Runs, in order: environment checks, npm ci, the OFFICIAL Playwright Chromium install, creation of

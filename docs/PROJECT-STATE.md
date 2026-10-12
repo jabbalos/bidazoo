@@ -19,6 +19,14 @@ If this file and another doc disagree about status, fix the other doc.
 - **Accepted Checkpoint C game implementation:** `7042f8f` ("feat(zoo-sprint): Checkpoint C - five
   locked starters, presentation only"). Presentation-only: no change to `apps/api`, `database`,
   `packages/contracts`, `packages/learning-core`, or `packages/game-sdk`.
+- **Later commits (not themselves Studio-validated):**
+  - `5b287f2`: Checkpoint C closure documentation (docs only).
+  - `6fcbc75`: merge of `5b287f2` with `01752a1`, preserving both histories.
+  - `5fef907`: validator-count update in `scripts/validate-studio.ps1`, tooling only
+    (`ExpectedIntegration` 81 -> 88, `ExpectedPlaywright` 24 -> 40; `ExpectedUnit` 51,
+    `ExpectedTodo` 3, `ExpectedProjects` 4, and `BaselineCommit` `01b7d41` unchanged). It has not
+    yet been run on the Studio PC; the next run should print no count warnings.
+  - The documentation cleanup commit that recorded these.
 - **Checkpoint C officially validated commit:** `01752a1df4a4c0dbce41415027971b41540cb4dd`. It
   differs from `7042f8f` only by a documentation and reference-art addition
   (`docs/reference-art/bidazoo-character-roster-reference.png`); no application, game, schema, API,
@@ -62,10 +70,10 @@ Run `20261012-114342` on the Studio PC, commit `01752a1df4a4c0dbce41415027971b41
   156.0.8078.4 (official pinned build); 4 viewports.
 - PostgreSQL 16.15 portable; `npm ci`, database creation, migrations, startup, and shutdown passed.
 - Overall PASS, exit code 0.
-- The runner printed two count warnings only because its approved counts still reflect Checkpoint B
-  (integration expected 81, now 88; Playwright expected 24, now 40). The increases are the
-  intentional Checkpoint C tests, not failures. Updating the runner's expected counts is a separate,
-  not-yet-made tooling change.
+- That run printed two count warnings only because the runner's approved counts still reflected
+  Checkpoint B (integration expected 81, now 88; Playwright expected 24, now 40). The increases are
+  the intentional Checkpoint C tests, not failures. The runner was updated afterward in `5fef907`
+  (see "Baselines and commits"); the run itself used the older counts.
 
 ### Checkpoint B
 

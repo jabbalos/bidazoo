@@ -30,10 +30,16 @@ the evidence is recorded here).
 | Steps | `npm ci` PASS; database creation PASS; migrations PASS; PostgreSQL startup and shutdown PASS |
 | Overall | **PASS**; exit code 0 |
 
-The runner emitted two warnings only because its approved baseline counts still reflect
-Checkpoint B: integration expected 81 (now 88) and Playwright expected 24 (now 40). The increases
-are the intentional Checkpoint C test additions (7 roster integration tests; 10 e2e tests per
-viewport instead of 6), not failures. The runner's expected counts have not been updated yet.
+The runner emitted two warnings in that run only because its approved baseline counts still
+reflected Checkpoint B: integration expected 81 (now 88) and Playwright expected 24 (now 40). The
+increases are the intentional Checkpoint C test additions (7 roster integration tests; 10 e2e tests
+per viewport instead of 6), not failures.
+
+Afterward, the runner's expected counts were updated in commit `5fef907` (tooling only): integration
+**88** and Playwright **40**. Unchanged: unit 51, todo 3, projects 4, and `BaselineCommit`
+`01b7d41`. Commit `5fef907`, the closure docs `5b287f2`, and the merge `6fcbc75` came after the
+Studio run and were **not** themselves part of it; the exact commit that was Studio validated is
+`01752a1`. The updated runner has not yet been run on the Studio PC.
 
 Conclusion: **Checkpoint C is complete and Studio-PC validated.** Checkpoint B's accepted baseline
 `01b7d41` and its record below are preserved. The limitations and deferred hardening items below
@@ -195,9 +201,9 @@ What it does, in order:
 4a. With `-PortablePostgres`: finds or extracts the portable binaries, initializes the throwaway
    cluster if needed, starts it, and waits until it accepts connections (exit `2` on any failure).
 5. Creates `bidazoo_test` and `bidazoo_e2e` and migrates both. It never touches any other database.
-6. `npm test` against `bidazoo_test` (51 unit, 81 integration, 3 todo are *reported* for comparison).
+6. `npm test` against `bidazoo_test` (51 unit, 88 integration, 3 todo are *reported* for comparison).
 7. `npm run test:e2e -w @bidazoo/tests -- --reporter=list,json` against `bidazoo_e2e`
-   (24 tests, 4 viewports; this is the same command as `npm run test:e2e` plus a JSON reporter so
+   (40 tests, 4 viewports; this is the same command as `npm run test:e2e` plus a JSON reporter so
    retries and skips can be counted).
 8. Prints a summary (commit, Vitest, Playwright, retries, Playwright and Chromium versions,
    database, overall) and lists any traces, screenshots, or videos with their full paths.
@@ -306,14 +312,16 @@ Both migrations must report success (3 migrations each).
 
 ## 5. Run the suites
 
-Database-backed unit and integration tests (expect 51 + 81 passed, 3 todo):
+Database-backed unit and integration tests (Checkpoint C: expect 51 + 88 passed, 3 todo; the
+Checkpoint B checkout `d0345bf` gives 51 + 81):
 
 ```powershell
 $env:TEST_DATABASE_URL = "$pg/bidazoo_test"
 npm test
 ```
 
-Official Playwright run (24 tests: 6 per viewport at 360x640, 390x844, 820x1180, 1440x900):
+Official Playwright run (Checkpoint C: 40 tests, 10 per viewport at 360x640, 390x844, 820x1180,
+1440x900; the Checkpoint B checkout gives 24, 6 per viewport):
 
 ```powershell
 $env:DATABASE_URL = "$pg/bidazoo_e2e"
@@ -330,7 +338,7 @@ running API, and `npm run scan:client` after `npm run build`.
 
 ## 6. What to send back
 
-- The final summary line (for example `24 passed`) and the full list output.
+- The final summary line (for example `40 passed`) and the full list output.
 - `npx playwright --version` and the Chromium version (`npx playwright install chromium --dry-run`
   shows it).
 - Any failure: the error text, the viewport project name, and `tests/test-results/<test>/`
