@@ -315,3 +315,46 @@ export function allKeys(value: unknown, into = new Set<string>()): Set<string> {
   }
   return into;
 }
+
+// ---------------------------------------------------------------------------
+// Identity helpers (Checkpoint E)
+// ---------------------------------------------------------------------------
+
+let identityCounter = 0;
+export function uniqueEmail(tag = 'g'): string {
+  identityCounter += 1;
+  return `${tag}-${Date.now().toString(36)}-${identityCounter}@example.test`;
+}
+
+export function deviceBrowser(h: Harness, remoteAddress?: string): TestBrowser {
+  const browser = new TestBrowser(
+    h.app,
+    h.ctx.cookie.name,
+    h.ctx.cookie.secure ? '__Host-bidazoo_device' : 'bidazoo_device',
+  );
+  browser.remoteAddress = remoteAddress;
+  return browser;
+}
+
+/** The sign-in token in the newest email to `to`. */
+export function linkTokenFor(h: Harness, to: string): string {
+  const message = h.mailer.lastTo(to);
+  const match = message ? /#t=([A-Za-z0-9_-]{43})/.exec(message.text) : null;
+  if (!match?.[1]) throw new Error(`no sign-in link mailed to ${to}`);
+  return match[1];
+}
+
+/** Full guardian sign-in on a (new or given) browser: request the link, read the mail, redeem it. */
+export async function signInGuardian(
+  h: Harness,
+  options: { email?: string; browser?: TestBrowser; remoteAddress?: string } = {},
+): Promise<{ browser: TestBrowser; email: string }> {
+  const email = options.email ?? uniqueEmail();
+  const browser = options.browser ?? deviceBrowser(h, options.remoteAddress);
+  const req = await browser.request('POST', '/api/v1/guardian/email-links', { email });
+  if (req.status !== 202) throw new Error(`link request failed: ${req.status} ${req.raw}`);
+  await h.identity?.mail.idle();
+  const res = await browser.request('POST', '/api/v1/guardian/email-links/consume', { token: linkTokenFor(h, email) });
+  if (res.status !== 200) throw new Error(`link redemption failed: ${res.status} ${res.raw}`);
+  return { browser, email };
+}
