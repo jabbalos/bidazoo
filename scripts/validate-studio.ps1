@@ -77,9 +77,9 @@ $TestDb = 'bidazoo_test'
 $E2eDb = 'bidazoo_e2e'
 $Ports = @(3001, 4173)
 $ExpectedUnit = 51
-$ExpectedIntegration = 81
+$ExpectedIntegration = 88
 $ExpectedTodo = 3
-$ExpectedPlaywright = 24
+$ExpectedPlaywright = 40
 $ExpectedProjects = 4
 
 $script:Warnings = New-Object System.Collections.Generic.List[string]
