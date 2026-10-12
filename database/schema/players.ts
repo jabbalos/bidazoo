@@ -7,10 +7,8 @@ import { pgTable, timestamp, uuid, varchar } from 'drizzle-orm/pg-core';
  * Anything that needs real-world identity belongs to a separate, future identity
  * module and must be justified on its own.
  *
- * Checkpoint A ships only this table, to prove the schema -> migration -> database
- * pipeline works. The rest of the planned datastore (play_sessions, questions_served,
- * attempts, skill_mastery, wallet_transactions, inventory_unlocks, achievements)
- * arrives with the checkpoints that need it.
+ * Checkpoint B players are anonymous guests created by the server. The browser never sees
+ * this id as a credential: it holds an opaque session cookie (see guest-sessions.ts).
  */
 export const players = pgTable('players', {
   id: uuid('id').primaryKey().defaultRandom(),

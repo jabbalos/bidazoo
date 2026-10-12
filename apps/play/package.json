@@ -2,7 +2,7 @@
   "name": "@bidazoo/play",
   "version": "0.0.0",
   "private": true,
-  "description": "BidaZoo browser client (Vite + Phaser 3). Presentation only; the server is authoritative.",
+  "description": "BidaZoo browser shell (Vite). Hosts the game and connects it to the API over HTTP. Presentation only; the server is authoritative.",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -11,7 +11,9 @@
     "typecheck": "tsc -p tsconfig.json"
   },
   "dependencies": {
-    "phaser": "^3.90.0"
+    "@bidazoo/contracts": "*",
+    "@bidazoo/game-sdk": "*",
+    "@bidazoo/zoo-sprint": "*"
   },
   "devDependencies": {
     "vite": "^8.3.4"

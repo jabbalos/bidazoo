@@ -2,12 +2,16 @@
   "name": "@bidazoo/zoo-sprint",
   "version": "0.0.0",
   "private": true,
-  "description": "Zoo Sprint game. Placeholder; gameplay is NOT part of Checkpoint A.",
+  "description": "Zoo Sprint: the first BidaZoo game (Phaser 3). Presentation only; it talks to the platform through @bidazoo/game-sdk and never decides answers, rewards or mastery.",
   "type": "module",
   "exports": {
     ".": "./src/index.ts"
   },
   "scripts": {
     "typecheck": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "@bidazoo/game-sdk": "*",
+    "phaser": "^3.90.0"
   }
 }

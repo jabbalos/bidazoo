@@ -2,16 +2,18 @@
 
 An educational-game platform for kids. Games are fun; **learning progress is decided by the server**.
 
-> **Status: Checkpoint A (Foundation).** The workspace, API skeleton, database/migration pipeline,
-> learning-core boundary, and a Phaser boot screen exist. There is **no gameplay yet**.
+> **Status: Checkpoint B (first playable vertical slice).** A guest can open the page, pick an
+> animal, and play a 10-question multiplication run. Every question, grade, mastery update, and
+> reward is decided and stored by the server in PostgreSQL; the Phaser client only presents it.
+> Not built: accounts, store, multiplayer, dashboards (see "Out of scope").
 > The repository and the files in [`docs/`](docs/) are the project memory, not chat history.
 
 ## Documentation
 
 | Doc | What it covers |
 | --- | --- |
-| [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | Structure, package responsibilities, trust boundaries, deviations, postponed decisions |
-| [docs/SECURITY.md](docs/SECURITY.md) | Security baseline and the trust model |
+| [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | Structure, tables, request flow, idempotency, learning-core, deviations, postponed decisions |
+| [docs/SECURITY.md](docs/SECURITY.md) | Trust model, guest cookie, answer secrecy, known limitations |
 | [docs/GAME-SDK.md](docs/GAME-SDK.md) | The boundary between a game and the platform |
 | [docs/PRODUCT.md](docs/PRODUCT.md) | Product intent and scope |
 | [docs/REFERENCE-REVIEW.md](docs/REFERENCE-REVIEW.md) | What BidaZoo may and may not take from Hop Quest and Fact Crew |
@@ -29,10 +31,23 @@ An educational-game platform for kids. Games are fun; **learning progress is dec
 npm install
 cp .env.example .env        # then edit DATABASE_URL; .env is git-ignored
 npm run db:migrate          # apply migrations to DATABASE_URL
-npm run dev                 # API on :3001, Phaser client on :5173
+npm run dev                 # API on :3001, Phaser client on :5173 (proxies /api to the API)
 ```
 
-On Windows, use `copy .env.example .env` instead of `cp`.
+Open `http://127.0.0.1:5173`. On Windows, use `copy .env.example .env` instead of `cp`.
+
+### Running the database-backed tests
+
+The integration tests exercise real PostgreSQL behavior (constraints, triggers, locking). Create a
+**throwaway** database, migrate it, and point `TEST_DATABASE_URL` at it:
+
+```bash
+createdb bidazoo_test
+DATABASE_URL=postgres://.../bidazoo_test npm run db:migrate
+TEST_DATABASE_URL=postgres://.../bidazoo_test npm test
+```
+
+Without `TEST_DATABASE_URL` those tests are **skipped** (with a loud warning), not passed.
 
 ## Scripts (run from the repository root)
 
@@ -42,15 +57,25 @@ On Windows, use `copy .env.example .env` instead of `cp`.
 | `npm run build` | Production builds for every workspace that has one |
 | `npm run typecheck` | `tsc` in every workspace (strict) |
 | `npm test` | Vitest unit and integration tests |
-| `npm run test:e2e` | Playwright browser tests at four viewports (needs a one-time `npx playwright install chromium`) |
+| `npm run test:e2e` | Playwright browser tests at four viewports (needs a one-time `npx playwright install chromium`, plus `DATABASE_URL`) |
+| `npm run playthrough` | Plays a full 10-question session against a running API over HTTP and verifies the database (needs `API_URL` and `DATABASE_URL`) |
+| `npm run scan:client` | Scans the built frontend (`apps/play/dist`) for answer keys, server code, and secrets |
 | `npm run db:generate` | Diff the Drizzle schema into a new SQL migration in `database/migrations` |
 | `npm run db:migrate` | Apply pending migrations to `DATABASE_URL` |
 | `npm run check` | typecheck, then test, then build |
 
-## Endpoints (Checkpoint A)
+## API (all under `/api/v1` unless noted)
 
-- `GET /health` — liveness; never touches dependencies.
-- `GET /ready` — readiness; `200` when PostgreSQL answers, `503` otherwise.
+| Method and path | Purpose |
+| --- | --- |
+| `GET /health` (no prefix) | Liveness; never touches dependencies |
+| `GET /ready` (no prefix) | Readiness; `200` when PostgreSQL answers, `503` otherwise |
+| `POST /guest` | Create a guest (sets an HttpOnly cookie) or reconnect the existing one |
+| `GET /me` | Player, XP and coin totals, active session id |
+| `POST /play-sessions` | Start a 10-question multiplication run, or resume the active one |
+| `GET /play-sessions/:id` | Progress, current question, results |
+| `POST /play-sessions/:id/question` | Issue the next question (or the outstanding one, unchanged) |
+| `POST /play-sessions/:id/answers` | `{attemptId, questionId, response}`; idempotent; returns the graded result |
 
 ## The rule that shapes everything
 
@@ -58,13 +83,14 @@ On Windows, use `copy .env.example .env` instead of `cp`.
 CLIENT REQUESTS -> SERVER VALIDATES -> SERVER DECIDES -> DATABASE COMMITS -> CLIENT ANIMATES
 ```
 
-The browser is untrusted. It may own animation, camera, particles, sound, menu state, and
-accessibility preferences. It may never own correct answers, attempts, mastery, XP, currency,
-inventory, achievements, unlocks, entitlements, or reward issuance. See
-[docs/SECURITY.md](docs/SECURITY.md).
+The browser is untrusted. It may own animation, camera, particles, sound, menu state, the chosen
+animal, and accessibility preferences. It may never own correct answers, attempts, response
+times, mastery, XP, currency, inventory, achievements, unlocks, entitlements, or reward issuance.
+See [docs/SECURITY.md](docs/SECURITY.md).
 
 ## Out of scope for now
 
-Zoo Sprint gameplay, multiplayer, QR controllers, classrooms, teacher and parent dashboards,
-AI-generated lessons, subscriptions, purchases, stores, chat, friends, user-generated content,
-real-time 3D, world maps, production account migration, and production deployment.
+Parent accounts, the jonabalos.com Accounts integration, subscriptions, purchases, stores,
+inventory, multiplayer, QR controllers, classrooms, teacher and parent dashboards, AI-generated
+lessons, chat, friends, user-generated content, real-time 3D, world maps, and production
+deployment.

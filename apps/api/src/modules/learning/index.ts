@@ -1,10 +1,14 @@
 import type { FastifyPluginAsync } from 'fastify';
 
 /**
- * learning module — Server-side question generation and grading via @bidazoo/learning-core; owns answer keys.
+ * learning module — Adapter between the API and @bidazoo/learning-core.
  *
- * Checkpoint A: placeholder. Registers no routes and holds no state.
+ * Owns the persistence of mastery state (skill_mastery). The rules themselves (Leitner boxes,
+ * fluency, selection, question generation) live in the pure learning-core package; this module
+ * only loads state, hands it to learning-core, and stores what comes back.
  */
 export const learningModule: FastifyPluginAsync = async () => {
-  // Intentionally empty.
+  // No routes: mastery is read and written only inside the sessions module's transactions.
 };
+
+export { loadMasteryForUpdate, loadMasteryMap, saveMastery, skillsMasteredSince } from './mastery-repo';

@@ -14,8 +14,9 @@ and weaknesses are corrected instead of copied.
 
 ## First game
 
-**Zoo Sprint.** Not implemented. Gameplay begins at a later checkpoint, after the foundation is
-reviewed and approved.
+**Zoo Sprint.** First playable slice (Checkpoint B): choose Panda, Monkey, or Lion (presentation
+only), then answer 10 multiplication questions. The server generates and grades every question,
+updates mastery, and issues XP and coins; the game animates the result. Placeholder graphics.
 
 ## Principles
 

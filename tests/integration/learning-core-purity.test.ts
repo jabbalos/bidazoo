@@ -8,7 +8,7 @@ import { describe, expect, it } from 'vitest';
  * Complements the tsconfig (no DOM lib, no node types) with a source-level scan.
  */
 
-const ALLOWED_PACKAGE_IMPORTS = new Set(['@bidazoo/contracts']);
+const ALLOWED_PACKAGE_IMPORTS = new Set<string>(); // learning-core has no package dependencies at all
 const FORBIDDEN_IDENTIFIERS =
   /\b(document|window|localStorage|sessionStorage|navigator|fetch|process|require|Phaser|React)\b/;
 
@@ -53,24 +53,25 @@ describe('learning-core purity', () => {
     expect(findViolations(`const el = document.body;`)).not.toEqual([]);
     expect(findViolations(`localStorage.setItem('a', 'b');`)).not.toEqual([]);
     expect(findViolations(`// mentions window in a comment only\nexport const a = 1;`)).toEqual([]);
-    expect(findViolations(`import type { A } from '@bidazoo/contracts';\nimport { b } from './b';`)).toEqual([]);
+    expect(findViolations(`import { b } from './b';`)).toEqual([]);
+    expect(findViolations(`import type { A } from '@bidazoo/contracts';`)).not.toEqual([]);
   });
 
   it('has source files to scan', () => {
     expect(listSourceFiles(join(packageRoot, 'src')).length).toBeGreaterThan(0);
   });
 
-  it('source files import only relative modules and @bidazoo/contracts, and use no browser/runtime globals', () => {
+  it('source files import only relative modules, and use no browser/runtime globals', () => {
     for (const file of listSourceFiles(join(packageRoot, 'src'))) {
       const violations = findViolations(readFileSync(file, 'utf8'));
       expect({ file, violations }).toEqual({ file, violations: [] });
     }
   });
 
-  it('declares no runtime dependencies other than @bidazoo/contracts', () => {
+  it('declares no runtime dependencies at all', () => {
     const pkg = JSON.parse(readFileSync(join(packageRoot, 'package.json'), 'utf8')) as {
       dependencies?: Record<string, string>;
     };
-    expect(Object.keys(pkg.dependencies ?? {})).toEqual(['@bidazoo/contracts']);
+    expect(Object.keys(pkg.dependencies ?? {})).toEqual([]);
   });
 });

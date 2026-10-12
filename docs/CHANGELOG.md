@@ -2,6 +2,64 @@
 
 All notable changes, by checkpoint. Dates use US format.
 
+## Checkpoint B: first playable server-authoritative vertical slice (October 11, 2026)
+
+### Added
+
+- **Playable game.** Phaser client: Boot -> Choose Animal (Panda, Monkey, Lion; presentation only)
+  -> Start Run -> Question with four large answer buttons -> Correct/Incorrect reaction -> next ->
+  Results after 10 questions. Resumes after a refresh.
+- **API** under `/api/v1`: `POST /guest`, `GET /me`, `POST /play-sessions`,
+  `GET /play-sessions/:id`, `POST /play-sessions/:id/question`, `POST /play-sessions/:id/answers`.
+  Requests are validated and responses serialized through TypeBox schemas
+  (`@fastify/type-provider-typebox`), so private grading data cannot leak.
+- **Guest identity:** opaque HttpOnly, SameSite=Lax cookie (Secure and `__Host-` under HTTPS);
+  only a SHA-256 hash is stored; same-origin check on state-changing requests.
+- **Database** (migrations 0001, 0002): `guest_sessions`, `play_sessions`, `served_questions`,
+  `attempts`, `skill_mastery`, `wallet_transactions`, `xp_events`; unique constraints, composite
+  foreign keys, a one-open-question-per-session index, and append-only / frozen-row triggers.
+  One final grade per served question is enforced by the database.
+- **Answer transaction:** one transaction locks the session, handles idempotent replay, grades,
+  applies mastery, writes the ledger, and advances or completes the session.
+- **Server-measured response time:** `served_at` and `answered_at` are server timestamps;
+  `fluent = correct && responseMs <= 6000`; a refresh never resets `served_at`.
+- **learning-core** (pure, no dependencies): multiplication fact families, seeded question
+  generation with distractors, grading, Leitner mastery with fluent-on-multiple-days, and
+  selection with bounded retry, adapted from Fact Crew's algorithms (not its persistence).
+- **Rewards:** append-only ledgers; +10 XP and +2 coins per correct answer, +25 XP and +10 coins
+  for finishing. XP lives in its own table (`xp_events`).
+- **Tests:** 51 learning-core unit tests; 81 integration tests against real PostgreSQL (security,
+  ownership, idempotency, concurrency, database guards, gameplay flow, guest cookie model);
+  Playwright specs at four viewports; `tests/scripts/api-playthrough.mjs` (live HTTP playthrough
+  with database verification) and `tests/scripts/scan-client-bundle.mjs` (built-frontend leak scan).
+- Docs updated: README, ARCHITECTURE, SECURITY, GAME-SDK, PRODUCT, `.env.example`.
+
+### Changed
+
+- `learning-core` no longer depends on `contracts`; `contracts` now holds TypeBox schemas.
+- `game-sdk` is now a real `BidaZooPlatform` / `BidaZooGame` boundary (was method sketches).
+- Removed the Checkpoint A placeholder scenes and the unused `VITE_API_BASE_URL`; the client
+  calls `/api` on its own origin (Vite proxies it in dev and preview).
+
+### Found and fixed during verification
+
+- The `game-sdk` workspace failed `tsc` (no DOM lib for `HTMLElement`); fixed.
+- A screenshot review found the feedback line ("Not quite. The answer is N") was anchored at the
+  left of center and clipped on narrow screens. Fixed (centered, sized to the column).
+- A mutation check (removing the session `FOR UPDATE` lock) made the concurrency tests fail as
+  intended, confirming they detect the race; the lock was restored.
+
+### Known limitations
+
+- No rate limiting; guest creation is unbounded. No account upgrade, so clearing cookies loses
+  progress. Mastery "different days" uses UTC. A replayed answer shows current mastery.
+- Database-backed tests skip (loudly) without `TEST_DATABASE_URL`.
+- In a GPU-less headless Chromium, Phaser renders on the CPU (measured 14 fps at 360x640, under
+  5 fps at 1440x900). Not measured on real devices.
+- **Playwright:** the official run (Playwright's pinned Chromium) has NOT been executed:
+  execution pending external Studio PC validation. A supplementary run on a different Chromium
+  build (141, not the pinned one) is recorded in the checkpoint report and is not a substitute.
+
 ## Post-Checkpoint A: reference review (October 11, 2026)
 
 ### Added

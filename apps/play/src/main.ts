@@ -1,20 +1,11 @@
-import Phaser from 'phaser';
-import { BootScene } from './scenes/BootScene';
+import { zooSprint } from '@bidazoo/zoo-sprint';
+import { createHttpPlatform } from './platform';
 
 /**
- * Checkpoint A: prove that Phaser boots. No gameplay.
- *
- * Trust model reminder: this client only presents state. It never decides answers,
- * rewards, XP, coins, or inventory; those come from the server.
+ * The shell: finds the page element and hands the game a platform to talk to.
+ * No game logic, no state, and no secrets live here.
  */
-new Phaser.Game({
-  type: Phaser.AUTO,
-  parent: 'game',
-  backgroundColor: '#0f3d2e',
-  scale: {
-    mode: Phaser.Scale.RESIZE,
-    width: '100%',
-    height: '100%',
-  },
-  scene: [BootScene],
-});
+const parent = document.getElementById('game');
+if (!parent) throw new Error('#game element is missing');
+
+zooSprint.mount({ parent, platform: createHttpPlatform() });

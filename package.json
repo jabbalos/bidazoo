@@ -24,7 +24,9 @@
     "test:e2e": "npm run test:e2e -w @bidazoo/tests",
     "db:generate": "npm run generate -w @bidazoo/database",
     "db:migrate": "npm run migrate -w @bidazoo/database",
-    "check": "npm run typecheck && npm run test && npm run build"
+    "check": "npm run typecheck && npm run test && npm run build",
+    "playthrough": "node tests/scripts/api-playthrough.mjs",
+    "scan:client": "node tests/scripts/scan-client-bundle.mjs"
   },
   "devDependencies": {
     "@types/node": "^22.19.0",

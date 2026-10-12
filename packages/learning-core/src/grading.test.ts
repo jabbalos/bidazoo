@@ -1,47 +1,24 @@
 import { describe, expect, it } from 'vitest';
-import { gradeResponse } from './grading';
-import type { ServerQuestion } from './question';
+import { gradeAnswer } from './grading';
 
-const question: ServerQuestion = {
-  questionId: 'q-1',
-  skillId: 'add-within-10',
-  prompt: '3 + 5 = ?',
-  choices: [
-    { id: 'c1', label: '7' },
-    { id: 'c2', label: '8' },
-    { id: 'c3', label: '9' },
-  ],
-  correctChoiceId: 'c2',
-};
+describe('gradeAnswer', () => {
+  const offered = [48, 54, 56, 63];
 
-describe('gradeResponse (validation + grading)', () => {
-  it('grades the correct choice as correct', () => {
-    expect(gradeResponse(question, { questionId: 'q-1', choiceId: 'c2' })).toEqual({
-      kind: 'graded',
-      correct: true,
-      correctChoiceId: 'c2',
-    });
+  it('grades the correct offered choice as correct', () => {
+    expect(gradeAnswer(offered, 56, 56)).toEqual({ kind: 'graded', correct: true });
   });
 
-  it('grades a wrong (but valid) choice as incorrect', () => {
-    expect(gradeResponse(question, { questionId: 'q-1', choiceId: 'c1' })).toEqual({
-      kind: 'graded',
-      correct: false,
-      correctChoiceId: 'c2',
-    });
+  it('grades a wrong offered choice as incorrect', () => {
+    expect(gradeAnswer(offered, 56, 54)).toEqual({ kind: 'graded', correct: false });
   });
 
-  it('treats a response for a different question as invalid, not wrong', () => {
-    expect(gradeResponse(question, { questionId: 'q-2', choiceId: 'c2' })).toEqual({
-      kind: 'invalid',
-      reason: 'question_mismatch',
-    });
+  it('treats a value that was never offered as invalid, even if it is the right product', () => {
+    expect(gradeAnswer([48, 54, 63, 64], 56, 56)).toEqual({ kind: 'invalid', reason: 'not_an_offered_choice' });
+    expect(gradeAnswer(offered, 56, 57)).toEqual({ kind: 'invalid', reason: 'not_an_offered_choice' });
   });
 
-  it('treats an unknown choice id as invalid, not wrong', () => {
-    expect(gradeResponse(question, { questionId: 'q-1', choiceId: 'c99' })).toEqual({
-      kind: 'invalid',
-      reason: 'unknown_choice',
-    });
+  it('rejects non-integers', () => {
+    expect(gradeAnswer(offered, 56, 56.5).kind).toBe('invalid');
+    expect(gradeAnswer(offered, 56, Number.NaN).kind).toBe('invalid');
   });
 });

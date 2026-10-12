@@ -19,8 +19,4 @@ test('the boot screen fits the viewport without scrolling', async ({ page }) => 
   expect(metrics.scrollHeight).toBeLessThanOrEqual(metrics.innerHeight);
   expect(metrics.scrollWidth).toBeLessThanOrEqual(metrics.innerWidth);
 });
-
-// Non-negotiable UX requirement for the first real gameplay checkpoint:
-// "Active question screens must show the question and primary answer controls
-// without requiring the child to scroll." Enabled once question screens exist.
-test.fixme('active question screen shows the question and answer controls without scrolling', async () => {});
+// The "question screen fits without scrolling" requirement is enforced in play.spec.ts.

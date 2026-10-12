@@ -2,7 +2,7 @@
   "name": "@bidazoo/learning-core",
   "version": "0.0.0",
   "private": true,
-  "description": "Pure TypeScript learning engine: question generation, grading, mastery, retry scheduling. No DOM, no Phaser, no DB, no Fastify.",
+  "description": "Pure TypeScript learning engine: fact families, seeded question generation, validation, Leitner mastery, selection with bounded retry. No DOM, no Phaser, no DB, no Fastify, no runtime dependencies.",
   "type": "module",
   "exports": {
     ".": "./src/index.ts"
@@ -10,9 +10,6 @@
   "scripts": {
     "typecheck": "tsc -p tsconfig.json",
     "test": "vitest run --passWithNoTests"
-  },
-  "dependencies": {
-    "@bidazoo/contracts": "*"
   },
   "devDependencies": {
     "vitest": "^5.0.3"

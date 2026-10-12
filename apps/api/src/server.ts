@@ -1,5 +1,6 @@
 import { buildApp } from './app';
 import { loadConfig } from './config';
+import { systemClock } from './context';
 import { createDatabase } from './db';
 
 const config = loadConfig();
@@ -10,6 +11,17 @@ const database = createDatabase(config.databaseUrl, {
 
 const app = buildApp({
   checks: { database: () => database.ping() },
+  ctx: {
+    db: database.db,
+    clock: systemClock,
+    // __Host- prefix (browser-enforced: Secure, Path=/, no Domain) whenever the cookie is Secure.
+    cookie: {
+      name: config.cookieSecure ? '__Host-bidazoo_guest' : 'bidazoo_guest',
+      secure: config.cookieSecure,
+      maxAgeSeconds: 90 * 24 * 60 * 60,
+    },
+    allowedOrigins: config.allowedOrigins,
+  },
   logger: {
     level: config.env === 'production' ? 'info' : 'debug',
     // Never log credentials or session cookies.

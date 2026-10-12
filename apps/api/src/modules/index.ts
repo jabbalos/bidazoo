@@ -1,4 +1,5 @@
 import type { FastifyPluginAsync } from 'fastify';
+import type { ModuleOptions } from '../context';
 import { identityModule } from './identity';
 import { playersModule } from './players';
 import { learningModule } from './learning';
@@ -10,7 +11,7 @@ import { analyticsModule } from './analytics';
 
 export interface ApiModule {
   name: string;
-  plugin: FastifyPluginAsync;
+  plugin: FastifyPluginAsync<ModuleOptions>;
 }
 
 /**
