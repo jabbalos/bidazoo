@@ -3,6 +3,7 @@ import type { TypeBoxTypeProvider } from '@fastify/type-provider-typebox';
 import {
   ApiPaths,
   ChildParamsSchema,
+  ClaimGuestRequestSchema,
   ChildResponseSchema,
   CreateChildRequestSchema,
   ErrorResponseSchema,
@@ -10,6 +11,7 @@ import {
 } from '@bidazoo/contracts';
 import type { AppContext } from '../../context';
 import { createChild, getFamily, setChildArchived } from './children';
+import { claimGuest } from './guest-claim';
 import { requireGuardian } from './guardian-auth';
 
 const failures = { '4xx': ErrorResponseSchema, '5xx': ErrorResponseSchema } as const;
@@ -28,6 +30,20 @@ export function registerFamilyRoutes(app: FastifyInstance, ctx: AppContext): voi
     async (request, reply) => {
       const guardian = await requireGuardian(ctx, request);
       return reply.code(201).send({ child: await createChild(ctx, guardian, request.body.nickname) });
+    },
+  );
+
+  // Attach THIS browser's existing guest player to a new child profile. The player comes only
+  // from the guest cookie; the body is a nickname. 201 when created, 200 for an idempotent retry.
+  typed.post(
+    ApiPaths.familyChildrenFromGuest,
+    { schema: { body: ClaimGuestRequestSchema, response: { 200: ChildResponseSchema, 201: ChildResponseSchema, ...failures } } },
+    async (request, reply) => {
+      const guardian = await requireGuardian(ctx, request);
+      const result = await claimGuest(ctx, guardian, request, request.body.nickname);
+      // The guest credential is spent either way: remove it, with the attributes it was set with.
+      void reply.clearCookie(ctx.cookie.name, { path: '/', httpOnly: true, sameSite: 'lax', secure: ctx.cookie.secure });
+      return reply.code(result.created ? 201 : 200).send({ child: result.child });
     },
   );
 
