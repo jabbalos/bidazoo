@@ -7,7 +7,9 @@
   "exports": {
     "./app": "./src/app.ts",
     "./db": "./src/db.ts",
-    "./context": "./src/context.ts"
+    "./context": "./src/context.ts",
+    "./config": "./src/config.ts",
+    "./rate-limit": "./src/http/rate-limit.ts"
   },
   "scripts": {
     "dev": "node --env-file-if-exists=../../.env --watch --import tsx src/server.ts",
@@ -20,6 +22,7 @@
     "@bidazoo/database": "*",
     "@bidazoo/learning-core": "*",
     "@fastify/cookie": "^11.1.3",
+    "@fastify/rate-limit": "^11.2.1",
     "@fastify/type-provider-typebox": "^6.2.0",
     "ajv-formats": "^3.0.1",
     "drizzle-orm": "^0.45.4",

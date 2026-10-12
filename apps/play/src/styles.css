@@ -1,0 +1,17 @@
+/* Moved out of index.html so the client Content-Security-Policy can use style-src 'self'
+   (no inline <style>, no 'unsafe-inline'). */
+html,
+body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+  background: #0f3d2e;
+}
+#game {
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+}
+canvas {
+  display: block;
+}

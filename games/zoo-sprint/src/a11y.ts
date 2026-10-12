@@ -21,7 +21,8 @@ export class A11yMirror {
   constructor(parent: HTMLElement) {
     this.root = document.createElement('div');
     this.root.id = 'bz-a11y';
-    this.root.setAttribute('style', HIDDEN);
+    // CSSOM assignment, not setAttribute('style'): the client CSP forbids inline style attributes.
+    this.root.style.cssText = HIDDEN;
     this.status = document.createElement('div');
     this.status.setAttribute('role', 'status');
     this.status.setAttribute('aria-live', 'polite');

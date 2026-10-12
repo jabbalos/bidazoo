@@ -1,3 +1,4 @@
+import './styles.css';
 import { zooSprint } from '@bidazoo/zoo-sprint';
 import { createHttpPlatform } from './platform';
 

@@ -3,6 +3,8 @@ import type { TypeBoxTypeProvider } from '@fastify/type-provider-typebox';
 import Fastify, { type FastifyInstance, type FastifyServerOptions } from 'fastify';
 import type { AppContext } from './context';
 import { installHttpHooks } from './http/hooks';
+import { installRateLimiting, type RateLimitConfig } from './http/rate-limit';
+import type { TrustProxySetting } from './http/trust-proxy';
 import { modules } from './modules';
 import { healthRoutes, type ReadinessChecks } from './routes/health';
 
@@ -15,6 +17,15 @@ export interface BuildAppOptions {
    * (operational tests): the gameplay routes are then simply not registered.
    */
   ctx?: AppContext;
+  /**
+   * Abuse limits. Omitted (or `enabled: false`) means NO limiting: that is only for operational
+   * tests. server.ts always passes the configured limits, which are ON by default.
+   */
+  rateLimits?: RateLimitConfig;
+  /** Which proxies may set the client address (see http/trust-proxy.ts). Default: none. */
+  trustProxy?: TrustProxySetting;
+  /** Strict-Transport-Security max-age in seconds; 0 (default) sends no HSTS header. */
+  hstsMaxAgeSeconds?: number;
 }
 
 /**
@@ -24,6 +35,8 @@ export interface BuildAppOptions {
 export function buildApp(options: BuildAppOptions): FastifyInstance {
   const app = Fastify({
     logger: options.logger ?? false,
+    // Never `true`: see http/trust-proxy.ts. Without it request.ip is the socket address.
+    trustProxy: options.trustProxy ?? false,
     // Requests here are tiny JSON documents. A small limit makes oversized input fail fast.
     bodyLimit: 16 * 1024,
     ajv: {
@@ -39,8 +52,9 @@ export function buildApp(options: BuildAppOptions): FastifyInstance {
     },
   }).withTypeProvider<TypeBoxTypeProvider>() as unknown as FastifyInstance;
 
-  installHttpHooks(app, options.ctx?.allowedOrigins ?? []);
+  installHttpHooks(app, options.ctx?.allowedOrigins ?? [], options.hstsMaxAgeSeconds ?? 0);
   void app.register(cookie);
+  installRateLimiting(app, options.rateLimits, { cookieName: options.ctx?.cookie.name ?? 'bidazoo_guest' });
 
   void app.register(healthRoutes, { checks: options.checks });
 

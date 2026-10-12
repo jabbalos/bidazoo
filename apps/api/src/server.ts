@@ -22,6 +22,9 @@ const app = buildApp({
     },
     allowedOrigins: config.allowedOrigins,
   },
+  trustProxy: config.trustProxy,
+  rateLimits: config.rateLimits,
+  hstsMaxAgeSeconds: config.hstsMaxAgeSeconds,
   logger: {
     level: config.env === 'production' ? 'info' : 'debug',
     // Never log credentials or session cookies.

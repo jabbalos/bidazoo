@@ -1,16 +1,21 @@
 import type { FastifyInstance } from 'fastify';
 import { ApiPaths, API_PREFIX } from '@bidazoo/contracts';
 import { ApiError } from './errors';
+import { apiSecurityHeaders } from './security-headers';
 
 /**
  * Cross-cutting HTTP behavior: security headers, a same-origin check for state-changing API
  * calls, and one error handler so no response ever echoes request values or internals.
  */
-export function installHttpHooks(app: FastifyInstance, allowedOrigins: readonly string[]): void {
+export function installHttpHooks(
+  app: FastifyInstance,
+  allowedOrigins: readonly string[],
+  hstsMaxAgeSeconds = 0,
+): void {
+  const securityHeaders = apiSecurityHeaders(hstsMaxAgeSeconds);
+  // onSend runs for every response, including 404s, validation errors, 429s, and 503s.
   app.addHook('onSend', async (request, reply, payload) => {
-    reply.header('X-Content-Type-Options', 'nosniff');
-    reply.header('Referrer-Policy', 'no-referrer');
-    reply.header('Cross-Origin-Resource-Policy', 'same-origin');
+    for (const [name, value] of Object.entries(securityHeaders)) reply.header(name, value);
     if (request.url.startsWith(API_PREFIX)) reply.header('Cache-Control', 'no-store');
     return payload;
   });
@@ -38,6 +43,7 @@ export function installHttpHooks(app: FastifyInstance, allowedOrigins: readonly 
 
   app.setErrorHandler((error, request, reply) => {
     if (error instanceof ApiError) {
+      if (error.retryAfterSeconds !== undefined) void reply.header('Retry-After', String(error.retryAfterSeconds));
       return reply.code(error.status).send({ error: { code: error.code, message: error.message } });
     }
     const status = (error as { statusCode?: number }).statusCode;

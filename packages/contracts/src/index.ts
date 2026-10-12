@@ -65,6 +65,10 @@ export const ErrorCodeSchema = Type.Union([
   Type.Literal('question_already_answered'),
   Type.Literal('idempotency_key_conflict'),
   Type.Literal('invalid_response'),
+  // Checkpoint D: abuse protection. 429 = this caller is going too fast; 503 = the service-wide
+  // new-guest circuit breaker is open. Both carry a Retry-After header.
+  Type.Literal('rate_limited'),
+  Type.Literal('service_busy'),
   Type.Literal('internal_error'),
 ]);
 export type ErrorCode = Static<typeof ErrorCodeSchema>;

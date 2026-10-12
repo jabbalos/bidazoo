@@ -25,6 +25,7 @@ export function registerSessionRoutes(app: FastifyInstance, ctx: AppContext): vo
   typed.post(
     ApiPaths.playSessions,
     {
+      config: app.routeRateLimit('sessionStart'),
       schema: {
         body: StartPlaySessionRequestSchema,
         response: { 200: StartPlaySessionResponseSchema, 201: StartPlaySessionResponseSchema, ...failures },
@@ -67,6 +68,7 @@ export function registerSessionRoutes(app: FastifyInstance, ctx: AppContext): vo
   typed.post(
     `${ApiPaths.playSessions}/:sessionId/answers`,
     {
+      config: app.routeRateLimit('answer'),
       schema: {
         params: SessionParamsSchema,
         body: SubmitAnswerRequestSchema,

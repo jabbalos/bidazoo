@@ -49,6 +49,9 @@ export function registerIdentityRoutes(app: FastifyInstance, ctx: AppContext): v
     async (request, reply) => {
       let guest = await findGuestByToken(ctx, request.cookies[ctx.cookie.name]);
       if (!guest) {
+        // A refresh with a valid cookie never reaches here, so it never counts against creation
+        // limits. This check precedes the first write: a throttled request creates nothing.
+        await app.admitGuestCreation(request);
         const created = await createGuest(ctx);
         void reply.setCookie(ctx.cookie.name, created.token, {
           httpOnly: true,

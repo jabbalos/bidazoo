@@ -6,6 +6,8 @@ export class ApiError extends Error {
     readonly status: number,
     readonly code: ErrorCode,
     message?: string,
+    /** When set, the error handler sends a Retry-After header (whole seconds). */
+    readonly retryAfterSeconds?: number,
   ) {
     super(message ?? DEFAULT_MESSAGES[code]);
     this.name = 'ApiError';
@@ -21,6 +23,8 @@ const DEFAULT_MESSAGES: Record<ErrorCode, string> = {
   question_already_answered: 'That question was already answered.',
   idempotency_key_conflict: 'That attempt id was already used for a different request.',
   invalid_response: 'That is not one of the offered choices.',
+  rate_limited: 'Too many requests. Please wait a moment and try again.',
+  service_busy: 'BidaZoo is busy right now. Please try again in a little while.',
   internal_error: 'Something went wrong.',
 };
 
