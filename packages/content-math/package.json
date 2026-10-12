@@ -1,0 +1,13 @@
+{
+  "name": "@bidazoo/content-math",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Math content definitions (skills, templates, difficulty data). Placeholder.",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json"
+  }
+}

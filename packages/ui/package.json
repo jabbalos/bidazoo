@@ -1,0 +1,13 @@
+{
+  "name": "@bidazoo/ui",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Shared UI helpers and design tokens for clients. Placeholder.",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json"
+  }
+}

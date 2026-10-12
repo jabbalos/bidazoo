@@ -1,0 +1,13 @@
+{
+  "name": "@bidazoo/zoo-sprint",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Zoo Sprint game. Placeholder; gameplay is NOT part of Checkpoint A.",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json"
+  }
+}

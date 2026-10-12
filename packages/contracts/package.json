@@ -1,0 +1,13 @@
+{
+  "name": "@bidazoo/contracts",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Shared API DTOs and TypeScript contracts for the BidaZoo API and game clients. Types only.",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json"
+  }
+}

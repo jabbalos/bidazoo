@@ -1,0 +1,13 @@
+{
+  "name": "@bidazoo/portal",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Future portal app (account/parent/teacher surfaces). Placeholder.",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json"
+  }
+}

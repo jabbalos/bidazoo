@@ -1,0 +1,26 @@
+import { expect, test } from '@playwright/test';
+
+test('Phaser boots and renders the BidaZoo start screen', async ({ page }) => {
+  await page.goto('/');
+  await expect(page).toHaveTitle('BidaZoo');
+  await expect(page.locator('#game[data-phaser-ready="true"] canvas')).toBeVisible();
+});
+
+test('the boot screen fits the viewport without scrolling', async ({ page }) => {
+  await page.goto('/');
+  await expect(page.locator('#game[data-phaser-ready="true"]')).toBeAttached();
+
+  const metrics = await page.evaluate(() => ({
+    scrollHeight: document.documentElement.scrollHeight,
+    innerHeight: window.innerHeight,
+    scrollWidth: document.documentElement.scrollWidth,
+    innerWidth: window.innerWidth,
+  }));
+  expect(metrics.scrollHeight).toBeLessThanOrEqual(metrics.innerHeight);
+  expect(metrics.scrollWidth).toBeLessThanOrEqual(metrics.innerWidth);
+});
+
+// Non-negotiable UX requirement for the first real gameplay checkpoint:
+// "Active question screens must show the question and primary answer controls
+// without requiring the child to scroll." Enabled once question screens exist.
+test.fixme('active question screen shows the question and answer controls without scrolling', async () => {});

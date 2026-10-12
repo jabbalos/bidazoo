@@ -1,0 +1,29 @@
+{
+  "name": "@bidazoo/api",
+  "version": "0.0.0",
+  "private": true,
+  "description": "The authoritative BidaZoo API (Fastify modular monolith).",
+  "type": "module",
+  "exports": {
+    "./app": "./src/app.ts",
+    "./db": "./src/db.ts"
+  },
+  "scripts": {
+    "dev": "node --env-file-if-exists=../../.env --watch --import tsx src/server.ts",
+    "build": "node build.mjs",
+    "start": "node --env-file-if-exists=../../.env dist/server.js",
+    "typecheck": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "@bidazoo/contracts": "*",
+    "@bidazoo/database": "*",
+    "drizzle-orm": "^0.45.4",
+    "fastify": "^5.12.5",
+    "pg": "^8.23.1"
+  },
+  "devDependencies": {
+    "@types/pg": "^8.15.0",
+    "esbuild": "^0.25.0",
+    "tsx": "^4.20.0"
+  }
+}

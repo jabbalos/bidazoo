@@ -1,0 +1,22 @@
+{
+  "name": "@bidazoo/database",
+  "version": "0.0.0",
+  "private": true,
+  "description": "BidaZoo canonical datastore: Drizzle schema and SQL migrations (PostgreSQL).",
+  "type": "module",
+  "exports": {
+    "./schema": "./schema/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json",
+    "generate": "drizzle-kit generate",
+    "migrate": "node --env-file-if-exists=../.env ../node_modules/drizzle-kit/bin.cjs migrate"
+  },
+  "dependencies": {
+    "drizzle-orm": "^0.45.4"
+  },
+  "devDependencies": {
+    "drizzle-kit": "^0.31.11",
+    "pg": "^8.23.1"
+  }
+}

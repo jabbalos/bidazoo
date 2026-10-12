@@ -1,0 +1,21 @@
+{
+  "name": "@bidazoo/tests",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Cross-package integration tests (Vitest) and browser tests (Playwright).",
+  "type": "module",
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json",
+    "test": "vitest run",
+    "test:e2e": "playwright test --config e2e/playwright.config.ts"
+  },
+  "dependencies": {
+    "@bidazoo/api": "*",
+    "@bidazoo/contracts": "*",
+    "@bidazoo/learning-core": "*"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.64.0",
+    "vitest": "^5.0.3"
+  }
+}

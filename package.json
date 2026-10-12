@@ -1,0 +1,34 @@
+{
+  "name": "bidazoo",
+  "version": "0.0.0",
+  "private": true,
+  "description": "BidaZoo educational-game platform (modular monolith, server-authoritative).",
+  "type": "module",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "workspaces": [
+    "apps/*",
+    "packages/*",
+    "games/*",
+    "database",
+    "tests"
+  ],
+  "scripts": {
+    "dev": "concurrently -n api,play -c blue,green \"npm run dev -w @bidazoo/api\" \"npm run dev -w @bidazoo/play\"",
+    "dev:api": "npm run dev -w @bidazoo/api",
+    "dev:play": "npm run dev -w @bidazoo/play",
+    "build": "npm run build --workspaces --if-present",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present",
+    "test:e2e": "npm run test:e2e -w @bidazoo/tests",
+    "db:generate": "npm run generate -w @bidazoo/database",
+    "db:migrate": "npm run migrate -w @bidazoo/database",
+    "check": "npm run typecheck && npm run test && npm run build"
+  },
+  "devDependencies": {
+    "@types/node": "^22.19.0",
+    "concurrently": "^9.2.0",
+    "typescript": "^5.9.3"
+  }
+}
