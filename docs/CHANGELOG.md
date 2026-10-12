@@ -2,6 +2,20 @@
 
 All notable changes, by checkpoint. Dates use US format.
 
+## Post-Checkpoint A: reference review (October 11, 2026)
+
+### Added
+
+- `docs/REFERENCE-REVIEW.md`: read-only review of the Hop Quest and Fact Crew source archive, with
+  each item classified REUSE CONCEPT, ADAPT ALGORITHM, REWRITE CLEANLY, or DO NOT CARRY FORWARD.
+  No reference code was copied. No code changed.
+
+### Status
+
+- Playwright browser tests: **pending external validation on the studio Windows machine using
+  Playwright's supported Chromium build.** Not a Checkpoint A failure unless the real run exposes a
+  problem.
+
 ## Checkpoint A — Foundation (October 11, 2026)
 
 ### Added
@@ -33,6 +47,7 @@ All notable changes, by checkpoint. Dates use US format.
 ### Not done
 
 - Playwright tests were configured and listed (12 tests across 4 viewports) but **not executed**:
-  the sandbox could not download the Chromium build. Run `npx playwright install chromium`, then
-  `npm run test:e2e`, on a machine with network access.
+  the sandbox could not download the Chromium build. Pending external validation on the studio
+  Windows machine using Playwright's supported Chromium build (`npx playwright install chromium`,
+  then `npm run test:e2e`).
 - No gameplay, authentication, input validation, CORS, security headers, or rate limiting.

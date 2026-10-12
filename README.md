@@ -14,6 +14,7 @@ An educational-game platform for kids. Games are fun; **learning progress is dec
 | [docs/SECURITY.md](docs/SECURITY.md) | Security baseline and the trust model |
 | [docs/GAME-SDK.md](docs/GAME-SDK.md) | The boundary between a game and the platform |
 | [docs/PRODUCT.md](docs/PRODUCT.md) | Product intent and scope |
+| [docs/REFERENCE-REVIEW.md](docs/REFERENCE-REVIEW.md) | What BidaZoo may and may not take from Hop Quest and Fact Crew |
 | [docs/CHANGELOG.md](docs/CHANGELOG.md) | What changed, by checkpoint |
 
 ## Requirements
