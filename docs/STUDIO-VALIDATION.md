@@ -8,6 +8,65 @@ validation and must not be reported as such.
 Commands are PowerShell, run from the repository root. Nothing here touches Hop Quest, Fact Crew,
 Accounts, Caddy, Cloudflare, or any production database.
 
+## One-click runner (recommended)
+
+`scripts\validate-studio.bat` (double-click, or run from Windows Terminal) launches
+`scripts\validate-studio.ps1`, which performs steps 0 to 7 below automatically. The batch file
+relaunches itself as administrator, then runs the script from the repository root. The runner
+quotes all paths, so a repository path with spaces is fine.
+
+```powershell
+.\scripts\validate-studio.bat                 # prompts for the PostgreSQL password
+.\scripts\validate-studio.ps1 -Cleanup        # run from an elevated or normal PowerShell
+.\scripts\validate-studio.ps1 -Recreate       # drop and recreate leftover throwaway databases (asks you to type "yes")
+```
+
+Switches (the batch file passes them through only when you start it from an already-elevated
+terminal, because the automatic elevation relaunch cannot carry arguments):
+
+| Switch | Meaning |
+| --- | --- |
+| `-PgHost`, `-PgPort`, `-PgUser` | PostgreSQL location. Defaults: `localhost`, `5432`, `postgres`. The password is prompted for (or taken from `PGPASSWORD`); it is never written to disk and is masked in logs. |
+| `-Recreate` | If `bidazoo_test` or `bidazoo_e2e` already exist, drop and recreate **exactly those two names** after you type `yes`. Without it, existing databases stop the run so earlier evidence is never overwritten. |
+| `-Cleanup` | Drop the two throwaway databases at the end, **only if validation passed**. If it failed they are kept. |
+| `-NoPrompt` | Never ask questions. |
+
+Without `-Cleanup`, an interactive run asks at the end whether to delete the two databases
+(default: No).
+
+What it does, in order:
+
+1. Confirms it is in the BidaZoo repository, prints the Git commit, and warns if the working tree
+   is dirty or `01b7d41` is not in the checkout's history.
+2. Confirms ports 3001 and 4173 are free (and refuses to continue if not; it never kills anything).
+3. Clears `PW_CHROMIUM_EXECUTABLE` and other overriding variables **for this process only**, and sets `CI=1`.
+4. `npm ci`, then `npx playwright install chromium` (the official build).
+5. Creates `bidazoo_test` and `bidazoo_e2e` and migrates both. It never touches any other database.
+6. `npm test` against `bidazoo_test` (51 unit, 81 integration, 3 todo are *reported* for comparison).
+7. `npm run test:e2e -w @bidazoo/tests -- --reporter=list,json` against `bidazoo_e2e`
+   (24 tests, 4 viewports; this is the same command as `npm run test:e2e` plus a JSON reporter so
+   retries and skips can be counted).
+8. Prints a summary (commit, Vitest, Playwright, retries, Playwright and Chromium versions,
+   database, overall) and lists any traces, screenshots, or videos with their full paths.
+
+**Exit codes are authoritative**: the runner exits 0 only if every command exited 0. The expected
+counts only produce warnings. Tests that pass only after a retry are reported as warnings
+(`PASS (with warnings)`), because they indicate flakiness. Exit codes: `0` passed, `1` validation
+failed, `2` a precondition failed and nothing ran.
+
+Logs for each run are written to `.validation-logs\<timestamp>\` (git-ignored), including
+`SUMMARY.txt` and `playwright-results.json`. Playwright's own failure evidence is in
+`tests\test-results\`. The runner never deletes logs or test evidence.
+
+Static checks performed on the runner in the Linux development sandbox: the script parses with no
+errors under PowerShell 7.4; the Vitest-summary and Playwright-JSON parsing logic was exercised on
+real output and on a synthetic report containing a failure, a flaky test, and a skipped test; and
+the scripts were audited for destructive commands. The runner has **not** been executed end to end
+on Windows (the sandbox is Linux and has no Windows networking cmdlets), so its first real run is
+on the Studio PC. If it misbehaves there, the manual procedure below still applies.
+
+## Manual procedure
+
 ## 0. Safety checks first
 
 The e2e config starts the API on port **3001** and the client preview on **4173**, and by default
