@@ -121,7 +121,8 @@ anything else.
 
 - It only ever starts and stops the cluster in `<portable root>\data` that carries its own marker
   file (`BIDAZOO-VALIDATION-CLUSTER.txt`). A different cluster in that folder is refused and left
-  untouched. It never uses `taskkill`, `Stop-Process`, or any kill by name or ID.
+  untouched. It never uses `taskkill`, or any kill by name or ID, and never stops a process it did not start.
+  (The one process it ends directly is the API instance of step 8, through the process object it created itself.)
 - It stops the server (`pg_ctl ... stop`) only if **this run started it**, whether validation passed
   or failed, and also if you press Ctrl+C. If your own earlier run left the portable server running,
   the runner reuses it and leaves it running, and says so in the summary.
@@ -205,8 +206,15 @@ What it does, in order:
 7. `npm run test:e2e -w @bidazoo/tests -- --reporter=list,json` against `bidazoo_e2e`
    (56 tests, 4 viewports; this is the same command as `npm run test:e2e` plus a JSON reporter so
    retries and skips can be counted).
-8. Prints a summary (commit, Vitest, Playwright, retries, Playwright and Chromium versions,
-   database, overall) and lists any traces, screenshots, or videos with their full paths.
+8. If everything so far passed: `npm run build` (log `12-build.log`), then `npm run scan:client`
+   (`13-scan-client.log`; non-zero exit or no `CLEAN:` line fails the run). With the build and migrations
+   in place it then waits for port 3001 to be free, starts one API instance (`node apps\api\dist\server.js`
+   against `bidazoo_e2e`; logs `14-api-server.out.log` and `14-api-server.err.log`), waits for `/ready`,
+   and runs `npm run playthrough` against it (`15-playthrough.log`; non-zero exit or no `ALL CHECKS PASSED`
+   line fails the run). The scan and the playthrough are the repository's own scripts; the runner does not
+   reimplement them. The API instance is stopped afterwards, even if the playthrough fails or you press Ctrl+C.
+9. Prints a summary (commit, Vitest, Playwright, retries, build, bundle scan, playthrough, Playwright and
+   Chromium versions, database, overall) and lists any traces, screenshots, or videos with their full paths.
 
 **Exit codes are authoritative**: the runner exits 0 only if every command exited 0. The expected
 counts only produce warnings. Tests that pass only after a retry are reported as warnings
@@ -387,9 +395,9 @@ update means something changed. Confirm:
   that fails on any CSP violation, console error, page error, or 429/503, so a pass means zero
   unexpected violations on all four viewports, and the full game completes.
 - PostgreSQL flow (create, migrate, start, stop) still passes.
-- **Not run by the runner:** the client bundle leak scan and the live API playthrough. Run them in
-  the same checkout and record the output: `npm run build`, then `npm run scan:client` (expect
-  `CLEAN`), and, with the API running, `npm run playthrough`.
+- The production build succeeds, `npm run scan:client` reports `CLEAN`, and the live API playthrough
+  (`npm run playthrough`, run by the runner against its own API instance and `bidazoo_e2e`) reports
+  `ALL CHECKS PASSED`. All three are run and logged by the runner (`12-`, `13-`, `15-` logs).
 
 Record the validated commit hash and the run folder here when it passes.
 

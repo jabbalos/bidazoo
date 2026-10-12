@@ -6,7 +6,10 @@
 .DESCRIPTION
   Runs, in order: environment checks, npm ci, the OFFICIAL Playwright Chromium install, creation of
   two throwaway PostgreSQL databases (bidazoo_test, bidazoo_e2e), migrations, the full Vitest suite
-  against bidazoo_test, and the full Playwright suite against bidazoo_e2e. Process exit codes are
+  against bidazoo_test, the full Playwright suite against bidazoo_e2e, a production build
+  (npm run build), the client bundle leak scan (npm run scan:client; must report CLEAN), and the
+  live API playthrough (npm run playthrough) against a fresh API instance this run starts on port
+  3001 with bidazoo_e2e and stops again, even if the step fails. Process exit codes are
   authoritative. Expected counts are reported but never used to decide pass/fail.
 
   Safety: it only ever creates, migrates, and (when you ask) drops databases named exactly
@@ -487,6 +490,24 @@ function Stop-PortablePostgres {
   }
 }
 
+# The API instance that the playthrough step starts. It is stopped through its own process object
+# (never by name or by a guessed PID), and only if this run started it. Idempotent.
+$script:ApiProc = $null
+function Stop-ApiServer {
+  $p = $script:ApiProc
+  if ($null -eq $p) { return }
+  $script:ApiProc = $null
+  try {
+    if (-not $p.HasExited) {
+      Write-Host ''
+      Write-Host '>> Stopping the API instance that this run started' -ForegroundColor Cyan
+      $p.Kill()
+      [void]$p.WaitForExit(15000)
+      Write-Ok 'API instance stopped'
+    }
+  } catch { Write-Warn ('could not stop the API process this run started: ' + $_.Exception.Message) }
+}
+
 # ---------------------------------------------------------------------------------------------
 # 1-3. Repository, commit, working tree
 # ---------------------------------------------------------------------------------------------
@@ -713,8 +734,10 @@ if ($existing.Count -gt 0) {
 # ---------------------------------------------------------------------------------------------
 $Result = [ordered]@{
   NpmCi = 'not run'; Install = 'not run'; CreateDb = 'not run'; Migrate = 'not run'
-  Vitest = 'not run'; Playwright = 'not run'
+  Vitest = 'not run'; Playwright = 'not run'; Build = 'not run'; ScanClient = 'not run'; Playthrough = 'not run'
 }
+$scanSummary = 'not run'
+$playSummary = 'not run'
 $vitestLines = @()
 $pwSummary = 'not run'
 $retrySummary = 'not run'
@@ -889,6 +912,83 @@ if ($Failures.Count -eq 0) {
   }
 }
 
+# --- production build + client bundle leak scan ----------------------------------------------
+# Both use the repository's own npm scripts; nothing is re-implemented here.
+if ($Failures.Count -eq 0) {
+  Write-Step 'Production build (npm run build)'
+  $buildLog = Join-Path $LogDir '12-build.log'
+  $code = Invoke-Logged 'npm' @('run', 'build') $buildLog
+  if ($code -eq 0) { $Result.Build = 'ok'; Write-Ok 'production build succeeded' } else { Fail-Step 'Build' "production build failed (exit $code)"; Show-PermissionHint $buildLog }
+}
+if ($Result.Build -eq 'ok') {
+  Write-Step 'Client bundle leak scan (npm run scan:client)'
+  $scanLog = Join-Path $LogDir '13-scan-client.log'
+  $code = Invoke-Logged 'npm' @('run', 'scan:client') $scanLog
+  $scanText = Get-Content -LiteralPath $scanLog -Raw
+  $scannedLine = [regex]::Match($scanText, '(?m)^Scanned .*$').Value.Trim()
+  if ($code -ne 0) { Fail-Step 'ScanClient' "client bundle scan failed (exit $code); see 13-scan-client.log" }
+  elseif ($scanText -notmatch '(?m)^CLEAN:') { Fail-Step 'ScanClient' 'client bundle scan exited 0 but did not report CLEAN; see 13-scan-client.log' }
+  else { $Result.ScanClient = 'ok'; $scanSummary = ('CLEAN | ' + $scannedLine); Write-Ok 'client bundle scan reported CLEAN' }
+}
+
+# --- live API playthrough ----------------------------------------------------------------------
+# Playwright starts and stops its own API, so this step starts a fresh one from the build above, on
+# the same throwaway database ($E2eDb) the validator created, runs the canonical playthrough
+# against it, and stops it again in all cases (finally block, plus the outer safety net).
+if ($Result.Build -eq 'ok' -and $Result.Migrate -eq 'ok') {
+  Write-Step "Live API playthrough (npm run playthrough) against $E2eDb"
+  $apiPort = 3001
+  $apiOutLog = Join-Path $LogDir '14-api-server.out.log'
+  $apiErrLog = Join-Path $LogDir '14-api-server.err.log'
+  $playLog = Join-Path $LogDir '15-playthrough.log'
+  try {
+    # Playwright has shut its servers down, but Windows can take a moment to release the port.
+    $portFree = $false
+    for ($i = 0; $i -lt 20 -and -not $portFree; $i++) {
+      if (Get-NetTCPConnection -LocalPort $apiPort -State Listen -ErrorAction SilentlyContinue) { Start-Sleep -Seconds 1 } else { $portFree = $true }
+    }
+    $apiEntry = Join-Path $RepoRoot 'apps\api\dist\server.js'
+    if (-not $portFree) {
+      Fail-Step 'Playthrough' "port $apiPort is still in use after the Playwright run, so the playthrough was NOT started (this script never kills other processes)."
+    } elseif (-not (Test-Path -LiteralPath $apiEntry)) {
+      Fail-Step 'Playthrough' "the built API was not found at $apiEntry"
+    } else {
+      $env:DATABASE_URL = New-DbUrl $E2eDb
+      $env:API_PORT = [string]$apiPort
+      $nodeExe = (Get-Command node -ErrorAction Stop).Source
+      $script:ApiProc = Start-Process -FilePath $nodeExe -ArgumentList @('"' + $apiEntry + '"') -WorkingDirectory $RepoRoot -NoNewWindow -PassThru -RedirectStandardOutput $apiOutLog -RedirectStandardError $apiErrLog
+      $apiReady = $false
+      for ($i = 0; $i -lt 60 -and -not $apiReady; $i++) {
+        if ($script:ApiProc.HasExited) { break }
+        try {
+          $resp = Invoke-WebRequest -Uri ('http://127.0.0.1:{0}/ready' -f $apiPort) -UseBasicParsing -TimeoutSec 3
+          if ($resp.StatusCode -eq 200) { $apiReady = $true }
+        } catch { }
+        if (-not $apiReady) { Start-Sleep -Seconds 1 }
+      }
+      if (-not $apiReady) {
+        Show-LogTail $apiOutLog
+        Show-LogTail $apiErrLog
+        Fail-Step 'Playthrough' 'the API instance did not become ready (GET /ready); see 14-api-server.out.log and 14-api-server.err.log'
+      } else {
+        Write-Ok ('API instance is ready on 127.0.0.1:' + $apiPort)
+        $env:API_URL = ('http://127.0.0.1:{0}' -f $apiPort)
+        $code = Invoke-Logged 'npm' @('run', 'playthrough') $playLog
+        $playText = Get-Content -LiteralPath $playLog -Raw
+        $passLines = ([regex]::Matches($playText, '(?m)^PASS\s')).Count
+        if ($code -ne 0) { Fail-Step 'Playthrough' "live API playthrough failed (exit $code); see 15-playthrough.log" }
+        elseif ($playText -notmatch '(?m)^ALL CHECKS PASSED') { Fail-Step 'Playthrough' 'the playthrough exited 0 but did not report ALL CHECKS PASSED; see 15-playthrough.log' }
+        else { $Result.Playthrough = 'ok'; $playSummary = ('ALL CHECKS PASSED | {0} PASS lines' -f $passLines); Write-Ok 'live API playthrough passed' }
+      }
+    }
+  } finally {
+    Remove-Item Env:API_URL -ErrorAction SilentlyContinue
+    Remove-Item Env:API_PORT -ErrorAction SilentlyContinue
+    $env:DATABASE_URL = $null
+    Stop-ApiServer
+  }
+}
+
 # ---------------------------------------------------------------------------------------------
 # Optional cleanup (databases only; logs and test evidence are never deleted)
 # ---------------------------------------------------------------------------------------------
@@ -934,6 +1034,12 @@ $summary.Add('Vitest:      ' + $vitestText2)
 $summary.Add('Playwright:  ' + $playwrightText)
 $summary.Add('Playwright version: ' + $playwrightVersion)
 $summary.Add('Retries:     ' + $retrySummary)
+$buildText = if ($Result.Build -eq 'ok') { 'ok (npm run build)' } elseif ($Result.Build -eq 'not run') { 'not run' } else { 'FAILED (see 12-build.log)' }
+$scanText2 = if ($Result.ScanClient -eq 'ok') { $scanSummary } elseif ($Result.ScanClient -eq 'not run') { 'not run' } else { 'FAILED (see 13-scan-client.log)' }
+$playText2 = if ($Result.Playthrough -eq 'ok') { $playSummary } elseif ($Result.Playthrough -eq 'not run') { 'not run' } else { 'FAILED (see 15-playthrough.log)' }
+$summary.Add('Build:       ' + $buildText)
+$summary.Add('Bundle scan: ' + $scanText2)
+$summary.Add('Playthrough: ' + $playText2)
 $summary.Add('Chromium:    ' + $chromiumVersion + '   (' + $chromiumPath + ')')
 if ($PortablePostgres) {
   $summary.Add('PostgreSQL mode: Portable (isolated, BidaZoo-owned; no system PostgreSQL used)')
@@ -949,7 +1055,7 @@ if ($PortablePostgres) {
   $summary.Add('Host / Port: ' + $PgHost + ' / ' + $PgPort)
 }
 $summary.Add('Database:    ' + $TestDb + ' and ' + $E2eDb + ' on ' + $PgHost + ':' + $PgPort + ' (throwaway; created by this run: ' + $(if ($CreatedDbs.Count -gt 0) { $CreatedDbs -join ', ' } else { 'none' }) + ')')
-$summary.Add('Steps:       npm ci=' + $Result.NpmCi + ', chromium install=' + $Result.Install + ', create dbs=' + $Result.CreateDb + ', migrate=' + $Result.Migrate + ', vitest=' + $Result.Vitest + ', playwright=' + $Result.Playwright)
+$summary.Add('Steps:       npm ci=' + $Result.NpmCi + ', chromium install=' + $Result.Install + ', create dbs=' + $Result.CreateDb + ', migrate=' + $Result.Migrate + ', vitest=' + $Result.Vitest + ', playwright=' + $Result.Playwright + ', build=' + $Result.Build + ', scan=' + $Result.ScanClient + ', playthrough=' + $Result.Playthrough)
 $summary.Add('Overall:     ' + $Overall)
 $summary.Add('')
 if ($Failures.Count -gt 0) { $summary.Add('Failures:'); $Failures | ForEach-Object { $summary.Add('  - ' + $_) } }
@@ -983,6 +1089,8 @@ Write-Host ('Summary saved to ' + (Join-Path $LogDir 'SUMMARY.txt'))
 if ($script:PgPasswordPlain) { Remove-Item Env:PGPASSWORD -ErrorAction SilentlyContinue }
 if ($Failures.Count -eq 0) { exit 0 } else { exit 1 }
 } finally {
-  # Safety net for Ctrl+C or an unexpected error: still stop the portable server THIS run started.
+  # Safety net for Ctrl+C or an unexpected error: still stop the API instance and the portable
+  # server THIS run started (both are no-ops if they were never started or are already stopped).
+  Stop-ApiServer
   Stop-PortablePostgres
 }
