@@ -1,6 +1,7 @@
 import { buildApp } from '@bidazoo/api/app';
 import type { AppContext, Clock } from '@bidazoo/api/context';
 import { createDatabase, type Database } from '@bidazoo/api/db';
+import type { RateLimitConfig } from '@bidazoo/api/rate-limit';
 import type { FastifyInstance } from 'fastify';
 
 export const TEST_DATABASE_URL = process.env['TEST_DATABASE_URL'];
@@ -32,7 +33,14 @@ export interface Harness {
 }
 
 export async function makeHarness(
-  options: { cookieSecure?: boolean; allowedOrigins?: string[] } = {},
+  options: {
+    cookieSecure?: boolean;
+    allowedOrigins?: string[];
+    /** Omit for NO limiting (every pre-Checkpoint-D test). Rate-limit tests pass explicit limits. */
+    rateLimits?: RateLimitConfig;
+    trustProxy?: false | string[];
+    hstsMaxAgeSeconds?: number;
+  } = {},
 ): Promise<Harness> {
   if (!TEST_DATABASE_URL) throw new Error('TEST_DATABASE_URL is required');
   const database = createDatabase(TEST_DATABASE_URL);
@@ -44,7 +52,13 @@ export async function makeHarness(
     cookie: { name: secure ? '__Host-bidazoo_guest' : 'bidazoo_guest', secure, maxAgeSeconds: 90 * 86_400 },
     allowedOrigins: options.allowedOrigins ?? [],
   };
-  const app = buildApp({ checks: { database: () => database.ping() }, ctx });
+  const app = buildApp({
+    checks: { database: () => database.ping() },
+    ctx,
+    rateLimits: options.rateLimits,
+    trustProxy: options.trustProxy,
+    hstsMaxAgeSeconds: options.hstsMaxAgeSeconds,
+  });
   await app.ready();
   return {
     app,
@@ -68,6 +82,8 @@ export interface ApiResponse<T = any> {
 /** A tiny browser stand-in: holds the guest cookie like a cookie jar would. */
 export class TestBrowser {
   cookie: string | undefined;
+  /** The socket address the API sees for this browser (default: inject's 127.0.0.1). */
+  remoteAddress: string | undefined;
   constructor(
     readonly app: FastifyInstance,
     readonly cookieName = 'bidazoo_guest',
@@ -86,6 +102,7 @@ export class TestBrowser {
       method,
       url,
       headers,
+      remoteAddress: this.remoteAddress,
       payload: body === undefined ? undefined : JSON.stringify(body),
     });
     const setCookie = res.headers['set-cookie'];
@@ -126,8 +143,9 @@ export const PATHS = {
 export const START_BODY = { gameId: 'zoo-sprint', mode: 'multiplication' } as const;
 
 /** A fresh browser with its own guest identity. */
-export async function newPlayer(h: Harness): Promise<TestBrowser> {
+export async function newPlayer(h: Harness, remoteAddress?: string): Promise<TestBrowser> {
   const browser = new TestBrowser(h.app, h.ctx.cookie.name);
+  browser.remoteAddress = remoteAddress;
   const res = await browser.request('POST', PATHS.guest, {});
   if (res.status !== 200) throw new Error(`guest creation failed: ${res.status} ${res.raw}`);
   return browser;
