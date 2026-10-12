@@ -11,18 +11,25 @@ Accounts, Caddy, Cloudflare, or any production database.
 ## One-click runner (recommended)
 
 `scripts\validate-studio.bat` (double-click, or run from Windows Terminal) launches
-`scripts\validate-studio.ps1`, which performs steps 0 to 7 below automatically. The batch file
-relaunches itself as administrator, then runs the script from the repository root. The runner
-quotes all paths, so a repository path with spaces is fine.
+`scripts\validate-studio.ps1` from the repository root, as **your normal, non-elevated user**,
+and forwards every argument unchanged. It performs steps 0 to 7 below automatically. Paths are
+quoted, so a repository path with spaces is fine.
 
-```powershell
-.\scripts\validate-studio.bat                 # prompts for the PostgreSQL password
-.\scripts\validate-studio.ps1 -Cleanup        # run from an elevated or normal PowerShell
-.\scripts\validate-studio.ps1 -Recreate       # drop and recreate leftover throwaway databases (asks you to type "yes")
+```text
+Double-click:      scripts\validate-studio.bat          (prompts for the PostgreSQL password)
+
+From a terminal, in the repository folder:
+  scripts\validate-studio.bat
+  scripts\validate-studio.bat -Cleanup
+  scripts\validate-studio.bat -Recreate
+  scripts\validate-studio.bat -Recreate -Cleanup
+  scripts\validate-studio.bat -PgHost localhost -PgPort 5432 -PgUser postgres
+
+Directly in PowerShell (equivalent):
+  powershell -NoProfile -ExecutionPolicy Bypass -File scripts\validate-studio.ps1 -Cleanup
 ```
 
-Switches (the batch file passes them through only when you start it from an already-elevated
-terminal, because the automatic elevation relaunch cannot carry arguments):
+Switches (all pass through the batch file):
 
 | Switch | Meaning |
 | --- | --- |
@@ -54,14 +61,31 @@ counts only produce warnings. Tests that pass only after a retry are reported as
 (`PASS (with warnings)`), because they indicate flakiness. Exit codes: `0` passed, `1` validation
 failed, `2` a precondition failed and nothing ran.
 
+### Elevation
+
+The runner never elevates itself and never relaunches anything as Administrator. `npm ci`,
+Playwright, Vitest, the API, database connections, migrations, and the tests all run as the current
+user, so npm package scripts and test code never run with admin rights for convenience. Nothing in
+the normal flow needs elevation. The runner checks two things up front:
+
+- If you started it from an **elevated** shell, it warns that this is unnecessary and continues.
+- If the repository folder is **not writable** by your user (for example it was cloned under
+  `C:\Program Files`), it stops with exit code 2 and explains why. The preferred fix is to clone the
+  repository somewhere you own. If you deliberately want an elevated run, it prints the exact
+  command with your original arguments preserved, to be run from an elevated terminal you opened
+  yourself. If `npm ci` or the Chromium install fails with a permission error (`EPERM`, `EACCES`,
+  `Access is denied`), it prints the matching log lines and the same hint.
+
 Logs for each run are written to `.validation-logs\<timestamp>\` (git-ignored), including
 `SUMMARY.txt` and `playwright-results.json`. Playwright's own failure evidence is in
 `tests\test-results\`. The runner never deletes logs or test evidence.
 
 Static checks performed on the runner in the Linux development sandbox: the script parses with no
 errors under PowerShell 7.4; the Vitest-summary and Playwright-JSON parsing logic was exercised on
-real output and on a synthetic report containing a failure, a flaky test, and a skipped test; and
-the scripts were audited for destructive commands. The runner has **not** been executed end to end
+real output and on a synthetic report containing a failure, a flaky test, and a skipped test; the
+original-arguments command builder was exercised with the switches above; and the scripts were
+audited for destructive and elevation commands (none besides the exact-name, confirmed database
+drops). The runner has **not** been executed end to end
 on Windows (the sandbox is Linux and has no Windows networking cmdlets), so its first real run is
 on the Studio PC. If it misbehaves there, the manual procedure below still applies.
 

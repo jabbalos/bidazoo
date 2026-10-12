@@ -12,6 +12,11 @@
   bidazoo_test and bidazoo_e2e. It never touches any other database, never changes configuration
   files, and never deletes failure evidence (logs, traces, screenshots, videos).
 
+  Privileges: everything runs as the CURRENT user. The script never elevates itself and never
+  relaunches anything as Administrator, because npm package scripts and test code should not run
+  with admin rights for convenience. Nothing in the normal flow needs elevation. If the repository
+  folder is not writable, the script stops and says so (see "Elevation" in docs/STUDIO-VALIDATION.md).
+
   Exit codes: 0 = validation passed, 1 = validation failed, 2 = a precondition failed (nothing ran).
 
 .PARAMETER PgHost      PostgreSQL host. Default: localhost.
@@ -39,6 +44,11 @@ param(
 )
 
 Set-StrictMode -Version 1.0
+
+# Remember the arguments this script was started with (a function's own $PSBoundParameters is not
+# the script's), so a deliberate elevated re-run command can be shown with them preserved.
+$script:BoundArgs = @{}
+foreach ($k in $PSBoundParameters.Keys) { $script:BoundArgs[$k] = $PSBoundParameters[$k] }
 # Native commands (npm, git, psql) report failure through exit codes, which this script checks
 # itself. 'Continue' keeps stderr text from becoming terminating errors on Windows PowerShell 5.1.
 $ErrorActionPreference = 'Continue'
@@ -117,6 +127,28 @@ function Hide-Password([string]$Text) {
   return $Text
 }
 
+function Test-Elevated {
+  try {
+    $id = [Security.Principal.WindowsIdentity]::GetCurrent()
+    return ([Security.Principal.WindowsPrincipal]$id).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
+  } catch { return $false }
+}
+
+# Rebuilds the exact command (with the original arguments, safely quoted) so the user can run it
+# deliberately from an elevated terminal if they decide that is what they want.
+function Get-OriginalCommandLine {
+  $parts = @('powershell -NoProfile -ExecutionPolicy Bypass -File "' + $PSCommandPath + '"')
+  foreach ($key in $script:BoundArgs.Keys) {
+    $value = $script:BoundArgs[$key]
+    if ($value -is [System.Management.Automation.SwitchParameter]) {
+      if ($value.IsPresent) { $parts += ('-' + $key) }
+    } else {
+      $parts += ('-' + $key + ' "' + ([string]$value).Replace('"', '\"') + '"')
+    }
+  }
+  return ($parts -join ' ')
+}
+
 function Test-Interactive {
   if ($NoPrompt) { return $false }
   try { return ([Environment]::UserInteractive -and -not [Console]::IsInputRedirected) } catch { return $false }
@@ -149,6 +181,29 @@ try {
 }
 Set-Location -LiteralPath $RepoRoot
 Write-Ok "repository: $RepoRoot"
+
+Write-Step 'Checking privileges and repository write access'
+if (Test-Elevated) {
+  Write-Warn 'this shell is running as Administrator. That is not needed and not recommended: npm package scripts and test code would run with admin rights. Continuing as requested, but prefer a normal (non-elevated) terminal.'
+} else {
+  Write-Ok 'running as the current user (not elevated), which is what this validation expects'
+}
+$probeDir = Join-Path $RepoRoot '.validation-logs'
+$probeFile = Join-Path $probeDir ('.write-test-' + [guid]::NewGuid().ToString('N'))
+try {
+  New-Item -ItemType Directory -Path $probeDir -Force -ErrorAction Stop | Out-Null
+  Set-Content -LiteralPath $probeFile -Value 'ok' -ErrorAction Stop
+  Remove-Item -LiteralPath $probeFile -ErrorAction Stop
+  Write-Ok 'repository folder is writable by the current user'
+} catch {
+  Write-Bad ('the current user cannot write inside the repository folder: ' + $_.Exception.Message)
+  Write-Host ''
+  Write-Host 'This validation needs to write node_modules, build output, logs, and test results inside the repository.' -ForegroundColor Yellow
+  Write-Host 'It will NOT elevate itself. Preferred fix: clone the repository somewhere you own (for example under your user profile) and run it there.' -ForegroundColor Yellow
+  Write-Host 'If you deliberately want to run it elevated anyway, open an elevated terminal yourself and run (original arguments preserved):' -ForegroundColor Yellow
+  Write-Host ('  ' + (Get-OriginalCommandLine)) -ForegroundColor Yellow
+  Stop-Precondition 'Repository folder is not writable by the current user.'
+}
 
 if (-not (Get-Command git -ErrorAction SilentlyContinue)) { Stop-Precondition 'git was not found on PATH.' }
 $Commit = (& git -C $RepoRoot rev-parse HEAD 2>$null)
@@ -292,6 +347,20 @@ $chromiumVersion = 'unknown'
 $chromiumPath = 'unknown'
 $evidence = @()
 
+# If a failed step looks like a permissions problem, say exactly what happened. Never elevates.
+function Show-PermissionHint([string]$LogFile) {
+  if (-not (Test-Path -LiteralPath $LogFile)) { return }
+  $hit = Select-String -LiteralPath $LogFile -Pattern 'EPERM|EACCES|operation not permitted|permission denied|Access is denied' -ErrorAction SilentlyContinue | Select-Object -First 3
+  if ($hit) {
+    Write-Host ''
+    Write-Host 'This failure looks like a PERMISSIONS problem (matching lines below). The script does not elevate by itself.' -ForegroundColor Yellow
+    $hit | ForEach-Object { Write-Host ('   ' + $_.Line.Trim()) -ForegroundColor Yellow }
+    Write-Host 'Check that the repository (and your Playwright browser cache folder) are writable by your user, or that antivirus is not locking files.' -ForegroundColor Yellow
+    Write-Host 'If you deliberately want an elevated attempt, open an elevated terminal yourself and run (original arguments preserved):' -ForegroundColor Yellow
+    Write-Host ('   ' + (Get-OriginalCommandLine)) -ForegroundColor Yellow
+  }
+}
+
 function Fail-Step([string]$Key, [string]$Message) {
   $script:Result[$Key] = 'FAIL'
   $script:Failures.Add($Message)
@@ -301,13 +370,13 @@ function Fail-Step([string]$Key, [string]$Message) {
 # --- npm ci -------------------------------------------------------------------------------
 Write-Step 'npm ci'
 $code = Invoke-Logged 'npm' @('ci') (Join-Path $LogDir '01-npm-ci.log')
-if ($code -eq 0) { $Result.NpmCi = 'ok'; Write-Ok 'npm ci succeeded' } else { Fail-Step 'NpmCi' "npm ci failed (exit $code)" }
+if ($code -eq 0) { $Result.NpmCi = 'ok'; Write-Ok 'npm ci succeeded' } else { Fail-Step 'NpmCi' "npm ci failed (exit $code)"; Show-PermissionHint (Join-Path $LogDir '01-npm-ci.log') }
 
 # --- official Chromium --------------------------------------------------------------------
 if ($Failures.Count -eq 0) {
   Write-Step 'npx playwright install chromium (official build)'
   $code = Invoke-Logged 'npx' @('playwright', 'install', 'chromium') (Join-Path $LogDir '02-playwright-install.log')
-  if ($code -eq 0) { $Result.Install = 'ok'; Write-Ok 'official Chromium installed' } else { Fail-Step 'Install' "playwright install chromium failed (exit $code)" }
+  if ($code -eq 0) { $Result.Install = 'ok'; Write-Ok 'official Chromium installed' } else { Fail-Step 'Install' "playwright install chromium failed (exit $code)"; Show-PermissionHint (Join-Path $LogDir '02-playwright-install.log') }
 }
 
 # --- databases ----------------------------------------------------------------------------

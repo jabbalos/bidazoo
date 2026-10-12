@@ -1,19 +1,16 @@
 @echo off
-rem BidaZoo Studio PC validation launcher. Runs scripts\validate-studio.ps1 from the repo root.
-rem Any arguments are passed through, e.g.:  scripts\validate-studio.bat -Cleanup
-rem NOTE: the elevation relaunch below cannot carry arguments; to use switches, run this from an
-rem already-elevated terminal (then no relaunch happens).
+rem BidaZoo Studio PC validation launcher.
+rem Runs scripts\validate-studio.ps1 from the repository root as the CURRENT user (no elevation)
+rem and forwards every argument unchanged, for example:
+rem   validate-studio.bat -Cleanup
+rem   validate-studio.bat -Recreate -Cleanup
+rem   validate-studio.bat -PgHost localhost -PgPort 5432 -PgUser postgres
+rem Paths with spaces are handled by the quoting below.
 
-rem --- Relaunch as administrator automatically if not already elevated ---
-net session >nul 2>&1
-if %errorlevel% neq 0 (
-  echo Requesting administrator rights...
-  powershell -NoProfile -Command "Start-Process -FilePath '%~f0' -Verb RunAs"
-  exit /b
+pushd "%~dp0.." || (
+  echo Could not change to the repository root.
+  exit /b 2
 )
-
-rem --- Run from the repository root (the parent of this scripts folder) ---
-pushd "%~dp0.."
 powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0validate-studio.ps1" %*
 set "RC=%ERRORLEVEL%"
 popd
