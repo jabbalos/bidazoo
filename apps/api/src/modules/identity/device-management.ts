@@ -9,25 +9,40 @@ import { hashHumanCode, newHumanCode } from './crypto';
 import { buildDeviceState, cleanLabel, findDeviceByToken, issueDeviceSession, toDeviceSummary, type DeviceContext } from './devices';
 import type { GuardianContext } from './guardian-auth';
 import type { IdentityRuntime } from './runtime';
+import { verifyPinForSwitch } from './pin';
 import { clientSubject, enforce, hit } from './throttle';
 
 /** Unused, unexpired device codes one family may hold at once. */
 const MAX_OPEN_CODES = 10;
 
-/** Choose which of the family's profiles this device plays as. Needs a trusted device, not guardian authority. */
+/**
+ * Choose which of the family's profiles this device plays as. Needs a trusted device, not guardian
+ * authority.
+ *
+ * The profile is looked up scoped to the device's OWN family and must be playable, BEFORE any PIN
+ * work. A profile of another family, an archived one and a made-up id are all the same 404, so a
+ * foreign id reveals nothing (existence, ownership, PIN state) and never reaches PIN verification.
+ * A profile with no PIN switches with no further step.
+ */
 export async function selectProfile(
   ctx: AppContext,
+  runtime: IdentityRuntime,
   device: DeviceContext,
   childProfileId: string,
+  pin: string | undefined,
 ): Promise<DeviceStateResponse> {
   const [child] = await ctx.db
     .select()
     .from(childProfiles)
     .where(and(eq(childProfiles.id, childProfileId), eq(childProfiles.familyId, device.familyId), isNull(childProfiles.archivedAt)));
   if (!child) throw errors.notFound();
-  // Fail closed: a PIN-protected profile cannot be selected until PIN verification exists
-  // (Checkpoint E commit 6). No profile can have a PIN yet, so this branch is unreachable today.
-  if (child.pinHash !== null) throw errors.forbidden();
+  // A profile without a PIN switches with no further step. With a PIN, the correct PIN is required:
+  // counted per device first (429 when over), then checked against the profile's durable lockout.
+  if (child.pinHash !== null) {
+    if (pin === undefined) throw errors.pinIncorrect(); // carries no guess, so it is not counted
+    await enforce(ctx, runtime, 'pin_device', runtime.config.limits.pinDevice, device.sessionId);
+    await verifyPinForSwitch(ctx, runtime, device.familyId, child.id, pin);
+  }
   await ctx.db.update(deviceSessions).set({ activeChildProfileId: child.id }).where(eq(deviceSessions.id, device.sessionId));
   return buildDeviceState(ctx, { ...device, activeChild: { id: child.id, playerId: child.playerId, nickname: child.nickname } });
 }

@@ -143,7 +143,7 @@ export class TestBrowser {
   ) {}
 
   async request<T = any>(
-    method: 'GET' | 'POST',
+    method: 'GET' | 'POST' | 'DELETE',
     url: string,
     body?: unknown,
     extraHeaders: Record<string, string> = {},

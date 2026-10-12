@@ -44,7 +44,7 @@ export function registerIdentityRoutes(app: FastifyInstance, ctx: AppContext): v
   // of these routes is registered, so the API is exactly the guest-only build.
   if (ctx.identity) {
     registerGuardianRoutes(app, ctx, ctx.identity);
-    registerFamilyRoutes(app, ctx);
+    registerFamilyRoutes(app, ctx, ctx.identity);
     registerDeviceRoutes(app, ctx, ctx.identity);
   }
 

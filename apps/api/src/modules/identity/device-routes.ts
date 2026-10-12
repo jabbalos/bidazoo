@@ -39,11 +39,12 @@ export function registerDeviceRoutes(app: FastifyInstance, ctx: AppContext, runt
   );
 
   // Choose which profile this device plays as. The request names a profile of THIS family; it can
-  // never name a player. (Profile PINs arrive in a later commit; a PIN-protected profile fails closed.)
+  // never name a player. A PIN-protected profile also needs its PIN (the only place a PIN is checked).
   typed.post(
     ApiPaths.deviceProfile,
     { schema: { body: SwitchProfileRequestSchema, response: { 200: DeviceStateResponseSchema, ...failures } } },
-    async (request) => selectProfile(ctx, await requireDevice(ctx, request), request.body.childProfileId),
+    async (request) =>
+      selectProfile(ctx, runtime, await requireDevice(ctx, request), request.body.childProfileId, request.body.pin),
   );
 
   typed.get(ApiPaths.devices, { schema: { response: { 200: DevicesResponseSchema, ...failures } } }, async (request) => ({

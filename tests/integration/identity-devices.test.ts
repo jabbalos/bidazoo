@@ -273,7 +273,7 @@ describe.skipIf(!HAS_DB)('trusted device sessions', () => {
       expect((await deviceBrowser(h).request('POST', ApiPaths.deviceProfile, { childProfileId: a.child.id })).status).toBe(401);
     });
 
-    it('fails closed for a profile that has a PIN (PIN checks arrive in a later commit)', async () => {
+    it('a stored value that is not a valid PIN hash never matches (fails closed, no crash)', async () => {
       const g = await guardianWithChild(h);
       const kid = await codeDevice(h, g.browser);
       await sql(h, "update child_profiles set pin_hash = 'x', pin_set_at = now() where id = $1", [g.child.id]);

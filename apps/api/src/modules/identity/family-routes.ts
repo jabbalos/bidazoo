@@ -8,16 +8,19 @@ import {
   CreateChildRequestSchema,
   ErrorResponseSchema,
   FamilyResponseSchema,
+  SetPinRequestSchema,
 } from '@bidazoo/contracts';
 import type { AppContext } from '../../context';
 import { createChild, getFamily, setChildArchived } from './children';
 import { claimGuest } from './guest-claim';
 import { requireGuardian } from './guardian-auth';
+import { clearPin, setPin } from './pin';
+import type { IdentityRuntime } from './runtime';
 
 const failures = { '4xx': ErrorResponseSchema, '5xx': ErrorResponseSchema } as const;
 
 /** Family and child-profile management. Every route needs guardian authority. */
-export function registerFamilyRoutes(app: FastifyInstance, ctx: AppContext): void {
+export function registerFamilyRoutes(app: FastifyInstance, ctx: AppContext, runtime: IdentityRuntime): void {
   const typed = app.withTypeProvider<TypeBoxTypeProvider>();
 
   typed.get(ApiPaths.family, { schema: { response: { 200: FamilyResponseSchema, ...failures } } }, async (request) =>
@@ -45,6 +48,21 @@ export function registerFamilyRoutes(app: FastifyInstance, ctx: AppContext): voi
       void reply.clearCookie(ctx.cookie.name, { path: '/', httpOnly: true, sameSite: 'lax', secure: ctx.cookie.secure });
       return reply.code(result.created ? 201 : 200).send({ child: result.child });
     },
+  );
+
+  // Set / reset / remove a profile PIN: guardian authority only. The PIN is a local profile-switch
+  // lock; it is never a login or recovery credential.
+  typed.post(
+    ApiPaths.familyChildPin(':childId'),
+    { schema: { params: ChildParamsSchema, body: SetPinRequestSchema, response: { 200: ChildResponseSchema, ...failures } } },
+    async (request) => ({
+      child: await setPin(ctx, runtime, await requireGuardian(ctx, request), request.params.childId, request.body.pin),
+    }),
+  );
+  typed.delete(
+    ApiPaths.familyChildPin(':childId'),
+    { schema: { params: ChildParamsSchema, response: { 200: ChildResponseSchema, ...failures } } },
+    async (request) => ({ child: await clearPin(ctx, await requireGuardian(ctx, request), request.params.childId) }),
   );
 
   for (const [path, archived] of [
