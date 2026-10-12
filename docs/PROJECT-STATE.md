@@ -10,7 +10,7 @@ If this file and another doc disagree about status, fix the other doc.
 | --- | --- |
 | Checkpoint A (foundation) | Complete |
 | Checkpoint B (first playable server-authoritative slice) | **COMPLETE and Studio-PC validated** |
-| Checkpoint C | **NOT authorized.** Nothing for it has been started. |
+| Checkpoint C (five-starter presentation) | **Implemented; NOT Studio-PC validated.** Verified only in a development sandbox with a supplementary Chromium (see below). |
 | Pre-beta hardening | **NOT authorized.** A separate checkpoint that needs explicit approval. |
 
 ## Baselines and commits
@@ -29,8 +29,19 @@ If this file and another doc disagree about status, fix the other doc.
 A guest opens the page, picks Panda, Monkey, or Lion (presentation only), and plays a 10-question
 multiplication run. The server generates and grades every question, updates mastery, and issues XP
 and coins; the Phaser client only presents it. Details: [CHANGELOG.md](CHANGELOG.md) and
-[ARCHITECTURE.md](ARCHITECTURE.md). Visuals are still placeholder primitives. The locked character decisions for the future art are
-in [CHARACTER-BIBLE.md](CHARACTER-BIBLE.md); the code has not been changed to match them.
+[ARCHITECTURE.md](ARCHITECTURE.md). The locked character decisions are in [CHARACTER-BIBLE.md](CHARACTER-BIBLE.md).
+
+## What Checkpoint C delivered
+
+The Zoo Sprint menu now offers exactly the five locked starters (Dino, Koala, Tarsier, Eagle,
+Bronco) in a responsive grid, drawn as code-made transitional art; Dino is the default; the choice
+persists in `localStorage` and old `panda`/`monkey`/`lion` values fall back to Dino. Click is not
+implemented. No server, database, contracts, or learning-core code changed. Details:
+[CHANGELOG.md](CHANGELOG.md).
+
+Checkpoint C verification (development sandbox, **not** the Studio PC): Vitest unit 51 passed;
+integration 88 passed with 3 todo; Playwright 40 passed on 4 viewports using a supplementary
+Chromium 153. The official run on the Studio PC with the pinned Chromium is still required.
 
 ## Validation evidence (official, passed)
 
@@ -83,7 +94,7 @@ validation, formerly on this list, is done.)
 
 1. Orient first: read this file, then README, ARCHITECTURE, SECURITY, and CHANGELOG, then inspect
    `git status` and recent history.
-2. Do not start Checkpoint C, or any hardening work, until the project owner explicitly authorizes it.
+2. Do not start any further checkpoint (Click/host, hardening, accounts, and so on) until the project owner explicitly authorizes it.
 3. Keep BidaZoo isolated from production systems (Hop Quest, Fact Crew, jonabalos.com Accounts, the
    Clickaroo Games Hub, Caddy, Cloudflare).
 4. Documentation-only changes get documentation-only commits. Do not mix them with code.

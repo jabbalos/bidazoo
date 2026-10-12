@@ -3,9 +3,10 @@
 An educational-game platform for kids. Games are fun; **learning progress is decided by the server**.
 
 > **Status: Checkpoint B is COMPLETE and Studio-PC validated** (accepted baseline `01b7d41`).
-> Checkpoint C and pre-beta hardening are NOT authorized yet. Start with
+> Checkpoint C (five-starter presentation) is implemented but NOT yet Studio-PC validated;
+> pre-beta hardening is NOT authorized yet. Start with
 > [docs/PROJECT-STATE.md](docs/PROJECT-STATE.md).
-> Checkpoint B is a first playable slice: a guest can open the page, pick an animal, and play a
+> Checkpoint B is a first playable slice: a guest can open the page, pick a starter, and play a
 > 10-question multiplication run. Every question, grade, mastery update, and reward is decided and
 > stored by the server in PostgreSQL; the Phaser client only presents it.
 > Not built: accounts, store, multiplayer, dashboards (see "Out of scope").

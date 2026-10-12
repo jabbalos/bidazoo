@@ -5,7 +5,7 @@ import {
   type PlaySession,
   type PublicQuestion,
 } from '@bidazoo/game-sdk';
-import { Animal } from '../animals';
+import { Character } from '../characters';
 import { getContext } from '../context';
 import { COLORS, CSS, clamp } from '../theme';
 import { BUTTON_STYLES, TapButton, makeAttemptId, publishSurface, text, type HitTarget } from '../ui';
@@ -35,7 +35,7 @@ export class RunScene extends Phaser.Scene {
   private advanceTimer: Phaser.Time.TimerEvent | null = null;
 
   private layer!: Phaser.GameObjects.Container;
-  private animal: Animal | null = null;
+  private character: Character | null = null;
 
   constructor() {
     super('RunScene');
@@ -180,9 +180,9 @@ export class RunScene extends Phaser.Scene {
   }
 
   private celebrate(result: AnswerResult): void {
-    if (!this.animal) return;
-    if (result.correct) this.animal.celebrate();
-    else this.animal.wobble();
+    if (!this.character) return;
+    if (result.correct) this.character.celebrate();
+    else this.character.wobble();
   }
 
   // ---------------------------------------------------------------------------
@@ -191,7 +191,7 @@ export class RunScene extends Phaser.Scene {
 
   private render(): void {
     const ctx = getContext(this);
-    this.animal = null;
+    this.character = null;
     this.layer.removeAll(true);
     const { width: w, height: h } = this.scale;
     const colW = Math.min(w, 760);
@@ -234,10 +234,12 @@ export class RunScene extends Phaser.Scene {
       line.fillCircle(x, trackY + trackH * 0.18, i === total ? 9 : 6);
     }
     this.layer.add(line);
-    const radius = clamp(trackH * 0.3, 16, 40);
-    const animalX = trackLeft + ((trackRight - trackLeft) * answered) / total;
-    this.animal = new Animal(this, animalX, trackY - trackH * 0.08, ctx.animal, radius);
-    this.layer.add(this.animal);
+    // The starter stands on the track line, one stop further along per answered question.
+    const bust = clamp(trackH * 0.82, 56, 104);
+    const lineY = trackY + trackH * 0.18;
+    const characterX = trackLeft + ((trackRight - trackLeft) * answered) / total;
+    this.character = new Character(this, characterX, lineY - bust * 0.45, ctx.character, bust);
+    this.layer.add(this.character);
 
     // --- Question ---
     const qH = h * 0.17;
@@ -331,6 +333,7 @@ export class RunScene extends Phaser.Scene {
     const ctx = getContext(this);
     const session = this.session;
     const extra: Record<string, string> = {
+      character: this.character?.id ?? ctx.character,
       phase: this.phase,
       progress: `${session?.answered ?? 0}/${session?.total ?? 10}`,
       'question-id': this.question?.id ?? '',

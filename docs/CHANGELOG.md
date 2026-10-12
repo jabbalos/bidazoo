@@ -2,6 +2,47 @@
 
 All notable changes, by checkpoint. Dates use US format.
 
+## Checkpoint C: five starters, presentation only (October 12, 2026)
+
+Presentation-only change to `games/zoo-sprint` and its tests. No change to `apps/api`, `database`,
+`packages/contracts`, `packages/learning-core`, `packages/game-sdk`, question generation, grading,
+`served_at` timing, idempotency, mastery, XP, coins, session completion, guest identity, or
+ownership enforcement.
+
+### Added
+
+- `roster.ts`: the five locked starters (Dino, Koala, Tarsier, Eagle, Bronco), Dino as default,
+  and a safe load/save of the choice (legacy `panda`, `monkey`, `lion`, or junk values fall back to
+  Dino with no migration; blocked storage never throws).
+- Code-drawn transitional art for each starter honoring the locked anchors, cached as one texture
+  per character and mood (no filters or particles).
+- Menu as a responsive grid (about 2 columns on small phones, vertical scroll, 3 on tablet, 5 on
+  desktop), with 44 px or larger targets, a clear selected state, and a pinned Start/Continue.
+- Tests: 7 integration tests for the roster; new e2e menu tests (roster and Click, targets and
+  overflow at 360x640 and 390x844, tap-select plus reload persistence, legacy fallback, scrolling).
+
+### Changed
+
+- `animals.ts` renamed to `characters.ts`; `GameContext.animal` became `character`.
+- Run and Results scenes draw the selected starter.
+- The full-run e2e test now plays as Eagle, asserts the starter on results, and asserts that no API
+  request carries any character data.
+- The old Panda/Monkey/Lion menu e2e test was replaced by the stronger tests above; its "no
+  scrolling" assertion was relaxed per the grid decision (vertical scroll is allowed on small phones).
+
+### Verification (not Studio-PC validated)
+
+- Typecheck, build, and client-bundle leak scan passed. Vitest: unit 51 passed; integration 88
+  passed with 3 todo.
+- Playwright: 40 passed across 4 viewports, run in a development sandbox on a supplementary
+  Chromium 153 (the pinned Chromium could not be downloaded there). This is **not** the official
+  Studio-PC run.
+
+### Not done
+
+- Click, host behavior, dialogue, tutorial, placement, character animation beyond idle/celebrate/
+  wobble, final art, rate limiting, security hardening, accounts, store, multiplayer.
+
 ## Character bible (October 12, 2026)
 
 Documentation only. No application, game, schema, test, API, database, or tooling code changed.

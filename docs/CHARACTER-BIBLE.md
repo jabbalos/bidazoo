@@ -151,8 +151,14 @@ set per character is OPEN.
 
 ### 8.4 Current code
 
-The shipped game still draws placeholder Panda, Monkey, and Lion shapes (`games/zoo-sprint`). The
-code has **not** been changed to match this roster, and Checkpoint C has not started.
+Checkpoint C (October 12, 2026) replaced the Panda, Monkey, and Lion placeholders in
+`games/zoo-sprint` with the five locked starters (Dino, Koala, Tarsier, Eagle, Bronco), drawn in
+code as **transitional art** that honors the anchors above. Ids are `dino`, `koala`, `tarsier`,
+`eagle`, `bronco` (a code convention, not a brand contract); Dino is the default. Click is **not**
+implemented: not selectable, not in the registry, no host behavior or dialogue. The art is
+generated once per character and mood into a cached texture, so portraits, spritesheets, or WebP
+can replace it later without touching scenes. The selection is still presentation-only
+(`localStorage`); old `panda`/`monkey`/`lion` values fall back to Dino with no migration.
 
 ## 9. Change control
 

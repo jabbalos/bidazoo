@@ -85,13 +85,16 @@ do not widen the game's knowledge.
 
 Animation, camera, particles, sound, in-game menus, which character the player picked,
 accessibility preferences, and temporary visual effects. None of it is persisted by the platform
-or trusted by it. (Zoo Sprint keeps the chosen animal in `localStorage`; it is presentation only.)
+or trusted by it. (Zoo Sprint keeps the chosen starter in `localStorage`; it is presentation only.)
 
 ## Zoo Sprint (the first game)
 
-Scenes: **Boot** (guest handshake) -> **Menu** (choose Panda, Monkey, or Lion; Start Run) ->
+Scenes: **Boot** (guest handshake) -> **Menu** (choose one of five starters: Dino, Koala, Tarsier, Eagle, Bronco; Start Run) ->
 **Run** (question, four large answer buttons, feedback, the character hops forward) ->
-**Results**. Graphics are placeholder primitives. The game also exposes a hidden real-DOM
+**Results** (shows the chosen starter). The starters are drawn in code (transitional art) behind
+a small registry (`roster.ts`) and renderer (`characters.ts`); scenes never contain character
+drawing or any grading logic. The menu is a responsive grid (about 2 columns on small phones,
+vertical scroll allowed, more columns on larger screens). The game also exposes a hidden real-DOM
 mirror (`#bz-a11y`) and data attributes on `#game` so that browser tests and screen readers can
 read state; they never contain anything that is not already on screen.
 

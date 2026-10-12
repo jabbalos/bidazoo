@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 import type { PlaySession } from '@bidazoo/game-sdk';
-import { Animal } from '../animals';
+import { Character } from '../characters';
 import { getContext } from '../context';
 import { COLORS, CSS, clamp } from '../theme';
 import { BUTTON_STYLES, TapButton, publishSurface, text, type HitTarget } from '../ui';
@@ -45,7 +45,7 @@ export class ResultsScene extends Phaser.Scene {
     title.setPosition(w / 2, pad + h * 0.045);
     this.layer.add(title);
 
-    const hero = new Animal(this, w / 2, title.y + h * 0.15, ctx.animal, clamp(h * 0.07, 28, 64));
+    const hero = new Character(this, w / 2, title.y + h * 0.15, ctx.character, clamp(h * 0.21, 84, 190));
     this.layer.add(hero);
     this.time.delayedCall(250, () => hero.active && hero.celebrate());
 
@@ -83,6 +83,7 @@ export class ResultsScene extends Phaser.Scene {
     targets.push(again.hitTarget());
 
     publishSurface(ctx.parent, 'results', targets, {
+      character: hero.id, // the starter actually drawn on this screen
       correct: String(results?.correct ?? 0),
       'xp-earned': String(results?.xpEarned ?? 0),
     });

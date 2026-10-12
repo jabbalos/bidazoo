@@ -17,7 +17,7 @@ Phaser game -> BidaZoo API -> learning-core -> PostgreSQL -> server grading
    -> mastery + reward transaction -> API result -> Phaser reaction
 ```
 
-A guest opens the page, picks an animal (presentation only), and plays a 10-question
+A guest opens the page, picks a starter character (presentation only), and plays a 10-question
 multiplication run. Every question, grade, mastery change, and reward is decided and stored by
 the server. Nothing else is built (no accounts, store, multiplayer, dashboards, and so on).
 
@@ -114,7 +114,7 @@ believed. See [SECURITY.md](SECURITY.md).
 | Session progress, completion, results | Owns | Displays |
 | Guest identity | Owns (hashed token in DB) | Holds an opaque HttpOnly cookie it cannot read |
 | Animation, camera, sound, menu state | none | Owns |
-| Which animal the child picked | none | Owns (localStorage, presentation only) |
+| Which starter the child picked | none | Owns (localStorage, presentation only) |
 
 ## 5. Database
 

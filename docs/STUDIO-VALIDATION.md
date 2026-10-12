@@ -36,7 +36,8 @@ the result and is not the official record.
 
 Conclusion: **Checkpoint B is complete and Studio-PC validated.** The application baseline is still
 `01b7d41`. Carried-forward limitations (below) are unchanged and accepted. Pre-beta hardening is a
-separate checkpoint that is **not** authorized, and Checkpoint C is **not** authorized.
+separate checkpoint that is **not** authorized. (Checkpoint C was later implemented; it is **not**
+covered by this validation record and has not been run on the Studio PC.)
 
 The rest of this document is the procedure to repeat the validation.
 

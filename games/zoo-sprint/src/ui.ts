@@ -15,7 +15,11 @@ export const BUTTON_STYLES = {
   dim: { fill: 0xc9c3a6, shade: 0xa9a284, text: '#5b5a4a' } as ButtonStyle,
 };
 
-/** A tappable rectangle in canvas CSS pixels: x/y are the TOP-LEFT corner (not the center). */
+/**
+ * A tappable rectangle in canvas CSS pixels: x/y are the TOP-LEFT corner (not the center).
+ * `visible: false` marks a target that is scrolled out of view (its rectangle is still the real
+ * one, so tests can check its size); omitted means "always on screen".
+ */
 export interface HitTarget {
   id: string;
   label: string;
@@ -23,6 +27,7 @@ export interface HitTarget {
   y: number;
   w: number;
   h: number;
+  visible?: boolean;
 }
 
 /**

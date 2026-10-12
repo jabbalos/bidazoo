@@ -1,7 +1,8 @@
 import Phaser from 'phaser';
 import type { BidaZooGame, MountOptions, MountedGame } from '@bidazoo/game-sdk';
 import { A11yMirror } from './a11y';
-import { loadAnimal, type GameContext } from './context';
+import type { GameContext } from './context';
+import { loadCharacter } from './roster';
 import { COLORS, hex } from './theme';
 import { BootScene } from './scenes/BootScene';
 import { MenuScene } from './scenes/MenuScene';
@@ -19,7 +20,7 @@ function mount({ parent, platform }: MountOptions): MountedGame {
     platform,
     parent,
     a11y: new A11yMirror(parent),
-    animal: loadAnimal(),
+    character: loadCharacter(),
     totals: { xp: 0, coins: 0 },
     activeSessionId: null,
   };

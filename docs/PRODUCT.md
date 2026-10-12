@@ -14,9 +14,10 @@ and weaknesses are corrected instead of copied.
 
 ## First game
 
-**Zoo Sprint.** First playable slice (Checkpoint B): choose Panda, Monkey, or Lion (presentation
-only), then answer 10 multiplication questions. The server generates and grades every question,
-updates mastery, and issues XP and coins; the game animates the result. Placeholder graphics.
+**Zoo Sprint.** First playable slice (Checkpoint B): choose a starter (Dino, Koala, Tarsier, Eagle, or Bronco;
+presentation only), then answer 10 multiplication questions. The server generates and grades every
+question, updates mastery, and issues XP and coins; the game animates the result. Code-drawn
+transitional character art.
 
 ## Principles
 
