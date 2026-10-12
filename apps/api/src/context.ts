@@ -1,4 +1,5 @@
 import type { Database } from './db';
+import type { IdentityRuntime } from './modules/identity/runtime';
 
 export interface Clock {
   now(): Date;
@@ -28,6 +29,11 @@ export interface AppContext {
   cookie: CookieSettings;
   /** Extra origins allowed to send state-changing requests, besides the API's own origin. */
   allowedOrigins: readonly string[];
+  /**
+   * Family identity (Checkpoint E). UNDEFINED means identity is off: no identity route exists and
+   * only the guest cookie authenticates, exactly like the guest-only build.
+   */
+  identity?: IdentityRuntime;
 }
 
 export interface ModuleOptions {

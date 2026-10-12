@@ -9,7 +9,8 @@
     "./db": "./src/db.ts",
     "./context": "./src/context.ts",
     "./config": "./src/config.ts",
-    "./rate-limit": "./src/http/rate-limit.ts"
+    "./rate-limit": "./src/http/rate-limit.ts",
+    "./identity": "./src/modules/identity/index.ts"
   },
   "scripts": {
     "dev": "node --env-file-if-exists=../../.env --watch --import tsx src/server.ts",

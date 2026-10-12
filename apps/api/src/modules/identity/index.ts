@@ -25,3 +25,13 @@ export async function requireGuest(ctx: AppContext, request: FastifyRequest): Pr
 
 export { createGuest, findGuestByToken };
 export type { GuestIdentity };
+
+// Family identity (Checkpoint E): wiring and test support.
+export { DEFAULT_IDENTITY_LIMITS, loadIdentityConfig } from './config';
+export type { IdentityConfig, IdentityLimits } from './config';
+export { createIdentityRuntime } from './runtime';
+export type { IdentityRuntime } from './runtime';
+export { FakeMailer } from './mail';
+export type { MailMessage, Mailer } from './mail';
+export { deviceCookieName } from './devices';
+export { normalizeEmail } from './email';

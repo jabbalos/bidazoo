@@ -1,6 +1,15 @@
+import { randomBytes } from 'node:crypto';
 import { buildApp } from '@bidazoo/api/app';
 import type { AppContext, Clock } from '@bidazoo/api/context';
 import { createDatabase, type Database } from '@bidazoo/api/db';
+import {
+  DEFAULT_IDENTITY_LIMITS,
+  FakeMailer,
+  createIdentityRuntime,
+  type IdentityConfig,
+  type IdentityLimits,
+  type IdentityRuntime,
+} from '@bidazoo/api/identity';
 import type { RateLimitConfig } from '@bidazoo/api/rate-limit';
 import type { FastifyInstance } from 'fastify';
 
@@ -29,8 +38,14 @@ export interface Harness {
   database: Database;
   clock: FakeClock;
   ctx: AppContext;
+  /** Present only when the harness was built with `identity`. Captures every email the API sends. */
+  mailer: FakeMailer;
+  identity: IdentityRuntime | undefined;
   close(): Promise<void>;
 }
+
+export const TEST_IDENTITY_SECRET = 'test-identity-secret-0123456789abcdef-0123';
+export const TEST_BASE_URL = 'http://localhost:5173';
 
 export async function makeHarness(
   options: {
@@ -40,6 +55,8 @@ export async function makeHarness(
     rateLimits?: RateLimitConfig;
     trustProxy?: false | string[];
     hstsMaxAgeSeconds?: number;
+    /** Omit for the guest-only build (identity OFF). Pass {} for defaults, or override pieces. */
+    identity?: { limits?: Partial<IdentityLimits>; config?: Partial<IdentityConfig> };
   } = {},
 ): Promise<Harness> {
   if (!TEST_DATABASE_URL) throw new Error('TEST_DATABASE_URL is required');
@@ -52,6 +69,31 @@ export async function makeHarness(
     cookie: { name: secure ? '__Host-bidazoo_guest' : 'bidazoo_guest', secure, maxAgeSeconds: 90 * 86_400 },
     allowedOrigins: options.allowedOrigins ?? [],
   };
+  const mailer = new FakeMailer();
+  const identity = options.identity
+    ? createIdentityRuntime(
+        {
+          // A fresh secret per harness gives each its own throttle keys: the database is never emptied
+          // and the fake clock is fixed, so shared counters would leak between test files and reruns.
+          // Pass config.secret to model one deployment across a restart.
+          secret: `${TEST_IDENTITY_SECRET}-${randomBytes(8).toString('hex')}`,
+          publicBaseUrl: TEST_BASE_URL,
+          mailTransport: 'console',
+          mailOutboxDir: undefined,
+          mailFrom: undefined,
+          emailLinkMinutes: 15,
+          deviceSessionDays: 90,
+          guardianAuthorityHours: 24,
+          deviceCodeMinutes: 10,
+          claimCodeDays: 7,
+          legacyMatchPepper: undefined,
+          ...options.identity.config,
+          limits: { ...DEFAULT_IDENTITY_LIMITS, ...options.identity.limits },
+        },
+        { mailer },
+      )
+    : undefined;
+  if (identity) ctx.identity = identity;
   const app = buildApp({
     checks: { database: () => database.ping() },
     ctx,
@@ -65,8 +107,11 @@ export async function makeHarness(
     database,
     clock,
     ctx,
+    mailer,
+    identity,
     close: async () => {
       await app.close();
+      await identity?.mail.idle();
       await database.close();
     },
   };
@@ -79,14 +124,22 @@ export interface ApiResponse<T = any> {
   raw: string;
 }
 
-/** A tiny browser stand-in: holds the guest cookie like a cookie jar would. */
+/**
+ * A tiny browser stand-in: a cookie jar holding the guest cookie (`cookie`) and the trusted-device
+ * cookie (`deviceCookie`). A Set-Cookie that clears a cookie (empty value or Max-Age=0) removes it,
+ * as a real browser would.
+ */
 export class TestBrowser {
   cookie: string | undefined;
+  deviceCookie: string | undefined;
+  /** Every raw Set-Cookie line seen, for attribute assertions. */
+  readonly setCookieLog: string[] = [];
   /** The socket address the API sees for this browser (default: inject's 127.0.0.1). */
   remoteAddress: string | undefined;
   constructor(
     readonly app: FastifyInstance,
     readonly cookieName = 'bidazoo_guest',
+    readonly deviceCookieName = 'bidazoo_device',
   ) {}
 
   async request<T = any>(
@@ -96,7 +149,10 @@ export class TestBrowser {
     extraHeaders: Record<string, string> = {},
   ): Promise<ApiResponse<T>> {
     const headers: Record<string, string> = { ...extraHeaders };
-    if (this.cookie) headers['cookie'] = `${this.cookieName}=${this.cookie}`;
+    const jar: string[] = [];
+    if (this.cookie) jar.push(`${this.cookieName}=${this.cookie}`);
+    if (this.deviceCookie) jar.push(`${this.deviceCookieName}=${this.deviceCookie}`);
+    if (jar.length > 0) headers['cookie'] = jar.join('; ');
     if (body !== undefined) headers['content-type'] = 'application/json';
     const res = await this.app.inject({
       method,
@@ -107,8 +163,12 @@ export class TestBrowser {
     });
     const setCookie = res.headers['set-cookie'];
     for (const line of Array.isArray(setCookie) ? setCookie : setCookie ? [setCookie] : []) {
-      const match = new RegExp(`^${this.cookieName}=([^;]*)`).exec(line);
-      if (match) this.cookie = decodeURIComponent(match[1] ?? '');
+      this.setCookieLog.push(line);
+      const cleared = /;\s*max-age=0\b/i.test(line);
+      const guest = new RegExp(`^${this.cookieName}=([^;]*)`).exec(line);
+      if (guest) this.cookie = cleared || !guest[1] ? undefined : decodeURIComponent(guest[1]);
+      const device = new RegExp(`^${this.deviceCookieName}=([^;]*)`).exec(line);
+      if (device) this.deviceCookie = cleared || !device[1] ? undefined : decodeURIComponent(device[1]);
     }
     let parsed: unknown = undefined;
     try {
@@ -144,7 +204,7 @@ export const START_BODY = { gameId: 'zoo-sprint', mode: 'multiplication' } as co
 
 /** A fresh browser with its own guest identity. */
 export async function newPlayer(h: Harness, remoteAddress?: string): Promise<TestBrowser> {
-  const browser = new TestBrowser(h.app, h.ctx.cookie.name);
+  const browser = new TestBrowser(h.app, h.ctx.cookie.name, h.ctx.cookie.secure ? '__Host-bidazoo_device' : 'bidazoo_device');
   browser.remoteAddress = remoteAddress;
   const res = await browser.request('POST', PATHS.guest, {});
   if (res.status !== 200) throw new Error(`guest creation failed: ${res.status} ${res.raw}`);

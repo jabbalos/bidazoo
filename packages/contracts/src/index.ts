@@ -19,7 +19,7 @@
 import { Type, type Static } from 'typebox';
 
 // Paths and constants live in ./paths so clients can import them without TypeBox.
-export { API_PREFIX, ApiPaths, GAME_ID, MODE_MULTIPLICATION, SESSION_LENGTH } from './paths';
+export { ACCOUNT_PAGE_PATH, API_PREFIX, ApiPaths, GAME_ID, LINK_FRAGMENT_KEY, MODE_MULTIPLICATION, SESSION_LENGTH } from './paths';
 import { GAME_ID, MODE_MULTIPLICATION } from './paths';
 
 // ---------------------------------------------------------------------------

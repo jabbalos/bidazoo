@@ -35,6 +35,16 @@ export const ApiPaths = {
   legacyKidLink: (legacyKidId: string) => `${API_PREFIX}/legacy/kids/${legacyKidId}/link`,
 } as const;
 
+/**
+ * The page that completes a sign-in. Emailed links look like
+ *   <PUBLIC_BASE_URL>/account.html#t=<token>
+ * The token rides in the URL FRAGMENT: browsers never send it to any server, so it cannot appear
+ * in a proxy, CDN, or access log, or in a Referer header. The page reads it, strips it from the
+ * address bar, and POSTs it. (A mail scanner that merely GETs the link cannot use it up.)
+ */
+export const ACCOUNT_PAGE_PATH = '/account.html';
+export const LINK_FRAGMENT_KEY = 't';
+
 export const GAME_ID = 'zoo-sprint';
 export const MODE_MULTIPLICATION = 'multiplication';
 /** Questions in one play session. The server enforces it; the client only displays it. */

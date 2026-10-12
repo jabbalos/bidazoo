@@ -8,6 +8,7 @@ import type { AppContext } from '../../context';
 import { getTotals } from '../rewards/ledger';
 import { createGuest, findGuestByToken, type GuestIdentity } from './service';
 import { errors } from '../../http/errors';
+import { registerGuardianRoutes } from './guardian-routes';
 
 const EmptyBody = Type.Object({}, { additionalProperties: false });
 
@@ -35,6 +36,10 @@ async function profile(ctx: AppContext, guest: GuestIdentity) {
 
 export function registerIdentityRoutes(app: FastifyInstance, ctx: AppContext): void {
   const typed = app.withTypeProvider<TypeBoxTypeProvider>();
+
+  // Family identity (Checkpoint E) exists only when configured. With ctx.identity undefined none
+  // of these routes is registered, so the API is exactly the guest-only build.
+  if (ctx.identity) registerGuardianRoutes(app, ctx, ctx.identity);
 
   // Idempotent "make sure I have a guest identity". A valid cookie returns the same player, so
   // a page refresh reconnects to the same guest. Otherwise a new guest and cookie are created.

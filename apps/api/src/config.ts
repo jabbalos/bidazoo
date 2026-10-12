@@ -1,5 +1,7 @@
-import { DEFAULT_RATE_LIMITS, type RateLimitConfig, type RateWindow } from './http/rate-limit';
+import { parseBoolean, parseInteger, parseWindow } from './env-parse';
+import { DEFAULT_RATE_LIMITS, type RateLimitConfig } from './http/rate-limit';
 import { parseTrustProxy, type TrustProxySetting } from './http/trust-proxy';
+import { loadIdentityConfig, type IdentityConfig } from './modules/identity/config';
 
 export interface ApiConfig {
   env: 'development' | 'test' | 'production';
@@ -16,50 +18,22 @@ export interface ApiConfig {
   rateLimits: RateLimitConfig;
   /** Strict-Transport-Security max-age in seconds. 0 = do not send the header. */
   hstsMaxAgeSeconds: number;
+  /** Family identity (Checkpoint E). Undefined (the default) = identity is off. */
+  identity: IdentityConfig | undefined;
 }
 
 const ENVIRONMENTS = ['development', 'test', 'production'] as const;
-
-function parseBoolean(name: string, value: string | undefined, fallback: boolean): boolean {
-  if (value === undefined || value === '') return fallback;
-  if (value === 'true') return true;
-  if (value === 'false') return false;
-  throw new Error(`${name} must be "true" or "false"`);
-}
-
-function parseInteger(name: string, value: string | undefined, fallback: number, min: number, max: number): number {
-  if (value === undefined || value === '') return fallback;
-  if (!/^\d+$/.test(value)) throw new Error(`${name} must be a whole number between ${min} and ${max}`);
-  const parsed = Number(value);
-  if (parsed < min || parsed > max) throw new Error(`${name} must be a whole number between ${min} and ${max}`);
-  return parsed;
-}
-
-const MAX_WINDOW_SECONDS = 7 * 86_400;
-
-/** Reads RATE_<NAME>_MAX and RATE_<NAME>_WINDOW_SECONDS. `allowZero` lets MAX=0 disable a rule. */
-function parseWindow(
-  source: Record<string, string | undefined>,
-  name: string,
-  fallback: RateWindow,
-  allowZero = false,
-): RateWindow {
-  return {
-    max: parseInteger(`RATE_${name}_MAX`, source[`RATE_${name}_MAX`], fallback.max, allowZero ? 0 : 1, 1_000_000),
-    windowSeconds: parseInteger(`RATE_${name}_WINDOW_SECONDS`, source[`RATE_${name}_WINDOW_SECONDS`], fallback.windowSeconds, 1, MAX_WINDOW_SECONDS),
-  };
-}
 
 export function loadRateLimits(source: Record<string, string | undefined>): RateLimitConfig {
   const d = DEFAULT_RATE_LIMITS;
   return {
     enabled: parseBoolean('RATE_LIMIT_ENABLED', source['RATE_LIMIT_ENABLED'], d.enabled),
-    guestCreateBurst: parseWindow(source, 'GUEST_CREATE_BURST', d.guestCreateBurst),
-    guestCreateHourly: parseWindow(source, 'GUEST_CREATE_HOURLY', d.guestCreateHourly),
-    globalGuestCreate: parseWindow(source, 'GLOBAL_GUEST_CREATE', d.globalGuestCreate, true),
-    sessionStart: parseWindow(source, 'SESSION_START', d.sessionStart),
-    answer: parseWindow(source, 'ANSWER', d.answer),
-    apiPerIp: parseWindow(source, 'API_PER_IP', d.apiPerIp),
+    guestCreateBurst: parseWindow(source, 'RATE_', 'GUEST_CREATE_BURST', d.guestCreateBurst),
+    guestCreateHourly: parseWindow(source, 'RATE_', 'GUEST_CREATE_HOURLY', d.guestCreateHourly),
+    globalGuestCreate: parseWindow(source, 'RATE_', 'GLOBAL_GUEST_CREATE', d.globalGuestCreate, true),
+    sessionStart: parseWindow(source, 'RATE_', 'SESSION_START', d.sessionStart),
+    answer: parseWindow(source, 'RATE_', 'ANSWER', d.answer),
+    apiPerIp: parseWindow(source, 'RATE_', 'API_PER_IP', d.apiPerIp),
     cacheSize: parseInteger('RATE_CACHE_SIZE', source['RATE_CACHE_SIZE'], d.cacheSize, 100, 1_000_000),
   };
 }
@@ -108,5 +82,6 @@ export function loadConfig(source: Record<string, string | undefined> = process.
     trustProxy: parseTrustProxy(source['TRUST_PROXY']),
     rateLimits: loadRateLimits(source),
     hstsMaxAgeSeconds: parseInteger('HSTS_MAX_AGE_SECONDS', source['HSTS_MAX_AGE_SECONDS'], 0, 0, 63_072_000),
+    identity: loadIdentityConfig(source, env as ApiConfig['env']),
   };
 }

@@ -2,12 +2,21 @@ import { buildApp } from './app';
 import { loadConfig } from './config';
 import { systemClock } from './context';
 import { createDatabase } from './db';
+import { createIdentityRuntime } from './modules/identity';
 
 const config = loadConfig();
 const database = createDatabase(config.databaseUrl, {
   // Log the message only: the pg error can carry the client object, which holds connection details.
   onError: (err) => app.log.warn({ message: err.message }, 'database pool error (will reconnect)'),
 });
+
+// Family identity is built only when IDENTITY_SECRET is set. Unset = guest-only, as in the closed beta.
+const identity = config.identity
+  ? createIdentityRuntime(config.identity, {
+      // Error name only: a provider error can contain the recipient or the message body.
+      onMailFailure: (errorName) => app.log.warn({ errorName }, 'mail send failed'),
+    })
+  : undefined;
 
 const app = buildApp({
   checks: { database: () => database.ping() },
@@ -21,6 +30,7 @@ const app = buildApp({
       maxAgeSeconds: 90 * 24 * 60 * 60,
     },
     allowedOrigins: config.allowedOrigins,
+    ...(identity ? { identity } : {}),
   },
   trustProxy: config.trustProxy,
   rateLimits: config.rateLimits,
@@ -39,6 +49,8 @@ async function shutdown(signal: string): Promise<void> {
   app.log.info({ signal }, 'shutting down');
   try {
     await app.close();
+    // Let any queued sign-in emails reach the transport before the process exits (bounded).
+    await Promise.race([identity?.mail.idle(), new Promise((resolve) => setTimeout(resolve, 5_000))]);
     await database.close();
     process.exit(0);
   } catch (err) {
