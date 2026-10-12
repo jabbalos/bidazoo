@@ -1,9 +1,11 @@
 # Closed Beta Deployment: play.bidazoo.com (Option A, Studio PC)
 
-Status: **PLAN AND STUDIO-PC CHECKLIST. October 12, 2026. NOT DEPLOYED.** Nothing in this
-document has been run. The authoring session has no Cloudflare access and no deployment has been
-performed. Do not describe BidaZoo as live until Jonathan confirms the external endpoint works
-(step 11).
+Status: **CLOSED BETA OPERATIONALLY COMPLETE (October 12, 2026), with follow-up items
+listed in section 9.** Deployed commit: **`1a106bc`** (no application code changed during
+deployment). The local stack runs as BidaZoo-named scheduled tasks, the dedicated tunnel
+`bidazoo-beta` serves `https://play.bidazoo.com`, and backups were validated by a real
+dump-and-restore. This document was written as a plan; sections 5 to 8 are retained as the
+procedure and rationale, and section 9 is the as-built record.
 
 Baseline: `main` at `1a106bc` (Checkpoint D closed; validated commit `52547a3`). The beta
 deploys the **current guest-only build**. It does not depend on the identity proposal in
@@ -564,3 +566,63 @@ and an invite-only list are the main mitigations for abuse during the beta.
   slightly from the wording above.
 - Whether a Cloudflare Access policy in front of the game interacts badly with the same-origin
   cookie model has not been tested.
+
+## 9. As-built operational record (October 12, 2026)
+
+Deployed commit: `1a106bc`. Scripts live in `C:\BidaZoo-beta\bin` on the Studio PC (not in this
+repository; they contain no secrets).
+
+What exists:
+
+- Scheduled tasks (all BidaZoo-named; the existing `caddy` and `Cloudflared` services were
+  untouched): `BidaZoo Postgres` (runs as the Studio user at logon, hidden via
+  `wscript.exe //B run-hidden.vbs`), `BidaZoo API`, `BidaZoo Caddy`, `BidaZoo Tunnel` (SYSTEM, at
+  startup, restart loops, logs under `C:\BidaZoo-beta\logs`), `BidaZoo Backup` (user, daily
+  3:10 AM).
+- Listeners, verified on loopback only: PostgreSQL `127.0.0.1:54340`, API `127.0.0.1:3101`, beta
+  Caddy `127.0.0.1:8480`. `/health` and `/ready` returned 200; static client via Caddy 200.
+- Beta Caddy fixes `X-Forwarded-Proto` to `https` and sets `X-Forwarded-For` from
+  `CF-Connecting-IP` and `X-Forwarded-Host` to `play.bidazoo.com` (validated with the beta
+  `caddy.exe`).
+- Cloudflare: tunnel `bidazoo-beta`, one public hostname `play.bidazoo.com` to
+  `http://127.0.0.1:8480`, HTTP Host Header `play.bidazoo.com`. No `api.bidazoo.com`, no zone SSL
+  or HSTS change.
+
+Backup validation (October 12, 2026, 16:16 local), by `bidazoo-beta-validate-backup.ps1`:
+
+- Real `pg_dump -Fc` produced by the real `BidaZoo Backup` task: `bidazoo-20261012.dump`,
+  38,388 bytes, SHA-256 `250FFF65B38290E970DC6D5F3A43DC45EE71F6DAF8B4B43C6C57DA3FAC648C90`,
+  `pg_restore --list` read 85 entries.
+- Restored with `pg_restore` into a temporary scratch database: success. Table lists identical
+  (9 tables: `drizzle.__drizzle_migrations`, `attempts`, `guest_sessions`, `play_sessions`,
+  `players`, `served_questions`, `skill_mastery`, `wallet_transactions`, `xp_events`) and row
+  counts identical for all 9. Scratch database dropped; none remain.
+- Nightly task: enabled, daily 3:10 AM, next run recorded. Retention command keeps 14 copies
+  (`Select -Skip 14`); the same logic left exactly 14 of 17 fake files in a temp-folder test.
+
+Rollback: unregister the five `BidaZoo *` tasks, stop leftover processes under
+`C:\BidaZoo-beta`, delete the `bidazoo-beta` tunnel and the `play` DNS record in Cloudflare.
+To undo the hidden-window change: `Register-ScheduledTask -TaskName 'BidaZoo Postgres' -Xml
+(Get-Content -Raw 'C:\BidaZoo-beta\config\rollback\BidaZoo-Postgres.xml') -Force`.
+
+### Verified by Jonathan after the backup validation (October 12, 2026)
+
+- Reboot test: **PASS**. The game came back automatically after a reboot and the public site
+  remained available.
+- The stray startup terminal window is fixed and did not return after the reboot.
+- Phone and cellular test: **PASS**. The public game loaded externally, guest persistence worked,
+  and multiple devices worked.
+
+### Follow-up operational items (not blockers to closed-beta operational status)
+
+1. Formal proxy-identity proof through the public path (step 10): real visitor IP, protocol
+   `https`, host `play.bidazoo.com`, and forged `X-Forwarded-*` headers cannot override the
+   trusted values.
+2. Observe the first fully unattended nightly backup run at 3:10 AM. The validated dump came from
+   a manual start of the same task, and the retention test used fake files.
+3. Add an off-PC backup destination. Backups are currently on the same PC.
+4. Explicitly re-check and record that `jonabalos.com`, `hopquest.jonabalos.com` and
+   `djwikka.com` still work. No change was made to them.
+
+Deployment state is distinct from the application commit: the deployed application commit stays
+`1a106bc`; the deployment documentation and tooling live on the deployment branch.
