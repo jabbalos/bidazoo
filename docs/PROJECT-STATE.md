@@ -11,7 +11,8 @@ If this file and another doc disagree about status, fix the other doc.
 | Checkpoint A (foundation) | Complete |
 | Checkpoint B (first playable server-authoritative slice) | **COMPLETE and Studio-PC validated** |
 | Checkpoint C (five-starter presentation) | **COMPLETE and Studio-PC validated** (October 12, 2026) |
-| Pre-beta hardening | **NOT authorized.** A separate checkpoint that needs explicit approval. |
+| Checkpoint D (public-beta security gate) | **IMPLEMENTED, NOT COMPLETE.** Awaiting the official Studio-PC validation run. Do not treat as closed. |
+| Real-device performance, guest recovery, Click, final art | **NOT authorized.** Separate later checkpoints. |
 
 ## Baselines and commits
 
@@ -109,18 +110,41 @@ Do not weaken or redesign these without explicit approval. Details in
 
 ## Known limitations (accepted, recorded)
 
-No rate limiting and unbounded guest creation; no Content-Security-Policy or remaining browser
-security headers; clearing the guest cookie loses progress and there is no recovery or claim path;
-mastery days use UTC; network latency counts toward response time; a replayed answer shows current
+No CAPTCHA or distributed-attack defense; clearing the guest cookie loses progress and there is no recovery or claim path;
+abuse limits are in-process and best-effort (tumbling windows, lost on restart, per process); the client CSP needs the host to send headers or relies on its embedded `<meta>`; mastery days use UTC; network latency counts toward response time; a replayed answer shows current
 mastery; character art is code-drawn transitional art, not final; Click (the host) is not implemented; real-device performance unmeasured; no audit logging, backups, or
 retention jobs; children's-data privacy and legal review is still needed before real use.
 
-## Deferred hardening (not authorized)
+## Checkpoint D: public-beta security gate (implemented; Studio validation pending)
 
-In the priority order from [STUDIO-VALIDATION.md](STUDIO-VALIDATION.md): rate limiting; guest-creation
-abuse limits; Content-Security-Policy and remaining browser security headers; real-device
-performance checks; a deliberate guest-account recovery and claim strategy. (Official Playwright
-validation, formerly on this list, is done.)
+Approved scope: rate limiting (per-IP guest creation, per-guest session start and answers, an
+API-wide per-IP backstop), a service-wide emergency new-guest breaker, explicit proxy trust
+(`TRUST_PROXY`), and browser security headers including an enforced Content-Security-Policy for the
+client. Every limit is environment-configurable; no hosting provider is assumed. Details and the
+default numbers: [SECURITY.md](SECURITY.md) ("Public-beta protections").
+
+- **Commits (in order, on top of `67975bf`):** `524f2e8` implementation, `2eb2970` tests, `abde130`
+  validator counts, then the documentation commit that records this section.
+- **No change to** gameplay, question generation, grading, `served_at` timing, idempotency, mastery,
+  XP, coins, session completion, guest identity, or ownership. The only package outside `apps/api`,
+  `apps/play`, and the game's accessibility mirror that changed is `packages/contracts` (two new error
+  codes, `rate_limited` and `service_busy`). `learning-core` and `game-sdk` are untouched. Checkpoint D
+  is independently revertible without reverting Checkpoint C.
+- **Sandbox verification (NOT Studio-PC validation):** Vitest unit 51 passed; integration 115 passed,
+  3 todo; Playwright 56 passed, 0 flaky, 0 retries, on all four viewports with the CSP enforced and
+  zero violations, console errors, or throttled calls, using a supplementary Chromium 153;
+  `scan:client` clean; the live API playthrough passed.
+- **Closure requires** an official Studio-PC run (see [STUDIO-VALIDATION.md](STUDIO-VALIDATION.md)),
+  recording the exact commit. The validator's expected counts were updated to 51 / 115 (+3 todo) / 56
+  in `abde130`.
+
+## Deferred (not authorized)
+
+After Checkpoint D validates, in order: real-device performance checks; a deliberate guest-account
+recovery and claim strategy; the Click host character; final character art. Also still open:
+CAPTCHA, a shared (multi-process) limiter store, distributed-attack defense, audit logging, backups,
+retention, and children's-data legal review. (Official Playwright validation, rate limiting, guest
+creation limits, and CSP were formerly on this list.)
 
 ## Rules for future sessions
 

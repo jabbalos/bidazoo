@@ -2,6 +2,51 @@
 
 All notable changes, by checkpoint. Dates use US format.
 
+## Checkpoint D: public-beta security gate (October 12, 2026; implemented, awaiting Studio validation)
+
+No change to gameplay, question generation, grading, `served_at` timing, idempotency, mastery, XP,
+coins, session completion, guest identity, or ownership. Commits `524f2e8` (implementation),
+`2eb2970` (tests), `abde130` (validator counts), plus the documentation commit.
+
+### Added
+
+- Rate limiting with `@fastify/rate-limit` (in-memory, no new infrastructure): per-IP guest creation
+  (burst and hourly tiers), per-guest session start and answers, an API-wide per-IP backstop, and a
+  service-wide new-guest circuit breaker that counts only per-IP-admitted creations and never
+  affects existing guests. Limits run before any write; a throttled request mutates nothing.
+- Stable error envelope: HTTP 429 `rate_limited` and HTTP 503 `service_busy`, both with `Retry-After`
+  (two new error codes in `packages/contracts`).
+- `TRUST_PROXY`: an explicit proxy-address list only; `true` and hop counts are refused.
+- Environment configuration for every limit (`RATE_*`), `RATE_LIMIT_ENABLED`, `RATE_CACHE_SIZE`, and
+  opt-in `HSTS_MAX_AGE_SECONDS`.
+- API security headers on every response: CSP `default-src 'none'`, `X-Frame-Options`, COOP,
+  Permissions-Policy (plus the existing three).
+- An enforced client CSP (no `'unsafe-inline'`, `'unsafe-eval'`, wildcard, or remote origin), defined
+  once in `apps/play/security-headers.ts`: sent by `vite preview`, embedded as a `<meta>` in the
+  production build.
+- Tests: 27 integration (config, headers, limits, breaker, proxy trust, no-mutation, idempotent
+  retry, shared IP, normal play under defaults) and 16 Playwright (4 per viewport), plus an auto
+  guard that fails every browser test on any CSP violation, console error, page error, or 429/503.
+
+### Changed
+
+- `apps/play/index.html`: the inline `<style>` moved to `src/styles.css`; the accessibility mirror
+  sets its style through the DOM style API. Both were needed for `style-src 'self'`.
+- Validator expected counts: integration 88 -> 115, Playwright 40 -> 56 (unit 51, todo 3, projects 4,
+  baseline `01b7d41` unchanged).
+- `.env.example` documents the new variables.
+
+### Verification (NOT Studio-PC validated)
+
+- Sandbox, supplementary Chromium 153: Vitest unit 51, integration 115 (+3 todo); Playwright 56 of
+  56 on four viewports, no retries, no flaky; `scan:client` clean; live API playthrough passed.
+- Closure requires an official Studio-PC run. This entry is not a closure.
+
+### Known limits
+
+- Limiter state is in memory (per process, lost on restart); windows are tumbling; many-address
+  attackers can still open the service-wide breaker; no CAPTCHA. See SECURITY.md.
+
 ## Checkpoint C closure: Studio-PC validated (October 12, 2026)
 
 Documentation only. No application, game, schema, API, database, learning, test, or tooling code

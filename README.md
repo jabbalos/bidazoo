@@ -4,7 +4,8 @@ An educational-game platform for kids. Games are fun; **learning progress is dec
 
 > **Status: Checkpoint B is COMPLETE and Studio-PC validated** (accepted baseline `01b7d41`).
 > Checkpoint C (five-starter presentation, implementation `7042f8f`) is also COMPLETE and
-> Studio-PC validated; pre-beta hardening is NOT authorized yet. Start with
+> Studio-PC validated. Checkpoint D (public-beta security gate: rate limits, proxy trust, CSP) is
+> implemented but NOT closed until it passes an official Studio-PC run. Start with
 > [docs/PROJECT-STATE.md](docs/PROJECT-STATE.md).
 > Checkpoint B is a first playable slice: a guest can open the page, pick a starter, and play a
 > 10-question multiplication run. Every question, grade, mastery update, and reward is decided and

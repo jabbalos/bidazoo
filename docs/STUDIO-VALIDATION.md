@@ -201,9 +201,9 @@ What it does, in order:
 4a. With `-PortablePostgres`: finds or extracts the portable binaries, initializes the throwaway
    cluster if needed, starts it, and waits until it accepts connections (exit `2` on any failure).
 5. Creates `bidazoo_test` and `bidazoo_e2e` and migrates both. It never touches any other database.
-6. `npm test` against `bidazoo_test` (51 unit, 88 integration, 3 todo are *reported* for comparison).
+6. `npm test` against `bidazoo_test` (51 unit, 115 integration, 3 todo are *reported* for comparison).
 7. `npm run test:e2e -w @bidazoo/tests -- --reporter=list,json` against `bidazoo_e2e`
-   (40 tests, 4 viewports; this is the same command as `npm run test:e2e` plus a JSON reporter so
+   (56 tests, 4 viewports; this is the same command as `npm run test:e2e` plus a JSON reporter so
    retries and skips can be counted).
 8. Prints a summary (commit, Vitest, Playwright, retries, Playwright and Chromium versions,
    database, overall) and lists any traces, screenshots, or videos with their full paths.
@@ -312,16 +312,16 @@ Both migrations must report success (3 migrations each).
 
 ## 5. Run the suites
 
-Database-backed unit and integration tests (Checkpoint C: expect 51 + 88 passed, 3 todo; the
-Checkpoint B checkout `d0345bf` gives 51 + 81):
+Database-backed unit and integration tests (Checkpoint D: expect 51 + 115 passed, 3 todo; the
+Checkpoint C commit gives 51 + 88 and the Checkpoint B checkout `d0345bf` gives 51 + 81):
 
 ```powershell
 $env:TEST_DATABASE_URL = "$pg/bidazoo_test"
 npm test
 ```
 
-Official Playwright run (Checkpoint C: 40 tests, 10 per viewport at 360x640, 390x844, 820x1180,
-1440x900; the Checkpoint B checkout gives 24, 6 per viewport):
+Official Playwright run (Checkpoint D: 56 tests, 14 per viewport at 360x640, 390x844, 820x1180,
+1440x900; Checkpoint C gave 40, 10 per viewport; the Checkpoint B checkout gives 24, 6 per viewport):
 
 ```powershell
 $env:DATABASE_URL = "$pg/bidazoo_e2e"
@@ -338,7 +338,7 @@ running API, and `npm run scan:client` after `npm run build`.
 
 ## 6. What to send back
 
-- The final summary line (for example `40 passed`) and the full list output.
+- The final summary line (for example `56 passed`) and the full list output.
 - `npx playwright --version` and the Chromium version (`npx playwright install chromium --dry-run`
   shows it).
 - Any failure: the error text, the viewport project name, and `tests/test-results/<test>/`
@@ -362,16 +362,36 @@ mastery day boundaries use UTC; network latency counts toward authoritative resp
 Content-Security-Policy header; character art is code-drawn transitional art, not final; Click (the
 host) is not implemented; real-device performance is unmeasured.
 
-## Priority before any public-facing beta (not authorized yet)
+## Priority before any public-facing beta
 
-1. Rate limiting.
-2. Guest-creation abuse limits.
-3. Content-Security-Policy and the remaining browser security headers.
+1. Rate limiting: **implemented in Checkpoint D; Studio validation pending.**
+2. Guest-creation abuse limits: **implemented in Checkpoint D; Studio validation pending.**
+3. Content-Security-Policy and the remaining browser security headers: **implemented in Checkpoint D;
+   Studio validation pending.**
 4. Official Playwright validation on the Studio PC: **done October 12, 2026** (see the validation record above).
-5. Real-device performance checks.
-6. A deliberate guest-account recovery and claim strategy.
+5. Real-device performance checks (not authorized yet).
+6. A deliberate guest-account recovery and claim strategy (not authorized yet).
 
-These belong to a separate hardening checkpoint that needs explicit approval.
+## Checkpoint D: what the Studio run must establish
+
+Checkpoint D is **not closed** until the official run (`scripts\validate-studio.bat -PortablePostgres`,
+normal user, Playwright's pinned Chromium) is recorded here with its exact commit. The runner now
+expects 51 unit, 115 integration, 3 todo, and 56 Playwright (4 viewports); a count warning after the
+update means something changed. Confirm:
+
+- Vitest 51 unit and 115 integration (+3 todo) pass, with no count warnings. The integration tests
+  include "a throttled request mutates nothing" (row counts and ledger totals unchanged), the
+  idempotent-retry check, the proxy-trust and spoofed-header checks, and security headers on success
+  and error responses.
+- Playwright 56 pass, 0 flaky, no retries. Every browser test runs under the enforced CSP with a guard
+  that fails on any CSP violation, console error, page error, or 429/503, so a pass means zero
+  unexpected violations on all four viewports, and the full game completes.
+- PostgreSQL flow (create, migrate, start, stop) still passes.
+- **Not run by the runner:** the client bundle leak scan and the live API playthrough. Run them in
+  the same checkout and record the output: `npm run build`, then `npm run scan:client` (expect
+  `CLEAN`), and, with the API running, `npm run playthrough`.
+
+Record the validated commit hash and the run folder here when it passes.
 
 ## Visual direction
 

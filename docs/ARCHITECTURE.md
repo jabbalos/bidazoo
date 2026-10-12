@@ -35,7 +35,9 @@ bidazoo/
 │   │       ├── context.ts        AppContext: db, clock, cookie settings, allowed origins
 │   │       ├── db.ts             pg pool + Drizzle
 │   │       ├── server.ts         process entry, wiring, graceful shutdown
-│   │       ├── http/             errors.ts (fixed-text errors), hooks.ts (headers, origin check)
+│   │       ├── http/             errors.ts (fixed-text errors), hooks.ts (headers, origin check),
+│   │       │                     rate-limit.ts (abuse limits), trust-proxy.ts (TRUST_PROXY parsing),
+│   │       │                     security-headers.ts (API header set)
 │   │       ├── routes/health.ts  /health, /ready
 │   │       └── modules/
 │   │           ├── identity/     guest cookie sessions: POST /guest, GET /me
@@ -306,7 +308,9 @@ Cloudflare, or any production service.
 - **Authentication beyond guests**, parental consent, and COPPA-style review. Needs legal review;
   this is not legal advice. Guest upgrade and merge are undesigned.
 - **Integration with existing jonabalos.com Accounts.** Out of scope.
-- **Rate limiting and abuse controls.** Guest creation is unbounded today.
+- **A shared (multi-process) rate-limit store, CAPTCHA, and distributed-attack defense.** Checkpoint D
+  added in-process rate limits and a service-wide new-guest breaker (see SECURITY.md); anything that
+  needs new infrastructure is deferred.
 - **CSRF beyond the same-origin check**, and a CORS story for a cross-origin deployment.
 - **Spendable currency flows** (store, inventory, refunds). The ledger can hold negative amounts;
   nothing spends.
@@ -340,6 +344,15 @@ Checkpoint B:
 | 11 | `POST /play-sessions/:id/question` exists in addition to the `/answers` endpoint. | Server-measured timing needs an explicit "issue" moment so `served_at` is stamped once and a refresh cannot reset it. |
 | 12 | Tests that touch the database skip when `TEST_DATABASE_URL` is unset. | The suite still runs on a machine without PostgreSQL; the skip is loud, never silent. |
 
+Checkpoint D (security gate; no gameplay, grading, reward, mastery, timing, or identity change):
+
+| # | Deviation | Why |
+| --- | --- | --- |
+| 13 | `contracts` gained two error codes, `rate_limited` and `service_busy`. | The error envelope is a closed schema; a 429 or 503 must be a valid, typed response. |
+| 14 | `TRUST_PROXY` accepts proxy addresses only; `true` and hop counts are refused. | Fastify fails closed on a bare number; a hop count cannot verify the immediate peer. |
+| 15 | The client Content-Security-Policy is defined once in `apps/play/security-headers.ts` and applied by `vite preview` (headers) and the production build (an embedded `<meta>`). | The API does not serve the client, and hosting is undecided; this keeps enforcement independent of the host. |
+| 16 | `apps/api` exposes `./config` and `./rate-limit`. | Lets tests cover configuration parsing and the default limits. |
+
 ## 15. Dependencies that are not obvious
 
 | Package | Where | Why |
@@ -347,6 +360,7 @@ Checkpoint B:
 | `drizzle-orm`, `drizzle-kit` | `database`, `api` | Required by the spec. `drizzle-kit` generates SQL migrations. |
 | `pg` | `api` | Driver for Drizzle's `node-postgres` adapter. |
 | `typebox`, `@fastify/type-provider-typebox` | `contracts`, `api` | One schema validates requests, serializes responses (so private fields cannot leak), and types the client. |
+| `@fastify/rate-limit` | `api` | Checkpoint D abuse limits. Fastify-native and maintained by the Fastify organization, targets Fastify 5, four small dependencies, in-memory store (no new infrastructure). See SECURITY.md. |
 | `@fastify/cookie`, `ajv-formats` | `api` | Guest cookie parsing and setting; `uuid` and `date-time` formats. |
 | `esbuild`, `tsx` | `api` (dev) | Bundle the API; run TypeScript in dev. |
 | `concurrently` | root (dev) | Runs the API and client dev servers together on every OS, including Windows. |
