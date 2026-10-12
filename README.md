@@ -2,9 +2,12 @@
 
 An educational-game platform for kids. Games are fun; **learning progress is decided by the server**.
 
-> **Status: Checkpoint B (first playable vertical slice).** A guest can open the page, pick an
-> animal, and play a 10-question multiplication run. Every question, grade, mastery update, and
-> reward is decided and stored by the server in PostgreSQL; the Phaser client only presents it.
+> **Status: Checkpoint B is COMPLETE and Studio-PC validated** (accepted baseline `01b7d41`).
+> Checkpoint C and pre-beta hardening are NOT authorized yet. Start with
+> [docs/PROJECT-STATE.md](docs/PROJECT-STATE.md).
+> Checkpoint B is a first playable slice: a guest can open the page, pick an animal, and play a
+> 10-question multiplication run. Every question, grade, mastery update, and reward is decided and
+> stored by the server in PostgreSQL; the Phaser client only presents it.
 > Not built: accounts, store, multiplayer, dashboards (see "Out of scope").
 > The repository and the files in [`docs/`](docs/) are the project memory, not chat history.
 
@@ -12,12 +15,13 @@ An educational-game platform for kids. Games are fun; **learning progress is dec
 
 | Doc | What it covers |
 | --- | --- |
+| [docs/PROJECT-STATE.md](docs/PROJECT-STATE.md) | **Start here.** Short authoritative status: what is complete, the accepted baseline, validation evidence, invariants, limitations, and what is not authorized |
 | [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | Structure, tables, request flow, idempotency, learning-core, deviations, postponed decisions |
 | [docs/SECURITY.md](docs/SECURITY.md) | Trust model, guest cookie, answer secrecy, known limitations |
 | [docs/GAME-SDK.md](docs/GAME-SDK.md) | The boundary between a game and the platform |
 | [docs/PRODUCT.md](docs/PRODUCT.md) | Product intent and scope |
 | [docs/REFERENCE-REVIEW.md](docs/REFERENCE-REVIEW.md) | What BidaZoo may and may not take from Hop Quest and Fact Crew |
-| [docs/STUDIO-VALIDATION.md](docs/STUDIO-VALIDATION.md) | Studio-PC procedure for the official Playwright run (one command: `scripts\validate-studio.bat -PortablePostgres`), plus carried-forward limitations and pre-beta hardening priorities |
+| [docs/STUDIO-VALIDATION.md](docs/STUDIO-VALIDATION.md) | Record of the passed official Studio-PC validation, the procedure to repeat it (one command: `scripts\validate-studio.bat -PortablePostgres`), carried-forward limitations, and pre-beta hardening priorities |
 | [docs/CHANGELOG.md](docs/CHANGELOG.md) | What changed, by checkpoint |
 
 ## Requirements

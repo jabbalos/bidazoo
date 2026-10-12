@@ -276,7 +276,12 @@ direction is needed.
   inventory, login or account integration, multiplayer, QR controllers, subscriptions, store, or
   second game.
 
-## 11. Pending external validation: Playwright
+## 11. External validation: Playwright (resolved)
+
+> **Update, October 12, 2026: resolved.** The official Playwright run passed on the Studio PC
+> (24 of 24, Playwright's pinned Chromium, no retries). See
+> [STUDIO-VALIDATION.md](STUDIO-VALIDATION.md). The text below is the original Checkpoint A-era
+> note, kept as history.
 
 **Pending external validation on the studio Windows machine using Playwright's supported Chromium
 build.**

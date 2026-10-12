@@ -1,9 +1,44 @@
 # Studio PC validation (official Playwright run)
 
-Status: **pending**. The Checkpoint B baseline is commit `01b7d41`. Playwright's pinned Chromium
-could not be downloaded in the development sandbox, so the official browser run has not happened.
-A supplementary run (24/24 on Chromium 141, a different build) exists but is **not** official
-validation and must not be reported as such.
+Status: **COMPLETE. Official validation passed on the Studio PC on October 12, 2026.** The
+accepted Checkpoint B application baseline is commit `01b7d41`. The commit that was tested is
+`d0345bf`, which adds only the validation tooling (and docs) on top of that baseline. The earlier
+supplementary run (24/24 on Chromium 141, a different build) is superseded and was never official
+validation.
+
+## Validation record (official run, passed)
+
+Source: the local run folder `.validation-logs\20261012-092607` (`SUMMARY.txt` and
+`playwright-results.json`). `.validation-logs/` is git-ignored, so the evidence is recorded here
+rather than committed.
+
+| Item | Result |
+| --- | --- |
+| Date and shell | October 12, 2026, run folder `20261012-092607`, normal (non-elevated) user |
+| Git commit tested | `d0345bf860d6abdab2e2d197e5dc5f6f5ce51a8e` ("chore: add -PortablePostgres to Studio validation runner") |
+| Vitest (unit) | 51 passed (51) |
+| Vitest (integration, real PostgreSQL) | 81 passed, 3 todo (84) |
+| Vitest exit code | 0 |
+| Playwright | 24 passed, 0 failed, 0 flaky, 0 skipped; 4 projects (360x640, 390x844, 820x1180, 1440x900) |
+| Retries | None; no test needed a retry |
+| Playwright version | 1.64.0 |
+| Chromium | 156.0.8078.4 (Playwright's own pinned build, installed with `npx playwright install chromium`) |
+| Playwright exit code | 0 |
+| PostgreSQL | 16.15, portable, isolated and BidaZoo-owned; no system PostgreSQL used |
+| Host and port | 127.0.0.1, 54329 (loopback only, trust authentication on that throwaway cluster) |
+| Cluster | Started by this run; shutdown succeeded |
+| Steps | `npm ci` ok; Chromium install ok; create databases ok; migrations ok; Vitest ok; Playwright ok |
+| Overall | **PASS**; runner exit code 0 |
+
+An earlier run the same morning (`20261012-091146`, same commit, same counts) also passed, but it
+was started from an elevated shell and the runner reported `PASS (with warnings)`. It corroborates
+the result and is not the official record.
+
+Conclusion: **Checkpoint B is complete and Studio-PC validated.** The application baseline is still
+`01b7d41`. Carried-forward limitations (below) are unchanged and accepted. Pre-beta hardening is a
+separate checkpoint that is **not** authorized, and Checkpoint C is **not** authorized.
+
+The rest of this document is the procedure to repeat the validation.
 
 Commands are PowerShell, run from the repository root. Nothing here touches Hop Quest, Fact Crew,
 Accounts, Caddy, Cloudflare, or any production database.
@@ -166,16 +201,17 @@ errors under PowerShell 7.4; the Vitest-summary and Playwright-JSON parsing logi
 real output and on a synthetic report containing a failure, a flaky test, and a skipped test; the
 original-arguments command builder was exercised with the switches above; and the scripts were
 audited for destructive and elevation commands (none besides the exact-name, confirmed database
-drops). The runner has **not** been executed end to end
-on Windows (the sandbox is Linux and has no Windows networking cmdlets), so its first real run is
-on the Studio PC. If it misbehaves there, the manual procedure below still applies.
+drops). The runner was not executed on Windows in the
+sandbox (it is Linux and has no Windows networking cmdlets). It has since been run end to end on the
+Studio PC, as recorded above. If it misbehaves on another machine, the manual procedure below still
+applies.
 
 `-PortablePostgres` was additionally exercised in the Linux sandbox against a real PostgreSQL 16 with
 `npm`, `npx`, and `node` stubbed: initialize, start, readiness, database create/migrate/drop, stop,
 reuse of an already-running portable cluster, port collision, a failing test run (exit `1`), a
 crash mid-run (server still stopped), refusal of a foreign or non-empty data folder, a wrong major
 version, a non-loopback `pg_hba.conf`, conflicting switches, and an unrelated PostgreSQL left running
-and untouched. What that could **not** cover, and what the first Studio run must show: Windows
+and untouched. What that could **not** cover, and what only the Studio PC could show (since exercised by the October 12, 2026 runs recorded above): Windows
 paths and `.exe` names, `Expand-Archive` on the real EDB ZIP, Windows PowerShell 5.1 behavior,
 `pg_ctl`/`initdb` running as a normal Windows user, Windows Defender or firewall prompts, and
 whether the real ZIP's layout is `pgsql\bin` (the runner also searches a few folders deeper).
@@ -207,7 +243,7 @@ with `-PortablePostgres`; otherwise a local PostgreSQL 16 with a superuser you c
 ```powershell
 git clone <your BidaZoo remote> bidazoo   # or: cd bidazoo; git fetch
 cd bidazoo
-git checkout 01b7d41
+git checkout d0345bf                       # the validated commit (01b7d41 plus tooling and docs only)
 git status --short                         # must print nothing
 npm ci
 ```
@@ -288,7 +324,7 @@ Content-Security-Policy header; placeholder art; real-device performance is unme
 1. Rate limiting.
 2. Guest-creation abuse limits.
 3. Content-Security-Policy and the remaining browser security headers.
-4. Official Playwright validation on the Studio PC (this document).
+4. Official Playwright validation on the Studio PC: **done October 12, 2026** (see the validation record above).
 5. Real-device performance checks.
 6. A deliberate guest-account recovery and claim strategy.
 

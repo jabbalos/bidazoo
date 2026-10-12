@@ -1,6 +1,7 @@
 # Architecture
 
-Status: Checkpoint B (first playable server-authoritative vertical slice), October 11, 2026.
+Status: Checkpoint B (first playable server-authoritative vertical slice), October 11, 2026;
+complete and Studio-PC validated October 12, 2026 (see [PROJECT-STATE.md](PROJECT-STATE.md)).
 Checkpoint A (foundation) is recorded in [CHANGELOG.md](CHANGELOG.md); sections that changed
 since then say so.
 
@@ -286,10 +287,10 @@ target is at least 44 CSS px; nothing needs hover.
 A fake clock (`FakeClock`) drives timing and multi-day mastery tests. Test files run serially
 (`fileParallelism: false`) because they share one database.
 
-Playwright status: the official run needs Playwright's pinned Chromium, which could not be
-downloaded in the development sandbox. **Official Playwright validation is pending on the Studio
-PC.** A supplementary run on a different Chromium build is described in the checkpoint report;
-it is not a substitute.
+Playwright status: **official validation passed on the Studio PC on October 12, 2026** (24 of 24
+tests, Playwright 1.64.0 with its pinned Chromium 156.0.8078.4, no retries, tested commit
+`d0345bf`). The earlier supplementary run on a different Chromium build is superseded. The full
+record is in [STUDIO-VALIDATION.md](STUDIO-VALIDATION.md).
 
 ## 12. Deployment direction
 

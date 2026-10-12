@@ -2,6 +2,44 @@
 
 All notable changes, by checkpoint. Dates use US format.
 
+## Checkpoint B closure: complete and Studio-validated (October 12, 2026)
+
+Documentation only. No application, game, schema, test, API, database, or tooling code changed.
+
+### Status
+
+- **Checkpoint B is COMPLETE** and **officially Studio-PC validated**.
+- Accepted application baseline: `01b7d41` (unchanged).
+- `d0345bf` is validation tooling and docs on top of that baseline (the portable PostgreSQL option
+  for the Studio runner). It is the commit that was tested.
+- Official validation: run `20261012-092607`, non-elevated, tested commit `d0345bf`. Vitest 51 passed
+  and 81 passed with 3 todo (exit 0); Playwright 24 passed, 0 failed, 0 flaky, 0 skipped, no retries
+  (Playwright 1.64.0, Chromium 156.0.8078.4, exit 0); PostgreSQL 16.15 portable on 127.0.0.1:54329;
+  `npm ci`, migrations, and PostgreSQL startup and shutdown all passed; overall PASS. Details in
+  `docs/STUDIO-VALIDATION.md`.
+- Known limitations are unchanged and remain recorded. Pre-beta hardening is a separate checkpoint
+  and is **not** authorized. Checkpoint C is **not** authorized.
+
+### Added
+
+- `docs/PROJECT-STATE.md`: the short authoritative entry point for future sessions.
+
+### Changed
+
+- `README.md`: status line, and a docs-table row for `PROJECT-STATE.md`.
+- `docs/STUDIO-VALIDATION.md`: status changed from pending to complete, with the validation record.
+  The stale "never run on Windows" and "first Studio run must show" wording is updated, the manual
+  procedure checks out the validated commit, and the Studio-validation hardening item is marked done.
+- `docs/ARCHITECTURE.md`: status line and the Playwright status paragraph.
+- `docs/REFERENCE-REVIEW.md`: section 11 marked resolved (original text kept as history).
+- This file: notes on the superseded "pending" statements below.
+
+### Provenance
+
+This closure was written as a **new** documentation-only commit from the repository and the real
+Studio validation logs. An earlier closure commit (`446092a`) was recorded in a development session
+but is not present in this repository; this record is not claimed to be identical to it.
+
 ## Tooling after Checkpoint B: portable PostgreSQL for Studio validation (October 12, 2026)
 
 Tooling and docs only. No application, game, schema, or test code changed; the accepted
@@ -31,7 +69,8 @@ Checkpoint B baseline (`01b7d41`) is untouched.
 
 ### Not verified
 
-- The runner has still never run on Windows. See "Static checks" in `docs/STUDIO-VALIDATION.md` for
+- (Superseded October 12, 2026: the runner has since run on the Studio PC; see the closure entry above.)
+  The runner had still never run on Windows. See "Static checks" in `docs/STUDIO-VALIDATION.md` for
   what was exercised in the Linux sandbox and what only the Studio PC can show.
 
 ## Checkpoint B: first playable server-authoritative vertical slice (October 11, 2026)
@@ -89,7 +128,8 @@ Checkpoint B baseline (`01b7d41`) is untouched.
 - In a GPU-less headless Chromium, Phaser renders on the CPU (measured 14 fps at 360x640, under
   5 fps at 1440x900). Not measured on real devices.
 - **Playwright:** the official run (Playwright's pinned Chromium) has NOT been executed:
-  execution pending external Studio PC validation. A supplementary run on a different Chromium
+  execution pending external Studio PC validation (resolved October 12, 2026: official run passed,
+  see the closure entry above). A supplementary run on a different Chromium
   build (141, not the pinned one) is recorded in the checkpoint report and is not a substitute.
 
 ## Post-Checkpoint A: reference review (October 11, 2026)
@@ -102,7 +142,7 @@ Checkpoint B baseline (`01b7d41`) is untouched.
 
 ### Status
 
-- Playwright browser tests: **pending external validation on the studio Windows machine using
+- (Resolved October 12, 2026: passed; see the closure entry above.) Playwright browser tests: **pending external validation on the studio Windows machine using
   Playwright's supported Chromium build.** Not a Checkpoint A failure unless the real run exposes a
   problem.
 
@@ -137,7 +177,7 @@ Checkpoint B baseline (`01b7d41`) is untouched.
 ### Not done
 
 - Playwright tests were configured and listed (12 tests across 4 viewports) but **not executed**:
-  the sandbox could not download the Chromium build. Pending external validation on the studio
+  the sandbox could not download the Chromium build. (Resolved October 12, 2026: passed.) Pending external validation on the studio
   Windows machine using Playwright's supported Chromium build (`npx playwright install chromium`,
   then `npm run test:e2e`).
 - No gameplay, authentication, input validation, CORS, security headers, or rate limiting.
