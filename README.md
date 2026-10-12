@@ -20,6 +20,7 @@ An educational-game platform for kids. Games are fun; **learning progress is dec
 | [docs/SECURITY.md](docs/SECURITY.md) | Trust model, guest cookie, answer secrecy, known limitations |
 | [docs/GAME-SDK.md](docs/GAME-SDK.md) | The boundary between a game and the platform |
 | [docs/PRODUCT.md](docs/PRODUCT.md) | Product intent and scope |
+| [docs/CHARACTER-BIBLE.md](docs/CHARACTER-BIBLE.md) | Locked character identity decisions: Click (host) and the five selectable starters |
 | [docs/REFERENCE-REVIEW.md](docs/REFERENCE-REVIEW.md) | What BidaZoo may and may not take from Hop Quest and Fact Crew |
 | [docs/STUDIO-VALIDATION.md](docs/STUDIO-VALIDATION.md) | Record of the passed official Studio-PC validation, the procedure to repeat it (one command: `scripts\validate-studio.bat -PortablePostgres`), carried-forward limitations, and pre-beta hardening priorities |
 | [docs/CHANGELOG.md](docs/CHANGELOG.md) | What changed, by checkpoint |

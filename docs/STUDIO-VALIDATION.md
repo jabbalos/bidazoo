@@ -332,7 +332,8 @@ These belong to a separate hardening checkpoint that needs explicit approval.
 
 ## Visual direction
 
-The placeholder visuals may later be replaced by the locked BidaZoo character system and UI design.
+The placeholder visuals may later be replaced by the locked BidaZoo character system and UI design
+(the locked character decisions are recorded in [CHARACTER-BIBLE.md](CHARACTER-BIBLE.md)).
 That replacement must preserve the current API and gameplay contracts and must not change the
 accepted architecture (session ownership, served-question model, attempt idempotency, reward
 ledgers, server-authoritative mastery, guest-session trust boundary).

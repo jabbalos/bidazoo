@@ -2,6 +2,27 @@
 
 All notable changes, by checkpoint. Dates use US format.
 
+## Character bible (October 12, 2026)
+
+Documentation only. No application, game, schema, test, API, database, or tooling code changed.
+
+### Added
+
+- `docs/CHARACTER-BIBLE.md`: the locked character identity decisions. Click (orange/tan kangaroo
+  host, not selectable) and exactly five selectable starters (Dino, Koala, Tarsier, Eagle,
+  Bronco), with the academic-equivalence rule, the originality rules, and non-binding guidance for
+  future asset formats and the mobile selection experience.
+
+### Changed
+
+- Links to the bible from `docs/PROJECT-STATE.md`, `README.md`, and `docs/STUDIO-VALIDATION.md`
+  (which previously mentioned a "locked character system" without a source).
+
+### Not done
+
+- The game still draws placeholder Panda, Monkey, and Lion shapes; the code has not been changed to
+  match the new roster. Checkpoint C has not started and is not authorized.
+
 ## Checkpoint B closure: complete and Studio-validated (October 12, 2026)
 
 Documentation only. No application, game, schema, test, API, database, or tooling code changed.

@@ -29,7 +29,8 @@ If this file and another doc disagree about status, fix the other doc.
 A guest opens the page, picks Panda, Monkey, or Lion (presentation only), and plays a 10-question
 multiplication run. The server generates and grades every question, updates mastery, and issues XP
 and coins; the Phaser client only presents it. Details: [CHANGELOG.md](CHANGELOG.md) and
-[ARCHITECTURE.md](ARCHITECTURE.md). Visuals are still placeholder primitives.
+[ARCHITECTURE.md](ARCHITECTURE.md). Visuals are still placeholder primitives. The locked character decisions for the future art are
+in [CHARACTER-BIBLE.md](CHARACTER-BIBLE.md); the code has not been changed to match them.
 
 ## Validation evidence (official, passed)
 
@@ -96,6 +97,7 @@ validation, formerly on this list, is done.)
 | [SECURITY.md](SECURITY.md) | Trust model and known limitations |
 | [GAME-SDK.md](GAME-SDK.md) | Game and platform boundary |
 | [PRODUCT.md](PRODUCT.md) | Product intent and open questions |
+| [CHARACTER-BIBLE.md](CHARACTER-BIBLE.md) | Locked character identity decisions (Click and the five starters) |
 | [REFERENCE-REVIEW.md](REFERENCE-REVIEW.md) | What may be taken from Hop Quest and Fact Crew |
 | [STUDIO-VALIDATION.md](STUDIO-VALIDATION.md) | Validation record and procedure |
 | [CHANGELOG.md](CHANGELOG.md) | History by checkpoint |
