@@ -25,6 +25,12 @@ const DEFAULT_MESSAGES: Record<ErrorCode, string> = {
   invalid_response: 'That is not one of the offered choices.',
   rate_limited: 'Too many requests. Please wait a moment and try again.',
   service_busy: 'BidaZoo is busy right now. Please try again in a little while.',
+  // Checkpoint E. None of these may reveal whether an email address or a code exists.
+  link_invalid: 'That link or code is not valid. Ask for a new one.',
+  forbidden: 'You are not allowed to do that here.',
+  already_claimed: 'That has already been claimed.',
+  pin_incorrect: 'That PIN is not correct.',
+  profile_required: 'Choose a player to continue.',
   internal_error: 'Something went wrong.',
 };
 
@@ -36,6 +42,12 @@ export const errors = {
   alreadyAnswered: () => new ApiError(409, 'question_already_answered'),
   idempotencyConflict: () => new ApiError(409, 'idempotency_key_conflict'),
   invalidResponse: () => new ApiError(422, 'invalid_response'),
+  // Checkpoint E.
+  linkInvalid: () => new ApiError(400, 'link_invalid'),
+  forbidden: () => new ApiError(403, 'forbidden'),
+  alreadyClaimed: () => new ApiError(409, 'already_claimed'),
+  pinIncorrect: () => new ApiError(403, 'pin_incorrect'),
+  profileRequired: () => new ApiError(409, 'profile_required'),
 };
 
 /** PostgreSQL unique_violation. */

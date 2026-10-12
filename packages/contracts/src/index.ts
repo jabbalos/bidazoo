@@ -26,9 +26,11 @@ import { GAME_ID, MODE_MULTIPLICATION } from './paths';
 // Shared building blocks
 // ---------------------------------------------------------------------------
 
-const Uuid = Type.String({ format: 'uuid' });
-const Timestamp = Type.String({ format: 'date-time' });
-const strict = { additionalProperties: false } as const;
+import { Timestamp, Uuid, strict } from './common';
+
+// Checkpoint E: family identity contracts (guardian sign-in, child profiles, trusted devices,
+// guest claim, legacy claim).
+export * from './identity';
 
 // ---------------------------------------------------------------------------
 // Operational endpoints
@@ -69,6 +71,12 @@ export const ErrorCodeSchema = Type.Union([
   // new-guest circuit breaker is open. Both carry a Retry-After header.
   Type.Literal('rate_limited'),
   Type.Literal('service_busy'),
+  // Checkpoint E: family identity. Messages are fixed text and never say whether an email exists.
+  Type.Literal('link_invalid'), //        sign-in or claim link/code is unknown, expired or already used
+  Type.Literal('forbidden'), //           signed in, but not allowed to do this (no guardian authority)
+  Type.Literal('already_claimed'), //     the guest player or legacy family belongs to someone else
+  Type.Literal('pin_incorrect'), //       wrong profile PIN (lockout is a 429 rate_limited)
+  Type.Literal('profile_required'), //    a trusted device has no active child profile yet
   Type.Literal('internal_error'),
 ]);
 export type ErrorCode = Static<typeof ErrorCodeSchema>;

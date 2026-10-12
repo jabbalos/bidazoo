@@ -22,6 +22,20 @@
       "when": 1791771029452,
       "tag": "0002_append_only_guards",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1791841840369,
+      "tag": "0003_identity_family_tables",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1791841844255,
+      "tag": "0004_identity_guards",
+      "breakpoints": true
     }
   ]
 }

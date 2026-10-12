@@ -12,6 +12,27 @@ export const ApiPaths = {
   playSession: (sessionId: string) => `${API_PREFIX}/play-sessions/${sessionId}`,
   question: (sessionId: string) => `${API_PREFIX}/play-sessions/${sessionId}/question`,
   answers: (sessionId: string) => `${API_PREFIX}/play-sessions/${sessionId}/answers`,
+
+  // Checkpoint E: family identity.
+  guardianEmailLinks: `${API_PREFIX}/guardian/email-links`,
+  guardianEmailLinkConsume: `${API_PREFIX}/guardian/email-links/consume`,
+  family: `${API_PREFIX}/family`,
+  familyChildren: `${API_PREFIX}/family/children`,
+  familyChildrenFromGuest: `${API_PREFIX}/family/children/from-guest`,
+  familyChildArchive: (childId: string) => `${API_PREFIX}/family/children/${childId}/archive`,
+  familyChildRestore: (childId: string) => `${API_PREFIX}/family/children/${childId}/restore`,
+  familyChildPin: (childId: string) => `${API_PREFIX}/family/children/${childId}/pin`,
+  device: `${API_PREFIX}/device`,
+  deviceProfile: `${API_PREFIX}/device/profile`,
+  devices: `${API_PREFIX}/devices`,
+  deviceRevoke: (deviceId: string) => `${API_PREFIX}/devices/${deviceId}/revoke`,
+  devicesRevokeAll: `${API_PREFIX}/devices/revoke-all`,
+  deviceCodes: `${API_PREFIX}/device-codes`,
+  deviceCodesRedeem: `${API_PREFIX}/device-codes/redeem`,
+  legacyOffer: `${API_PREFIX}/legacy/offer`,
+  legacyClaim: `${API_PREFIX}/legacy/claim`,
+  legacyClaimCode: `${API_PREFIX}/legacy/claim-code`,
+  legacyKidLink: (legacyKidId: string) => `${API_PREFIX}/legacy/kids/${legacyKidId}/link`,
 } as const;
 
 export const GAME_ID = 'zoo-sprint';
