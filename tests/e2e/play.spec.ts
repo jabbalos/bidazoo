@@ -69,7 +69,17 @@ async function bringIntoView(page: Page, id: string): Promise<void> {
   throw new Error(`could not scroll ${id} into view`);
 }
 
-/** Tap the centre of a published target with a real touch (phones) or mouse (desktop). */
+/**
+ * How taps are delivered, decided ONLY by the Playwright project (`hasTouch`), never by the browser
+ * or the host: `navigator.maxTouchPoints` reflects the machine (a Windows PC with a touch screen
+ * reports > 0 on a desktop project), and `page.touchscreen.tap()` throws unless the context was
+ * created with `hasTouch: true`. No fallback between the two: a misconfigured project must fail.
+ */
+function tapMode(): 'touch' | 'mouse' {
+  return test.info().project.use.hasTouch === true ? 'touch' : 'mouse';
+}
+
+/** Tap the centre of a published target with a real touch (phone projects) or mouse (desktop). */
 async function tap(page: Page, id: string): Promise<void> {
   await bringIntoView(page, id);
   const all = await targets(page);
@@ -80,8 +90,7 @@ async function tap(page: Page, id: string): Promise<void> {
   // Targets are published as top-left x/y plus width/height, in canvas CSS pixels.
   const x = box!.x + target!.x + target!.w / 2;
   const y = box!.y + target!.y + target!.h / 2;
-  const hasTouch = await page.evaluate(() => navigator.maxTouchPoints > 0);
-  if (hasTouch) await page.touchscreen.tap(x, y);
+  if (tapMode() === 'touch') await page.touchscreen.tap(x, y);
   else await page.mouse.click(x, y);
 }
 
@@ -230,6 +239,26 @@ test('menu: starter cards and Start Run are large, inside the width, and the pag
   // At least the first row of cards is on screen without any scrolling.
   expect(cards.filter((t) => t.visible).length).toBeGreaterThanOrEqual(2);
   expect(errors).toEqual([]);
+});
+
+test('input mode follows the Playwright project, not navigator.maxTouchPoints (host touch hardware)', async ({ page }) => {
+  // Make the browser report the OPPOSITE of the project's touch setting, as a touch-screen Windows
+  // PC does on a desktop project. The tap must still use the project's modality, and the page must
+  // see that modality's pointer type.
+  const expectedMode = test.info().project.use.hasTouch === true ? 'touch' : 'mouse';
+  await page.addInitScript((reportsTouch: boolean) => {
+    Object.defineProperty(navigator, 'maxTouchPoints', { get: () => (reportsTouch ? 5 : 0) });
+    const w = window as unknown as { __pointerTypes: string[] };
+    w.__pointerTypes = [];
+    window.addEventListener('pointerdown', (e) => w.__pointerTypes.push(e.pointerType), true);
+  }, expectedMode === 'mouse');
+  await bootToMenu(page);
+  expect(tapMode()).toBe(expectedMode);
+  await tap(page, 'character-koala');
+  await expect(page.locator('#game')).toHaveAttribute('data-character', 'koala');
+  const types = await page.evaluate(() => (window as unknown as { __pointerTypes: string[] }).__pointerTypes);
+  expect(types.length).toBeGreaterThan(0);
+  expect(new Set(types)).toEqual(new Set([expectedMode]));
 });
 
 test('menu: every starter can be chosen with a real tap, the choice is shown, and it survives a reload', async ({ page }) => {
