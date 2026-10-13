@@ -57,6 +57,17 @@ try {
     Remove-Item -LiteralPath $probe -Force
 } catch { Check 'release-root / tmp handling' $false $_.Exception.Message }
 
+# Regression: PostgreSQL truncates identifiers to 63 bytes; migration 0003 declares a 65-character FK name.
+try {
+    $long = 'device_auth_codes_used_by_device_session_id_device_sessions_id_fk'
+    $sql = 'ALTER TABLE "device_auth_codes" ADD CONSTRAINT "' + $long + '" FOREIGN KEY ("used_by_device_session_id") REFERENCES "public"."device_sessions"("id") ON DELETE set null ON UPDATE no action;--> statement-breakpoint' + "`n" +
+           'ALTER TABLE "a" ADD CONSTRAINT "a_b_fk" FOREIGN KEY ("x","y") REFERENCES "public"."b"("x","y") ON DELETE cascade ON UPDATE no action;'
+    $fk = @(Get-DeclaredForeignKeys $sql)
+    Check 'FK parser finds every declaration (2 of 2)' ($fk.Count -eq 2 -and [regex]::Matches($sql, 'FOREIGN KEY').Count -eq 2)
+    Check 'long FK name is truncated to 63 chars like PostgreSQL' (($long.Length -eq 65) -and ($fk[0].StoredName.Length -eq 63) -and ($fk[0].StoredName -ceq $long.Substring(0, 63)))
+    Check 'FK structure parsed (columns, referenced table, ON DELETE set null = n)' (($fk[0].Cols -eq 'used_by_device_session_id') -and ($fk[0].RefTable -eq 'device_sessions') -and ($fk[0].Del -eq 'n') -and ($fk[0].Upd -eq 'a') -and ($fk[1].Cols -eq 'x,y') -and ($fk[1].Del -eq 'c'))
+} catch { Check 'FK parser / identifier truncation' $false $_.Exception.Message }
+
 Check 'call depth stays small' ((Get-PSCallStack).Count -lt 10) ("depth=$((Get-PSCallStack).Count)")
 
 if ($fails -eq 0) { Write-Host "SELF-TEST PASS" ; exit 0 } else { Write-Host "SELF-TEST FAIL ($fails)"; exit 1 }

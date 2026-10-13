@@ -379,21 +379,69 @@ function Probe-Status {
 }
 
 # ---------------------------------------------------------------- migration object verification
-# Verifies, via scriptblock $Q, that everything declared in migrations 0003 and 0004 exists.
+# PostgreSQL silently truncates identifiers longer than 63 bytes (NAMEDATALEN-1). Migration 0003 declares one
+# 65-character foreign-key name, which PostgreSQL stores truncated. Expected names are therefore truncated the
+# same way, and foreign keys are verified by STRUCTURE (table, columns, referenced table/columns, ON DELETE,
+# ON UPDATE), not only by name. Names here are ASCII, so characters == bytes.
+function Get-PgIdentifier { param([string]$Name) if ($Name.Length -gt 63) { return $Name.Substring(0, 63) } return $Name }
+function Get-PgActionCode {
+    param([string]$Action)
+    switch ($Action.Trim().ToLowerInvariant()) {
+        'no action' { return 'a' } 'restrict' { return 'r' } 'cascade' { return 'c' }
+        'set null' { return 'n' } 'set default' { return 'd' } default { throw "Unknown referential action: $Action" }
+    }
+}
+# Parses every ALTER TABLE ... ADD CONSTRAINT ... FOREIGN KEY declaration in a migration file's text.
+function Get-DeclaredForeignKeys {
+    param([string]$MigrationSql)
+    $rx = 'ALTER TABLE "(\w+)" ADD CONSTRAINT "(\w+)" FOREIGN KEY \(([^)]+)\) REFERENCES "public"\."(\w+)"\(([^)]+)\) ON DELETE ([a-z ]+?) ON UPDATE ([a-z ]+?);'
+    $out = @()
+    foreach ($m in [regex]::Matches($MigrationSql, $rx)) {
+        $out += [pscustomobject]@{
+            Table = $m.Groups[1].Value; DeclaredName = $m.Groups[2].Value; StoredName = (Get-PgIdentifier $m.Groups[2].Value)
+            Cols = ($m.Groups[3].Value -replace '[" ]', ''); RefTable = $m.Groups[4].Value; RefCols = ($m.Groups[5].Value -replace '[" ]', '')
+            Del = (Get-PgActionCode $m.Groups[6].Value); Upd = (Get-PgActionCode $m.Groups[7].Value)
+        }
+    }
+    return $out
+}
+function Format-DeclaredFk { param($f) return ('{0}({1}) -> {2}({3}) del={4} upd={5} name={6}' -f $f.Table, $f.Cols, $f.RefTable, $f.RefCols, $f.Del, $f.Upd, $f.StoredName) }
+# SQL (single SELECT, no double quotes, no semicolon) returning one text row per foreign key on the given tables.
+function Get-ActualFkSql {
+    param([string[]]$Tables)
+    $list = "array['" + ($Tables -join "','") + "']"
+    return ("select cl.relname || '(' || (select string_agg(a.attname, ',' order by k.ord) from unnest(c.conkey) with ordinality k(attnum, ord) join pg_attribute a on a.attrelid = c.conrelid and a.attnum = k.attnum) || ') -> ' || rl.relname || '(' || (select string_agg(a.attname, ',' order by k.ord) from unnest(c.confkey) with ordinality k(attnum, ord) join pg_attribute a on a.attrelid = c.confrelid and a.attnum = k.attnum) || ') del=' || c.confdeltype::text || ' upd=' || c.confupdtype::text || ' name=' || c.conname::text as x from pg_constraint c join pg_class cl on cl.oid = c.conrelid join pg_class rl on rl.oid = c.confrelid join pg_namespace n on n.oid = cl.relnamespace where c.contype = 'f' and n.nspname = 'public' and cl.relname = any(" + $list + ") order by 1")
+}
+
 function Test-IdentitySchema {
     param([scriptblock]$Q, [string]$MigrationsDir)
     $m3 = Get-Content -LiteralPath (Join-Path $MigrationsDir '0003_identity_family_tables.sql') -Raw
     $m4 = Get-Content -LiteralPath (Join-Path $MigrationsDir '0004_identity_guards.sql') -Raw
-    $tables = @([regex]::Matches($m3, 'CREATE TABLE "([^"]+)"') | ForEach-Object { $_.Groups[1].Value } | Sort-Object -Unique)
-    $cons   = @([regex]::Matches($m3, 'ADD CONSTRAINT "([^"]+)"') | ForEach-Object { $_.Groups[1].Value } | Sort-Object -Unique)
-    $idx    = @([regex]::Matches($m3, 'CREATE (?:UNIQUE )?INDEX "([^"]+)"') | ForEach-Object { $_.Groups[1].Value } | Sort-Object -Unique)
-    $trg    = @([regex]::Matches($m4, 'CREATE TRIGGER (\w+)') | ForEach-Object { $_.Groups[1].Value } | Sort-Object -Unique)
-    $fns    = @([regex]::Matches($m4, 'CREATE FUNCTION (\w+)') | ForEach-Object { $_.Groups[1].Value } | Sort-Object -Unique)
+    $tables = @([regex]::Matches($m3, 'CREATE TABLE "([^"]+)"') | ForEach-Object { Get-PgIdentifier $_.Groups[1].Value } | Sort-Object -Unique)
+    $fkDecl = @(Get-DeclaredForeignKeys $m3)
+    $fkWords = [regex]::Matches($m3, 'FOREIGN KEY').Count
+    # every other CONSTRAINT declared inside CREATE TABLE (CHECK / UNIQUE): inline "CONSTRAINT "name" ..."
+    $inline = @([regex]::Matches($m3, '(?m)^\s*CONSTRAINT "([^"]+)"') | ForEach-Object { Get-PgIdentifier $_.Groups[1].Value } | Sort-Object -Unique)
+    $idx    = @([regex]::Matches($m3, 'CREATE (?:UNIQUE )?INDEX "([^"]+)"') | ForEach-Object { Get-PgIdentifier $_.Groups[1].Value } | Sort-Object -Unique)
+    $trg    = @([regex]::Matches($m4, 'CREATE TRIGGER (\w+)') | ForEach-Object { Get-PgIdentifier $_.Groups[1].Value } | Sort-Object -Unique)
+    $fns    = @([regex]::Matches($m4, 'CREATE FUNCTION (\w+)') | ForEach-Object { Get-PgIdentifier $_.Groups[1].Value } | Sort-Object -Unique)
     $arr = { param($names) "array['" + ($names -join "','") + "']" }
     $n = @(& $Q "select count(*) from pg_class c join pg_namespace s on s.oid=c.relnamespace where s.nspname='public' and c.relkind='r' and c.relname = any($(& $arr $tables))")[0]
     Rec "identity tables present ($($tables.Count) declared in 0003)" ([int]$n -eq $tables.Count) "found=$n"
-    $n = @(& $Q "select count(*) from pg_constraint where conname = any($(& $arr $cons))")[0]
-    Rec "foreign keys present ($($cons.Count) declared in 0003)" ([int]$n -eq $cons.Count) "found=$n"
+    # --- foreign keys: structural comparison, each declared FK must exist exactly once ---
+    Rec "FK parser sanity: ALTER ... FOREIGN KEY declarations parsed = FOREIGN KEY occurrences ($fkWords)" ($fkDecl.Count -eq $fkWords -and $fkWords -gt 0) "parsed=$($fkDecl.Count) occurrences=$fkWords"
+    $actualFk = @(& $Q (Get-ActualFkSql -Tables $tables) | Where-Object { $_ -ne '' })
+    $expectedFk = @($fkDecl | ForEach-Object { Format-DeclaredFk $_ })
+    $missingFk = @($expectedFk | Where-Object { $actualFk -notcontains $_ })
+    $extraFk   = @($actualFk   | Where-Object { $expectedFk -notcontains $_ })
+    Rec "foreign keys present and structurally identical ($($fkDecl.Count) declared in 0003)" (($missingFk.Count -eq 0) -and ($extraFk.Count -eq 0) -and ($actualFk.Count -eq $fkDecl.Count)) ("found=$($actualFk.Count) missing=[" + ($missingFk -join ' ; ') + "] unexpected=[" + ($extraFk -join ' ; ') + "]")
+    $longNames = @($fkDecl | Where-Object { $_.DeclaredName -ne $_.StoredName })
+    foreach ($ln in $longNames) { Note ("PostgreSQL truncates this 63+ character constraint name: declared {0} ({1} chars) -> stored {2}" -f $ln.DeclaredName, $ln.DeclaredName.Length, $ln.StoredName) }
+    Write-Host '      actual foreign keys:'; $actualFk | ForEach-Object { Write-Host "        $_" }
+    if ($inline.Count -gt 0) {
+        $n = @(& $Q "select count(*) from pg_constraint where contype in ('p','c','u') and conname = any($(& $arr $inline))")[0]
+        Rec "CHECK/UNIQUE constraints present ($($inline.Count) declared inline in 0003)" ([int]$n -eq $inline.Count) "found=$n"
+    }
     $n = @(& $Q "select count(*) from pg_indexes where schemaname='public' and indexname = any($(& $arr $idx))")[0]
     Rec "indexes present ($($idx.Count) declared in 0003)" ([int]$n -eq $idx.Count) "found=$n"
     $n = @(& $Q "select count(*) from pg_trigger where not tgisinternal and tgname = any($(& $arr $trg))")[0]
