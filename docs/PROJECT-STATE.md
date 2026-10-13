@@ -12,7 +12,7 @@ If this file and another doc disagree about status, fix the other doc.
 | Checkpoint B (first playable server-authoritative slice) | **COMPLETE and Studio-PC validated** |
 | Checkpoint C (five-starter presentation) | **COMPLETE and Studio-PC validated** (October 12, 2026) |
 | Checkpoint D (public-beta security gate) | **COMPLETE and Studio-PC validated** (October 12, 2026; exact validated commit `52547a356bdde6397c4b576381c30efff05e1d6e`) |
-| Checkpoint E (family identity and migration) | **IMPLEMENTED through Commit 10 on branch `checkpoint-e-identity`. NOT Studio-validated. NOT deployed. NOT closed.** Closure needs Commit 12 (Studio validation). See the Checkpoint E section. |
+| Checkpoint E (family identity and migration) | **COMPLETE and Studio-PC validated** (October 12, 2026; exact validated commit `a283c2470fe5abcb47f49d3f5753dea1bd881e78`). **NOT deployed**; the live beta runs the pre-E build and identity is not enabled. |
 | Real-device performance, Click, final art | **NOT authorized.** Separate later checkpoints. |
 
 ## Baselines and commits
@@ -111,9 +111,9 @@ Do not weaken or redesign these without explicit approval. Details in
 
 ## Known limitations (accepted, recorded)
 
-No CAPTCHA or distributed-attack defense; clearing the guest cookie loses progress unless a guardian claimed the guest first (Checkpoint E, not yet validated or deployed, so the live beta still has no claim path);
+No CAPTCHA or distributed-attack defense; clearing the guest cookie loses progress unless a guardian claimed the guest first (Checkpoint E, validated but not deployed, so the live beta still has no claim path);
 abuse limits are in-process and best-effort (tumbling windows, lost on restart, per process); the client CSP needs the host to send headers or relies on its embedded `<meta>`; mastery days use UTC; network latency counts toward response time; a replayed answer shows current
-mastery; character art is code-drawn transitional art, not final; Click (the host) is not implemented; real-device performance unmeasured; no backups or retention jobs (identity audit logging exists in Checkpoint E, not yet deployed); children's-data privacy and legal review is still needed before real use.
+mastery; character art is code-drawn transitional art, not final; Click (the host) is not implemented; real-device performance unmeasured; no backups or retention jobs (identity audit logging exists in Checkpoint E, validated but not deployed); children's-data privacy and legal review is still needed before real use.
 
 ## Checkpoint D: public-beta security gate (COMPLETE; Studio-PC validated)
 
@@ -147,28 +147,44 @@ default numbers: [SECURITY.md](SECURITY.md) ("Public-beta protections").
   [STUDIO-VALIDATION.md](STUDIO-VALIDATION.md). The validator's expected counts (51 / 115 + 3 todo / 56
   / 4 projects) were set in `abde130`.
 
-## Checkpoint E: family identity and migration (IMPLEMENTED, NOT closed)
+## Checkpoint E: family identity and migration (COMPLETE; Studio-PC validated; NOT deployed)
 
-**Checkpoint D remains COMPLETE.** Checkpoint E is **implementation feature-complete through Commit 10**
-but is **not formally closed** until Commit 12 (official Studio validation) passes. Do not describe it
-as complete.
+**Checkpoint E — COMPLETE** as a development and validation checkpoint (October 12, 2026).
+**Checkpoint E being complete does NOT mean family identity is live.** The live beta still runs the
+pre-Checkpoint-E application. Checkpoint D remains COMPLETE.
 
-| Word | Meaning here | Checkpoint E today |
+| Word | Meaning here | Checkpoint E |
 | --- | --- | --- |
-| **IMPLEMENTED** | Code exists, committed, and passed development tests in a sandbox. | **Yes**, through Commit 10 (this section is the docs commit, Commit 11). |
-| **STUDIO-VALIDATED** | The official run on the Studio PC passed with the pinned Playwright browser and was recorded in [STUDIO-VALIDATION.md](STUDIO-VALIDATION.md). | **No.** Pending Commit 12. |
-| **DEPLOYED** | Running in the live beta. | **No.** |
+| **IMPLEMENTED** | Code exists and is committed. | **YES** |
+| **STUDIO-VALIDATED** | The official run on the Studio PC passed with the pinned Playwright browser and is recorded in [STUDIO-VALIDATION.md](STUDIO-VALIDATION.md). | **YES** |
+| **DEPLOYED** | Running in the live beta. | **NO** |
 
-- **Branch:** `checkpoint-e-identity` (pushed to `origin`). **Implementation HEAD at this docs commit:**
-  `32d172c` (Commit 10, SMTP adapter). **`main` stays at `cf02ba5`**, the stable baseline; the feature
-  branch is not merged and must not be until Checkpoint E is validated and the owner approves.
-- **Live beta:** still on the **pre-Checkpoint-E deployment**. **Identity is not enabled** in the live
-  beta (the deployed build predates the identity code). Nothing in this checkpoint has been deployed, and
+- **Exact Studio-validated commit (validated implementation):** `a283c2470fe5abcb47f49d3f5753dea1bd881e78`
+  ("tooling: update Studio validator for Checkpoint E").
+- **Closure documentation:** the docs-only commit that adds this text (find it with
+  `git log -1 -- docs/PROJECT-STATE.md`). It came **after** the validated commit, changed no
+  application, test, validator or runtime file, and is **not** itself the validated application SHA.
+- **Official validation evidence:** `.validation-logs/20261012-221739` (Studio PC, local and
+  git-ignored; the numbers are recorded in [STUDIO-VALIDATION.md](STUDIO-VALIDATION.md)).
+- **Official counts and environment:** unit 51 passed; integration 375 passed + 3 todo; Playwright
+  120/120 passed across 4 projects, 0 failed, 0 flaky, 0 retries; Playwright 1.64.0 with the pinned
+  Chromium 156.0.8078.4 (revision 1248); PostgreSQL 16.15 (portable, isolated, 127.0.0.1:54329);
+  build PASS; client bundle scan CLEAN (7 files, 1,256,370 bytes, 24 forbidden markers); live API
+  playthrough ALL CHECKS PASSED (39 PASS lines); overall PASS.
+- **Branch:** `checkpoint-e-identity` (pushed to `origin`). **`main` remains at `cf02ba5`** and is
+  unchanged until a later, explicit merge decision by the project owner.
+- **Live beta:** still on the **pre-Checkpoint-E deployment**. **Identity is NOT enabled in
+  production.** Not done, and not claimed: production identity secrets, production SMTP, the
+  `notify.bidazoo.com` sending domain and its SPF/DKIM/DMARC records, a real guardian email test, the
+  Checkpoint E database migration on the live beta, or any deployment. Those belong to the separate
+  **Identity Release Gate** ([IDENTITY-OPERATIONS.md](IDENTITY-OPERATIONS.md) section 10).
   Cloudflare Access is not configured on `play.bidazoo.com`.
-- **Commits:** 1 `87f1411`, 2 `bf12084`, 3 `2e4e5fe`, 4 `d0d4a3f`, 5 `58fc941`, 6 `170bc79`,
-  7 `ae3c212`, 8 `5d0b636`, 9 `ce670ce` (account UI) plus follow-up `b38b7a0` (guest-claim
-  availability), 10 `32d172c` (SMTP adapter), 11 documentation (this commit), 12 Studio validation
-  and closure (not started).
+- **Commits (in order):** 1 `87f1411`, 2 `bf12084`, 3 `2e4e5fe`, 4 `d0d4a3f`, 5 `58fc941`,
+  6 `170bc79`, 7 `ae3c212`, 8 `5d0b636`, 9 `ce670ce` (account UI) plus follow-up `b38b7a0`
+  (guest-claim availability), 10 `32d172c` (SMTP adapter), 11 `161db9a` (documentation) plus
+  `057aac4` (`.env.example` comments), `03748ae` (Playwright tap helper uses the project's
+  `hasTouch`, test only), `a283c24` (validator expected counts, the validated commit), then the
+  docs-only closure commit.
 - **Shape:** Family -> Guardians -> Child Profiles -> existing or new `player_id` -> Trusted Device
   Sessions. Guardians prove an email with a single-use link (no password, no social login, no child
   email). A device is trusted for up to 90 days; guardian authority on it lasts 24 hours. Profiles may
@@ -190,14 +206,10 @@ as complete.
   must watch the mail-failure log); the legacy loader does no Windows ACL check; a guest whose cookie
   is cleared before a claim is still lost; no COPPA, FERPA, Safe Harbor or privacy certification is
   claimed.
-- **Supplementary development results (NOT the official validation):** unit 51; integration 375
-  passed + 3 todo; Playwright account sanity 60; latest full UI run (Commit 9 follow-up) 116 passed,
-  0 failed, on a Chromium that is not the pinned build; client scan clean with 24 forbidden markers.
-  The official run is Commit 12.
 
 ## Deferred (not authorized)
 
-With Checkpoint D closed, in order (none authorized yet): real-device performance checks; the Click host character; final character art. (The guest-account recovery and claim strategy is now implemented in Checkpoint E, pending validation.) Also still open:
+With Checkpoint D closed, in order (none authorized yet): real-device performance checks; the Click host character; final character art. (The guest-account recovery and claim strategy is now implemented and Studio-validated in Checkpoint E, not yet deployed.) Also still open:
 CAPTCHA, a shared (multi-process) limiter store, distributed-attack defense, backups,
 retention, and children's-data legal review. (Official Playwright validation, rate limiting, guest
 creation limits, and CSP were formerly on this list.)

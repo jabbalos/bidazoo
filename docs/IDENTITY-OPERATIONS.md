@@ -2,10 +2,10 @@
 
 Last updated: October 12, 2026.
 
-**Status: IMPLEMENTED through Commit 10, NOT Studio-validated, NOT deployed.** Nothing in this file
+**Status: Checkpoint E is COMPLETE and Studio-validated (`a283c24`), NOT deployed.** Nothing in this file
 has been run against the live beta. The live beta (`play.bidazoo.com`) is on its pre-Checkpoint-E
 deployment and identity is **not enabled** there. Everything below is procedure for a future release
-and for the Studio validation in Commit 12. Architecture and behavior are in
+and for the future Identity Release Gate. Architecture and behavior are in
 [IDENTITY.md](IDENTITY.md); design history is in
 [IDENTITY-MIGRATION-ASSESSMENT.md](IDENTITY-MIGRATION-ASSESSMENT.md); the closed-beta deployment
 record is [DEPLOYMENT-CLOSED-BETA.md](DEPLOYMENT-CLOSED-BETA.md).
@@ -52,7 +52,7 @@ Names and placeholders only (the commented template is `.env.example`). `.env` i
 | Variable | Placeholder / default | Notes |
 | --- | --- | --- |
 | `IDENTITY_SECRET` | `<32+ random characters>` | Unset = identity off. |
-| `LEGACY_MATCH_PEPPER` | `<32+ random characters>` | Needed to load or claim legacy data. Unset = legacy claiming is off (404/400 generic). **Not listed in `.env.example` at the time of Commit 11**; see "Warnings" in the Commit 11 report. |
+| `LEGACY_MATCH_PEPPER` | `<32+ random characters>` | Needed to load or claim legacy data. Unset = legacy claiming is off (404/400 generic). |
 | `PUBLIC_BASE_URL` | `https://play.bidazoo.com` | Origin used in emailed links. |
 | `MAIL_TRANSPORT` | `smtp` in production | `console`/`file`/`none` are non-production. |
 | `MAIL_OUTBOX_DIR` | `./.mail-outbox` | `file` transport only (development, e2e). |
@@ -278,7 +278,7 @@ file sender.
 ## 10. Future identity-release checklist (NOT executed)
 
 This is the gate for a future deployment. It is **not** authorization to deploy. Checkpoint E must be
-closed (Commit 12 Studio validation passed) and the project owner must explicitly approve a release.
+closed (done: Studio-validated, October 12, 2026) and the project owner must explicitly approve a release.
 
 1. [ ] Back up the production database and verify the backup restores.
 2. [ ] Apply migrations `0003` and `0004` in a rehearsal copy first, then to production.
@@ -294,8 +294,8 @@ closed (Commit 12 Studio validation passed) and the project owner must explicitl
 11. [ ] Rollback verification: confirm that unsetting `IDENTITY_SECRET` returns the app to guest-only
     and that the pre-release backup is still the recovery point.
 
-## 11. Studio validation preparation (Commit 12)
+## 11. Validation record
 
-These are development and **supplementary** results from the Linux sandbox. They are **not** the
-official Checkpoint E Studio validation. They are recorded in
-[STUDIO-VALIDATION.md](STUDIO-VALIDATION.md).
+The official Checkpoint E Studio validation (October 12, 2026, commit `a283c24`) is recorded in
+[STUDIO-VALIDATION.md](STUDIO-VALIDATION.md). It used the fake and file mail senders only: no real
+mail, DNS or production secret was involved, so steps 3 to 5 of the section 10 gate remain untested.

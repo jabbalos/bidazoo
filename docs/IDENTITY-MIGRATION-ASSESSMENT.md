@@ -5,8 +5,8 @@ schema, or configuration was changed, and nothing in Hop Quest, the Accounts ser
 Cloudflare was modified. Identity implementation is **not authorized** until this document is
 reviewed and approved.
 
-> **Status update (October 12, 2026, Commit 11):** this proposal was approved in part and **implemented
-> in Checkpoint E** on branch `checkpoint-e-identity` (implemented, NOT Studio-validated, NOT
+> **Status update (October 12, 2026, Checkpoint E closure):** this proposal was approved in part and **implemented
+> in Checkpoint E** on branch `checkpoint-e-identity` (implemented and Studio-validated, NOT
 > deployed). The text below is the original assessment and is kept as the design record; where it
 > differs from the code, the code and [IDENTITY.md](IDENTITY.md) win. What was decided in
 > implementation: email delivery is a **provider-neutral SMTP adapter** (no named provider);

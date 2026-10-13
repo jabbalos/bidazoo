@@ -1,33 +1,61 @@
 # Studio PC validation (official Playwright run)
 
 Status: **COMPLETE. Official validation passed on the Studio PC on October 12, 2026, for
-Checkpoints B, C, and D.** The accepted Checkpoint B application baseline is commit `01b7d41`; the
+Checkpoints B, C, D, and E.** The accepted Checkpoint B application baseline is commit `01b7d41`; the
 Checkpoint C game implementation is `7042f8f`; the Checkpoint D exact validated commit is
-`52547a356bdde6397c4b576381c30efff05e1d6e`. The Checkpoint D record comes first below, then
-Checkpoint C, then Checkpoint B.
+`52547a356bdde6397c4b576381c30efff05e1d6e`; the Checkpoint E exact validated commit is
+`a283c2470fe5abcb47f49d3f5753dea1bd881e78`. The Checkpoint E record comes first below, then
+Checkpoint D, then Checkpoint C, then Checkpoint B.
 
-## Checkpoint E: preparation for Commit 12 (NOT a validation record)
+## Checkpoint E validation record (official run, passed)
 
-Checkpoint E (family identity) is **IMPLEMENTED through Commit 10, not Studio-validated, not
-deployed, and not closed.** Nothing in this section claims a pass. The official run is Commit 12.
+Source: the local run folder `.validation-logs\20261012-221739` on the Studio PC (git-ignored, so the
+evidence is recorded here). Command: `scripts\validate-studio.bat -PortablePostgres`,
+normal (non-elevated) user, Playwright's pinned Chromium.
 
-These are **development and supplementary results** from the Linux sandbox. They are **not** the
-official Checkpoint E Studio validation:
+| Item | Result |
+| --- | --- |
+| Date and shell | October 12, 2026, run folder `20261012-221739` |
+| Git commit tested (exact validated commit) | `a283c2470fe5abcb47f49d3f5753dea1bd881e78` ("tooling: update Studio validator for Checkpoint E") |
+| Vitest (unit) | 51 passed |
+| Vitest (integration, real PostgreSQL) | 375 passed, 3 todo (378 including todo) |
+| Playwright | 120 passed of 120, 0 failed, 0 flaky, 0 skipped; 4 projects (360x640, 390x844, 820x1180, 1440x900) |
+| Retries | None (0) |
+| Playwright version | 1.64.0 |
+| Chromium | 156.0.8078.4 (Playwright's pinned build, revision 1248; `PW_CHROMIUM_EXECUTABLE` unset) |
+| PostgreSQL | 16.15, portable, isolated and BidaZoo-owned, 127.0.0.1:54329; databases `bidazoo_test` and `bidazoo_e2e` |
+| Production build | PASS |
+| Client bundle scan (`npm run scan:client`) | **CLEAN**: 7 files, 1,256,370 bytes, 24 forbidden markers checked |
+| Live API playthrough (`npm run playthrough`) | **ALL CHECKS PASSED**, 39 PASS lines |
+| Typecheck (`npm run typecheck`) | Outside `validate-studio.ps1` (the validator has no typecheck step). **Not confirmed in the results supplied for this record, so no result is recorded here.** |
+| Validator expected counts | 51 unit, 375 integration, 3 todo, 120 Playwright, 4 projects, set in `a283c24` from the green pre-run; no count warnings were reported in the results supplied |
+| Overall | **PASS** |
 
-| Item | Supplementary result | Notes |
-| --- | --- | --- |
-| Vitest unit | 51 passed | |
-| Vitest integration (real PostgreSQL) | 375 passed + 3 todo | |
-| Playwright, account sanity | 60 passed | |
-| Playwright, latest full UI run (Commit 9 follow-up) | 116 passed, 0 failed | Ran on Chromium 1194 via `PW_CHROMIUM_EXECUTABLE`, **not** the pinned build. |
-| Client bundle scan | clean, 24 forbidden markers | Four added in Commit 10: `nodemailer`, `MAIL_SMTP_`, `IDENTITY_SECRET`, `LEGACY_MATCH_PEPPER`. |
+The identity behavior (guardian sign-in, devices, profiles, PIN, guest claim, legacy claim, audit,
+throttles, mail with the fake/file sender) is proven by the integration and Playwright suites in those
+totals. No real mail provider, DNS record or production secret was used or needed.
 
-**For Commit 12:** the official run must use Playwright's **pinned** Chromium (leave
-`PW_CHROMIUM_EXECUTABLE` unset), run on the Studio PC with `scripts\validate-studio.bat
--PortablePostgres`, as a normal user. The validator's expected counts in `scripts\validate-studio.ps1`
-still describe the Checkpoint D baseline (115 integration, 56 Playwright) and **must be updated in
-Commit 12** to the Checkpoint E totals; until then a run prints count warnings. The "20 forbidden
-markers" figures in the Checkpoint D record above are historical and stay as they are.
+**How the commits relate.** `a283c24` is the exact validated commit. The documentation-only closure
+commit that records this result came after it and was not itself validated; it changed no application,
+test, validator or runtime file.
+
+**Pre-run history (kept short).** The first Studio pre-run, on `057aac4`, ran unit 51 and integration
+375 + 3 todo cleanly but Playwright had 4 failures out of 116 (112 passed; the 4 retries failed again),
+all on `desktop-1440x900`, all with `touchscreen.tap: hasTouch must be enabled on the browser context`.
+The shared test tap helper chose touch input from `navigator.maxTouchPoints`, which reflects the host:
+the touch-capable Studio PC reported touch on a desktop project that was not created with
+`hasTouch`. The helper now reads the Playwright project's `hasTouch` setting, with no fallback, and a
+regression test covers it (`03748ae`, test only; no gameplay or application change). A second pre-run on
+`03748ae` was green (run `20261012-220415`: 51 unit, 375 + 3 todo, 120/120 Playwright, build, scan and
+playthrough passing), and the validator counts were then calibrated in `a283c24`, which passed the
+official run above.
+
+**Not done by this checkpoint (and not claimed):** deployment, production identity secrets, production
+SMTP, the `notify.bidazoo.com` DNS records, or a real guardian email test. The live beta is unchanged.
+Those are the Identity Release Gate ([IDENTITY-OPERATIONS.md](IDENTITY-OPERATIONS.md) section 10).
+
+Conclusion: **Checkpoint E is complete and Studio-PC validated, and not deployed.** The Checkpoint D,
+C and B records below are unchanged, including their historical "20 forbidden markers" figure.
 
 ## Checkpoint D validation record (official run, passed)
 

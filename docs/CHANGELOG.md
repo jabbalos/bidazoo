@@ -2,32 +2,55 @@
 
 All notable changes, by checkpoint. Dates use US format.
 
-## Checkpoint E: family identity and migration (October 12, 2026; IN PROGRESS, NOT closed)
+## Checkpoint E: family identity and migration (October 12, 2026; COMPLETE, Studio-PC validated, NOT deployed)
 
-Implemented on branch `checkpoint-e-identity` through Commit 10; documentation in Commit 11. **Not
-Studio-validated, not deployed, not merged to `main` (`cf02ba5`).** Closure needs Commit 12. No change
-to gameplay, grading, mastery, XP, coins, timing, attempt idempotency or learning-core: learning state
-stays keyed to `player_id`.
+Documentation only for this entry. Checkpoint E is **COMPLETE**: IMPLEMENTED yes, STUDIO-VALIDATED yes,
+DEPLOYED **no**. The exact validated commit is `a283c2470fe5abcb47f49d3f5753dea1bd881e78` ("tooling: update Studio validator for
+Checkpoint E"); the docs-only closure commit came after it and was not itself validated. Official run:
+October 12, 2026, run folder `.validation-logs\20261012-221739`, normal user,
+`scripts\validate-studio.bat -PortablePostgres`, overall PASS: unit 51; integration 375 + 3
+todo; Playwright 120/120, 4 projects, 0 failed, 0 flaky, 0 retries; Playwright 1.64.0, pinned Chromium
+156.0.8078.4 (revision 1248); PostgreSQL 16.15; build PASS; client scan CLEAN (7 files, 1,256,370
+bytes, 24 forbidden markers); playthrough ALL CHECKS PASSED (39 PASS lines). Full record:
+[STUDIO-VALIDATION.md](STUDIO-VALIDATION.md). Branch `checkpoint-e-identity`; `main` stays at `cf02ba5`.
+**Family identity is not live:** the live beta runs the pre-E application, with no production identity
+secrets, no production SMTP, no `notify.bidazoo.com` DNS, no real guardian email test and no database
+migration for E. Those belong to the separate Identity Release Gate.
 
-- **Guardian and family identity:** email-link sign-in (no password, no child email), generic public
-  responses, single-use hashed tokens, families, guardians, child profiles, additive schema and contracts. (`87f1411` schema, `bf12084` sign-in and throttles, `2e4e5fe` profiles)
-- **Trusted devices:** 90-day device sessions, 24-hour guardian authority, active child, device codes,
-  revoke one or all. (`d0d4a3f`)
-- **Guest claim:** keep an existing guest player as a profile with the same `player_id`; read-only
-  availability check. (`58fc941`, `b38b7a0`)
-- **Profile PIN:** optional four-digit local switch lock with durable lockout. (`170bc79`)
-- **Legacy migration plumbing:** offline manifest loader, keyed email match, verified-email claim,
-  explicit kid link, operator claim codes. (`ae3c212`)
-- **Audit and security hardening:** append-only audit trail, durable identity throttles, route
-  authority inventory. (`5d0b636`)
-- **Identity UI:** the account page and its browser tests. (`ce670ce`)
-- **SMTP adapter:** provider-neutral, verified TLS, production refuses non-SMTP, safe failure
-  categories, `identity:mail-test`. (`32d172c`)
-- **Documentation (Commit 11):** [IDENTITY.md](IDENTITY.md), [IDENTITY-OPERATIONS.md](IDENTITY-OPERATIONS.md),
-  status and limitation updates in PROJECT-STATE, ARCHITECTURE, SECURITY and STUDIO-VALIDATION.
-- **Known limits:** rotating `IDENTITY_SECRET` makes stored PIN hashes unverifiable; no dual-key
-  rotation; SPF, DKIM and DMARC are not configured; the legacy loader does no Windows ACL check; no
-  compliance or certification is claimed.
+**The key invariant held:** Checkpoint E did **not** alter the server-authoritative learning model.
+Questions, grading, timing, mastery, XP, coins and completion remain server controlled and keyed to
+`player_id`; attempts and ledgers stay append-only; character selection stays outside learning logic.
+
+### Delivered
+
+- **Family identity model:** families, guardians and child profiles, with additive schema and
+  contracts. (`87f1411`, `2e4e5fe`)
+- **Guardian email-link authentication:** no password, no child email, generic public responses,
+  single-use hashed tokens, and a provider-neutral mail abstraction. (`bf12084`)
+- **Trusted-device sessions:** 90-day devices, 24-hour guardian authority, device codes, revoke one or
+  all. (`d0d4a3f`)
+- **Child profiles and active profile switching.** (`2e4e5fe`, `d0d4a3f`)
+- **Optional four-digit local profile PIN** with a durable lockout. (`170bc79`)
+- **Guest-to-child claim** that keeps the existing `player_id`, plus a **read-only guest-claim
+  availability** check. (`58fc941`, `b38b7a0`)
+- **Legacy Hop Quest family claim plumbing:** offline manifest loader, verified-email matching by keyed
+  HMAC, operator claim codes, and legacy child linking (a fresh player, no imported progress). (`ae3c212`)
+- **Audit and security hardening, and database-backed identity throttles.** (`5d0b636`, `bf12084`)
+- **Identity and account UI.** (`ce670ce`)
+- **Production-capable SMTP adapter** with safe failure categories and `identity:mail-test`. (`32d172c`)
+- **Operator and recovery documentation:** [IDENTITY.md](IDENTITY.md),
+  [IDENTITY-OPERATIONS.md](IDENTITY-OPERATIONS.md), and `.env.example` comments. (`161db9a`, `057aac4`)
+- **Official Studio validation** (above), after a test-helper correction and validator calibration:
+  `03748ae` made the Playwright tap helper choose touch or mouse from the project's `hasTouch` instead of
+  the host's `navigator.maxTouchPoints` (test only; the first pre-run had exposed it on touch-capable
+  Studio hardware), and `a283c24` set the validator's expected counts to 375 integration and 120
+  Playwright.
+
+### Known limits
+
+Rotating `IDENTITY_SECRET` makes stored PIN hashes unverifiable; no dual-key rotation; SPF, DKIM and
+DMARC are not configured; the legacy loader does no Windows ACL check; no COPPA, FERPA, Safe Harbor or
+privacy certification or compliance is claimed.
 
 ## Checkpoint D closure: Studio-PC validated (October 12, 2026)
 

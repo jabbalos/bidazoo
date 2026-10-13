@@ -266,7 +266,7 @@ The development server (`vite dev`) does not send the CSP: its hot-reload client
 runtime and would only produce noise. Always judge CSP behavior on the built client (`vite preview`,
 which Playwright uses).
 
-## Family identity (Checkpoint E: implemented, NOT Studio-validated, NOT deployed)
+## Family identity (Checkpoint E: COMPLETE and Studio-validated, NOT deployed)
 
 The live beta does not run this code. Full behavior: [IDENTITY.md](IDENTITY.md). Operations and secret
 rotation: [IDENTITY-OPERATIONS.md](IDENTITY-OPERATIONS.md).
@@ -304,7 +304,7 @@ privacy certification or compliance is claimed.
 - **Abuse protection is in-process and best-effort.** See "Limits of the mechanism" and the
   service-wide breaker limitation above. There is no CAPTCHA, no shared limiter store, and no
   distributed-attack defense.
-- **No CAPTCHA or abuse detection.** On the deployed baseline there is no account recovery: a guest who clears cookies loses progress. Checkpoint E adds guardian accounts and guest claim (not yet validated or deployed); a guest whose cookie is cleared before a claim is still lost.
+- **No CAPTCHA or abuse detection.** On the deployed baseline there is no account recovery: a guest who clears cookies loses progress. Checkpoint E adds guardian accounts and guest claim (validated but not yet deployed); a guest whose cookie is cleared before a claim is still lost.
 - **The same-origin check trusts the `Origin` header being absent for non-browser clients.**
   That is intentional (curl and tests have no ambient cookie), but it means this check is defense
   in depth, not the primary control.

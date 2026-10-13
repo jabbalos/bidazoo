@@ -10,8 +10,8 @@ An educational-game platform for kids. Games are fun; **learning progress is dec
 > Checkpoint B is a first playable slice: a guest can open the page, pick a starter, and play a
 > 10-question multiplication run. Every question, grade, mastery update, and reward is decided and
 > stored by the server in PostgreSQL; the Phaser client only presents it.
-> Checkpoint E (family identity) is implemented on branch `checkpoint-e-identity` but is not validated,
-> not deployed and not closed; see [docs/IDENTITY.md](docs/IDENTITY.md). Identity is off unless
+> Checkpoint E (family identity) is COMPLETE and Studio-PC validated on branch `checkpoint-e-identity`
+> (validated commit `a283c24`), but is NOT deployed and not on `main`; see [docs/IDENTITY.md](docs/IDENTITY.md). Identity is off unless
 > `IDENTITY_SECRET` is set.
 > Not built on `main`: accounts, store, multiplayer, dashboards (see "Out of scope").
 > The repository and the files in [`docs/`](docs/) are the project memory, not chat history.

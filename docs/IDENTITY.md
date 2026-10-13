@@ -2,8 +2,8 @@
 
 Last updated: October 12, 2026.
 
-**Status: IMPLEMENTED through Commit 10 on branch `checkpoint-e-identity`. NOT yet STUDIO-VALIDATED.
-NOT DEPLOYED. Checkpoint E is not closed.** See [PROJECT-STATE.md](PROJECT-STATE.md) for the status
+**Status: Checkpoint E is COMPLETE. IMPLEMENTED, STUDIO-VALIDATED (exact commit
+`a283c2470fe5abcb47f49d3f5753dea1bd881e78`), NOT DEPLOYED. Branch `checkpoint-e-identity`.** See [PROJECT-STATE.md](PROJECT-STATE.md) for the status
 table and the difference between those three words. Operator procedures live in
 [IDENTITY-OPERATIONS.md](IDENTITY-OPERATIONS.md). The design record and the options that were
 weighed are in [IDENTITY-MIGRATION-ASSESSMENT.md](IDENTITY-MIGRATION-ASSESSMENT.md). If this file and

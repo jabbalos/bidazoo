@@ -21,7 +21,7 @@ A guest opens the page, picks a starter character (presentation only), and plays
 multiplication run. Every question, grade, mastery change, and reward is decided and stored by
 the server. Nothing else is built on `main` (no store, multiplayer, dashboards, and so on).
 
-> **Checkpoint E (family identity) is implemented on branch `checkpoint-e-identity` but not validated,
+> **Checkpoint E (family identity) is complete and Studio-validated on branch `checkpoint-e-identity` but
 > not deployed and not on `main`.** Where this file says "no parent accounts", that describes the
 > deployed baseline. Checkpoint E is described in [IDENTITY.md](IDENTITY.md) and summarized below.
 
@@ -142,7 +142,7 @@ triggers that Drizzle cannot express. Applied and verified on a real PostgreSQL 
 
 ### Identity tables (Checkpoint E, migrations `0003` and `0004`)
 
-Implemented on the feature branch; not validated or deployed. Learning tables above are not changed:
+Implemented and Studio-validated on the feature branch; not deployed. Learning tables above are not changed:
 learning rows stay keyed by `player_id`. Full behavior is in [IDENTITY.md](IDENTITY.md).
 
 | Table | Purpose |
@@ -328,7 +328,7 @@ Cloudflare, or any production service.
 ## 13. Decisions intentionally postponed
 
 - **Parental consent and COPPA-style review.** Needs legal review; this is not legal advice.
-  Guardian email accounts and guest claim exist in Checkpoint E (implemented, not validated or
+  Guardian email accounts and guest claim exist in Checkpoint E (implemented and Studio-validated, not
   deployed); consent flows and any compliance claim do not.
 - **Integration with existing jonabalos.com Accounts.** Out of scope. Checkpoint E does not use it, and the jonabalos.com mail identity is refused.
 - **A shared (multi-process) rate-limit store, CAPTCHA, and distributed-attack defense.** Checkpoint D
