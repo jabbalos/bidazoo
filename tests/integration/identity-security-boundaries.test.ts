@@ -42,6 +42,7 @@ const MATRIX: RouteSpec[] = [
   { method: 'GET', template: ApiPaths.family, level: 'guardian' },
   { method: 'POST', template: ApiPaths.familyChildren, level: 'guardian', body: { nickname: 'Kid' } },
   { method: 'POST', template: ApiPaths.familyChildrenFromGuest, level: 'guardian', body: { nickname: 'Kid' } },
+  { method: 'GET', template: ApiPaths.familyGuestClaim, level: 'guardian' },
   { method: 'POST', template: ApiPaths.familyChildPin(':childId'), level: 'guardian', body: { pin: '1234' } },
   { method: 'DELETE', template: ApiPaths.familyChildPin(':childId'), level: 'guardian' },
   { method: 'POST', template: ApiPaths.familyChildArchive(':childId'), level: 'guardian', body: {} },

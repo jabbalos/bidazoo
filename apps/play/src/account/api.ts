@@ -1,6 +1,6 @@
 import { ApiPaths } from '@bidazoo/contracts/paths';
 import type {
-  ChildProfile, ChildResponse, DeviceCodeResponse, DeviceStateResponse, DeviceSummary, FamilyResponse, GuestResponse,
+  ChildProfile, ChildResponse, DeviceCodeResponse, DeviceStateResponse, DeviceSummary, FamilyResponse, GuestClaimAvailabilityResponse,
   LegacyClaimResponse, LegacyOfferResponse, RevokeResponse,
 } from '@bidazoo/contracts';
 
@@ -43,7 +43,7 @@ async function call<T>(method: 'GET' | 'POST' | 'DELETE', path: string, body?: u
 export const api = {
   device: () => call<DeviceStateResponse>('GET', ApiPaths.device),
   family: () => call<FamilyResponse>('GET', ApiPaths.family),
-  me: () => call<GuestResponse>('GET', ApiPaths.me),
+  guestClaimAvailable: () => call<GuestClaimAvailabilityResponse>('GET', ApiPaths.familyGuestClaim),
   requestLink: (email: string) => call<{ accepted: true }>('POST', ApiPaths.guardianEmailLinks, { email }),
   consumeLink: (token: string) => call<DeviceStateResponse>('POST', ApiPaths.guardianEmailLinkConsume, { token }),
   redeemDeviceCode: (code: string) => call<DeviceStateResponse>('POST', ApiPaths.deviceCodesRedeem, { code }),

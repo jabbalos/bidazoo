@@ -103,3 +103,28 @@ export async function claimGuest(
     return { child: toChildProfile(child), created: true };
   });
 }
+
+/**
+ * Is the guest player held by THIS browser's guest cookie claimable right now? A pure read.
+ *
+ * True only when the cookie is a well-formed, known, unrevoked, unexpired guest session AND its
+ * player has no child profile yet (the same conditions under which claimGuest would create one).
+ * Everything else is the same plain `false`: no cookie, a stale, expired, revoked or unknown one,
+ * a player already claimed by this family or another. It returns no identifier and writes nothing:
+ * no audit row, no session touch, no active-child change.
+ *
+ * It looks only at the guest cookie of this request, never at the device's selected child, so a
+ * guest player stays discoverable while another child is active on the device.
+ */
+export async function guestClaimAvailable(ctx: AppContext, request: FastifyRequest): Promise<boolean> {
+  const token = request.cookies[ctx.cookie.name];
+  if (!isWellFormedToken(token)) return false;
+  const now = ctx.clock.now();
+  const [session] = await ctx.db
+    .select({ playerId: guestSessions.playerId, revokedAt: guestSessions.revokedAt, expiresAt: guestSessions.expiresAt })
+    .from(guestSessions)
+    .where(eq(guestSessions.tokenHash, hashToken(token)));
+  if (!session || session.revokedAt !== null || session.expiresAt <= now) return false;
+  const [claimed] = await ctx.db.select({ id: childProfiles.id }).from(childProfiles).where(eq(childProfiles.playerId, session.playerId));
+  return !claimed;
+}

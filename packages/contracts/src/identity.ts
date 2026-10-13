@@ -104,6 +104,13 @@ export type CreateChildRequest = Static<typeof CreateChildRequestSchema>;
 export const ClaimGuestRequestSchema = Type.Object({ nickname: Nickname }, strict);
 export type ClaimGuestRequest = Static<typeof ClaimGuestRequestSchema>;
 
+/**
+ * Read-only: may THIS browser's guest player be claimed right now? A bare yes/no. It never says why
+ * the answer is no, and never carries a player, guest, session, family or claim detail.
+ */
+export const GuestClaimAvailabilityResponseSchema = Type.Object({ available: Type.Boolean() }, strict);
+export type GuestClaimAvailabilityResponse = Static<typeof GuestClaimAvailabilityResponseSchema>;
+
 export const ChildResponseSchema = Type.Object({ child: ChildProfileSchema }, strict);
 export type ChildResponse = Static<typeof ChildResponseSchema>;
 

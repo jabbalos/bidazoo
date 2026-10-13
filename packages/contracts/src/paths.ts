@@ -19,6 +19,7 @@ export const ApiPaths = {
   family: `${API_PREFIX}/family`,
   familyChildren: `${API_PREFIX}/family/children`,
   familyChildrenFromGuest: `${API_PREFIX}/family/children/from-guest`,
+  familyGuestClaim: `${API_PREFIX}/family/guest-claim`,
   familyChildArchive: (childId: string) => `${API_PREFIX}/family/children/${childId}/archive`,
   familyChildRestore: (childId: string) => `${API_PREFIX}/family/children/${childId}/restore`,
   familyChildPin: (childId: string) => `${API_PREFIX}/family/children/${childId}/pin`,

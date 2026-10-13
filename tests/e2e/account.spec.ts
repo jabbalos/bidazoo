@@ -78,7 +78,7 @@ async function expectCleanStorage(page: Page): Promise<void> {
 
 async function addChild(page: Page, nickname: string): Promise<void> {
   await page.getByLabel('Player nickname').fill(nickname);
-  await page.getByRole('button', { name: 'Add player' }).click();
+  await page.getByRole('button', { name: 'Add player', exact: true }).click();
   await expect(page.getByRole('listitem').filter({ hasText: nickname }).first()).toBeVisible();
 }
 
@@ -175,6 +175,8 @@ test('email link: replayed, expired-looking, and garbage tokens all fail the sam
 test('family: add players without a reload; switch with no PIN; active player is marked', async ({ page }) => {
   await signIn(page, newEmail());
   await expect(page.getByText('No players yet')).toBeVisible();
+  // No guest player on this browser: the keep-progress card is not offered.
+  await expect(page.getByRole('region', { name: "Keep this player's progress" })).toHaveCount(0);
   await page.evaluate(() => { (window as unknown as { __marker: number }).__marker = 7; });
 
   await addChild(page, 'Ava');
@@ -299,6 +301,31 @@ test('guest claim: keep the browser\'s existing player as a child profile', asyn
   // The same player is what the API now answers as.
   const me = await page.request.get('/api/v1/me');
   expect(me.status()).toBe(200);
+  await expectCleanStorage(page);
+});
+
+test('guest claim: the card stays available while another child is active', async ({ page }) => {
+  // A real guest player first (a signed-in device without a child cannot start one), then sign in,
+  // and let the device select ANOTHER child.
+  expect((await page.request.post('/api/v1/guest', { data: {} })).ok()).toBe(true);
+  await signIn(page, newEmail());
+  const card = page.getByRole('region', { name: "Keep this player's progress" });
+  await expect(card).toBeVisible();
+  await addChild(page, 'Ava');
+  await row(page, 'Ava').getByRole('button', { name: 'Switch to Ava' }).click();
+  await expect(row(page, 'Ava')).toContainText('Playing now');
+  await page.reload();
+  await expect(card).toBeVisible(); // Ava is active AND the guest player is still claimable
+  await expectNoOverflow(page);
+
+  await card.getByLabel('Nickname for this player').fill('Zed');
+  await card.getByRole('button', { name: 'Keep progress and add player' }).click();
+  // The backend selected the claimed child; the page shows what the backend says.
+  await expect(row(page, 'Zed')).toContainText('Playing now');
+  await expect(row(page, 'Ava')).not.toContainText('Playing now');
+  await expect(card).toHaveCount(0);
+  await page.reload();
+  await expect(card).toHaveCount(0);
   await expectCleanStorage(page);
 });
 

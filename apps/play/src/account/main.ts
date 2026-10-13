@@ -107,14 +107,14 @@ async function refresh(options: { notice?: Notice; signedOutNotice?: Notice } = 
   state.phase = 'ready';
   state.linkSent = false;
   if (device.body.guardianAuthority) {
-    const [family, devices, offer, me] = await Promise.all([api.family(), api.devices(), api.legacyOffer(), device.body.activeChildId === null ? api.me() : Promise.resolve(null)]);
+    const [family, devices, offer, guest] = await Promise.all([api.family(), api.devices(), api.legacyOffer(), api.guestClaimAvailable()]);
     if (family.status === 401 || devices.status === 401) return toSignedOut(options.signedOutNotice ?? { kind: 'info', text: TEXT.signedOut });
     state.family = family.body ?? null;
     state.devices = devices.body?.devices ?? null;
     state.offer = offer.body?.offer ?? null;
-    // A guest player is "available to keep" when the browser resolves to a player while no child
-    // profile is selected on this device (with a profile selected, the server answers as the child).
-    state.guestAvailable = me !== null && me.ok;
+    // Asked of the server, which looks only at this browser's guest cookie: a guest player stays
+    // keepable even while another child is the active profile on this device.
+    state.guestAvailable = guest.ok && guest.body?.available === true;
   } else {
     Object.assign(state, { family: null, devices: null, offer: null, guestAvailable: false });
   }

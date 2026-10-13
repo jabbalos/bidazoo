@@ -165,10 +165,10 @@ function collectConsoleErrors(page: Page): string[] {
   const errors: string[] = [];
   page.on('console', (msg) => {
     if (msg.type() !== 'error') return;
-    // Network-status lines ("Failed to load resource ... 404") are not script errors, and the
-    // shell's family-link probe legitimately gets a 404 when identity is switched off. Same policy
-    // as fixtures.ts. Script errors, page errors, and CSP violations are still failures.
-    if (/Failed to load resource/.test(msg.text())) return;
+    // The ONE tolerated line: the shell's family-link probe (GET /api/v1/device) answers 404 when
+    // identity is switched off, and Chromium reports that as a console error. Matched by status AND
+    // URL, so any other failed request, script error, page error, or CSP violation still fails.
+    if (/Failed to load resource.*\b404\b/.test(msg.text()) && new URL(msg.location().url || 'http://x/').pathname === '/api/v1/device') return;
     errors.push(msg.text());
   });
   page.on('pageerror', (err) => errors.push(`pageerror: ${err.message}`));

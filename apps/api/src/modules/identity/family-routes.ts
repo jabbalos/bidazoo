@@ -8,11 +8,12 @@ import {
   CreateChildRequestSchema,
   ErrorResponseSchema,
   FamilyResponseSchema,
+  GuestClaimAvailabilityResponseSchema,
   SetPinRequestSchema,
 } from '@bidazoo/contracts';
 import type { AppContext } from '../../context';
 import { createChild, getFamily, setChildArchived } from './children';
-import { claimGuest } from './guest-claim';
+import { claimGuest, guestClaimAvailable } from './guest-claim';
 import { requireGuardian } from './guardian-auth';
 import { clearPin, setPin } from './pin';
 import type { IdentityRuntime } from './runtime';
@@ -47,6 +48,17 @@ export function registerFamilyRoutes(app: FastifyInstance, ctx: AppContext, runt
       // The guest credential is spent either way: remove it, with the attributes it was set with.
       void reply.clearCookie(ctx.cookie.name, { path: '/', httpOnly: true, sameSite: 'lax', secure: ctx.cookie.secure });
       return reply.code(result.created ? 201 : 200).send({ child: result.child });
+    },
+  );
+
+  // Does this browser hold a guest player a guardian could keep? A bare boolean, read-only: no
+  // identifiers, no reason for a "no", no audit row. Same guardian authority as the claim itself.
+  typed.get(
+    ApiPaths.familyGuestClaim,
+    { schema: { response: { 200: GuestClaimAvailabilityResponseSchema, ...failures } } },
+    async (request) => {
+      await requireGuardian(ctx, request);
+      return { available: await guestClaimAvailable(ctx, request) };
     },
   );
 
