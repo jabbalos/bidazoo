@@ -1,3 +1,4 @@
+import { fileURLToPath } from 'node:url';
 import { defineConfig, type Plugin } from 'vite';
 import { CLIENT_CSP_META, clientSecurityHeaders } from './security-headers.ts';
 
@@ -28,6 +29,14 @@ export default defineConfig({
   // `vite preview` serves the production build: it gets the full enforced header set.
   preview: { host: '127.0.0.1', port: 4173, proxy, headers: clientSecurityHeaders() },
   build: {
+    // Two pages: the game (index.html) and the family/account tools (account.html). Both get the
+    // embedded CSP above.
+    rollupOptions: {
+      input: {
+        main: fileURLToPath(new URL('./index.html', import.meta.url)),
+        account: fileURLToPath(new URL('./account.html', import.meta.url)),
+      },
+    },
     // Phaser alone is ~1.2 MB minified, so the default 500 kB warning is expected noise.
     chunkSizeWarningLimit: 1500,
   },

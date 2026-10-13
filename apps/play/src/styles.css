@@ -15,3 +15,25 @@ body {
 canvas {
   display: block;
 }
+/* Only when family accounts are on: a slim strip under the game with a link to the account page. */
+body.has-family #game {
+  height: calc(100dvh - 44px);
+}
+#family-link {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #f6f3e8;
+  background: #0b2e22;
+  font: 600 16px system-ui, sans-serif;
+  text-decoration: underline;
+}
+#family-link:focus-visible {
+  outline: 3px solid #ffd24a;
+  outline-offset: -3px;
+}

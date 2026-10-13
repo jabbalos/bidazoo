@@ -164,7 +164,12 @@ async function feedbackFor(page: Page, questionId: string): Promise<{ correct: s
 function collectConsoleErrors(page: Page): string[] {
   const errors: string[] = [];
   page.on('console', (msg) => {
-    if (msg.type() === 'error') errors.push(msg.text());
+    if (msg.type() !== 'error') return;
+    // Network-status lines ("Failed to load resource ... 404") are not script errors, and the
+    // shell's family-link probe legitimately gets a 404 when identity is switched off. Same policy
+    // as fixtures.ts. Script errors, page errors, and CSP violations are still failures.
+    if (/Failed to load resource/.test(msg.text())) return;
+    errors.push(msg.text());
   });
   page.on('pageerror', (err) => errors.push(`pageerror: ${err.message}`));
   return errors;

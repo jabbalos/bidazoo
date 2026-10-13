@@ -1,4 +1,5 @@
 import { defineConfig } from '@playwright/test';
+import { ID_API_PORT, ID_PLAY_PORT, identityEnv } from './identity-env';
 
 const PLAY_PORT = 4173;
 const API_PORT = 3001;
@@ -64,6 +65,23 @@ export default defineConfig({
       command: `npm run build -w @bidazoo/play && npm run preview -w @bidazoo/play -- --port ${PLAY_PORT} --strictPort`,
       url: `http://127.0.0.1:${PLAY_PORT}`,
       cwd: '../..',
+      reuseExistingServer: !process.env['CI'],
+      timeout: 120_000,
+    },
+    // Identity-ENABLED stack (account.spec.ts). Same build, a second API and preview.
+    {
+      command: 'node apps/api/dist/server.js',
+      url: `http://127.0.0.1:${ID_API_PORT}/ready`,
+      cwd: '../..',
+      env: identityEnv(process.env['DATABASE_URL'] ?? ''),
+      reuseExistingServer: !process.env['CI'],
+      timeout: 120_000,
+    },
+    {
+      command: `npm run preview -w @bidazoo/play -- --port ${ID_PLAY_PORT} --strictPort`,
+      url: `http://127.0.0.1:${ID_PLAY_PORT}`,
+      cwd: '../..',
+      env: { API_PROXY_TARGET: `http://127.0.0.1:${ID_API_PORT}` },
       reuseExistingServer: !process.env['CI'],
       timeout: 120_000,
     },
