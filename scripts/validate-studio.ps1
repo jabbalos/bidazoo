@@ -1,7 +1,7 @@
 <#
 .SYNOPSIS
   One-click Studio PC validation for BidaZoo (Checkpoint B baseline 01b7d41 and later;
-  expected counts are for Checkpoint D: 51 unit, 115 integration, 3 todo, 56 Playwright).
+  expected counts are for Checkpoint E: 51 unit, 375 integration, 3 todo, 120 Playwright).
 
 .DESCRIPTION
   Runs, in order: environment checks, npm ci, the OFFICIAL Playwright Chromium install, creation of
@@ -81,9 +81,9 @@ $TestDb = 'bidazoo_test'
 $E2eDb = 'bidazoo_e2e'
 $Ports = @(3001, 4173)
 $ExpectedUnit = 51
-$ExpectedIntegration = 115
+$ExpectedIntegration = 375
 $ExpectedTodo = 3
-$ExpectedPlaywright = 56
+$ExpectedPlaywright = 120
 $ExpectedProjects = 4
 
 $script:Warnings = New-Object System.Collections.Generic.List[string]
