@@ -1,6 +1,6 @@
 import type { IdentityConfig } from './config';
 import { deriveIdentityKeys, type IdentityKeys } from './crypto';
-import { MailDispatcher, createMailer, type Mailer } from './mail';
+import { MailDispatcher, createMailer, type MailFailure, type Mailer } from './mail';
 
 /**
  * Everything the identity module needs at runtime, built once at startup and carried on the
@@ -18,7 +18,7 @@ export interface IdentityRuntime {
 
 export function createIdentityRuntime(
   config: IdentityConfig,
-  options: { mailer?: Mailer; onMailFailure?: (errorName: string) => void } = {},
+  options: { mailer?: Mailer; onMailFailure?: (failure: MailFailure) => void } = {},
 ): IdentityRuntime {
   const mailer = options.mailer ?? createMailer(config);
   return {

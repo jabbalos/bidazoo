@@ -1,4 +1,6 @@
 import { parseInteger, parseWindow } from '../../env-parse';
+import { normalizeEmail } from './email';
+import type { SmtpSecurity, SmtpSettings } from './mail-smtp';
 import type { RateWindow } from '../../http/rate-limit';
 
 /**
@@ -11,7 +13,7 @@ import type { RateWindow } from '../../http/rate-limit';
  * Error messages name the variable and never echo its value.
  */
 
-export type MailTransportName = 'none' | 'console' | 'file';
+export type MailTransportName = 'none' | 'console' | 'file' | 'smtp';
 
 /** Durable (database-backed) limits for identity-sensitive actions. All env-configurable. */
 export interface IdentityLimits {
@@ -45,8 +47,12 @@ export interface IdentityConfig {
   mailTransport: MailTransportName;
   /** Where the `file` transport writes (development and e2e only). */
   mailOutboxDir: string | undefined;
-  /** Sender address for transports that need one. */
+  /** Sender address (bare, normalized) for transports that need one. A BidaZoo-owned domain, never jonabalos.com. */
   mailFrom: string | undefined;
+  /** Sender display name. */
+  mailFromName?: string;
+  /** SMTP settings; present exactly when mailTransport is 'smtp'. */
+  smtp?: SmtpSettings;
   emailLinkMinutes: number;
   deviceSessionDays: number;
   guardianAuthorityHours: number;
@@ -71,7 +77,7 @@ export const DEFAULT_IDENTITY_LIMITS: IdentityLimits = {
 };
 
 const MIN_SECRET_CHARS = 32;
-const TRANSPORTS: readonly string[] = ['none', 'console', 'file'];
+const TRANSPORTS: readonly string[] = ['none', 'console', 'file', 'smtp'];
 
 function parseSecret(name: string, value: string | undefined): string | undefined {
   if (value === undefined || value === '') return undefined;
@@ -83,18 +89,70 @@ function parseSecret(name: string, value: string | undefined): string | undefine
 
 function parseBaseUrl(value: string | undefined, env: string): string {
   if (!value) throw new Error('PUBLIC_BASE_URL is required when IDENTITY_SECRET is set (the origin used in emailed links)');
-  let origin: string;
-  let protocol: string;
+  let url: URL;
   try {
-    const url = new URL(value);
-    origin = url.origin;
-    protocol = url.protocol;
+    url = new URL(value);
   } catch {
     throw new Error('PUBLIC_BASE_URL must be an origin like https://play.example.com');
   }
-  if (origin !== value) throw new Error('PUBLIC_BASE_URL must be an origin only (no path, query, or trailing slash)');
-  if (env === 'production' && protocol !== 'https:') throw new Error('PUBLIC_BASE_URL must use https in production');
+  if (url.username !== '' || url.password !== '') throw new Error('PUBLIC_BASE_URL must not contain credentials');
+  if (url.origin !== value) throw new Error('PUBLIC_BASE_URL must be an origin only (no path, query, or trailing slash)');
+  if (env === 'production') {
+    if (url.protocol !== 'https:') throw new Error('PUBLIC_BASE_URL must use https in production');
+    // An emailed link must lead to the real public site, never a loopback or raw-address host.
+    const host = url.hostname;
+    if (host === 'localhost' || host.endsWith('.localhost') || host.startsWith('[') || /^[0-9.]+$/.test(host) || !host.includes('.')) {
+      throw new Error('PUBLIC_BASE_URL must be the public https hostname in production (not localhost or an IP address)');
+    }
+  }
   return value;
+}
+
+const FORBIDDEN_SENDER_DOMAIN = 'jonabalos.com';
+
+/** Sender: a bare address on a BidaZoo-owned domain. The jonabalos.com identity is never reused. */
+function parseSender(source: Record<string, string | undefined>): { address: string; name: string } {
+  const raw = source['MAIL_FROM'];
+  if (!raw) throw new Error('MAIL_FROM is required when MAIL_TRANSPORT=smtp (a bare address such as no-reply@notify.example.com)');
+  const address = normalizeEmail(raw);
+  if (address === null || address !== raw.trim().toLowerCase()) throw new Error('MAIL_FROM must be a single plain email address (no display name; use MAIL_FROM_NAME)');
+  const domain = address.slice(address.indexOf('@') + 1);
+  if (domain === FORBIDDEN_SENDER_DOMAIN || domain.endsWith(`.${FORBIDDEN_SENDER_DOMAIN}`)) {
+    throw new Error(`MAIL_FROM must not use the ${FORBIDDEN_SENDER_DOMAIN} sending identity; BidaZoo mail uses its own sender domain`);
+  }
+  const name = source['MAIL_FROM_NAME'] ?? 'BidaZoo';
+  if (name.length < 1 || name.length > 64 || !/^[\p{L}\p{N} .,'&-]+$/u.test(name)) {
+    throw new Error('MAIL_FROM_NAME must be 1 to 64 letters, digits, spaces or . , \' & -');
+  }
+  return { address, name };
+}
+
+function parseSmtp(source: Record<string, string | undefined>, env: string): { smtp: SmtpSettings; from: string; fromName: string } {
+  const host = source['MAIL_SMTP_HOST'];
+  if (!host) throw new Error('MAIL_SMTP_HOST is required when MAIL_TRANSPORT=smtp');
+  if (host.length > 253 || !/^[A-Za-z0-9]([A-Za-z0-9.-]*[A-Za-z0-9])?$/.test(host)) throw new Error('MAIL_SMTP_HOST must be a hostname');
+
+  const securityRaw = source['MAIL_SMTP_SECURITY'] || 'starttls';
+  if (!['tls', 'starttls', 'none'].includes(securityRaw)) throw new Error('MAIL_SMTP_SECURITY must be one of: tls, starttls, none');
+  const security = securityRaw as SmtpSecurity;
+  if (security === 'none' && env === 'production') throw new Error('MAIL_SMTP_SECURITY=none is refused in production (use tls or starttls)');
+
+  const port = parseInteger('MAIL_SMTP_PORT', source['MAIL_SMTP_PORT'], security === 'tls' ? 465 : 587, 1, 65_535);
+
+  const user = source['MAIL_SMTP_USER'] || undefined;
+  const password = source['MAIL_SMTP_PASSWORD'] || undefined;
+  if ((user === undefined) !== (password === undefined)) throw new Error('MAIL_SMTP_USER and MAIL_SMTP_PASSWORD must be set together');
+  if (user === undefined && env === 'production') throw new Error('MAIL_SMTP_USER and MAIL_SMTP_PASSWORD are required in production');
+  if (user !== undefined && security === 'none') throw new Error('SMTP credentials are never sent over a connection without TLS (MAIL_SMTP_SECURITY=none)');
+  if (user !== undefined && /[\r\n\u0000]/.test(`${user}${password}`)) throw new Error('MAIL_SMTP_USER and MAIL_SMTP_PASSWORD must not contain control characters');
+
+  const timeoutSeconds = parseInteger('MAIL_SMTP_TIMEOUT_SECONDS', source['MAIL_SMTP_TIMEOUT_SECONDS'], 10, 1, 60);
+  const sender = parseSender(source);
+  return {
+    smtp: { host, port, security, user, password, fromAddress: sender.address, fromName: sender.name, timeoutSeconds },
+    from: sender.address,
+    fromName: sender.name,
+  };
 }
 
 /** Returns undefined (identity off) when IDENTITY_SECRET is unset. */
@@ -106,20 +164,19 @@ export function loadIdentityConfig(
   if (secret === undefined) return undefined;
 
   const requested = source['MAIL_TRANSPORT'] ?? '';
-  // No production transport ships in Checkpoint E: the provider is a separate decision (see
-  // docs/IDENTITY.md). Production therefore cannot enable identity until an adapter exists.
+  // Production has exactly one acceptable transport: real SMTP delivery. It is never inferred, and
+  // there is no fallback: console, file and "nothing configured" all stop startup.
   const transport = requested === '' ? (env === 'production' ? 'none' : 'console') : requested;
   if (!TRANSPORTS.includes(transport)) throw new Error(`MAIL_TRANSPORT must be one of: ${TRANSPORTS.join(', ')}`);
-  if (env === 'production' && transport !== 'none') {
+  if (env === 'production' && (transport === 'console' || transport === 'file')) {
     throw new Error('MAIL_TRANSPORT console and file are for development and tests only and are refused in production');
   }
   if (transport === 'none') {
-    throw new Error(
-      'IDENTITY_SECRET is set but no mail transport is available: set MAIL_TRANSPORT (console or file outside production). A production mail adapter is not part of this build, so identity cannot be enabled in production yet.',
-    );
+    throw new Error('IDENTITY_SECRET is set but no mail transport is configured: production needs MAIL_TRANSPORT=smtp (with the MAIL_SMTP_* settings and MAIL_FROM)');
   }
   const mailOutboxDir = source['MAIL_OUTBOX_DIR'] || undefined;
   if (transport === 'file' && !mailOutboxDir) throw new Error('MAIL_OUTBOX_DIR is required when MAIL_TRANSPORT=file');
+  const smtp = transport === 'smtp' ? parseSmtp(source, env) : undefined;
 
   const d = DEFAULT_IDENTITY_LIMITS;
   const P = 'IDENTITY_RATE_';
@@ -128,7 +185,8 @@ export function loadIdentityConfig(
     publicBaseUrl: parseBaseUrl(source['PUBLIC_BASE_URL'], env),
     mailTransport: transport as MailTransportName,
     mailOutboxDir,
-    mailFrom: source['MAIL_FROM'] || undefined,
+    mailFrom: smtp ? smtp.from : source['MAIL_FROM'] || undefined,
+    ...(smtp ? { mailFromName: smtp.fromName, smtp: smtp.smtp } : {}),
     emailLinkMinutes: parseInteger('IDENTITY_LINK_MINUTES', source['IDENTITY_LINK_MINUTES'], 15, 5, 60),
     deviceSessionDays: parseInteger('IDENTITY_DEVICE_DAYS', source['IDENTITY_DEVICE_DAYS'], 90, 1, 365),
     guardianAuthorityHours: parseInteger('IDENTITY_AUTHORITY_HOURS', source['IDENTITY_AUTHORITY_HOURS'], 24, 1, 168),

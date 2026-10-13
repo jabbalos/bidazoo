@@ -31,6 +31,10 @@ const FORBIDDEN = [
   ['drizzle', 'server database library'],
   ['guest_sessions', 'database table'],
   ['token_hash', 'guest token hash column'],
+  ['nodemailer', 'server-only mail library'],
+  ['MAIL_SMTP_', 'server mail credentials/config'],
+  ['IDENTITY_SECRET', 'server identity secret'],
+  ['LEGACY_MATCH_PEPPER', 'server legacy-match secret'],
 ];
 
 const files = [];

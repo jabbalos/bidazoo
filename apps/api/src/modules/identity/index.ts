@@ -32,8 +32,11 @@ export { DEFAULT_IDENTITY_LIMITS, loadIdentityConfig } from './config';
 export type { IdentityConfig, IdentityLimits } from './config';
 export { createIdentityRuntime } from './runtime';
 export type { IdentityRuntime } from './runtime';
-export { FakeMailer } from './mail';
-export type { MailMessage, Mailer } from './mail';
+export { FakeMailer, MailDeliveryError, MailDispatcher, createMailer, logMailFailure } from './mail';
+export type { MailFailure, MailFailureCategory, MailMessage, Mailer } from './mail';
+export { SmtpMailer, classifyMailError } from './mail-smtp';
+export type { SmtpSecurity, SmtpSettings, SmtpTransportLike } from './mail-smtp';
+export { guardianLoginEmail } from './mail-content';
 export { deviceCookieName } from './devices';
 export { normalizeEmail } from './email';
 export {

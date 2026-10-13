@@ -8,6 +8,7 @@ import { recordAudit } from './audit';
 import { newToken } from './crypto';
 import { buildDeviceState, cleanLabel, findDeviceByToken, issueDeviceSession } from './devices';
 import { normalizeEmail } from './email';
+import { guardianLoginEmail } from './mail-content';
 import type { IdentityRuntime } from './runtime';
 import { hashToken } from './service';
 import { clientSubject, enforce, hit, maybeSweep } from './throttle';
@@ -27,19 +28,7 @@ function buildLink(runtime: IdentityRuntime, token: string): string {
 }
 
 function linkMessage(runtime: IdentityRuntime, to: string, token: string) {
-  return {
-    to,
-    subject: 'Your BidaZoo sign-in link',
-    text: [
-      'Someone asked to sign in to BidaZoo with this email address.',
-      '',
-      'Open this link on the device you want to use:',
-      buildLink(runtime, token),
-      '',
-      `The link works once and expires in ${runtime.config.emailLinkMinutes} minutes.`,
-      'If this was not you, ignore this message. Nothing happens unless the link is opened.',
-    ].join('\n'),
-  };
+  return guardianLoginEmail({ to, link: buildLink(runtime, token), minutes: runtime.config.emailLinkMinutes });
 }
 
 /**

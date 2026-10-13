@@ -6,9 +6,12 @@ import {
   DEFAULT_IDENTITY_LIMITS,
   FakeMailer,
   createIdentityRuntime,
+  logMailFailure,
   type IdentityConfig,
   type IdentityLimits,
   type IdentityRuntime,
+  type MailFailure,
+  type Mailer,
 } from '@bidazoo/api/identity';
 import type { RateLimitConfig } from '@bidazoo/api/rate-limit';
 import type { FastifyInstance } from 'fastify';
@@ -41,6 +44,8 @@ export interface Harness {
   /** Present only when the harness was built with `identity`. Captures every email the API sends. */
   mailer: FakeMailer;
   identity: IdentityRuntime | undefined;
+  /** Every mail failure the dispatcher reported (safe categories only), in order. */
+  mailFailures: MailFailure[];
   /** Every route the app registered (HEAD twins excluded), for route-registration audits. */
   routes: Array<{ method: string; url: string }>;
   close(): Promise<void>;
@@ -61,6 +66,8 @@ export async function makeHarness(
     identity?: { limits?: Partial<IdentityLimits>; config?: Partial<IdentityConfig> };
     /** A Fastify logger config (tests capture log output through `stream`). Default: logging off. */
     logger?: NonNullable<Parameters<typeof buildApp>[0]['logger']>;
+    /** Replace the in-memory mailer with another transport (for example a real SmtpMailer aimed at a local fake server). */
+    identityMailer?: Mailer;
   } = {},
 ): Promise<Harness> {
   if (!TEST_DATABASE_URL) throw new Error('TEST_DATABASE_URL is required');
@@ -74,6 +81,8 @@ export async function makeHarness(
     allowedOrigins: options.allowedOrigins ?? [],
   };
   const mailer = new FakeMailer();
+  const mailFailures: MailFailure[] = [];
+  let log: { warn(fields: object, message: string): void } | undefined;
   const identity = options.identity
     ? createIdentityRuntime(
         {
@@ -94,7 +103,13 @@ export async function makeHarness(
           ...options.identity.config,
           limits: { ...DEFAULT_IDENTITY_LIMITS, ...options.identity.limits },
         },
-        { mailer },
+        {
+          mailer: options.identityMailer ?? mailer,
+          onMailFailure: (failure) => {
+            mailFailures.push(failure);
+            if (log) logMailFailure(log, failure);
+          },
+        },
       )
     : undefined;
   if (identity) ctx.identity = identity;
@@ -106,6 +121,7 @@ export async function makeHarness(
     trustProxy: options.trustProxy,
     hstsMaxAgeSeconds: options.hstsMaxAgeSeconds,
   });
+  log = app.log;
   const routes: Array<{ method: string; url: string }> = [];
   app.addHook('onRoute', (route) => {
     for (const method of [route.method].flat()) if (method !== 'HEAD') routes.push({ method, url: route.url });
@@ -118,6 +134,7 @@ export async function makeHarness(
     clock,
     ctx,
     mailer,
+    mailFailures,
     identity,
     close: async () => {
       await app.close();

@@ -2,7 +2,7 @@ import { buildApp } from './app';
 import { loadConfig } from './config';
 import { systemClock } from './context';
 import { createDatabase } from './db';
-import { createIdentityRuntime } from './modules/identity';
+import { createIdentityRuntime, logMailFailure } from './modules/identity';
 
 const config = loadConfig();
 const database = createDatabase(config.databaseUrl, {
@@ -13,8 +13,8 @@ const database = createDatabase(config.databaseUrl, {
 // Family identity is built only when IDENTITY_SECRET is set. Unset = guest-only, as in the closed beta.
 const identity = config.identity
   ? createIdentityRuntime(config.identity, {
-      // Error name only: a provider error can contain the recipient or the message body.
-      onMailFailure: (errorName) => app.log.warn({ errorName }, 'mail send failed'),
+      // A safe category only: a provider error can contain the recipient, the server's reply or the message body.
+      onMailFailure: (failure) => logMailFailure(app.log, failure),
     })
   : undefined;
 
