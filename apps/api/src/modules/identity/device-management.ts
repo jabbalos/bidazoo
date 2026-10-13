@@ -1,5 +1,5 @@
 import { and, asc, eq, gt, isNull, ne, sql } from 'drizzle-orm';
-import { childProfiles, deviceAuthCodes, deviceSessions } from '@bidazoo/database/schema';
+import { childProfiles, deviceAuthCodes, deviceSessions, families } from '@bidazoo/database/schema';
 import type { DeviceStateResponse, DeviceSummary, DeviceCodeResponse } from '@bidazoo/contracts';
 import type { FastifyRequest } from 'fastify';
 import type { AppContext } from '../../context';
@@ -43,7 +43,23 @@ export async function selectProfile(
     await enforce(ctx, runtime, 'pin_device', runtime.config.limits.pinDevice, device.sessionId);
     await verifyPinForSwitch(ctx, runtime, device.familyId, child.id, pin);
   }
-  await ctx.db.update(deviceSessions).set({ activeChildProfileId: child.id }).where(eq(deviceSessions.id, device.sessionId));
+  // The switch itself re-checks, in one transaction, what may have changed while the PIN was being
+  // verified: the profile must still be playable (the share lock holds off a concurrent archive)
+  // and the device must still be live (a revoked device is a 401, never a trigger error).
+  await ctx.db.transaction(async (tx) => {
+    const [still] = await tx
+      .select({ id: childProfiles.id })
+      .from(childProfiles)
+      .where(and(eq(childProfiles.id, child.id), eq(childProfiles.familyId, device.familyId), isNull(childProfiles.archivedAt)))
+      .for('share');
+    if (!still) throw errors.notFound();
+    const switched = await tx
+      .update(deviceSessions)
+      .set({ activeChildProfileId: child.id })
+      .where(and(eq(deviceSessions.id, device.sessionId), isNull(deviceSessions.revokedAt)))
+      .returning({ id: deviceSessions.id });
+    if (switched.length === 0) throw errors.unauthenticated();
+  });
   return buildDeviceState(ctx, { ...device, activeChild: { id: child.id, playerId: child.playerId, nickname: child.nickname } });
 }
 
@@ -116,6 +132,8 @@ export async function revokeAllDevices(
         ),
       )
       .returning({ id: deviceSessions.id });
+    // Deliberately recorded on EVERY call, even when `count` is 0: "revoke everything" is an explicit
+    // guardian security action (and an accepted Commit 4 contract), and the count shows what it did.
     await recordAudit(tx, ctx.clock, {
       actorType: 'guardian', actorId: guardian.guardianId, action: 'device.revoked_all', familyId: guardian.familyId,
       meta: { count: done.length, includeCurrent },
@@ -133,6 +151,8 @@ export async function issueDeviceCode(
 ): Promise<DeviceCodeResponse> {
   const now = ctx.clock.now();
   return ctx.db.transaction(async (tx) => {
+    // Serialize this family's issuing, so the open-code cap below cannot be beaten by simultaneous requests.
+    await tx.select({ id: families.id }).from(families).where(eq(families.id, guardian.familyId)).for('no key update');
     if (childProfileId) {
       const [child] = await tx
         .select({ id: childProfiles.id })

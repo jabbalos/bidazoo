@@ -41,3 +41,10 @@ export {
   parseLegacyManifest, revokeLegacyClaimCodes,
 } from './legacy-manifest';
 export { deriveIdentityKeys } from './crypto';
+export { AUDIT_ACTIONS } from './audit';
+export type { AuditAction } from './audit';
+export { hashHumanCode } from './crypto';
+export { hashToken } from './service';
+export { legacyMatchHmac } from './legacy-manifest';
+export { MANIFEST_DELETE_REMINDER, MANIFEST_SENSITIVE_NOTICE, broadReadWarning } from './sensitive-input';
+export { describeErrorForLog } from '../../http/log-safe';

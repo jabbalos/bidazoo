@@ -41,6 +41,8 @@ export interface Harness {
   /** Present only when the harness was built with `identity`. Captures every email the API sends. */
   mailer: FakeMailer;
   identity: IdentityRuntime | undefined;
+  /** Every route the app registered (HEAD twins excluded), for route-registration audits. */
+  routes: Array<{ method: string; url: string }>;
   close(): Promise<void>;
 }
 
@@ -57,6 +59,8 @@ export async function makeHarness(
     hstsMaxAgeSeconds?: number;
     /** Omit for the guest-only build (identity OFF). Pass {} for defaults, or override pieces. */
     identity?: { limits?: Partial<IdentityLimits>; config?: Partial<IdentityConfig> };
+    /** A Fastify logger config (tests capture log output through `stream`). Default: logging off. */
+    logger?: NonNullable<Parameters<typeof buildApp>[0]['logger']>;
   } = {},
 ): Promise<Harness> {
   if (!TEST_DATABASE_URL) throw new Error('TEST_DATABASE_URL is required');
@@ -96,13 +100,19 @@ export async function makeHarness(
   if (identity) ctx.identity = identity;
   const app = buildApp({
     checks: { database: () => database.ping() },
+    ...(options.logger === undefined ? {} : { logger: options.logger }),
     ctx,
     rateLimits: options.rateLimits,
     trustProxy: options.trustProxy,
     hstsMaxAgeSeconds: options.hstsMaxAgeSeconds,
   });
+  const routes: Array<{ method: string; url: string }> = [];
+  app.addHook('onRoute', (route) => {
+    for (const method of [route.method].flat()) if (method !== 'HEAD') routes.push({ method, url: route.url });
+  });
   await app.ready();
   return {
+    routes,
     app,
     database,
     clock,

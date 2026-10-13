@@ -1,6 +1,7 @@
 import type { FastifyInstance } from 'fastify';
 import { ApiPaths, API_PREFIX } from '@bidazoo/contracts';
 import { ApiError } from './errors';
+import { describeErrorForLog } from './log-safe';
 import { apiSecurityHeaders } from './security-headers';
 
 /**
@@ -54,7 +55,8 @@ export function installHttpHooks(
         .code(isValidation ? 400 : (status as number))
         .send({ error: { code: 'invalid_request', message: 'The request was not valid.' } });
     }
-    request.log.error({ err: error }, 'unhandled error');
+    // Never the raw error for database failures: it carries the SQL parameters (see log-safe.ts).
+    request.log.error(describeErrorForLog(error), 'unhandled error');
     return reply
       .code(500)
       .send({ error: { code: 'internal_error', message: 'Something went wrong.' } });

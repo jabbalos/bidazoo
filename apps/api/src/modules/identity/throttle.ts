@@ -18,6 +18,25 @@ import type { IdentityRuntime } from './runtime';
  * that is later rejected still keeps its count. The key is a keyed HMAC of the thing counted, so
  * the table never holds a raw email address or IP address.
  *
+ * INVENTORY (every security throttle in Checkpoint E):
+ *
+ *   AUTHORITATIVE, durable (PostgreSQL; survive restart; shared by every API process)
+ *     login_email      email-link requests per address        silent 202, no mail
+ *     login_ip         email-link requests per client address  429
+ *     login_global     email-link requests, whole service      503
+ *     consume_ip       sign-in link redemptions per client     429
+ *     device_code_ip   device-code redemptions per client      429
+ *     device_code_global  device-code redemptions, service     503
+ *     claim_code_ip    legacy claim-code attempts per client   429
+ *     PIN profile lock child_profiles.pin_failures/pin_locked_until (row-locked, not this table)
+ *   SUPPLEMENTAL, durable but not the deciding control
+ *     pin_device       PIN attempts per trusted device         429 (the profile lock decides)
+ *   SUPPLEMENTAL, process-local (Checkpoint D @fastify/rate-limit; cleared by a restart)
+ *     apiPerIp backstop and the per-client keys on gameplay and identity routes
+ *
+ * The single-use credentials themselves (links, device codes, claim codes) are also DATABASE rules
+ * (row lock plus used_at), not counters, so a restart cannot revive a spent one.
+ *
  * Every limit is checked BEFORE the action it guards, so a throttled request changes nothing but
  * its own counter.
  */
