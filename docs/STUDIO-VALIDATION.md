@@ -6,6 +6,29 @@ Checkpoint C game implementation is `7042f8f`; the Checkpoint D exact validated 
 `52547a356bdde6397c4b576381c30efff05e1d6e`. The Checkpoint D record comes first below, then
 Checkpoint C, then Checkpoint B.
 
+## Checkpoint E: preparation for Commit 12 (NOT a validation record)
+
+Checkpoint E (family identity) is **IMPLEMENTED through Commit 10, not Studio-validated, not
+deployed, and not closed.** Nothing in this section claims a pass. The official run is Commit 12.
+
+These are **development and supplementary results** from the Linux sandbox. They are **not** the
+official Checkpoint E Studio validation:
+
+| Item | Supplementary result | Notes |
+| --- | --- | --- |
+| Vitest unit | 51 passed | |
+| Vitest integration (real PostgreSQL) | 375 passed + 3 todo | |
+| Playwright, account sanity | 60 passed | |
+| Playwright, latest full UI run (Commit 9 follow-up) | 116 passed, 0 failed | Ran on Chromium 1194 via `PW_CHROMIUM_EXECUTABLE`, **not** the pinned build. |
+| Client bundle scan | clean, 24 forbidden markers | Four added in Commit 10: `nodemailer`, `MAIL_SMTP_`, `IDENTITY_SECRET`, `LEGACY_MATCH_PEPPER`. |
+
+**For Commit 12:** the official run must use Playwright's **pinned** Chromium (leave
+`PW_CHROMIUM_EXECUTABLE` unset), run on the Studio PC with `scripts\validate-studio.bat
+-PortablePostgres`, as a normal user. The validator's expected counts in `scripts\validate-studio.ps1`
+still describe the Checkpoint D baseline (115 integration, 56 Playwright) and **must be updated in
+Commit 12** to the Checkpoint E totals; until then a run prints count warnings. The "20 forbidden
+markers" figures in the Checkpoint D record above are historical and stay as they are.
+
 ## Checkpoint D validation record (official run, passed)
 
 Source: the local run folder `.validation-logs\20261012-130626` on the Studio PC (git-ignored, so the

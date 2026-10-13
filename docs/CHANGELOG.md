@@ -2,6 +2,33 @@
 
 All notable changes, by checkpoint. Dates use US format.
 
+## Checkpoint E: family identity and migration (October 12, 2026; IN PROGRESS, NOT closed)
+
+Implemented on branch `checkpoint-e-identity` through Commit 10; documentation in Commit 11. **Not
+Studio-validated, not deployed, not merged to `main` (`cf02ba5`).** Closure needs Commit 12. No change
+to gameplay, grading, mastery, XP, coins, timing, attempt idempotency or learning-core: learning state
+stays keyed to `player_id`.
+
+- **Guardian and family identity:** email-link sign-in (no password, no child email), generic public
+  responses, single-use hashed tokens, families, guardians, child profiles, additive schema and contracts. (`87f1411` schema, `bf12084` sign-in and throttles, `2e4e5fe` profiles)
+- **Trusted devices:** 90-day device sessions, 24-hour guardian authority, active child, device codes,
+  revoke one or all. (`d0d4a3f`)
+- **Guest claim:** keep an existing guest player as a profile with the same `player_id`; read-only
+  availability check. (`58fc941`, `b38b7a0`)
+- **Profile PIN:** optional four-digit local switch lock with durable lockout. (`170bc79`)
+- **Legacy migration plumbing:** offline manifest loader, keyed email match, verified-email claim,
+  explicit kid link, operator claim codes. (`ae3c212`)
+- **Audit and security hardening:** append-only audit trail, durable identity throttles, route
+  authority inventory. (`5d0b636`)
+- **Identity UI:** the account page and its browser tests. (`ce670ce`)
+- **SMTP adapter:** provider-neutral, verified TLS, production refuses non-SMTP, safe failure
+  categories, `identity:mail-test`. (`32d172c`)
+- **Documentation (Commit 11):** [IDENTITY.md](IDENTITY.md), [IDENTITY-OPERATIONS.md](IDENTITY-OPERATIONS.md),
+  status and limitation updates in PROJECT-STATE, ARCHITECTURE, SECURITY and STUDIO-VALIDATION.
+- **Known limits:** rotating `IDENTITY_SECRET` makes stored PIN hashes unverifiable; no dual-key
+  rotation; SPF, DKIM and DMARC are not configured; the legacy loader does no Windows ACL check; no
+  compliance or certification is claimed.
+
 ## Checkpoint D closure: Studio-PC validated (October 12, 2026)
 
 Documentation only. Checkpoint D (public-beta security gate) is **COMPLETE**. The exact commit that

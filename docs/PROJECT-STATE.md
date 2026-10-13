@@ -12,7 +12,8 @@ If this file and another doc disagree about status, fix the other doc.
 | Checkpoint B (first playable server-authoritative slice) | **COMPLETE and Studio-PC validated** |
 | Checkpoint C (five-starter presentation) | **COMPLETE and Studio-PC validated** (October 12, 2026) |
 | Checkpoint D (public-beta security gate) | **COMPLETE and Studio-PC validated** (October 12, 2026; exact validated commit `52547a356bdde6397c4b576381c30efff05e1d6e`) |
-| Real-device performance, guest recovery, Click, final art | **NOT authorized.** Separate later checkpoints. |
+| Checkpoint E (family identity and migration) | **IMPLEMENTED through Commit 10 on branch `checkpoint-e-identity`. NOT Studio-validated. NOT deployed. NOT closed.** Closure needs Commit 12 (Studio validation). See the Checkpoint E section. |
+| Real-device performance, Click, final art | **NOT authorized.** Separate later checkpoints. |
 
 ## Baselines and commits
 
@@ -110,10 +111,9 @@ Do not weaken or redesign these without explicit approval. Details in
 
 ## Known limitations (accepted, recorded)
 
-No CAPTCHA or distributed-attack defense; clearing the guest cookie loses progress and there is no recovery or claim path;
+No CAPTCHA or distributed-attack defense; clearing the guest cookie loses progress unless a guardian claimed the guest first (Checkpoint E, not yet validated or deployed, so the live beta still has no claim path);
 abuse limits are in-process and best-effort (tumbling windows, lost on restart, per process); the client CSP needs the host to send headers or relies on its embedded `<meta>`; mastery days use UTC; network latency counts toward response time; a replayed answer shows current
-mastery; character art is code-drawn transitional art, not final; Click (the host) is not implemented; real-device performance unmeasured; no audit logging, backups, or
-retention jobs; children's-data privacy and legal review is still needed before real use.
+mastery; character art is code-drawn transitional art, not final; Click (the host) is not implemented; real-device performance unmeasured; no backups or retention jobs (identity audit logging exists in Checkpoint E, not yet deployed); children's-data privacy and legal review is still needed before real use.
 
 ## Checkpoint D: public-beta security gate (COMPLETE; Studio-PC validated)
 
@@ -147,11 +147,58 @@ default numbers: [SECURITY.md](SECURITY.md) ("Public-beta protections").
   [STUDIO-VALIDATION.md](STUDIO-VALIDATION.md). The validator's expected counts (51 / 115 + 3 todo / 56
   / 4 projects) were set in `abde130`.
 
+## Checkpoint E: family identity and migration (IMPLEMENTED, NOT closed)
+
+**Checkpoint D remains COMPLETE.** Checkpoint E is **implementation feature-complete through Commit 10**
+but is **not formally closed** until Commit 12 (official Studio validation) passes. Do not describe it
+as complete.
+
+| Word | Meaning here | Checkpoint E today |
+| --- | --- | --- |
+| **IMPLEMENTED** | Code exists, committed, and passed development tests in a sandbox. | **Yes**, through Commit 10 (this section is the docs commit, Commit 11). |
+| **STUDIO-VALIDATED** | The official run on the Studio PC passed with the pinned Playwright browser and was recorded in [STUDIO-VALIDATION.md](STUDIO-VALIDATION.md). | **No.** Pending Commit 12. |
+| **DEPLOYED** | Running in the live beta. | **No.** |
+
+- **Branch:** `checkpoint-e-identity` (pushed to `origin`). **Implementation HEAD at this docs commit:**
+  `32d172c` (Commit 10, SMTP adapter). **`main` stays at `cf02ba5`**, the stable baseline; the feature
+  branch is not merged and must not be until Checkpoint E is validated and the owner approves.
+- **Live beta:** still on the **pre-Checkpoint-E deployment**. **Identity is not enabled** in the live
+  beta (the deployed build predates the identity code). Nothing in this checkpoint has been deployed, and
+  Cloudflare Access is not configured on `play.bidazoo.com`.
+- **Commits:** 1 `87f1411`, 2 `bf12084`, 3 `2e4e5fe`, 4 `d0d4a3f`, 5 `58fc941`, 6 `170bc79`,
+  7 `ae3c212`, 8 `5d0b636`, 9 `ce670ce` (account UI) plus follow-up `b38b7a0` (guest-claim
+  availability), 10 `32d172c` (SMTP adapter), 11 documentation (this commit), 12 Studio validation
+  and closure (not started).
+- **Shape:** Family -> Guardians -> Child Profiles -> existing or new `player_id` -> Trusted Device
+  Sessions. Guardians prove an email with a single-use link (no password, no social login, no child
+  email). A device is trusted for up to 90 days; guardian authority on it lasts 24 hours. Profiles may
+  have an optional four-digit PIN that only locks switching on an already-trusted device. A guardian
+  can keep an existing guest player (the same `player_id`, no copy). Hop Quest families can be
+  recognized offline by a keyed email match, with operator claim codes for assisted recovery. Security
+  actions are audited; identity limits are durable in PostgreSQL. Details: [IDENTITY.md](IDENTITY.md).
+- **Learning state is unchanged:** it stays keyed to `player_id` and is never rewritten by account
+  attachment. `learning-core`, grading, mastery, XP, coins, timing and attempt idempotency are untouched.
+- **Operations:** secret inventory and rotation impact, legacy migration, claim codes, production mail
+  and the DNS checklist, mail incidents, recovery scenarios and the future release gate are in
+  [IDENTITY-OPERATIONS.md](IDENTITY-OPERATIONS.md).
+- **Not yet done (production mail):** a SMTP provider, the `notify.bidazoo.com` sending domain, and
+  **SPF, DKIM and DMARC are NOT configured.** Production identity cannot be enabled until they are.
+- **Known limitations specific to Checkpoint E:** rotating `IDENTITY_SECRET` makes stored PIN hashes
+  unverifiable (a guardian sets or removes the PIN again); no dual-key rotation for any secret;
+  rotating `LEGACY_MATCH_PEPPER` leaves unclaimed legacy families unmatched (no re-key tool); the
+  sign-in request returns the same generic 202 even if mail delivery fails (intentional, so operators
+  must watch the mail-failure log); the legacy loader does no Windows ACL check; a guest whose cookie
+  is cleared before a claim is still lost; no COPPA, FERPA, Safe Harbor or privacy certification is
+  claimed.
+- **Supplementary development results (NOT the official validation):** unit 51; integration 375
+  passed + 3 todo; Playwright account sanity 60; latest full UI run (Commit 9 follow-up) 116 passed,
+  0 failed, on a Chromium that is not the pinned build; client scan clean with 24 forbidden markers.
+  The official run is Commit 12.
+
 ## Deferred (not authorized)
 
-With Checkpoint D closed, in order (none authorized yet): real-device performance checks; a deliberate guest-account
-recovery and claim strategy; the Click host character; final character art. Also still open:
-CAPTCHA, a shared (multi-process) limiter store, distributed-attack defense, audit logging, backups,
+With Checkpoint D closed, in order (none authorized yet): real-device performance checks; the Click host character; final character art. (The guest-account recovery and claim strategy is now implemented in Checkpoint E, pending validation.) Also still open:
+CAPTCHA, a shared (multi-process) limiter store, distributed-attack defense, backups,
 retention, and children's-data legal review. (Official Playwright validation, rate limiting, guest
 creation limits, and CSP were formerly on this list.)
 
@@ -171,6 +218,9 @@ creation limits, and CSP were formerly on this list.)
 | [README.md](../README.md) | Quick start, scripts, API table |
 | [ARCHITECTURE.md](ARCHITECTURE.md) | Structure, tables, request flow, deviations, postponed decisions |
 | [SECURITY.md](SECURITY.md) | Trust model and known limitations |
+| [IDENTITY.md](IDENTITY.md) | Checkpoint E identity architecture and behavior |
+| [IDENTITY-OPERATIONS.md](IDENTITY-OPERATIONS.md) | Checkpoint E operator runbooks, secret rotation, mail, recovery, release gate |
+| [IDENTITY-MIGRATION-ASSESSMENT.md](IDENTITY-MIGRATION-ASSESSMENT.md) | Design record for family identity and Hop Quest migration |
 | [GAME-SDK.md](GAME-SDK.md) | Game and platform boundary |
 | [PRODUCT.md](PRODUCT.md) | Product intent and open questions |
 | [CHARACTER-BIBLE.md](CHARACTER-BIBLE.md) | Locked character identity decisions (Click and the five starters) |

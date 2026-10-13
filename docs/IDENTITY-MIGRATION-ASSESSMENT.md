@@ -5,6 +5,18 @@ schema, or configuration was changed, and nothing in Hop Quest, the Accounts ser
 Cloudflare was modified. Identity implementation is **not authorized** until this document is
 reviewed and approved.
 
+> **Status update (October 12, 2026, Commit 11):** this proposal was approved in part and **implemented
+> in Checkpoint E** on branch `checkpoint-e-identity` (implemented, NOT Studio-validated, NOT
+> deployed). The text below is the original assessment and is kept as the design record; where it
+> differs from the code, the code and [IDENTITY.md](IDENTITY.md) win. What was decided in
+> implementation: email delivery is a **provider-neutral SMTP adapter** (no named provider);
+> trusted devices last 90 days with **24-hour guardian authority**; sign-in is a fragment-based email
+> link (Cloudflare Access is not configured on `play.bidazoo.com`); a guest player is kept by a
+> **claim that references the same `player_id`**; legacy matching uses a keyed HMAC with
+> `LEGACY_MATCH_PEPPER`; operator claim codes cover changed emails. **Not implemented:** importing
+> legacy progress, snapshots, or welcome grants of any kind (legacy kids are placeholders that become
+> fresh players when linked). Operator procedures: [IDENTITY-OPERATIONS.md](IDENTITY-OPERATIONS.md).
+
 Baseline: `main` at `1a106bc` (Checkpoint D closed, validated commit `52547a3`).
 
 ## 1. Method and limits

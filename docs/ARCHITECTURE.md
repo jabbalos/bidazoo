@@ -19,7 +19,11 @@ Phaser game -> BidaZoo API -> learning-core -> PostgreSQL -> server grading
 
 A guest opens the page, picks a starter character (presentation only), and plays a 10-question
 multiplication run. Every question, grade, mastery change, and reward is decided and stored by
-the server. Nothing else is built (no accounts, store, multiplayer, dashboards, and so on).
+the server. Nothing else is built on `main` (no store, multiplayer, dashboards, and so on).
+
+> **Checkpoint E (family identity) is implemented on branch `checkpoint-e-identity` but not validated,
+> not deployed and not on `main`.** Where this file says "no parent accounts", that describes the
+> deployed baseline. Checkpoint E is described in [IDENTITY.md](IDENTITY.md) and summarized below.
 
 ## 2. Repository structure
 
@@ -115,6 +119,7 @@ believed. See [SECURITY.md](SECURITY.md).
 | XP and coins | Owns (append-only ledger) | Displays what the server committed |
 | Session progress, completion, results | Owns | Displays |
 | Guest identity | Owns (hashed token in DB) | Holds an opaque HttpOnly cookie it cannot read |
+| Family, guardian, trusted device, active child, PIN state (Checkpoint E) | Owns (hashed tokens, keyed hashes, durable throttles in DB) | Holds an opaque HttpOnly device cookie; never stores a credential in `localStorage` |
 | Animation, camera, sound, menu state | none | Owns |
 | Which starter the child picked | none | Owns (localStorage, presentation only) |
 
@@ -134,6 +139,23 @@ triggers that Drizzle cannot express. Applied and verified on a real PostgreSQL 
 | `skill_mastery` | Per player and fact: Leitner box, streak, attempts, fluent days, `next_review_at`, `mastered_at`. | PK `(player_id, skill_key)`; check constraints on ranges. |
 | `wallet_transactions` | Append-only coin ledger: `id, player_id, currency, amount, reason, source_type, source_id, idempotency_key, created_at` (plus `play_session_id` for reporting). | `currency in ('coins')`, `amount <> 0`; `unique(idempotency_key)`; `unique(source_type, source_id, reason, currency)`; append-only trigger. |
 | `xp_events` | Append-only XP ledger, same shape without `currency`. | `amount > 0`; the same two uniqueness rules; append-only trigger. |
+
+### Identity tables (Checkpoint E, migrations `0003` and `0004`)
+
+Implemented on the feature branch; not validated or deployed. Learning tables above are not changed:
+learning rows stay keyed by `player_id`. Full behavior is in [IDENTITY.md](IDENTITY.md).
+
+| Table | Purpose |
+| --- | --- |
+| `families` | The owning unit for guardians, profiles and devices. |
+| `guardians` | A verified email (normalized) per guardian of a family. |
+| `guardian_login_tokens` | Single-use sign-in links: SHA-256 of the token, expiry, `used_at`; the pending email is cleared on use. |
+| `child_profiles` | A nickname in one family, `unique(player_id)`, `archived_at`, and the PIN state (`pin_hash`, `pin_set_at`, `pin_failures`, `pin_locked_until`). |
+| `device_sessions` | A trusted device: SHA-256 of the cookie token, expiry, `authority_expires_at`, active child, label, `revoked_at` (a trigger forbids un-revoking). |
+| `device_auth_codes` | Short single-use codes to pair a child device (keyed hash only). |
+| `identity_throttles` | Durable counters for identity limits (HMAC-keyed subjects; no raw email or IP). |
+| `audit_events` | Append-only security audit trail. |
+| `legacy_batches`, `legacy_families`, `legacy_kids`, `legacy_claim_codes` | Offline Hop Quest manifest data (keyed email match only), claim state, and operator claim codes. |
 
 Design notes:
 
@@ -305,9 +327,10 @@ Cloudflare, or any production service.
 
 ## 13. Decisions intentionally postponed
 
-- **Authentication beyond guests**, parental consent, and COPPA-style review. Needs legal review;
-  this is not legal advice. Guest upgrade and merge are undesigned.
-- **Integration with existing jonabalos.com Accounts.** Out of scope.
+- **Parental consent and COPPA-style review.** Needs legal review; this is not legal advice.
+  Guardian email accounts and guest claim exist in Checkpoint E (implemented, not validated or
+  deployed); consent flows and any compliance claim do not.
+- **Integration with existing jonabalos.com Accounts.** Out of scope. Checkpoint E does not use it, and the jonabalos.com mail identity is refused.
 - **A shared (multi-process) rate-limit store, CAPTCHA, and distributed-attack defense.** Checkpoint D
   added in-process rate limits and a service-wide new-guest breaker (see SECURITY.md); anything that
   needs new infrastructure is deferred.
@@ -361,6 +384,7 @@ Checkpoint D (security gate; no gameplay, grading, reward, mastery, timing, or i
 | `pg` | `api` | Driver for Drizzle's `node-postgres` adapter. |
 | `typebox`, `@fastify/type-provider-typebox` | `contracts`, `api` | One schema validates requests, serializes responses (so private fields cannot leak), and types the client. |
 | `@fastify/rate-limit` | `api` | Checkpoint D abuse limits. Fastify-native and maintained by the Fastify organization, targets Fastify 5, four small dependencies, in-memory store (no new infrastructure). See SECURITY.md. |
+| `nodemailer` | `api` (server only) | Checkpoint E: the SMTP mail adapter for guardian sign-in links. Externalized from the API bundle and guarded out of the client by `scan:client`. |
 | `@fastify/cookie`, `ajv-formats` | `api` | Guest cookie parsing and setting; `uuid` and `date-time` formats. |
 | `esbuild`, `tsx` | `api` (dev) | Bundle the API; run TypeScript in dev. |
 | `concurrently` | root (dev) | Runs the API and client dev servers together on every OS, including Windows. |

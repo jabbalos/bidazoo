@@ -266,12 +266,45 @@ The development server (`vite dev`) does not send the CSP: its hot-reload client
 runtime and would only produce noise. Always judge CSP behavior on the built client (`vite preview`,
 which Playwright uses).
 
+## Family identity (Checkpoint E: implemented, NOT Studio-validated, NOT deployed)
+
+The live beta does not run this code. Full behavior: [IDENTITY.md](IDENTITY.md). Operations and secret
+rotation: [IDENTITY-OPERATIONS.md](IDENTITY-OPERATIONS.md).
+
+- **Guardian sign-in** is a single-use emailed link in a URL fragment, redeemed by `POST`. The public
+  request always returns the same `202`, even when delivery fails. Tokens are random and only their
+  SHA-256 is stored. No password, no social login, no child email.
+- **Sessions** are `HttpOnly`, `SameSite=Lax` cookies (`__Host-` and `Secure` in production), hashed in
+  the database. A device is trusted for up to 90 days; guardian authority on it lasts 24 hours.
+  Revocation is immediate and permanent. No credential lives in `localStorage` or `sessionStorage`.
+- **Anti-enumeration:** unknown, expired and used links, wrong or missing PINs, other families'
+  profiles, and claim conflicts are generic and indistinguishable.
+- **Optional PIN** is a local profile-switch lock, not authentication: four digits, scrypt with a
+  profile-bound keyed pre-hash, a durable 5-failure lockout, and a supplemental per-device limit.
+- **Keys:** `IDENTITY_SECRET` derives three purpose keys by HKDF (throttle, code, PIN). Rotating it
+  invalidates stored PIN hashes, unused device and claim codes, and resets throttle counters; it does
+  not invalidate sessions or email links. `LEGACY_MATCH_PEPPER` keys the legacy email match. There is no
+  dual-key rotation.
+- **Durable throttles** (PostgreSQL) cover sign-in, link redemption, device and claim codes, and PINs,
+  and survive restarts. The Checkpoint D in-process limits remain as a backstop.
+- **Audit:** security-significant identity actions are written append-only in the same transaction as
+  the change. Secrets and email addresses are refused by an allowlist (a violating write throws).
+- **Mail:** production refuses fake, file, console and unset senders, requires verified TLS and
+  credentials, and rejects `jonabalos.com` senders. Mail errors are reduced to a safe category before
+  logging; provider text, addresses and links are never logged.
+- **Legacy data** arrives only through an offline operator CLI as keyed match values; no passwords,
+  PINs, progress or marketing data are imported. The CLI does not detect broad readability of the
+  manifest on Windows.
+
+SPF, DKIM and DMARC for the sending domain are **not** configured. No COPPA, FERPA, Safe Harbor or
+privacy certification or compliance is claimed.
+
 ## Known limitations (do not assume these are solved)
 
 - **Abuse protection is in-process and best-effort.** See "Limits of the mechanism" and the
   service-wide breaker limitation above. There is no CAPTCHA, no shared limiter store, and no
   distributed-attack defense.
-- **No CAPTCHA, abuse detection, or account recovery.** A guest who clears cookies loses progress.
+- **No CAPTCHA or abuse detection.** On the deployed baseline there is no account recovery: a guest who clears cookies loses progress. Checkpoint E adds guardian accounts and guest claim (not yet validated or deployed); a guest whose cookie is cleared before a claim is still lost.
 - **The same-origin check trusts the `Origin` header being absent for non-browser clients.**
   That is intentional (curl and tests have no ambient cookie), but it means this check is defense
   in depth, not the primary control.
@@ -285,7 +318,7 @@ which Playwright uses).
   answer.
 - **Database tests skip without `TEST_DATABASE_URL`.** They skip loudly, but a machine that never
   sets it never runs them.
-- **No audit logging, backup/restore, or data-retention jobs.** Old guests accumulate.
+- **No backup/restore automation or data-retention jobs.** Old guests accumulate. Identity audit logging exists in Checkpoint E (not yet deployed); there is no audit viewer.
 - **The client CSP depends on the host sending it or on the embedded `<meta>`.** The meta fallback
   cannot carry `frame-ancestors`; clickjacking protection (`X-Frame-Options`, `frame-ancestors`) needs
   the proxy to send headers. HSTS is off until configured.
