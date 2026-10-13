@@ -8,7 +8,7 @@ $ErrorActionPreference = 'Stop'
 . "$PSScriptRoot\lib.ps1"
 Initialize-Release '05-rollback-proof'
 
-$tree = "$R\trees\rollback"
+$tree = "$ReleaseRoot\trees\rollback"
 if (-not (Test-Path "$tree\apps\api\dist\server.js")) { throw 'Build the rollback tree first: 01-build-tree.ps1 -Name rollback' }
 $h = (Run-Native 'git' @('-C', $tree, 'rev-parse', 'HEAD')).Out[0]
 Rec 'rollback tree is exactly 1a106bc' ($h -eq $ShaRollback) $h
@@ -20,7 +20,7 @@ foreach ($db in 'rehearsal_pre', 'rehearsal_migrated') {
     try {
         $up = Wait-Http 'http://127.0.0.1:3102/health' 40
         Rec "[$db] rollback API answers /health" $up
-        if (-not $up) { Get-Content "$R\logs\rollback-api.err.log" -Tail 15 -ErrorAction SilentlyContinue | ForEach-Object { Write-Host "      $_" }; Finish-Release }
+        if (-not $up) { Get-Content "$ReleaseRoot\logs\rollback-api.err.log" -Tail 15 -ErrorAction SilentlyContinue | ForEach-Object { Write-Host "      $_" }; Finish-Release }
         Rec "[$db] rollback API /ready is 200 (database reachable)" ((Get-Status 'http://127.0.0.1:3102/ready') -eq 200)
         Rec "[$db] identity routes absent in the old code (404)" ((Get-Status 'http://127.0.0.1:3102/api/v1/guardian/email-links' 'POST' @{ Origin = 'http://127.0.0.1:3102' } '{"email":"a@example.test"}') -eq 404)
         $pt = Invoke-Playthrough -Tree $tree -Port 3102 -Db $db -LogName "rollback-playthrough-$db"

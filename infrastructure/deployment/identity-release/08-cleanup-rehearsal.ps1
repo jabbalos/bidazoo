@@ -13,6 +13,6 @@ Rec 'rehearsal ports free (3102-3105, 8481, 8482)' (-not ((3102, 3103, 3104, 310
 if ($DropRehearsalDbs) { Start-ScratchCluster; foreach ($d in 'rehearsal_pre', 'rehearsal_migrated') { [void](Scr-Q 'postgres' "drop database if exists $d with (force)") }; Note 'rehearsal databases dropped' }
 if ($DropDb -ne '') { Start-ScratchCluster; if ($DropDb -notmatch '^(rehearsal_|verify_|final_verify_)[a-z0-9_]+$') { throw 'not a scratch database name' }; [void](Scr-Q 'postgres' "drop database if exists $DropDb with (force)"); Note "dropped $DropDb" }
 if ($StopScratchCluster) { Stop-ScratchCluster; Rec 'scratch cluster stopped' (-not (Test-Listening $ScratchPort)) }
-if ($RemoveRehearsalMail -and (Test-Path "$R\run\mail-outbox")) { Remove-Item "$R\run\mail-outbox" -Recurse -Force; Note 'rehearsal mail outbox removed' }
+if ($RemoveRehearsalMail -and (Test-Path "$ReleaseRoot\run\mail-outbox")) { Remove-Item "$ReleaseRoot\run\mail-outbox" -Recurse -Force; Note 'rehearsal mail outbox removed' }
 Rec 'live stack untouched by this script' $true
 Finish-Release

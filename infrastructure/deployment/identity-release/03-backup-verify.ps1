@@ -38,7 +38,7 @@ if ($Mode -eq 'Final') {
     if (@($Results | Where-Object { -not $_.Ok }).Count -gt 0) { Finish-Release }
     $dir = "$Beta\backups-release"; $prefix = 'prerelease-identity'
 } else {
-    $dir = "$R\rehearsal-backups"; $prefix = 'rehearsal'
+    $dir = "$ReleaseRoot\rehearsal-backups"; $prefix = 'rehearsal'
 }
 New-Item -ItemType Directory -Force -Path $dir | Out-Null
 $dump = Join-Path $dir "$prefix-$ts.dump"
@@ -49,11 +49,11 @@ Write-Host "`n--- live fingerprint BEFORE dump (SELECT only) ---"
 $fpBefore = Get-Fingerprint $liveQ; Show-Fingerprint $fpBefore
 
 $env:PGPASSWORD = Read-Secret "$Beta\config\pg-app.pw"
-try { $r = Run-Native "$PgBin\pg_dump.exe" @('-h', '127.0.0.1', '-p', "$LivePort", '-U', 'bidazoo_app', '-Fc', '-f', $dump, 'bidazoo') -LogName "pg_dump-$Mode" }
+try { $NativeResult = Run-Native "$PgBin\pg_dump.exe" @('-h', '127.0.0.1', '-p', "$LivePort", '-U', 'bidazoo_app', '-Fc', '-f', $dump, 'bidazoo') -LogName "pg_dump-$Mode" }
 finally { Remove-Item Env:PGPASSWORD -ErrorAction SilentlyContinue }
 $size = 0; if (Test-Path -LiteralPath $dump) { $size = (Get-Item -LiteralPath $dump).Length }
-Rec 'pg_dump -Fc succeeded' (($r.Code -eq 0) -and ($size -gt 1024)) "exit=$($r.Code) bytes=$size"
-if ($r.Code -ne 0) { Show-Tail $r; Finish-Release }
+Rec 'pg_dump -Fc succeeded' (($NativeResult.Code -eq 0) -and ($size -gt 1024)) "exit=$($NativeResult.Code) bytes=$size"
+if ($NativeResult.Code -ne 0) { Show-Tail $NativeResult; Finish-Release }
 
 $fpAfter = Get-Fingerprint $liveQ
 if ($Mode -eq 'Final') { Rec 'live data unchanged between fingerprint and dump (no writes)' ((($fpBefore.Keys | ForEach-Object { "$_=$($fpBefore[$_])" }) -join ';') -eq (($fpAfter.Keys | ForEach-Object { "$_=$($fpAfter[$_])" }) -join ';')) }

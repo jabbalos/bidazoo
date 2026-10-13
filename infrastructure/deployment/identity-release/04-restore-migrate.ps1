@@ -8,13 +8,13 @@ $ErrorActionPreference = 'Stop'
 Initialize-Release '04-restore-migrate'
 
 if ($Dump -eq '') {
-    $latest = Get-ChildItem "$R\rehearsal-backups\rehearsal-*.dump" -ErrorAction SilentlyContinue | Sort-Object LastWriteTime -Descending | Select-Object -First 1
+    $latest = Get-ChildItem "$ReleaseRoot\rehearsal-backups\rehearsal-*.dump" -ErrorAction SilentlyContinue | Sort-Object LastWriteTime -Descending | Select-Object -First 1
     if (-not $latest) { throw 'No rehearsal dump found. Run 03-backup-verify.ps1 -Mode Rehearsal first.' }
     $Dump = $latest.FullName
 }
 Note "using dump $Dump"
 Note ("dump sha256: " + (Get-FileHash -LiteralPath $Dump -Algorithm SHA256).Hash)
-$tree = "$R\trees\stage"
+$tree = "$ReleaseRoot\trees\stage"
 if (-not (Test-Path "$tree\database\migrations")) { throw 'Build the stage tree first: 01-build-tree.ps1 -Name stage' }
 $h = (Run-Native 'git' @('-C', $tree, 'rev-parse', 'HEAD')).Out[0]
 Rec 'stage tree is exactly a283c24' ($h -eq $ShaStage) $h
@@ -36,7 +36,7 @@ $mBefore = [int]@(& $migQ 'select count(*) from drizzle.__drizzle_migrations')[0
 Note "drizzle migration rows before: $mBefore"
 
 Write-Host "`n--- apply migrations to rehearsal_migrated (exact a283c24 tree) ---"
-$pw = Read-Secret "$R\secrets\pg-scratch.pw"
+$pw = Read-Secret "$ReleaseRoot\secrets\pg-scratch.pw"
 $url = "postgres://bidazoo_app:$pw@127.0.0.1:$ScratchPort/rehearsal_migrated"   # same non-superuser role production uses
 if ($url -notmatch ":$ScratchPort/rehearsal_migrated$") { throw 'refusing: DATABASE_URL is not the scratch database' }
 $env:DATABASE_URL = $url

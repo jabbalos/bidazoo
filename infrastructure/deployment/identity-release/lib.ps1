@@ -11,7 +11,8 @@
 $ErrorActionPreference = 'Stop'
 
 $Beta        = 'C:\BidaZoo-beta'
-$R           = 'C:\BidaZoo-release'
+$ReleaseRoot           = 'C:\BidaZoo-release'
+if ($env:BZ_RELEASE_ROOT) { $ReleaseRoot = $env:BZ_RELEASE_ROOT }   # test hook only; unset on Studio
 $Repo        = 'C:\Users\jonat\Documents\BidaZoo-Identity-Release'
 $MainRepo    = 'C:\Users\jonat\Documents\BidaZoo'
 $PgBin       = "$Beta\pg\pgsql\bin"
@@ -22,17 +23,17 @@ $ShaDocs     = '856d012d3139735d7f13ffeebabb723222fba2e1'
 $ShaRollback = '1a106bc328ed0d544d4c49b61f3a1c2071ae65b7'
 $ReleaseDir  = $PSScriptRoot
 $Tools       = Join-Path $ReleaseDir 'tools'
-$NodeExe     = (Get-Command node -ErrorAction SilentlyContinue).Source
+$NodeExe     = $null   # resolved below, once Resolve-External exists
 
 function Initialize-Release {
     param([string]$Step)
     $ErrorActionPreference = 'Stop'
     foreach ($d in 'evidence','run','logs','trees','rehearsal-backups','secrets','tmp','rollback-kit') {
-        New-Item -ItemType Directory -Force -Path "$R\$d" | Out-Null
+        New-Item -ItemType Directory -Force -Path "$ReleaseRoot\$d" | Out-Null
     }
     $global:StepName = $Step
     $global:Results = New-Object System.Collections.ArrayList
-    $global:EvidenceFile = "$R\evidence\$Step-$(Get-Date -Format 'yyyyMMdd-HHmmss').txt"
+    $global:EvidenceFile = "$ReleaseRoot\evidence\$Step-$(Get-Date -Format 'yyyyMMdd-HHmmss').txt"
     Start-Transcript -Path $global:EvidenceFile | Out-Null
     Write-Host "Step $Step started $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') as $env:USERNAME on $env:COMPUTERNAME"
 }
@@ -68,17 +69,41 @@ function Test-Admin {
 
 function Read-Secret { param([string]$Path) return (Get-Content -LiteralPath $Path -Raw).Trim() }
 
-# Runs a native command without PowerShell 5.1 turning stderr lines into terminating errors.
+# Resolves a command name to an EXTERNAL APPLICATION only (never a function, alias, cmdlet or .ps1 wrapper).
+# PowerShell command lookup is case-insensitive and ranks alias > function > cmdlet > application, so a
+# function named Git (or any helper that shares a name with an executable) would otherwise capture
+# `& 'git'` and, if it calls the helper again, recurse until CallDepthOverflow. Application-only lookup
+# makes that impossible. A name containing a path separator is used as given (it must be an existing file).
+function Resolve-External {
+    param([string]$Name)
+    if ($Name -match '[\\/]') {
+        if (-not (Test-Path -LiteralPath $Name -PathType Leaf)) { throw "External executable not found: $Name" }
+        return (Resolve-Path -LiteralPath $Name).ProviderPath
+    }
+    try { $cmd = Get-Command -Name $Name -CommandType Application -ErrorAction Stop | Select-Object -First 1 }
+    catch { throw "External executable not found on PATH: $Name" }
+    return $cmd.Source
+}
+$NodeExe = Resolve-External 'node'
+
+# Runs an external program without PowerShell 5.1 turning stderr lines into terminating errors.
+# Set $env:RELEASE_TOOL_DEBUG=1 to print the resolved path, argument COUNT and call depth (arguments are
+# never printed: some carry scratch-only passwords).
 function Run-Native {
     param([string]$Exe, [string[]]$ArgList, [string]$LogName = '')
+    $path = Resolve-External $Exe
+    if ($env:RELEASE_TOOL_DEBUG -eq '1') {
+        $n = 0; if ($null -ne $ArgList) { $n = $ArgList.Count }
+        Write-Host ("DEBUG Run-Native: '{0}' -> {1}; {2} argument(s); call depth {3}" -f $Exe, $path, $n, (Get-PSCallStack).Count)
+    }
     $old = $ErrorActionPreference
     $ErrorActionPreference = 'Continue'
     try {
-        $o = & $Exe @ArgList 2>&1
+        $o = & $path @ArgList 2>&1
         $code = $LASTEXITCODE
     } finally { $ErrorActionPreference = $old }
     $lines = @($o | ForEach-Object { "$_" })
-    if ($LogName -ne '') { $lines | Set-Content -LiteralPath "$R\logs\$LogName.log" -Encoding ASCII }
+    if ($LogName -ne '') { $lines | Set-Content -LiteralPath "$ReleaseRoot\logs\$LogName.log" -Encoding ASCII }
     return [pscustomobject]@{ Code = $code; Out = $lines }
 }
 
@@ -101,7 +126,7 @@ function Invoke-Psql {
     } finally { Remove-Item Env:PGPASSWORD -ErrorAction SilentlyContinue }
 }
 function Live-Q { param([string]$Sql) return @(Invoke-Psql -Port $LivePort -Db 'bidazoo' -User 'bidazoo_app' -PwFile "$Beta\config\pg-app.pw" -Sql $Sql) }
-function Scr-Q  { param([string]$Db, [string]$Sql) return @(Invoke-Psql -Port $ScratchPort -Db $Db -User 'postgres' -PwFile "$R\secrets\pg-scratch.pw" -Sql $Sql) }
+function Scr-Q  { param([string]$Db, [string]$Sql) return @(Invoke-Psql -Port $ScratchPort -Db $Db -User 'postgres' -PwFile "$ReleaseRoot\secrets\pg-scratch.pw" -Sql $Sql) }
 
 # name -> "rowcount|md5-of-all-rows" for every user table. $Q is a scriptblock: { param($s) Live-Q $s }
 function Get-Fingerprint {
@@ -121,17 +146,17 @@ function Show-Fingerprint { param($Map) foreach ($k in $Map.Keys) { Write-Host (
 function Test-Listening { param([int]$Port) return [bool](Get-NetTCPConnection -LocalPort $Port -State Listen -ErrorAction SilentlyContinue) }
 
 function Initialize-ScratchCluster {
-    if (Test-Path "$R\pg-scratch\data\PG_VERSION") { Note 'scratch cluster already initialized'; return }
+    if (Test-Path "$ReleaseRoot\pg-scratch\data\PG_VERSION") { Note 'scratch cluster already initialized'; return }
     if (Test-Listening $ScratchPort) { throw "Port $ScratchPort is already in use." }
-    New-Item -ItemType Directory -Force -Path "$R\pg-scratch","$R\secrets" | Out-Null
-    & icacls "$R\secrets" /inheritance:r /grant:r "${env:USERNAME}:(OI)(CI)F" "SYSTEM:(OI)(CI)F" "Administrators:(OI)(CI)F" | Out-Null
+    New-Item -ItemType Directory -Force -Path "$ReleaseRoot\pg-scratch","$ReleaseRoot\secrets" | Out-Null
+    & icacls "$ReleaseRoot\secrets" /inheritance:r /grant:r "${env:USERNAME}:(OI)(CI)F" "SYSTEM:(OI)(CI)F" "Administrators:(OI)(CI)F" | Out-Null
     $bytes = New-Object byte[] 24
     (New-Object System.Security.Cryptography.RNGCryptoServiceProvider).GetBytes($bytes)
     $pw = (($bytes | ForEach-Object { $_.ToString('x2') }) -join '')
-    Set-Content -LiteralPath "$R\secrets\pg-scratch.pw" -Value $pw -NoNewline -Encoding ASCII
-    $r = Run-Native "$PgBin\initdb.exe" @('-D',"$R\pg-scratch\data",'-U','postgres','--auth=scram-sha-256',"--pwfile=$R\secrets\pg-scratch.pw",'-E','UTF8') -LogName 'scratch-initdb'
+    Set-Content -LiteralPath "$ReleaseRoot\secrets\pg-scratch.pw" -Value $pw -NoNewline -Encoding ASCII
+    $r = Run-Native "$PgBin\initdb.exe" @('-D',"$ReleaseRoot\pg-scratch\data",'-U','postgres','--auth=scram-sha-256',"--pwfile=$ReleaseRoot\secrets\pg-scratch.pw",'-E','UTF8') -LogName 'scratch-initdb'
     if ($r.Code -ne 0) { Show-Tail $r; throw 'initdb failed' }
-    Add-Content -LiteralPath "$R\pg-scratch\data\postgresql.conf" -Value @('', "listen_addresses = '127.0.0.1'", "port = $ScratchPort") -Encoding ASCII
+    Add-Content -LiteralPath "$ReleaseRoot\pg-scratch\data\postgresql.conf" -Value @('', "listen_addresses = '127.0.0.1'", "port = $ScratchPort") -Encoding ASCII
     Note 'scratch cluster initialized (scram-sha-256, loopback only, port 54341)'
 }
 function Ensure-ScratchRole {
@@ -139,7 +164,7 @@ function Ensure-ScratchRole {
     # restores / migrations / rehearsal APIs run as that role (scratch password only, never reused elsewhere).
     $have = @(Scr-Q 'postgres' "select count(*) from pg_roles where rolname = 'bidazoo_app'")[0]
     if ([int]$have -eq 0) {
-        $pw = Read-Secret "$R\secrets\pg-scratch.pw"
+        $pw = Read-Secret "$ReleaseRoot\secrets\pg-scratch.pw"
         [void](Scr-Q 'postgres' "create role bidazoo_app login password '$pw'")
         Note 'scratch role bidazoo_app created (non-superuser)'
     }
@@ -147,8 +172,8 @@ function Ensure-ScratchRole {
 function Start-ScratchCluster {
     Initialize-ScratchCluster
     if (Test-Listening $ScratchPort) { Ensure-ScratchRole; Note 'scratch cluster already running'; return }
-    $p = Start-Process -FilePath "$PgBin\postgres.exe" -ArgumentList @('-D',"$R\pg-scratch\data") -WindowStyle Hidden -PassThru -RedirectStandardOutput "$R\logs\pg-scratch.out.log" -RedirectStandardError "$R\logs\pg-scratch.err.log"
-    Set-Content -LiteralPath "$R\run\pg-scratch.pid" -Value $p.Id
+    $p = Start-Process -FilePath "$PgBin\postgres.exe" -ArgumentList @('-D',"$ReleaseRoot\pg-scratch\data") -WindowStyle Hidden -PassThru -RedirectStandardOutput "$ReleaseRoot\logs\pg-scratch.out.log" -RedirectStandardError "$ReleaseRoot\logs\pg-scratch.err.log"
+    Set-Content -LiteralPath "$ReleaseRoot\run\pg-scratch.pid" -Value $p.Id
     $end = (Get-Date).AddSeconds(40)
     while ((Get-Date) -lt $end) {
         $r = Run-Native "$PgBin\pg_isready.exe" @('-h','127.0.0.1','-p',"$ScratchPort")
@@ -158,12 +183,12 @@ function Start-ScratchCluster {
     throw 'scratch cluster did not become ready (see C:\BidaZoo-release\logs\pg-scratch.err.log)'
 }
 function Stop-ScratchCluster {
-    if (-not (Test-Path "$R\pg-scratch\data\PG_VERSION")) { return }
+    if (-not (Test-Path "$ReleaseRoot\pg-scratch\data\PG_VERSION")) { return }
     if (Test-Listening $ScratchPort) {
-        $r = Run-Native "$PgBin\pg_ctl.exe" @('stop','-D',"$R\pg-scratch\data",'-m','fast','-w')
+        $r = Run-Native "$PgBin\pg_ctl.exe" @('stop','-D',"$ReleaseRoot\pg-scratch\data",'-m','fast','-w')
         if ($r.Code -ne 0) { Show-Tail $r; throw 'pg_ctl stop failed' }
     }
-    Remove-Item -LiteralPath "$R\run\pg-scratch.pid" -Force -ErrorAction SilentlyContinue
+    Remove-Item -LiteralPath "$ReleaseRoot\run\pg-scratch.pid" -Force -ErrorAction SilentlyContinue
 }
 function New-ScratchDb {
     param([string]$Name)
@@ -173,7 +198,7 @@ function New-ScratchDb {
 }
 function Restore-Dump {
     param([string]$Dump, [string]$Db)
-    $env:PGPASSWORD = Read-Secret "$R\secrets\pg-scratch.pw"
+    $env:PGPASSWORD = Read-Secret "$ReleaseRoot\secrets\pg-scratch.pw"
     try {
         return (Run-Native "$PgBin\pg_restore.exe" @('-h','127.0.0.1','-p',"$ScratchPort",'-U','postgres','-d',$Db,'--no-owner','--no-privileges','--role=bidazoo_app','--exit-on-error',$Dump) -LogName "restore-$Db")
     } finally { Remove-Item Env:PGPASSWORD -ErrorAction SilentlyContinue }
@@ -190,16 +215,16 @@ function Start-Tracked {
         [Environment]::SetEnvironmentVariable($k, $v, 'Process')
     }
     try {
-        $p = Start-Process -FilePath $File -ArgumentList $ArgList -WorkingDirectory $WorkDir -WindowStyle Hidden -PassThru -RedirectStandardOutput "$R\logs\$Name.out.log" -RedirectStandardError "$R\logs\$Name.err.log"
+        $p = Start-Process -FilePath $File -ArgumentList $ArgList -WorkingDirectory $WorkDir -WindowStyle Hidden -PassThru -RedirectStandardOutput "$ReleaseRoot\logs\$Name.out.log" -RedirectStandardError "$ReleaseRoot\logs\$Name.err.log"
     } finally {
         foreach ($k in $saved.Keys) { [Environment]::SetEnvironmentVariable($k, $saved[$k], 'Process') }
     }
-    Set-Content -LiteralPath "$R\run\$Name.pid" -Value $p.Id
+    Set-Content -LiteralPath "$ReleaseRoot\run\$Name.pid" -Value $p.Id
     return $p
 }
 function Stop-Tracked {
     param([string]$Name)
-    $f = "$R\run\$Name.pid"
+    $f = "$ReleaseRoot\run\$Name.pid"
     if (-not (Test-Path -LiteralPath $f)) { return }
     $id = [int](Get-Content -LiteralPath $f -Raw).Trim()
     $written = (Get-Item -LiteralPath $f).LastWriteTime
@@ -223,7 +248,7 @@ function Start-RehearsalApi {
     param([string]$Name, [string]$Tree, [int]$Port, [string]$Db, [hashtable]$Extra = @{})
     if ($Db -notmatch '^rehearsal_') { throw 'rehearsal APIs may only use rehearsal_* databases' }
     Assert-RehearsalPort $Port
-    $pw = Read-Secret "$R\secrets\pg-scratch.pw"
+    $pw = Read-Secret "$ReleaseRoot\secrets\pg-scratch.pw"
     $e = @{
         NODE_ENV = 'production'; API_HOST = '127.0.0.1'; API_PORT = "$Port"
         DATABASE_URL = "postgres://bidazoo_app:$pw@127.0.0.1:$ScratchPort/$Db"
@@ -260,7 +285,7 @@ function Get-Status {
 function Invoke-Playthrough {
     param([string]$Tree, [int]$Port, [string]$Db, [string]$LogName)
     if ($Db -notmatch '^rehearsal_') { throw 'playthrough may only target rehearsal_* databases' }
-    $pw = Read-Secret "$R\secrets\pg-scratch.pw"
+    $pw = Read-Secret "$ReleaseRoot\secrets\pg-scratch.pw"
     $env:API_URL = "http://127.0.0.1:$Port"
     $env:DATABASE_URL = "postgres://bidazoo_app:$pw@127.0.0.1:$ScratchPort/$Db"
     Push-Location $Tree
@@ -333,12 +358,12 @@ http://:$Port {
 function Start-RehearsalCaddy {
     param([string]$Name, [int]$Port, [int]$ApiPort, [string]$DistDir)
     Assert-RehearsalPort $Port
-    $cf = "$R\run\Caddyfile.$Name"
+    $cf = "$ReleaseRoot\run\Caddyfile.$Name"
     New-RehearsalCaddyfile -Port $Port -ApiPort $ApiPort -DistDir $DistDir -Path $cf
     $v = Run-Native "$Beta\bin\caddy.exe" @('validate','--config',$cf,'--adapter','caddyfile') -LogName "caddy-validate-$Name"
     if ($v.Code -ne 0) { Show-Tail $v; throw "rehearsal Caddyfile did not validate ($Name)" }
-    $e = @{ XDG_DATA_HOME = "$R\run\caddy-data"; XDG_CONFIG_HOME = "$R\run\caddy-config"; APPDATA = "$R\run\caddy-config"; LOCALAPPDATA = "$R\run\caddy-data" }
-    return (Start-Tracked -Name $Name -File "$Beta\bin\caddy.exe" -ArgList @('run','--config',$cf,'--adapter','caddyfile') -WorkDir $R -EnvVars $e)
+    $e = @{ XDG_DATA_HOME = "$ReleaseRoot\run\caddy-data"; XDG_CONFIG_HOME = "$ReleaseRoot\run\caddy-config"; APPDATA = "$ReleaseRoot\run\caddy-config"; LOCALAPPDATA = "$ReleaseRoot\run\caddy-data" }
+    return (Start-Tracked -Name $Name -File "$Beta\bin\caddy.exe" -ArgList @('run','--config',$cf,'--adapter','caddyfile') -WorkDir $ReleaseRoot -EnvVars $e)
 }
 function Probe {
     param([int]$Port, [string]$Method, [string]$Path, [string[]]$Extra = @())

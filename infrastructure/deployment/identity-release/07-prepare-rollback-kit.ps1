@@ -5,9 +5,9 @@ $ErrorActionPreference = 'Stop'
 . "$PSScriptRoot\lib.ps1"
 Initialize-Release '07-prepare-rollback-kit'
 
-$tree = "$R\trees\rollback"
+$tree = "$ReleaseRoot\trees\rollback"
 if (-not (Test-Path "$tree\apps\api\dist\server.js")) { throw 'Build and prove the rollback tree first (01 -Name rollback, then 05).' }
-$kit = "$R\rollback-kit"
+$kit = "$ReleaseRoot\rollback-kit"
 $apiCmd = Get-Content -LiteralPath "$Beta\bin\run-api.cmd" -Raw
 $caddyFile = Get-Content -LiteralPath "$Beta\config\Caddyfile.beta" -Raw
 $liveApiDir = 'C:\BidaZoo-beta\app\apps\api'

@@ -7,7 +7,7 @@ $ErrorActionPreference = 'Stop'
 . "$PSScriptRoot\lib.ps1"
 Initialize-Release '06-runtime-and-layerB'
 
-$tree = "$R\trees\stage"
+$tree = "$ReleaseRoot\trees\stage"
 if (-not (Test-Path "$tree\apps\api\dist\server.js")) { throw 'Build the stage tree first: 01-build-tree.ps1 -Name stage' }
 $h = (Run-Native 'git' @('-C', $tree, 'rev-parse', 'HEAD')).Out[0]
 Rec 'stage tree is exactly a283c24' ($h -eq $ShaStage) $h
@@ -23,7 +23,7 @@ $p = Start-RehearsalApi -Name 'stage-api-off' -Tree $tree -Port 3103 -Db 'rehear
 try {
     $up = Wait-Http 'http://127.0.0.1:3103/health' 40
     Rec 'a283c24 API (identity unset) starts' $up
-    if (-not $up) { Get-Content "$R\logs\stage-api-off.err.log" -Tail 15 -ErrorAction SilentlyContinue | ForEach-Object { Write-Host "      $_" }; Finish-Release }
+    if (-not $up) { Get-Content "$ReleaseRoot\logs\stage-api-off.err.log" -Tail 15 -ErrorAction SilentlyContinue | ForEach-Object { Write-Host "      $_" }; Finish-Release }
     Rec '/ready is 200' ((Get-Status 'http://127.0.0.1:3103/ready') -eq 200)
     Rec 'guardian sign-in route does NOT exist (404): identity is off' ((Get-Status 'http://127.0.0.1:3103/api/v1/guardian/email-links' 'POST' @{ Origin = 'http://127.0.0.1:3103' } '{"email":"a@example.test"}') -eq 404)
     $pt = Invoke-Playthrough -Tree $tree -Port 3103 -Db 'rehearsal_migrated' -LogName 'stage-playthrough-off'
@@ -44,13 +44,13 @@ $extra = @{ IDENTITY_SECRET = $secret; PUBLIC_BASE_URL = 'https://play.bidazoo.c
 $p = Start-RehearsalApi -Name 'stage-api-nomail' -Tree $tree -Port 3105 -Db 'rehearsal_migrated' -Extra $extra
 $p.WaitForExit(15000) | Out-Null
 Rec 'API exits instead of running half-configured' ($p.HasExited -and $p.ExitCode -ne 0) "exited=$($p.HasExited) code=$(if ($p.HasExited) { $p.ExitCode })"
-$err = (Get-Content "$R\logs\stage-api-nomail.err.log" -Raw -ErrorAction SilentlyContinue)
+$err = (Get-Content "$ReleaseRoot\logs\stage-api-nomail.err.log" -Raw -ErrorAction SilentlyContinue)
 Rec 'the error names MAIL_TRANSPORT and does not echo the secret' (($err -match 'MAIL_TRANSPORT') -and ($err -notmatch [regex]::Escape($secret)))
 Rec 'nothing is listening on 3105' (-not (Test-Listening 3105))
 Stop-Tracked 'stage-api-nomail'
 
 Write-Host "`n=== 3. LAYER B: real identity throttling behind a Caddy that mirrors Caddyfile.beta ==="
-$cmp = Join-Path $R 'run\Caddyfile.compare-ref'
+$cmp = Join-Path $ReleaseRoot 'run\Caddyfile.compare-ref'
 New-RehearsalCaddyfile -Port 8480 -ApiPort 3101 -DistDir 'C:/BidaZoo-beta/app/apps/play/dist' -Path $cmp
 if (Test-Path "$Beta\config\Caddyfile.beta") {
     $norm = { param($t) ($t -split "`r?`n" | ForEach-Object { $_.Trim() } | Where-Object { $_ -ne '' -and -not $_.StartsWith('#') }) }
@@ -59,13 +59,13 @@ if (Test-Path "$Beta\config\Caddyfile.beta") {
     Rec 'rehearsal Caddyfile matches the live Caddyfile.beta (read-only comparison)' ($d.Count -eq 0) "$($d.Count) differing line(s)"
     if ($d.Count -gt 0) { Write-Host '      <= only in live file, => only in rehearsal template:'; $d | Select-Object -First 20 | ForEach-Object { Write-Host "      $($_.SideIndicator) $($_.InputObject)" }; Note 'If the differences are comments/ordering only, fine. If a header_up / redir / handle rule differs, STOP: the rehearsal is not testing what runs live.' }
 } else { Note 'Caddyfile.beta not readable here; compare manually' }
-New-Item -ItemType Directory -Force -Path "$R\run\mail-outbox" | Out-Null
-$extra = @{ NODE_ENV = 'development'; COOKIE_SECURE = $null; IDENTITY_SECRET = $secret; PUBLIC_BASE_URL = 'http://localhost:5173'; MAIL_TRANSPORT = 'file'; MAIL_OUTBOX_DIR = "$R\run\mail-outbox"; IDENTITY_RATE_LOGIN_IP_MAX = '3'; IDENTITY_RATE_LOGIN_IP_WINDOW_SECONDS = '600' }
+New-Item -ItemType Directory -Force -Path "$ReleaseRoot\run\mail-outbox" | Out-Null
+$extra = @{ NODE_ENV = 'development'; COOKIE_SECURE = $null; IDENTITY_SECRET = $secret; PUBLIC_BASE_URL = 'http://localhost:5173'; MAIL_TRANSPORT = 'file'; MAIL_OUTBOX_DIR = "$ReleaseRoot\run\mail-outbox"; IDENTITY_RATE_LOGIN_IP_MAX = '3'; IDENTITY_RATE_LOGIN_IP_WINDOW_SECONDS = '600' }
 $p = Start-RehearsalApi -Name 'stage-api-id' -Tree $tree -Port 3104 -Db 'rehearsal_migrated' -Extra $extra
 try {
     $up = Wait-Http 'http://127.0.0.1:3104/health' 40
     Rec 'identity-ON rehearsal API starts (dev env, FILE mail, scratch DB, TRUST_PROXY=loopback)' $up
-    if (-not $up) { Get-Content "$R\logs\stage-api-id.err.log" -Tail 15 -ErrorAction SilentlyContinue | ForEach-Object { Write-Host "      $_" }; Finish-Release }
+    if (-not $up) { Get-Content "$ReleaseRoot\logs\stage-api-id.err.log" -Tail 15 -ErrorAction SilentlyContinue | ForEach-Object { Write-Host "      $_" }; Finish-Release }
     $cd = Start-RehearsalCaddy -Name 'stage-caddy' -Port 8482 -ApiPort 3104 -DistDir "$tree\apps\play\dist"
     try {
         Start-Sleep -Seconds 2
@@ -76,7 +76,7 @@ try {
         Rec 'LAYER B (rehearsal): per-IP throttling keys on the real visitor and ignores forged headers' ($lb.Code -eq 0)
     } finally { Stop-Tracked 'stage-caddy' }
 } finally { Stop-Tracked 'stage-api-id' }
-$mails = @(Get-ChildItem "$R\run\mail-outbox" -ErrorAction SilentlyContinue).Count
+$mails = @(Get-ChildItem "$ReleaseRoot\run\mail-outbox" -ErrorAction SilentlyContinue).Count
 Note "file-mail outbox now holds $mails rehearsal message(s) to example.test addresses (scratch only; removed by 08-cleanup)"
 Rec 'all rehearsal ports released' (-not (Test-Listening 3103) -and -not (Test-Listening 3104) -and -not (Test-Listening 3105) -and -not (Test-Listening 8482))
 Note 'LAYER B limits: this proves the application + a Caddy built from the same rules. The SAME checks must still be repeated through the real Cloudflare path in the maintenance window (see checklist).'

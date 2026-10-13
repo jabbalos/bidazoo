@@ -9,7 +9,7 @@ Initialize-Release "01-build-$Name"
 
 $sha = $ShaStage
 if ($Name -eq 'rollback') { $sha = $ShaRollback }
-$dest = "$R\trees\$Name"
+$dest = "$ReleaseRoot\trees\$Name"
 if (Test-Path -LiteralPath $dest) { throw "$dest already exists. Nothing here deletes it; remove it yourself for a fresh build." }
 
 $nv = (Run-Native $NodeExe @('--version')).Out[0]
@@ -29,20 +29,20 @@ Note ("package-lock.json SHA-256: " + (Get-FileHash -LiteralPath "$dest\package-
 
 Push-Location $dest
 try {
-    $r = Run-Native 'npm' @('ci') -LogName "npm-ci-$Name";             Show-Tail $r 6; Rec 'npm ci' ($r.Code -eq 0) "exit=$($r.Code) (log: $R\logs\npm-ci-$Name.log)"
-    if ($r.Code -eq 0) {
-        $r = Run-Native 'npm' @('run', 'build') -LogName "npm-build-$Name"; Show-Tail $r 6; Rec 'npm run build' ($r.Code -eq 0) "exit=$($r.Code)"
+    $NativeResult = Run-Native 'npm' @('ci') -LogName "npm-ci-$Name";             Show-Tail $NativeResult 6; Rec 'npm ci' ($NativeResult.Code -eq 0) "exit=$($NativeResult.Code) (log: $ReleaseRoot\logs\npm-ci-$Name.log)"
+    if ($NativeResult.Code -eq 0) {
+        $NativeResult = Run-Native 'npm' @('run', 'build') -LogName "npm-build-$Name"; Show-Tail $NativeResult 6; Rec 'npm run build' ($NativeResult.Code -eq 0) "exit=$($NativeResult.Code)"
     }
-    if ($r.Code -eq 0) {
-        $r = Run-Native 'npm' @('run', 'scan:client') -LogName "scan-$Name"; Show-Tail $r 8
-        Rec 'npm run scan:client reports CLEAN' (($r.Code -eq 0) -and (($r.Out -join "`n") -match '(?i)clean')) "exit=$($r.Code)"
+    if ($NativeResult.Code -eq 0) {
+        $NativeResult = Run-Native 'npm' @('run', 'scan:client') -LogName "scan-$Name"; Show-Tail $NativeResult 8
+        Rec 'npm run scan:client reports CLEAN' (($NativeResult.Code -eq 0) -and (($NativeResult.Out -join "`n") -match '(?i)clean')) "exit=$($NativeResult.Code)"
     }
 } finally { Pop-Location }
 
 $apiJs = "$dest\apps\api\dist\server.js"; $idx = "$dest\apps\play\dist\index.html"
 Rec 'built API present (apps\api\dist\server.js)' (Test-Path $apiJs)
 Rec 'built play client present (apps\play\dist\index.html)' (Test-Path $idx)
-$man = "$R\evidence\dist-manifest-$Name.txt"
+$man = "$ReleaseRoot\evidence\dist-manifest-$Name.txt"
 Get-ChildItem -Recurse -File "$dest\apps\api\dist", "$dest\apps\play\dist" | ForEach-Object { '{0}  {1}' -f (Get-FileHash -LiteralPath $_.FullName -Algorithm SHA256).Hash, $_.FullName.Substring($dest.Length + 1) } | Set-Content -LiteralPath $man -Encoding ASCII
 Note "dist SHA-256 manifest: $man (builds are not guaranteed byte-identical across machines/paths; it documents what was verified)"
 $lnk = Get-Item "$dest\node_modules\@bidazoo\api" -ErrorAction SilentlyContinue
