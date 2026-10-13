@@ -37,7 +37,11 @@ foreach ($db in 'rehearsal_pre', 'rehearsal_migrated') {
                 $api = ($me -join ' ')
                 Rec 'API response keeps the API CSP (default-src none), not the client policy' ($api -match "default-src 'none'" -and $api -notmatch "script-src 'self'")
                 $plain = Probe 8481 'GET' '/' @('--host', 'play.bidazoo.com')
-                Rec 'request without CF-Visitor https is redirected (308)' ((Probe-Status $plain) -eq 308)
+                # The LIVE Caddyfile.beta has no CF-Visitor redirect rule (rehearsal Caddyfiles are derived from it), so a plain request is served, not redirected.
+                $plainHasRule = (Get-LiveCaddyfileText) -match 'CF-Visitor'
+                $expectPlain = if ($plainHasRule) { 308 } else { 200 }
+                Rec "request without CF-Visitor behaves as the live Caddyfile does (expect $expectPlain)" ((Probe-Status $plain) -eq $expectPlain) "status=$(Probe-Status $plain)"
+
             } finally { Stop-Tracked 'rollback-caddy' }
         }
     } finally { Stop-Tracked 'rollback-api' }

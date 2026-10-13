@@ -51,14 +51,18 @@ Stop-Tracked 'stage-api-nomail'
 
 Write-Host "`n=== 3. LAYER B: real identity throttling behind a Caddy that mirrors Caddyfile.beta ==="
 $cmp = Join-Path $ReleaseRoot 'run\Caddyfile.compare-ref'
-New-RehearsalCaddyfile -Port 8480 -ApiPort 3101 -DistDir 'C:/BidaZoo-beta/app/apps/play/dist' -Path $cmp
-if (Test-Path "$Beta\config\Caddyfile.beta") {
-    $norm = { param($t) ($t -split "`r?`n" | ForEach-Object { $_.Trim() } | Where-Object { $_ -ne '' -and -not $_.StartsWith('#') }) }
-    $a = & $norm (Get-Content "$Beta\config\Caddyfile.beta" -Raw); $b = & $norm (Get-Content $cmp -Raw)
-    $d = Compare-Object $a $b
-    Rec 'rehearsal Caddyfile matches the live Caddyfile.beta (read-only comparison)' ($d.Count -eq 0) "$($d.Count) differing line(s)"
-    if ($d.Count -gt 0) { Write-Host '      <= only in live file, => only in rehearsal template:'; $d | Select-Object -First 20 | ForEach-Object { Write-Host "      $($_.SideIndicator) $($_.InputObject)" }; Note 'If the differences are comments/ordering only, fine. If a header_up / redir / handle rule differs, STOP: the rehearsal is not testing what runs live.' }
-} else { Note 'Caddyfile.beta not readable here; compare manually' }
+$cmpLog = "$ReleaseRoot\logs\caddy-access-compare-ref.log"
+$lv = Get-CaddyfileValues (Get-LiveCaddyfileText)
+# generate the rehearsal file with the LIVE port/root values (nothing is started), then compare on canonical form
+New-RehearsalCaddyfile -Port ([int]$lv.Listen) -ApiPort ([int]$lv.Api) -DistDir $lv.Root -Path $cmp -LogPath $cmpLog
+$fid = Compare-RehearsalCaddyfile -RehearsalPath $cmp -Port ([int]$lv.Listen) -ApiPort ([int]$lv.Api) -DistDir $lv.Root -LogPath $cmpLog
+Write-Host '      canonical live Caddyfile.beta (approved values replaced by <LISTEN_PORT> <API_PORT> <STATIC_ROOT> <ACCESS_LOG>):'
+$fid.Live | ForEach-Object { Write-Host "        $_" }
+Rec 'rehearsal Caddyfile is semantically identical to live Caddyfile.beta (canonical, ordered comparison)' $fid.Ok ("$($fid.Diff.Count) unexpected difference(s): " + ($fid.Diff -join ' ; '))
+$v = Run-Native "$Beta\bin\caddy.exe" @('validate', '--config', $cmp, '--adapter', 'caddyfile') -LogName 'caddy-validate-compare-ref'
+Rec 'rehearsal Caddyfile validates with the beta caddy.exe' ($v.Code -eq 0) "exit=$($v.Code)"
+$liveText = Get-LiveCaddyfileText
+Note ('live Caddyfile.beta facts: CF-Visitor redirect rule = ' + $(if ($liveText -match 'CF-Visitor') { 'PRESENT' } else { 'ABSENT (plain requests are served, not redirected, by Caddy; HTTPS enforcement is the edge job)' }) + '; X-Forwarded-Host = ' + $(if ($liveText -match 'header_up X-Forwarded-Host play\.bidazoo\.com') { 'fixed literal play.bidazoo.com' } else { 'see canonical text above' }))
 New-Item -ItemType Directory -Force -Path "$ReleaseRoot\run\mail-outbox" | Out-Null
 $extra = @{ NODE_ENV = 'development'; COOKIE_SECURE = $null; IDENTITY_SECRET = $secret; PUBLIC_BASE_URL = 'http://localhost:5173'; MAIL_TRANSPORT = 'file'; MAIL_OUTBOX_DIR = "$ReleaseRoot\run\mail-outbox"; IDENTITY_RATE_LOGIN_IP_MAX = '3'; IDENTITY_RATE_LOGIN_IP_WINDOW_SECONDS = '600' }
 $p = Start-RehearsalApi -Name 'stage-api-id' -Tree $tree -Port 3104 -Db 'rehearsal_migrated' -Extra $extra

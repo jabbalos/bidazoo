@@ -301,65 +301,71 @@ function Rec-Playthrough {
 }
 
 # ---------------------------------------------------------------- rehearsal Caddy (mirrors Caddyfile.beta, other ports)
+# ---- Caddy fidelity: the LIVE Caddyfile.beta is the authority. The rehearsal Caddyfile is DERIVED from it by
+# substituting only four approved values (listen port, API port, static root, access-log path). Nothing else is
+# written by hand, so proxy/header/CSP/redirect behavior cannot drift from what runs live.
+function Get-LiveCaddyfileText {
+    $p = Join-Path $Beta 'config\Caddyfile.beta'
+    if (-not (Test-Path -LiteralPath $p -PathType Leaf)) { throw "Live Caddyfile.beta not readable at $p (it is the authority for rehearsal fidelity)" }
+    return (Get-Content -LiteralPath $p -Raw)
+}
+function Get-CaddyfileValues {
+    param([string]$Text)
+    $listen = [regex]::Matches($Text, '(?m)^\s*http://(?:play\.bidazoo\.com)?:(\d+)\s*\{')
+    $api    = [regex]::Matches($Text, 'reverse_proxy\s+127\.0\.0\.1:(\d+)')
+    $root   = [regex]::Matches($Text, '(?m)^\s*root\s+\*\s+(\S+)\s*$')
+    $log    = [regex]::Matches($Text, '(?m)^\s*output\s+file\s+(\S+)\s*\{')
+    if ($listen.Count -ne 2 -or $api.Count -ne 1 -or $root.Count -ne 1 -or $log.Count -ne 1) {
+        throw "Unexpected Caddyfile shape (listen sites=$($listen.Count) want 2, reverse_proxy=$($api.Count) want 1, root=$($root.Count) want 1, log=$($log.Count) want 1)"
+    }
+    $lp = @($listen | ForEach-Object { $_.Groups[1].Value } | Sort-Object -Unique)
+    if ($lp.Count -ne 1) { throw "The two site blocks do not share one listen port: $($lp -join ',')" }
+    return [pscustomobject]@{ Listen = $lp[0]; Api = $api[0].Groups[1].Value; Root = $root[0].Groups[1].Value; Log = $log[0].Groups[1].Value }
+}
+# Canonical form: CRLF/LF, indentation, blank lines and comment lines normalized; the four approved values replaced
+# by placeholders. Line ORDER is preserved and compared.
+function Get-CanonicalCaddyfile {
+    param([string]$Text, $Values)
+    $t = $Text.Replace($Values.Root, '<STATIC_ROOT>').Replace($Values.Log, '<ACCESS_LOG>')
+    $t = [regex]::Replace($t, ':' + $Values.Listen + '(?!\d)', ':<LISTEN_PORT>')
+    $t = [regex]::Replace($t, '127\.0\.0\.1:' + $Values.Api + '(?!\d)', '127.0.0.1:<API_PORT>')
+    return @($t -split "`r?`n" | ForEach-Object { $_.Trim() } | Where-Object { $_ -ne '' -and -not $_.StartsWith('#') })
+}
 function New-RehearsalCaddyfile {
-    param([int]$Port, [int]$ApiPort, [string]$DistDir, [string]$Path)
-    $dist = $DistDir.Replace('\', '/')
-    $text = @"
-{
-	auto_https off
-	admin off
-	persist_config off
-}
-
-http://play.bidazoo.com:$Port {
-	bind 127.0.0.1
-	@not_https {
-		not {
-			header_regexp cfv CF-Visitor ``"scheme"\s*:\s*"https"``
-		}
-	}
-	handle @not_https {
-		redir https://play.bidazoo.com{uri} 308
-	}
-	handle /api/* {
-		reverse_proxy 127.0.0.1:$ApiPort {
-			header_up X-Forwarded-For {http.request.header.CF-Connecting-IP}
-			header_up X-Forwarded-Proto https
-			header_up X-Forwarded-Host {http.request.host}
-			header_up -X-Real-IP
-		}
-	}
-	handle {
-		header {
-			Content-Security-Policy "default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; media-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'"
-			X-Content-Type-Options nosniff
-			Referrer-Policy no-referrer
-			X-Frame-Options DENY
-			Cross-Origin-Opener-Policy same-origin
-			Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=(), usb=(), interest-cohort=()"
-		}
-		@assets path /assets/*
-		header @assets Cache-Control "public, max-age=31536000, immutable"
-		@shell path / /index.html
-		header @shell Cache-Control "no-cache"
-		root * $dist
-		try_files {path} /index.html
-		file_server
-	}
-}
-
-http://:$Port {
-	bind 127.0.0.1
-	respond 404
-}
-"@
+    param([int]$Port, [int]$ApiPort, [string]$DistDir, [string]$Path, [string]$LogPath = '')
+    if ($LogPath -eq '') { $LogPath = "$ReleaseRoot\logs\caddy-access-rehearsal.log" }
+    $live = Get-LiveCaddyfileText
+    $v = Get-CaddyfileValues $live
+    $text = $live.Replace($v.Root, $DistDir.Replace('\', '/')).Replace($v.Log, $LogPath.Replace('\', '/'))
+    $text = [regex]::Replace($text, ':' + $v.Listen + '(?!\d)', ":$Port")
+    $text = [regex]::Replace($text, '127\.0\.0\.1:' + $v.Api + '(?!\d)', "127.0.0.1:$ApiPort")
     Set-Content -LiteralPath $Path -Value $text -Encoding ASCII
+}
+# Compares a generated rehearsal Caddyfile with the live one on canonical form. Returns Ok, the canonical lines of
+# both, and every unexpected difference (an empty list means semantically identical apart from the 4 approved values).
+function Compare-RehearsalCaddyfile {
+    param([string]$RehearsalPath, [int]$Port, [int]$ApiPort, [string]$DistDir, [string]$LogPath)
+    $live = Get-LiveCaddyfileText; $lv = Get-CaddyfileValues $live
+    $reh  = Get-Content -LiteralPath $RehearsalPath -Raw
+    $rv   = [pscustomobject]@{ Listen = "$Port"; Api = "$ApiPort"; Root = $DistDir.Replace('\', '/'); Log = $LogPath.Replace('\', '/') }
+    $a = @(Get-CanonicalCaddyfile $live $lv); $b = @(Get-CanonicalCaddyfile $reh $rv)
+    $diff = @()
+    for ($i = 0; $i -lt [Math]::Max($a.Count, $b.Count); $i++) {
+        $x = if ($i -lt $a.Count) { $a[$i] } else { '(missing)' }; $y = if ($i -lt $b.Count) { $b[$i] } else { '(missing)' }
+        if ($x -cne $y) { $diff += ("line {0}: live=[{1}] rehearsal=[{2}]" -f ($i + 1), $x, $y) }
+    }
+    return [pscustomobject]@{ Ok = ($diff.Count -eq 0); Live = $a; Rehearsal = $b; Diff = $diff; LiveValues = $lv }
 }
 function Start-RehearsalCaddy {
     param([string]$Name, [int]$Port, [int]$ApiPort, [string]$DistDir)
     Assert-RehearsalPort $Port
     $cf = "$ReleaseRoot\run\Caddyfile.$Name"
-    New-RehearsalCaddyfile -Port $Port -ApiPort $ApiPort -DistDir $DistDir -Path $cf
+    $cl = "$ReleaseRoot\logs\caddy-access-$Name.log"
+    New-RehearsalCaddyfile -Port $Port -ApiPort $ApiPort -DistDir $DistDir -Path $cf -LogPath $cl
+    $fid = Compare-RehearsalCaddyfile -RehearsalPath $cf -Port $Port -ApiPort $ApiPort -DistDir $DistDir -LogPath $cl
+    Rec "rehearsal Caddyfile '$Name' is semantically identical to live Caddyfile.beta (only listen/API port, static root, log path differ)" $fid.Ok ($fid.Diff -join ' ; ')
+    if (-not $fid.Ok) { throw "rehearsal Caddyfile drifted from live ($Name)" }
+    if ($cl.Replace('\', '/') -eq $fid.LiveValues.Log) { throw 'refusing: rehearsal access log would be the live log file' }
     $v = Run-Native "$Beta\bin\caddy.exe" @('validate','--config',$cf,'--adapter','caddyfile') -LogName "caddy-validate-$Name"
     if ($v.Code -ne 0) { Show-Tail $v; throw "rehearsal Caddyfile did not validate ($Name)" }
     $e = @{ XDG_DATA_HOME = "$ReleaseRoot\run\caddy-data"; XDG_CONFIG_HOME = "$ReleaseRoot\run\caddy-config"; APPDATA = "$ReleaseRoot\run\caddy-config"; LOCALAPPDATA = "$ReleaseRoot\run\caddy-data" }
