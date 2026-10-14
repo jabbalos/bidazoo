@@ -8,7 +8,9 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "typecheck": "tsc -p tsconfig.json"
+    "typecheck": "tsc -p tsconfig.json",
+    "build:character-lab": "vite build --mode character-lab --outDir dist-character-lab",
+    "preview:character-lab": "vite preview --outDir dist-character-lab"
   },
   "dependencies": {
     "@bidazoo/contracts": "*",

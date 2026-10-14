@@ -3,6 +3,7 @@ node_modules/
 
 # Build output
 dist/
+dist-character-lab/
 *.tsbuildinfo
 
 # Secrets and local configuration (never commit)

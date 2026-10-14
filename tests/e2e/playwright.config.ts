@@ -1,5 +1,6 @@
 import { defineConfig } from '@playwright/test';
 import { ID_API_PORT, ID_PLAY_PORT, identityEnv } from './identity-env';
+import { LAB_PORT } from './lab-env';
 
 const PLAY_PORT = 4173;
 const API_PORT = 3001;
@@ -64,6 +65,14 @@ export default defineConfig({
     {
       command: `npm run build -w @bidazoo/play && npm run preview -w @bidazoo/play -- --port ${PLAY_PORT} --strictPort`,
       url: `http://127.0.0.1:${PLAY_PORT}`,
+      cwd: '../..',
+      reuseExistingServer: !process.env['CI'],
+      timeout: 120_000,
+    },
+    // Developer character lab: a separate build (`--mode character-lab`) of the same client, same CSP.
+    {
+      command: `npm run build:character-lab -w @bidazoo/play && npm run preview:character-lab -w @bidazoo/play -- --port ${LAB_PORT} --strictPort`,
+      url: `http://127.0.0.1:${LAB_PORT}`,
       cwd: '../..',
       reuseExistingServer: !process.env['CI'],
       timeout: 120_000,

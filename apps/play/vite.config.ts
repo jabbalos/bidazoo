@@ -23,8 +23,11 @@ function embedCsp(): Plugin {
   };
 }
 
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
   plugins: [embedCsp()],
+  // The developer character lab (games/zoo-sprint/src/scenes/CharacterLabScene.ts) exists only in
+  // a build made with `--mode character-lab`. Every other build gets `false`, which removes it.
+  define: { __BIDAZOO_CHARACTER_LAB__: JSON.stringify(mode === 'character-lab') },
   server: { host: '127.0.0.1', port: 5173, proxy },
   // `vite preview` serves the production build: it gets the full enforced header set.
   preview: { host: '127.0.0.1', port: 4173, proxy, headers: clientSecurityHeaders() },
@@ -40,4 +43,4 @@ export default defineConfig({
     // Phaser alone is ~1.2 MB minified, so the default 500 kB warning is expected noise.
     chunkSizeWarningLimit: 1500,
   },
-});
+}));
