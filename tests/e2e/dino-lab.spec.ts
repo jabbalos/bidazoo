@@ -31,6 +31,12 @@ interface Geometry {
   worldX: number;
   bounds: { x: number; y: number; w: number; h: number };
 }
+/** The fields of a SecurityPolicyViolationEvent this suite reads. */
+interface CspViolation {
+  blockedURI: string;
+  effectiveDirective: string;
+  violatedDirective: string;
+}
 interface Target {
   id: string;
   x: number;
@@ -203,22 +209,47 @@ test.describe('Dino production expressions (lab build)', () => {
     await shot(page, 'strip');
   });
 
-  test('negative control: Phaser default XHR loading IS blocked by the CSP, so the guard and the fix are real', async ({ page, problems }) => {
+  test('negative control: Phaser default XHR loading IS blocked by the CSP, so the guard and the fix are real', async ({ page }) => {
+    // The shared fixture treats CSP violations as failures; this annotation is its existing opt-out
+    // for a test that provokes one on purpose. The fixture is unchanged.
     test.info().annotations.push({ type: 'expects-csp-violation', description: 'XHR image loading creates blob: URLs, which img-src forbids' });
-    const methods: string[] = [];
+
+    // Observe the standards-based SecurityPolicyViolationEvent, not Chromium's console wording.
+    // Captured in the page from the very first script and read back with page.evaluate().
+    await page.addInitScript(() => {
+      const violations: CspViolation[] = [];
+      (window as unknown as { __bzCspViolations: CspViolation[] }).__bzCspViolations = violations;
+      window.addEventListener(
+        'securitypolicyviolation',
+        (event) => {
+          violations.push({ blockedURI: event.blockedURI, effectiveDirective: event.effectiveDirective, violatedDirective: event.violatedDirective });
+        },
+        true,
+      );
+    });
+    const readViolations = (): Promise<CspViolation[]> =>
+      page.evaluate(() => (window as unknown as { __bzCspViolations?: CspViolation[] }).__bzCspViolations ?? []);
+
     await page.goto('/?character-lab&loader=xhr');
     await expect(page.locator('#game')).toHaveAttribute('data-lab-ready', 'true');
-    await expect.poll(() => problems.some((p) => /Refused to load the image 'blob:[^']+' because it violates .*img-src 'self' data:/.test(p))).toBe(true);
+
+    // A CSP violation happened, against an image load of a blob: resource, under img-src.
+    // (Browsers report the blocked URI as "blob" or "blob:"; the directive as img-src or img-src-elem.)
+    await expect
+      .poll(async () => (await readViolations()).some((v) => /^blob\b/.test(v.blockedURI) && /^img-src/.test(v.effectiveDirective || v.violatedDirective)))
+      .toBe(true);
+
     // No texture survives, so the lab (and the game) would fall back to code-drawn art.
     expect(await attr(page, 'data-production-art')).toBe('0');
+
+    // Resource Timing: the default path fetched the PNGs, but NOT as ordinary <img> loads.
     const initiators = await page.evaluate(() =>
       performance
         .getEntriesByType('resource')
         .filter((entry) => /\.png/.test(entry.name))
         .map((entry) => (entry as PerformanceResourceTiming).initiatorType),
     );
-    methods.push(...initiators);
-    expect(methods.length).toBeGreaterThan(0);
-    for (const initiator of methods) expect(initiator).not.toBe('img');
+    expect(initiators.length).toBeGreaterThan(0);
+    for (const initiator of initiators) expect(initiator).not.toBe('img');
   });
 });
