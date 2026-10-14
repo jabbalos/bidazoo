@@ -1,0 +1,49 @@
+{
+ "name": "click_cheer",
+ "box": [
+  648,
+  645,
+  852,
+  805
+ ],
+ "mode": "parchment",
+ "bg_rgb": [
+  253,
+  239,
+  208
+ ],
+ "clip_left": 0.0,
+ "clip_right": 0.0,
+ "clip_top": 0.0,
+ "clip_bottom": 0.1388888888888889,
+ "clipping": false,
+ "extra_components": [
+  180,
+  104
+ ],
+ "contamination": true,
+ "halo_fraction": 0.0022662889518413596,
+ "halo": false,
+ "outline_missing_px": 0,
+ "outline_missing": false,
+ "pass": false,
+ "size": [
+  198,
+  157
+ ],
+ "composite_default_ring_rects": [
+  [
+   735,
+   648,
+   790,
+   695
+  ],
+  [
+   810,
+   680,
+   852,
+   725
+  ]
+ ],
+ "post_cleanup": "ear-tip band (top 28 rows): removed semi-transparent dark (lum<150, alpha 0.02-0.9) fringe pixels"
+}

@@ -26,8 +26,8 @@ Click is not implemented in code today. No existing Clickaroo or Hop Quest artwo
 ## Production notes (PROPOSED)
 
 - **Role in frame.** Click stands beside or slightly behind the learner's starter and never takes
-  its place. Click reads among the taller, larger characters (SPEC-LOCKED relative rule; exact numbers are
-  PROVISIONAL, see [08](08-proportions-silhouettes.md)).
+  its place. Click reads among the taller, larger characters (SPEC-LOCKED relative rule; cast factor 0.92, see
+  [08](08-proportions-silhouettes.md)).
 - **Silhouette signature.** Tall ears plus an upright lean plus a thick tail. At 48 px this must
   not be confused with Bronco's ears or Eagle's wings (see [08](08-proportions-silhouettes.md)).
 - **Pack.** Click's gear is a satchel-style pack with a chest strap and the "C" badge, shaped
@@ -71,8 +71,8 @@ Source: `01_Click_Character_Sheet.png`. Full catalog in [INGESTION-REPORT.md](IN
   explorer pack with a paw-print patch, and a round chest emblem with a yellow "C" on blue.
 - **Expressions shown:** Happy, Encouraging, Surprised, Thinking, Celebrate, Concerned. The action
   pose points ("Let's explore!"), which supports `point`. No wave is shown.
-- **Scale:** on 07 Click is 1.00, equal to Bronco and taller than Dino, Koala, and Tarsier. The earlier
-  "85 to 95 percent of a starter" guidance is withdrawn.
+- **Scale:** cast factor 0.92 (08), equal to Bronco and taller than Dino, Koala, and Tarsier; Eagle is 1.000.
+  Sheet 07 v1 printed 1.00 (historical). The earlier "85 to 95 percent of a starter" guidance is withdrawn.
 - **Sheet note:** "Not a starter character. Appears as host, guide and narrator throughout BidaZoo
   World Expedition." This matches the Bible.
 - **RESOLVED (owner, October 12, 2026):** Click is NEVER selectable. The Profile Selection card and

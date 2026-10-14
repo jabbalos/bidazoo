@@ -1,0 +1,151 @@
+### make_palettes(check-current)
+$ tools/make_palettes.py --assets-root <WORK>/assets --out <WORK>/work/palettes_fresh.json --proof-dir <WORK>/work/palette_proof
+click Orange=#E77B2C Tan=#FDDCA5 Emblem=#0153D9 Harness=#341D10 Inner=#FA664F Emblem=#FAC718 | verify med dE [4.11, 4.25, 5.19, 1.69, 0.71, 1.52]
+dino Teal=#03BDB2 Cream=#FDEC9A Orange=#F54A05 Pack=#763B13 Deep=#01857B Olive=#1D4331 | verify med dE [5.0, 3.81, 3.04, 3.64, 6.32, 10.58]
+koala Gray-lavender=#9B85B9 Light=#E7CCF2 Ear=#FAAB97 Scholar=#241511 Glasses=#0B0604 Leather=#5F341F | verify med dE [1.86, 2.52, 3.77, 3.0, 2.1, 6.38]
+tarsier Golden-brown=#A8642C Scout=#FCC003 Goggle=#05B5DD Scout=#2B4B53 Ear=#FC8161 Amber=#E07A05 | verify med dE [3.64, 1.23, 4.33, 5.81, 6.93, 1.92]
+eagle White=#FDF6ED Brown=#602F1D Beak=#FCBF15 Varsity=#0E472B Feet=#F68905 Blue=#058AC4 | verify med dE [1.33, 2.84, 7.84, 3.2, 5.67, 3.08]
+bronco Chestnut=#DF733A Dark=#2C1610 Red=#B41C2E Saddle=#673620 Muzzle=#FBDEC5 Maroon=#6F1228 | verify med dE [4.31, 2.66, 8.54, 3.41, 3.69, 2.66]
+
+### make_real_manifests
+$ tools/make_real_manifests.py
+wrote eagle ref_h 283 head_scale 0.6289
+wrote click ref_h 290 head_scale 0.5435
+wrote bronco ref_h 273 head_scale 0.578
+wrote dino ref_h 275 head_scale 0.7692
+wrote koala ref_h 260 head_scale 0.6494
+wrote tarsier ref_h 231 head_scale 0.361
+
+### derive_core_boxes
+$ tools/derive_core_boxes.py
+42 core boxes; 30 derived
+
+### make_v2_manifests
+$ tools/make_v2_manifests.py --palettes palettes.json --logo logo/BidaZoo_World_Expedition_logo_master.png --logo-status READY WITH CROP/MATTING
+click head_scale 0.5923 {} core px [109.0, 85.3, 82.9, 94.2, 80.6, 81.7]
+dino head_scale 0.7843 {} core px [98.8, 98.8, 101.2, 95.7, 102.7, 106.7]
+koala head_scale 0.63 {} core px [97.0, 93.9, 96.4, 92.6, 93.9, 109.0]
+tarsier head_scale 0.5228 {'idle': 0.7526, 'tryAgain': 0.7526} core px [109.0, 81.0, 85.7, 78.9, 89.9, 107.8]
+eagle head_scale 0.6535 {} core px [97.4, 101.9, 99.3, 101.3, 92.1, 100.6]
+bronco head_scale 0.606 {} core px [103.6, 90.9, 106.7, 98.8, 97.0, 101.2]
+
+### run_all#1
+$ run_all.py --manifests <WORK>/build/manifests --out <WORK>/build --suffix v2 --no-selftest --assets-root <WORK>/assets
+Determinism check: each sheet rendered twice (fresh process), sha256 compared.
+
+click     png run1=78fd1d7337cf8fb59794b100e50541ae16c83eb62baa13e40d4069623ed19526 run2=78fd1d7337cf8fb59794b100e50541ae16c83eb62baa13e40d4069623ed19526 report-identical=True  (1448, 1086) RGB  => IDENTICAL
+dino      png run1=2afbf5e91b53dab7c58549b90e1c1f048b5f5cd2e1306b78ea2f0ac9521e9e15 run2=2afbf5e91b53dab7c58549b90e1c1f048b5f5cd2e1306b78ea2f0ac9521e9e15 report-identical=True  (1448, 1086) RGB  => IDENTICAL
+koala     png run1=e53cecbeef1d10b6a190db59c8ee575c626f02f4145ecf1dc0cdd1e8e2198016 run2=e53cecbeef1d10b6a190db59c8ee575c626f02f4145ecf1dc0cdd1e8e2198016 report-identical=True  (1448, 1086) RGB  => IDENTICAL
+tarsier   png run1=d0f28dcfcc6ff66eedb9805a323fe2846a73543daada0d44c46b624a95fcac51 run2=d0f28dcfcc6ff66eedb9805a323fe2846a73543daada0d44c46b624a95fcac51 report-identical=True  (1448, 1086) RGB  => IDENTICAL
+eagle     png run1=b80961e600f85bc32d8ee41ef1d48337f5b936e49f5486ab33cd5c6dfa148273 run2=b80961e600f85bc32d8ee41ef1d48337f5b936e49f5486ab33cd5c6dfa148273 report-identical=True  (1448, 1086) RGB  => IDENTICAL
+bronco    png run1=5e4c1a8ce71effd39149439572fbfde63ad0f426e07bec623153f554766fbfc8 run2=5e4c1a8ce71effd39149439572fbfde63ad0f426e07bec623153f554766fbfc8 report-identical=True  (1448, 1086) RGB  => IDENTICAL
+
+RESULT: ALL IDENTICAL
+
+### run_all#2
+$ run_all.py --manifests <WORK>/build/manifests --out <WORK>/work/repeat --suffix v2 --no-selftest --assets-root <WORK>/assets
+Determinism check: each sheet rendered twice (fresh process), sha256 compared.
+
+click     png run1=78fd1d7337cf8fb59794b100e50541ae16c83eb62baa13e40d4069623ed19526 run2=78fd1d7337cf8fb59794b100e50541ae16c83eb62baa13e40d4069623ed19526 report-identical=True  (1448, 1086) RGB  => IDENTICAL
+dino      png run1=2afbf5e91b53dab7c58549b90e1c1f048b5f5cd2e1306b78ea2f0ac9521e9e15 run2=2afbf5e91b53dab7c58549b90e1c1f048b5f5cd2e1306b78ea2f0ac9521e9e15 report-identical=True  (1448, 1086) RGB  => IDENTICAL
+koala     png run1=e53cecbeef1d10b6a190db59c8ee575c626f02f4145ecf1dc0cdd1e8e2198016 run2=e53cecbeef1d10b6a190db59c8ee575c626f02f4145ecf1dc0cdd1e8e2198016 report-identical=True  (1448, 1086) RGB  => IDENTICAL
+tarsier   png run1=d0f28dcfcc6ff66eedb9805a323fe2846a73543daada0d44c46b624a95fcac51 run2=d0f28dcfcc6ff66eedb9805a323fe2846a73543daada0d44c46b624a95fcac51 report-identical=True  (1448, 1086) RGB  => IDENTICAL
+eagle     png run1=b80961e600f85bc32d8ee41ef1d48337f5b936e49f5486ab33cd5c6dfa148273 run2=b80961e600f85bc32d8ee41ef1d48337f5b936e49f5486ab33cd5c6dfa148273 report-identical=True  (1448, 1086) RGB  => IDENTICAL
+bronco    png run1=5e4c1a8ce71effd39149439572fbfde63ad0f426e07bec623153f554766fbfc8 run2=5e4c1a8ce71effd39149439572fbfde63ad0f426e07bec623153f554766fbfc8 report-identical=True  (1448, 1086) RGB  => IDENTICAL
+
+RESULT: ALL IDENTICAL
+
+### check_consistency
+$ check_consistency.py --manifests <WORK>/build/manifests --out <WORK>/build --suffix v2 --assets-root <WORK>/assets
+== click
+  [PASS] assets_current         assets changed since this render: none
+  [PASS] size                   (1448, 1086) RGB
+  [PASS] cast_k                 k=0.92 expected 0.92
+  [PASS] expression_cells_drawn 6 of 6 expression cells have art
+  [PASS] core_scale             head_scale=[0.5923]; density-normalized states=none; crown-to-eye px={'idle': 55.1, 'happy': 40.3, 'thinking': 45.0, 'cheer': 34.9, 'discover': 51.5, 'tryAgain': 44.4}; outliers(>±30%)=none
+  [PASS] core_safe              core widths px={'idle': 108.983, 'happy': 85.291, 'thinking': 82.922, 'cheer': 94.176, 'discover': 80.553, 'tryAgain': 81.737}; violations=none
+  [PASS] eye_line               bust cells off-598=none; eye outside core box=none; head-only cells (bottom-anchored, eye line free)=none; core_source=['core_box']
+  [PASS] bottom                 bust art bottom y={'idle': 630.6, 'happy': 641.2, 'thinking': 646.6, 'cheer': 650.7, 'discover': 640.1, 'tryAgain': 643.0} spread=20.1 px (tol 30); head-only bottoms (must be 724)=none
+  [PASS] allowance              violations=none
+  [INFO] fit_down               per-cell fit-down factors (1.0 = none)={'idle': 1.0, 'happy': 1.0, 'thinking': 1.0, 'cheer': 1.0, 'discover': 1.0, 'tryAgain': 1.0}; eye line kept at 598 on fitted bust cells=True
+  [PASS] other_overflow_flags   none
+  [PASS] head_closeup           bottom-anchored: bottom gap 0.0 px; eye line y=654.105; art top 31.1 px below box top
+  [PASS] turnaround             violations=none
+  [PASS] determinism            render1=78fd1d7337cf render2=78fd1d7337cf on_disk=78fd1d7337cf
+== dino
+  [PASS] assets_current         assets changed since this render: none
+  [PASS] size                   (1448, 1086) RGB
+  [PASS] cast_k                 k=0.85 expected 0.85
+  [PASS] expression_cells_drawn 6 of 6 expression cells have art
+  [PASS] core_scale             head_scale=[0.7843]; density-normalized states=none; crown-to-eye px={'idle': 43.9, 'happy': 39.2, 'thinking': 47.8, 'cheer': 41.6, 'discover': 50.2, 'tryAgain': 51.0}; outliers(>±30%)=none
+  [PASS] core_safe              core widths px={'idle': 98.822, 'happy': 98.822, 'thinking': 101.175, 'cheer': 95.685, 'discover': 102.743, 'tryAgain': 106.665}; violations=none
+  [PASS] eye_line               bust cells off-598=none; eye outside core box=none; head-only cells (bottom-anchored, eye line free)={'idle': 685.6}; core_source=['core_box']
+  [PASS] bottom                 bust art bottom y={'happy': 685.8, 'thinking': 675.6, 'cheer': 681.1, 'discover': 673.3, 'tryAgain': 670.2} spread=15.7 px (tol 30); head-only bottoms (must be 724)={'idle': 724.0}
+  [PASS] allowance              violations=none
+  [INFO] fit_down               per-cell fit-down factors (1.0 = none)={'idle': 1.0, 'happy': 1.0, 'thinking': 1.0, 'cheer': 1.0, 'discover': 1.0, 'tryAgain': 1.0}; eye line kept at 598 on fitted bust cells=True
+  [PASS] other_overflow_flags   none
+  [PASS] head_closeup           bottom-anchored: bottom gap 0.0 px; eye line y=596.682; art top -9.9 px below box top
+  [PASS] turnaround             violations=none
+  [PASS] determinism            render1=2afbf5e91b53 render2=2afbf5e91b53 on_disk=2afbf5e91b53
+== koala
+  [PASS] assets_current         assets changed since this render: none
+  [PASS] size                   (1448, 1086) RGB
+  [PASS] cast_k                 k=0.76 expected 0.76
+  [PASS] expression_cells_drawn 6 of 6 expression cells have art
+  [PASS] core_scale             head_scale=[0.63]; density-normalized states=none; crown-to-eye px={'idle': 52.3, 'happy': 49.8, 'thinking': 52.9, 'cheer': 51.0, 'discover': 51.7, 'tryAgain': 44.7}; outliers(>±30%)=none
+  [PASS] core_safe              core widths px={'idle': 97.02, 'happy': 93.87, 'thinking': 96.39, 'cheer': 92.61, 'discover': 93.87, 'tryAgain': 108.99}; violations=none
+  [PASS] eye_line               bust cells off-598=none; eye outside core box=none; head-only cells (bottom-anchored, eye line free)=none; core_source=['core_box']
+  [PASS] bottom                 bust art bottom y={'idle': 639.0, 'happy': 641.5, 'thinking': 639.6, 'cheer': 642.1, 'discover': 641.5, 'tryAgain': 647.8} spread=8.8 px (tol 30); head-only bottoms (must be 724)=none
+  [PASS] allowance              violations=none
+  [INFO] fit_down               per-cell fit-down factors (1.0 = none)={'idle': 1.0, 'happy': 1.0, 'thinking': 1.0, 'cheer': 1.0, 'discover': 1.0, 'tryAgain': 1.0}; eye line kept at 598 on fitted bust cells=True
+  [PASS] other_overflow_flags   none
+  [INFO] head_closeup           short bust, art top 100.1 px below box top (valid; info only: not stretched, no torso invented, no enlarging past the 88% core width; bottom-anchored: bottom gap 0.0 px; eye line y=677.778; art top 100.1 px below box top)
+  [PASS] turnaround             violations=none
+  [PASS] determinism            render1=e53cecbeef1d render2=e53cecbeef1d on_disk=e53cecbeef1d
+== tarsier
+  [PASS] assets_current         assets changed since this render: none
+  [PASS] size                   (1448, 1086) RGB
+  [PASS] cast_k                 k=0.57 expected 0.57
+  [PASS] expression_cells_drawn 6 of 6 expression cells have art
+  [PASS] core_scale             head_scale=[0.5228]; density-normalized states={'idle': 0.7526, 'tryAgain': 0.7526}; crown-to-eye px={'idle': 37.4, 'happy': 32.9, 'thinking': 36.6, 'cheer': 32.9, 'discover': 38.2, 'tryAgain': 37.4}; outliers(>±30%)=none
+  [PASS] core_safe              core widths px={'idle': 108.988, 'happy': 81.034, 'thinking': 85.739, 'cheer': 78.943, 'discover': 89.922, 'tryAgain': 107.808}; violations=none
+  [PASS] eye_line               bust cells off-598=none; eye outside core box=none; head-only cells (bottom-anchored, eye line free)={'idle': 700.0}; core_source=['core_box']
+  [PASS] bottom                 bust art bottom y={'happy': 646.1, 'thinking': 641.4, 'cheer': 646.6, 'discover': 642.4, 'tryAgain': 635.0} spread=11.6 px (tol 30); head-only bottoms (must be 724)={'idle': 724.0}
+  [PASS] allowance              violations=none
+  [INFO] fit_down               per-cell fit-down factors (1.0 = none)={'idle': 1.0, 'happy': 1.0, 'thinking': 1.0, 'cheer': 1.0, 'discover': 1.0, 'tryAgain': 1.0}; eye line kept at 598 on fitted bust cells=True
+  [PASS] other_overflow_flags   none
+  [INFO] head_closeup           short bust, art top 128.9 px below box top (valid; info only: not stretched, no torso invented, no enlarging past the 88% core width; bottom-anchored: bottom gap 0.0 px; eye line y=701.357; art top 128.9 px below box top)
+  [PASS] turnaround             violations=none
+  [PASS] determinism            render1=d0f28dcfcc6f render2=d0f28dcfcc6f on_disk=d0f28dcfcc6f
+== eagle
+  [PASS] assets_current         assets changed since this render: none
+  [PASS] size                   (1448, 1086) RGB
+  [PASS] cast_k                 k=1.0 expected 1.0
+  [PASS] expression_cells_drawn 6 of 6 expression cells have art
+  [PASS] core_scale             head_scale=[0.6535]; density-normalized states=none; crown-to-eye px={'idle': 43.1, 'happy': 38.6, 'thinking': 39.9, 'cheer': 39.9, 'discover': 45.1, 'tryAgain': 41.2}; outliers(>±30%)=none
+  [PASS] core_safe              core widths px={'idle': 97.371, 'happy': 101.946, 'thinking': 99.332, 'cheer': 101.292, 'discover': 92.143, 'tryAgain': 100.639}; violations=none
+  [PASS] eye_line               bust cells off-598=none; eye outside core box=none; head-only cells (bottom-anchored, eye line free)={'idle': 676.9}; core_source=['core_box']
+  [PASS] bottom                 bust art bottom y={'happy': 664.7, 'thinking': 661.4, 'cheer': 662.7, 'discover': 658.1, 'tryAgain': 662.7} spread=6.5 px (tol 30); head-only bottoms (must be 724)={'idle': 724.0}
+  [PASS] allowance              violations=none
+  [INFO] fit_down               per-cell fit-down factors (1.0 = none)={'idle': 1.0, 'happy': 1.0, 'thinking': 1.0, 'cheer': 1.0, 'discover': 1.0, 'tryAgain': 1.0}; eye line kept at 598 on fitted bust cells=True
+  [PASS] other_overflow_flags   none
+  [PASS] head_closeup           bottom-anchored: bottom gap 0.0 px; eye line y=668.0; art top 76.9 px below box top
+  [PASS] turnaround             violations=none
+  [PASS] determinism            render1=b80961e600f8 render2=b80961e600f8 on_disk=b80961e600f8
+== bronco
+  [PASS] assets_current         assets changed since this render: none
+  [PASS] size                   (1448, 1086) RGB
+  [PASS] cast_k                 k=0.92 expected 0.92
+  [PASS] expression_cells_drawn 6 of 6 expression cells have art
+  [PASS] core_scale             head_scale=[0.606]; density-normalized states=none; crown-to-eye px={'idle': 41.2, 'happy': 37.0, 'thinking': 40.0, 'cheer': 43.6, 'discover': 40.0, 'tryAgain': 41.8}; outliers(>±30%)=none
+  [PASS] core_safe              core widths px={'idle': 103.626, 'happy': 90.9, 'thinking': 106.656, 'cheer': 98.778, 'discover': 96.96, 'tryAgain': 101.202}; violations=none
+  [PASS] eye_line               bust cells off-598=none; eye outside core box=none; head-only cells (bottom-anchored, eye line free)=none; core_source=['core_box']
+  [PASS] bottom                 bust art bottom y={'idle': 643.5, 'happy': 651.3, 'thinking': 644.7, 'cheer': 639.8, 'discover': 648.3, 'tryAgain': 645.3} spread=11.5 px (tol 30); head-only bottoms (must be 724)=none
+  [PASS] allowance              violations=none
+  [INFO] fit_down               per-cell fit-down factors (1.0 = none)={'idle': 1.0, 'happy': 1.0, 'thinking': 1.0, 'cheer': 1.0, 'discover': 1.0, 'tryAgain': 1.0}; eye line kept at 598 on fitted bust cells=True
+  [PASS] other_overflow_flags   none
+  [PASS] head_closeup           bottom-anchored: bottom gap 0.0 px; eye line y=629.004; art top 37.7 px below box top
+  [PASS] turnaround             violations=none
+  [PASS] determinism            render1=5e4c1a8ce71e render2=5e4c1a8ce71e on_disk=5e4c1a8ce71e
+
+TOTAL FAIL: 0

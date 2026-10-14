@@ -1,0 +1,44 @@
+{
+ "name": "bronco_cheer",
+ "box": [
+  14,
+  614,
+  198,
+  762
+ ],
+ "mode": "parchment",
+ "bg_rgb": [
+  253,
+  244,
+  227
+ ],
+ "clip_left": 0.0,
+ "clip_right": 0.0,
+ "clip_top": 0.0,
+ "clip_bottom": 0.0,
+ "clipping": false,
+ "extra_components": [],
+ "contamination": false,
+ "halo_fraction": 0.002570694087403599,
+ "halo": false,
+ "outline_missing_px": 39,
+ "outline_missing": false,
+ "pass": true,
+ "size": [
+  172,
+  147
+ ],
+ "core_box": [
+  4,
+  5,
+  167,
+  144
+ ],
+ "method": "re-authored from Sheet Expressions Energetic cell (hat star+blue band visible, open-mouth joy, fist pumped at chest); polygon-isolated, parchment matte; burst marks reused (mirrored, 0.72x) from prior cheer art; no raised-arm",
+ "bandana_median_rgb_vs_idle": [
+  107,
+  36,
+  24
+ ],
+ "qa_fix3": "8x supersampled alpha (smooth edges); Celebrate hoof (outlined) re-placed behind jaw, fully above fade; burst marks moved in 6px; mane silhouette trimmed with convex curve; no scaling of character art (bursts earlier scaled 0.72x)"
+}

@@ -1,0 +1,985 @@
+{
+  "renderer_version": "1.0.0",
+  "placeholders": [],
+  "overflows": [],
+  "placements": [
+    {
+      "zone": "header",
+      "slot": "LOGO_ASSET",
+      "asset": "logo/BidaZoo_World_Expedition_logo_master.png",
+      "bbox": {
+        "x": 79,
+        "y": 36,
+        "w": 226,
+        "h": 96
+      }
+    },
+    {
+      "zone": "turnaround",
+      "slot": "front",
+      "asset": "asset-library/tarsier/tarsier_turnaround_front.png",
+      "status": "READY WITH CROP/MATTING",
+      "scale_px_per_source_px": 0.454,
+      "cast": {
+        "s0": 0.184,
+        "k": 0.57,
+        "units_per_source_px": 4.329
+      },
+      "image_origin": [
+        139,
+        294
+      ],
+      "matted_bbox": {
+        "x": 140.617,
+        "y": 295.12,
+        "w": 125.765,
+        "h": 104.88
+      },
+      "baseline_y": 400,
+      "cell_center_x": 203.5,
+      "height_above_baseline_px": 104.88,
+      "limits": {
+        "max_height": 184,
+        "max_width": 335
+      },
+      "overflow": false
+    },
+    {
+      "zone": "turnaround",
+      "slot": "threeQuarter",
+      "asset": "asset-library/tarsier/tarsier_turnaround_34.png",
+      "status": "READY WITH CROP/MATTING",
+      "scale_px_per_source_px": 0.454,
+      "cast": {
+        "s0": 0.184,
+        "k": 0.57,
+        "units_per_source_px": 4.329
+      },
+      "image_origin": [
+        483,
+        295
+      ],
+      "matted_bbox": {
+        "x": 484.666,
+        "y": 296.028,
+        "w": 131.668,
+        "h": 103.972
+      },
+      "baseline_y": 400,
+      "cell_center_x": 550.5,
+      "height_above_baseline_px": 103.972,
+      "limits": {
+        "max_height": 184,
+        "max_width": 335
+      },
+      "overflow": false
+    },
+    {
+      "zone": "turnaround",
+      "slot": "side",
+      "asset": "asset-library/tarsier/tarsier_turnaround_side.png",
+      "status": "READY WITH CROP/MATTING",
+      "scale_px_per_source_px": 0.454,
+      "cast": {
+        "s0": 0.184,
+        "k": 0.57,
+        "units_per_source_px": 4.329
+      },
+      "image_origin": [
+        841,
+        297
+      ],
+      "matted_bbox": {
+        "x": 842.336,
+        "y": 298.752,
+        "w": 110.328,
+        "h": 101.248
+      },
+      "baseline_y": 400,
+      "cell_center_x": 897.5,
+      "height_above_baseline_px": 101.248,
+      "limits": {
+        "max_height": 184,
+        "max_width": 335
+      },
+      "overflow": false
+    },
+    {
+      "zone": "turnaround",
+      "slot": "back",
+      "asset": "asset-library/tarsier/tarsier_turnaround_back.png",
+      "status": "READY WITH CROP/MATTING",
+      "scale_px_per_source_px": 0.454,
+      "cast": {
+        "s0": 0.184,
+        "k": 0.57,
+        "units_per_source_px": 4.329
+      },
+      "image_origin": [
+        1175,
+        296
+      ],
+      "matted_bbox": {
+        "x": 1176.623,
+        "y": 296.936,
+        "w": 135.754,
+        "h": 103.064
+      },
+      "baseline_y": 400,
+      "cell_center_x": 1244.5,
+      "height_above_baseline_px": 103.064,
+      "limits": {
+        "max_height": 184,
+        "max_width": 335
+      },
+      "overflow": false
+    },
+    {
+      "zone": "hero",
+      "slot": "hero",
+      "asset": "asset-library/tarsier/tarsier_hero.png",
+      "status": "OWNER-ACCEPTED MINOR",
+      "mode": "fit",
+      "scale_px_per_source_px": 0.9,
+      "image_origin": [
+        55,
+        550
+      ],
+      "matted_bbox": {
+        "x": 58.0,
+        "y": 553.1,
+        "w": 252.0,
+        "h": 163.8
+      },
+      "clearance_px": 24.0,
+      "overflow": false
+    },
+    {
+      "zone": "head",
+      "slot": "head",
+      "asset": "asset-library/tarsier/tarsier_head.png",
+      "status": "READY WITH CROP/MATTING",
+      "scale_px_per_source_px": 0.635,
+      "image_origin": [
+        376,
+        641
+      ],
+      "matted_bbox": {
+        "x": 378.0,
+        "y": 642.903,
+        "w": 176.0,
+        "h": 113.097
+      },
+      "head_width_px": 176.0,
+      "eye_line_y": 701.357,
+      "cropped_by_box": false,
+      "bleed_shift_px": 0.0,
+      "bottom_y": 756.0,
+      "bottom_gap_to_box_px": 0.0,
+      "note": "crop-to-fill is allowed in the head close-up"
+    },
+    {
+      "zone": "expressions",
+      "slot": "idle",
+      "asset": "expression-batch/tarsier/tarsier_idle.png",
+      "status": "READY WITH CROP/MATTING",
+      "scale_px_per_source_px": 0.393,
+      "head_scale": 0.5228,
+      "units_per_source_px": 0.7526,
+      "fit_down_factor": 1.0,
+      "effective_head_scale": 0.523,
+      "width_excess_before_fit_px": 0.0,
+      "width_tolerance_px": 1.0,
+      "image_origin": [
+        608,
+        662
+      ],
+      "anchor": "bottom",
+      "crop_kind": "head_only",
+      "core_source": "core_box",
+      "core_box_src": [
+        3.0,
+        2.0,
+        280.0,
+        149.0
+      ],
+      "core_px": {
+        "x": 609.006,
+        "y": 662.62,
+        "w": 108.988,
+        "h": 57.839
+      },
+      "matted_bbox": {
+        "x": 609.006,
+        "y": 662.62,
+        "w": 108.988,
+        "h": 61.38
+      },
+      "eye_line_y": 699.999,
+      "bottom_y": 724.0,
+      "allowance_shift_dx": 0.0,
+      "overflow": false,
+      "limits": {
+        "core_safe_width": 109,
+        "core_nominal_width": 100,
+        "crown_min_y": 520,
+        "allowance_x": [
+          595,
+          732
+        ],
+        "allowance_note": "cell +/- 6 px (gutter midpoint)",
+        "cell_bottom_y": 726
+      }
+    },
+    {
+      "zone": "expressions",
+      "slot": "happy",
+      "asset": "expression-batch/tarsier/tarsier_happy.png",
+      "status": "READY WITH CROP/MATTING",
+      "scale_px_per_source_px": 0.523,
+      "head_scale": 0.5228,
+      "units_per_source_px": 1.0,
+      "fit_down_factor": 1.0,
+      "effective_head_scale": 0.523,
+      "width_excess_before_fit_px": 0.0,
+      "width_tolerance_px": 1.0,
+      "image_origin": [
+        759,
+        564
+      ],
+      "anchor": "eye_line",
+      "crop_kind": "bust",
+      "core_source": "core_box",
+      "core_box_src": [
+        1.0,
+        2.0,
+        156.0,
+        100.0
+      ],
+      "core_px": {
+        "x": 759.983,
+        "y": 565.064,
+        "w": 81.034,
+        "h": 51.234
+      },
+      "matted_bbox": {
+        "x": 759.983,
+        "y": 565.064,
+        "w": 81.557,
+        "h": 81.034
+      },
+      "eye_line_y": 598.0,
+      "bottom_y": 646.098,
+      "allowance_shift_dx": 0.0,
+      "overflow": false,
+      "limits": {
+        "core_safe_width": 109,
+        "core_nominal_width": 100,
+        "crown_min_y": 520,
+        "allowance_x": [
+          732,
+          869
+        ],
+        "allowance_note": "cell +/- 6 px (gutter midpoint)",
+        "cell_bottom_y": 726
+      }
+    },
+    {
+      "zone": "expressions",
+      "slot": "thinking",
+      "asset": "expression-batch/tarsier/tarsier_thinking.png",
+      "status": "READY WITH CROP/MATTING",
+      "scale_px_per_source_px": 0.523,
+      "head_scale": 0.5228,
+      "units_per_source_px": 1.0,
+      "fit_down_factor": 1.0,
+      "effective_head_scale": 0.523,
+      "width_excess_before_fit_px": 0.0,
+      "width_tolerance_px": 1.0,
+      "image_origin": [
+        894,
+        560
+      ],
+      "anchor": "eye_line",
+      "crop_kind": "bust",
+      "core_source": "core_box",
+      "core_box_src": [
+        2.0,
+        2.0,
+        166.0,
+        110.0
+      ],
+      "core_px": {
+        "x": 894.63,
+        "y": 561.404,
+        "w": 85.739,
+        "h": 56.462
+      },
+      "matted_bbox": {
+        "x": 894.63,
+        "y": 561.404,
+        "w": 85.739,
+        "h": 79.988
+      },
+      "eye_line_y": 598.0,
+      "bottom_y": 641.392,
+      "allowance_shift_dx": 0.0,
+      "overflow": false,
+      "limits": {
+        "core_safe_width": 109,
+        "core_nominal_width": 100,
+        "crown_min_y": 520,
+        "allowance_x": [
+          869,
+          1006
+        ],
+        "allowance_note": "cell +/- 6 px (gutter midpoint)",
+        "cell_bottom_y": 726
+      }
+    },
+    {
+      "zone": "expressions",
+      "slot": "cheer",
+      "asset": "expression-batch/tarsier/tarsier_cheer.png",
+      "status": "READY WITH CROP/MATTING",
+      "scale_px_per_source_px": 0.523,
+      "head_scale": 0.5228,
+      "units_per_source_px": 1.0,
+      "fit_down_factor": 1.0,
+      "effective_head_scale": 0.523,
+      "width_excess_before_fit_px": 0.0,
+      "width_tolerance_px": 1.0,
+      "image_origin": [
+        1032,
+        564
+      ],
+      "anchor": "eye_line",
+      "crop_kind": "bust",
+      "core_source": "core_box",
+      "core_box_src": [
+        5.0,
+        2.0,
+        156.0,
+        100.0
+      ],
+      "core_px": {
+        "x": 1035.029,
+        "y": 565.064,
+        "w": 78.943,
+        "h": 51.234
+      },
+      "matted_bbox": {
+        "x": 1032.937,
+        "y": 565.064,
+        "w": 81.557,
+        "h": 81.557
+      },
+      "eye_line_y": 598.0,
+      "bottom_y": 646.62,
+      "allowance_shift_dx": 0.0,
+      "overflow": false,
+      "limits": {
+        "core_safe_width": 109,
+        "core_nominal_width": 100,
+        "crown_min_y": 520,
+        "allowance_x": [
+          1006,
+          1143
+        ],
+        "allowance_note": "cell +/- 6 px (gutter midpoint)",
+        "cell_bottom_y": 726
+      }
+    },
+    {
+      "zone": "expressions",
+      "slot": "discover",
+      "asset": "expression-batch/tarsier/tarsier_discover.png",
+      "status": "READY WITH CROP/MATTING",
+      "scale_px_per_source_px": 0.523,
+      "head_scale": 0.5228,
+      "units_per_source_px": 1.0,
+      "fit_down_factor": 1.0,
+      "effective_head_scale": 0.523,
+      "width_excess_before_fit_px": 0.0,
+      "width_tolerance_px": 1.0,
+      "image_origin": [
+        1166,
+        559
+      ],
+      "anchor": "eye_line",
+      "crop_kind": "bust",
+      "core_source": "core_box",
+      "core_box_src": [
+        1.0,
+        2.0,
+        173.0,
+        115.0
+      ],
+      "core_px": {
+        "x": 1166.539,
+        "y": 559.836,
+        "w": 89.922,
+        "h": 59.076
+      },
+      "matted_bbox": {
+        "x": 1166.539,
+        "y": 559.836,
+        "w": 89.922,
+        "h": 82.602
+      },
+      "eye_line_y": 598.0,
+      "bottom_y": 642.438,
+      "allowance_shift_dx": 0.0,
+      "overflow": false,
+      "limits": {
+        "core_safe_width": 109,
+        "core_nominal_width": 100,
+        "crown_min_y": 520,
+        "allowance_x": [
+          1143,
+          1280
+        ],
+        "allowance_note": "cell +/- 6 px (gutter midpoint)",
+        "cell_bottom_y": 726
+      }
+    },
+    {
+      "zone": "expressions",
+      "slot": "tryAgain",
+      "asset": "expression-batch/tarsier/tarsier_tryAgain.png",
+      "status": "READY WITH CROP/MATTING",
+      "scale_px_per_source_px": 0.393,
+      "head_scale": 0.5228,
+      "units_per_source_px": 0.7526,
+      "fit_down_factor": 1.0,
+      "effective_head_scale": 0.523,
+      "width_excess_before_fit_px": 0.0,
+      "width_tolerance_px": 1.0,
+      "image_origin": [
+        1293,
+        559
+      ],
+      "anchor": "eye_line",
+      "crop_kind": "bust",
+      "core_source": "core_box",
+      "core_box_src": [
+        3.0,
+        3.0,
+        277.0,
+        163.0
+      ],
+      "core_px": {
+        "x": 1294.596,
+        "y": 560.621,
+        "w": 107.808,
+        "h": 62.953
+      },
+      "matted_bbox": {
+        "x": 1294.596,
+        "y": 560.621,
+        "w": 113.316,
+        "h": 74.364
+      },
+      "eye_line_y": 598.0,
+      "bottom_y": 634.985,
+      "allowance_shift_dx": 0.0,
+      "overflow": false,
+      "limits": {
+        "core_safe_width": 109,
+        "core_nominal_width": 100,
+        "crown_min_y": 520,
+        "allowance_x": [
+          1280,
+          1417
+        ],
+        "allowance_note": "cell +/- 6 px (gutter midpoint)",
+        "cell_bottom_y": 726
+      }
+    },
+    {
+      "zone": "silhouettes",
+      "slot": "front",
+      "asset": "asset-library/tarsier/tarsier_silhouette_front.png",
+      "status": "READY WITH CROP/MATTING",
+      "source": "explicit",
+      "fit_box": [
+        36,
+        824,
+        72,
+        182
+      ],
+      "fit_scale": 0.264,
+      "bbox": {
+        "x": 36,
+        "y": 946,
+        "w": 72,
+        "h": 60
+      },
+      "baseline_y": 1006,
+      "note": "fit scale is for recognition only; not a cast-size authority"
+    },
+    {
+      "zone": "silhouettes",
+      "slot": "threeQuarter",
+      "asset": "asset-library/tarsier/tarsier_silhouette_34.png",
+      "status": "READY WITH CROP/MATTING",
+      "source": "explicit",
+      "fit_box": [
+        116,
+        824,
+        72,
+        182
+      ],
+      "fit_scale": 0.25,
+      "bbox": {
+        "x": 116,
+        "y": 949,
+        "w": 72,
+        "h": 57
+      },
+      "baseline_y": 1006,
+      "note": "fit scale is for recognition only; not a cast-size authority"
+    },
+    {
+      "zone": "silhouettes",
+      "slot": "side",
+      "asset": "asset-library/tarsier/tarsier_silhouette_side.png",
+      "status": "READY WITH CROP/MATTING",
+      "source": "explicit",
+      "fit_box": [
+        196,
+        824,
+        72,
+        182
+      ],
+      "fit_scale": 0.3,
+      "bbox": {
+        "x": 196,
+        "y": 940,
+        "w": 72,
+        "h": 66
+      },
+      "baseline_y": 1006,
+      "note": "fit scale is for recognition only; not a cast-size authority"
+    },
+    {
+      "zone": "silhouettes",
+      "slot": "back",
+      "asset": "asset-library/tarsier/tarsier_silhouette_back.png",
+      "status": "READY WITH CROP/MATTING",
+      "source": "explicit",
+      "fit_box": [
+        276,
+        824,
+        72,
+        182
+      ],
+      "fit_scale": 0.244,
+      "bbox": {
+        "x": 276,
+        "y": 952,
+        "w": 72,
+        "h": 54
+      },
+      "baseline_y": 1006,
+      "note": "fit scale is for recognition only; not a cast-size authority"
+    },
+    {
+      "zone": "silhouettes",
+      "slot": "action",
+      "asset": "asset-library/tarsier/tarsier_silhouette_action.png",
+      "status": "READY WITH CROP/MATTING",
+      "source": "explicit",
+      "fit_box": [
+        356,
+        824,
+        108,
+        182
+      ],
+      "fit_scale": 0.386,
+      "bbox": {
+        "x": 356,
+        "y": 936,
+        "w": 108,
+        "h": 70
+      },
+      "baseline_y": 1006,
+      "note": "fit scale is for recognition only; not a cast-size authority"
+    },
+    {
+      "zone": "details",
+      "slot": "detail1",
+      "asset": "asset-library/tarsier/tarsier_detail_goggles_front.png",
+      "status": "READY WITH CROP/MATTING",
+      "fit_scale": 0.712,
+      "bbox": {
+        "x": 508,
+        "y": 844,
+        "w": 126,
+        "h": 41
+      }
+    },
+    {
+      "zone": "details",
+      "slot": "detail2",
+      "asset": "asset-library/tarsier/tarsier_detail_backpack_front.png",
+      "status": "READY WITH CROP/MATTING",
+      "fit_scale": 0.647,
+      "bbox": {
+        "x": 686,
+        "y": 832,
+        "w": 69,
+        "h": 66
+      }
+    },
+    {
+      "zone": "details",
+      "slot": "detail3",
+      "asset": "asset-library/tarsier/tarsier_detail_paw_emblem.png",
+      "status": "READY WITH CROP/MATTING",
+      "fit_scale": 0.759,
+      "bbox": {
+        "x": 520,
+        "y": 946,
+        "w": 101,
+        "h": 66
+      }
+    },
+    {
+      "zone": "details",
+      "slot": "detail4",
+      "asset": "asset-library/tarsier/tarsier_detail_hood_scout_jacket.png",
+      "status": "READY WITH CROP/MATTING",
+      "fit_scale": 0.388,
+      "bbox": {
+        "x": 679,
+        "y": 946,
+        "w": 84,
+        "h": 66
+      }
+    },
+    {
+      "zone": "proportion",
+      "slot": "front_reference",
+      "asset": "asset-library/tarsier/tarsier_turnaround_front.png",
+      "status": "READY WITH CROP/MATTING",
+      "scale_px_per_source_px": 0.415,
+      "R_px": 168,
+      "k": 0.57,
+      "image_origin": [
+        1245,
+        909
+      ],
+      "matted_bbox": {
+        "x": 1246.585,
+        "y": 910.24,
+        "w": 114.829,
+        "h": 95.76
+      },
+      "box": [
+        1196,
+        824,
+        216,
+        196
+      ],
+      "overflow": false
+    }
+  ],
+  "provisional": [
+    {
+      "zone": "palette",
+      "slot": "slot1",
+      "path": "#A8642C"
+    },
+    {
+      "zone": "palette",
+      "slot": "slot2",
+      "path": "#FCC003"
+    },
+    {
+      "zone": "palette",
+      "slot": "slot3",
+      "path": "#05B5DD"
+    },
+    {
+      "zone": "palette",
+      "slot": "slot4",
+      "path": "#2B4B53"
+    },
+    {
+      "zone": "palette",
+      "slot": "slot5",
+      "path": "#FC8161"
+    },
+    {
+      "zone": "palette",
+      "slot": "slot6",
+      "path": "#E07A05"
+    }
+  ],
+  "template_defects": [],
+  "text_adjustments": [],
+  "warnings": [],
+  "assets": [
+    {
+      "path": "logo/BidaZoo_World_Expedition_logo_master.png",
+      "sha256": "944915d0f0522c2714b47a9eab4840bf0790d4900709a8c5d13d0a57f4e0f21c",
+      "bytes": 1089662,
+      "size_px": [
+        1467,
+        633
+      ]
+    },
+    {
+      "path": "asset-library/tarsier/tarsier_turnaround_front.png",
+      "sha256": "fde2929c1e37b1ee1cc25c367d6b8d63e136ba083b31cd2243092b9fc8b71d9e",
+      "bytes": 121413,
+      "size_px": [
+        283,
+        234
+      ]
+    },
+    {
+      "path": "asset-library/tarsier/tarsier_turnaround_34.png",
+      "sha256": "20db660ea8da88be4aa5dbb5caa7625d6f3805d0b46bbfe79ae91e52eb259406",
+      "bytes": 124013,
+      "size_px": [
+        296,
+        235
+      ]
+    },
+    {
+      "path": "asset-library/tarsier/tarsier_turnaround_side.png",
+      "sha256": "3f6041cb79a6a49a869a3f47bd6b8053daa50796c8f054a102ea45f01a997b45",
+      "bytes": 100276,
+      "size_px": [
+        249,
+        229
+      ]
+    },
+    {
+      "path": "asset-library/tarsier/tarsier_turnaround_back.png",
+      "sha256": "aa16fe527d0ae45d9a7fbb3aef72fc18d4c5eea9e9d43644e42ba74a520b4d97",
+      "bytes": 126122,
+      "size_px": [
+        305,
+        233
+      ]
+    },
+    {
+      "path": "asset-library/tarsier/tarsier_hero.png",
+      "sha256": "f9ebc6925b3362db8c5c01c3e5af6b6293e8399a81c4f6175b50fe82e5463f0f",
+      "bytes": 95117,
+      "size_px": [
+        286,
+        188
+      ]
+    },
+    {
+      "path": "asset-library/tarsier/tarsier_head.png",
+      "sha256": "740a87774251a54ce145668e89a55164bfbb3f0c3923ef85ef32144b536c57ca",
+      "bytes": 98792,
+      "size_px": [
+        283,
+        182
+      ]
+    },
+    {
+      "path": "expression-batch/tarsier/tarsier_idle.png",
+      "sha256": "dace8b6cc79e4be0c869807ecb6ae5158b8221094547545f7e958bcc544da2f0",
+      "bytes": 87154,
+      "size_px": [
+        283,
+        159
+      ]
+    },
+    {
+      "path": "expression-batch/tarsier/tarsier_happy.png",
+      "sha256": "98fe59d73369c8e391a0b33d4aa060d077d20b3957869f6c5765d1f45de12d95",
+      "bytes": 57714,
+      "size_px": [
+        167,
+        158
+      ]
+    },
+    {
+      "path": "expression-batch/tarsier/tarsier_thinking.png",
+      "sha256": "d5c8326cc10f1537cf3dda03fea9ca38db85feba80656e59d8a100ab2876c2a3",
+      "bytes": 58566,
+      "size_px": [
+        168,
+        156
+      ]
+    },
+    {
+      "path": "expression-batch/tarsier/tarsier_cheer.png",
+      "sha256": "115f23dd63650d663d66462ffbe8fd4a64244647e24dff6a6908e29e3cf38ec6",
+      "bytes": 57574,
+      "size_px": [
+        158,
+        159
+      ]
+    },
+    {
+      "path": "expression-batch/tarsier/tarsier_discover.png",
+      "sha256": "1a02e1c3a74fec0c071a0ef05a58a83eb44a74d92b2e8fd6afd389fdaade58cf",
+      "bytes": 62386,
+      "size_px": [
+        175,
+        161
+      ]
+    },
+    {
+      "path": "expression-batch/tarsier/tarsier_tryAgain.png",
+      "sha256": "c8828c9d856ee56e5db039dc8805f0fb711915f681a2a5edda875aff74b8985e",
+      "bytes": 100624,
+      "size_px": [
+        294,
+        194
+      ]
+    },
+    {
+      "path": "asset-library/tarsier/tarsier_silhouette_front.png",
+      "sha256": "8bbb2d297809e0c68acca2cee0a141de45967ad085e7604594ab6835ee36b8ef",
+      "bytes": 10017,
+      "size_px": [
+        273,
+        227
+      ]
+    },
+    {
+      "path": "asset-library/tarsier/tarsier_silhouette_34.png",
+      "sha256": "08c4afece7a97b018d583967e9b3a9de4506c242732049f1b1815af0b9f5dda1",
+      "bytes": 10465,
+      "size_px": [
+        288,
+        226
+      ]
+    },
+    {
+      "path": "asset-library/tarsier/tarsier_silhouette_side.png",
+      "sha256": "b270e1d13d3c102a2e320e8203652ac62b86f959ab144d8bb7bdfb4adf8742c3",
+      "bytes": 10602,
+      "size_px": [
+        240,
+        219
+      ]
+    },
+    {
+      "path": "asset-library/tarsier/tarsier_silhouette_back.png",
+      "sha256": "43c217c51e552675fdbf59768225acf4254607b0a3a04a50e90bdb25508e37d8",
+      "bytes": 10795,
+      "size_px": [
+        295,
+        222
+      ]
+    },
+    {
+      "path": "asset-library/tarsier/tarsier_silhouette_action.png",
+      "sha256": "b8aaceb3d6678c55fba71e2598fd8e731d19094952ecf5607a012795d54ee1f3",
+      "bytes": 10326,
+      "size_px": [
+        280,
+        182
+      ]
+    },
+    {
+      "path": "asset-library/tarsier/tarsier_detail_goggles_front.png",
+      "sha256": "5b967528a1640ebb4ef2b0d555a76dbe157651d05b5688ffbdb86e5a5f690e3a",
+      "bytes": 29617,
+      "size_px": [
+        181,
+        63
+      ]
+    },
+    {
+      "path": "asset-library/tarsier/tarsier_detail_backpack_front.png",
+      "sha256": "87d5dbadbb19198271515ebd2bbbe5a568bec650c4403d028594f0888169808b",
+      "bytes": 27899,
+      "size_px": [
+        113,
+        107
+      ]
+    },
+    {
+      "path": "asset-library/tarsier/tarsier_detail_paw_emblem.png",
+      "sha256": "39759af9ceca335d080c7f6bb3145fe27f59ac61fc3dc18e6238e395149852a4",
+      "bytes": 33917,
+      "size_px": [
+        139,
+        93
+      ]
+    },
+    {
+      "path": "asset-library/tarsier/tarsier_detail_hood_scout_jacket.png",
+      "sha256": "65324d78b9cd263f3148bc5a6e81e1e3b22270a31e63ba00272680483816390e",
+      "bytes": 82958,
+      "size_px": [
+        216,
+        172
+      ]
+    }
+  ],
+  "expression_widest_core": {
+    "slot": "idle",
+    "width_px": 108.988,
+    "safe_width": 109
+  },
+  "expression_fit_down": {
+    "idle": 1.0,
+    "happy": 1.0,
+    "thinking": 1.0,
+    "cheer": 1.0,
+    "discover": 1.0,
+    "tryAgain": 1.0
+  },
+  "proportion_marker": {
+    "k": 0.57,
+    "marker_y": 910.24,
+    "reference_tick_y": 838,
+    "baseline_y": 1006,
+    "R_px": 168
+  },
+  "character": {
+    "id": "tarsier",
+    "name": "Tarsier",
+    "k": 0.57
+  },
+  "canvas": [
+    1448,
+    1086
+  ],
+  "fonts": {
+    "family": "Nunito Sans",
+    "files": {
+      "400": "NunitoSans-Regular.ttf",
+      "600": "NunitoSans-SemiBold.ttf",
+      "700": "NunitoSans-Bold.ttf",
+      "800": "NunitoSans-ExtraBold.ttf"
+    },
+    "sha256": {
+      "400": "a4591b8197c3606b891dbc0fa6b1075e5abef0d7614c62a5ab3b1aef523d3fd6",
+      "600": "585931b02451771fbfbb0c7121257ad96dc3ac5801b8bddb558c3ffbb69ff8bf",
+      "700": "9a09d236cb3aa42fdd03cdce5b17dfc5adbbaf61686f74c1a6a28048c87cc16c",
+      "800": "79d61a64c7b33c0d92fd2ca876453713ca71ca446bf2b566fad36f6addbbe12e"
+    },
+    "license": "SIL OFL 1.1 (fonts/OFL.txt)"
+  },
+  "manifest_sheet_status_line": "M4 BUILD - LOGO_ASSET logo/BidaZoo_World_Expedition_logo_master.png (READY WITH CROP/MATTING); palette 63ec00673ac0 PROVISIONAL (docs); cast scale PROVISIONAL",
+  "computed_sheet_status": "LAYOUT PROOF - NOT FINAL: 6 provisional slot(s)",
+  "counts": {
+    "placeholders": 0,
+    "overflows": 0,
+    "provisional": 6,
+    "template_defects": 0
+  },
+  "output": {
+    "file": "tarsier_sheet_v2.png",
+    "sha256": "d0f28dcfcc6ff66eedb9805a323fe2846a73543daada0d44c46b624a95fcac51",
+    "size_px": [
+      1448,
+      1086
+    ]
+  },
+  "manifest_file": "tarsier.json"
+}

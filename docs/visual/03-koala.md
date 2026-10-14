@@ -61,7 +61,7 @@ Source: `03_Koala_Character_Sheet.png`. Full catalog in [INGESTION-REPORT.md](IN
 - **Fur color:** the 03 swatches are gray-lavender (`#8C85A8`, `#C2B1E5`). The 07 print is paler and
   more violet (`#D9D9ED`, `#8B7DE6`). The code uses `#AAA0CC`. Flagged for owner review against the
   locked "gray-lavender".
-- **Scale:** 0.80 on 07.
+- **Scale:** cast factor 0.76 (sheet 07 v1 printed 0.80).
 
 ## Owner decision applied (October 12, 2026)
 

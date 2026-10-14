@@ -1,0 +1,10 @@
+{
+  "basis": "docs/visual/17-M4-RELEASE-HANDOFF.md section 2 (M1 CLOSED): 36/36 canonical expressions, PASS 32, OWNER-ACCEPTED MINOR 4, REJECT 0, MISSING 0. Per-asset *_report.json 'pass' flags are historical matte-tool output and are NOT status authority. OWNER-ACCEPTED MINOR renders exactly like READY (owner decision A); the status is kept in the manifest for audit.",
+  "default": "READY WITH CROP/MATTING",
+  "OWNER-ACCEPTED MINOR": [
+    ["eagle", "thinking"],
+    ["eagle", "tryAgain"],
+    ["koala", "cheer"],
+    ["bronco", "cheer"]
+  ]
+}

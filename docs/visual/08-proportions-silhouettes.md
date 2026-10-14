@@ -1,11 +1,14 @@
 # 08 Standardized Proportions and Silhouettes
 
-Status: PROPOSED, revised after ingesting the production pack (October 12, 2026). Exact proportions
-are OPEN in the Bible. See [INGESTION-REPORT.md](INGESTION-REPORT.md) sections 3 and 6.
+Status: PROPOSED, revised after ingesting the production pack (October 12, 2026); cast scale factors
+finalized October 13, 2026 (M4 docs sync). Exact proportions are OPEN in the Bible. See
+[INGESTION-REPORT.md](INGESTION-REPORT.md) sections 3 and 6.
 
 **Owner decision applied (October 12, 2026): WORKING REFERENCE ONLY.** The sheet-07 numeric
-heights are not canonical. **All exact head-unit and relative-height numbers in this document are
-PROVISIONAL.** The production turnaround sheets will determine the final normalized scale.
+heights are not canonical. The head-unit numbers in section 3 are PROVISIONAL.
+
+**Owner decision applied (October 13, 2026): CAST FACTORS FINAL.** The cast scale factors in section 2 are
+authoritative for the turnaround and the proportion guide. They replace the sheet-07 working reference.
 
 ## 0. SPEC-LOCKED relative silhouette rules
 
@@ -24,20 +27,31 @@ Those numbers are not preserved. The production sheets show:
 - A relative height lineup on `07_Expressions_Proportions_Palettes.png` that is internally
   consistent. It is the better source.
 
-## 2. Working-reference scale (PROVISIONAL, from 07; not canonical)
+## 2. Cast scale factors (AUTHORITATIVE, owner, October 13, 2026)
 
-| Character | Relative height | Printed on 07 |
+| Character | Cast factor `k` | Printed on 07 (v1 / v1.1 interim, historical) |
 | --- | --- | --- |
-| Eagle | 1.10 | 110 cm |
-| Click | 1.00 | 100 cm |
-| Bronco | 1.00 | 100 cm |
-| Dino | 0.90 | 90 cm |
-| Koala | 0.80 | 80 cm |
-| Tarsier | 0.60 | 60 cm |
+| Eagle | 1.000 (cast reference) | 110 cm |
+| Click | 0.92 | 100 cm |
+| Bronco | 0.92 | 100 cm |
+| Dino | 0.85 | 90 cm |
+| Koala | 0.76 | 80 cm |
+| Tarsier | 0.57 | 60 cm |
 
-Tarsier is the smallest (SPEC-LOCKED). Eagle is the tallest on 07, with a wingspan of about 2.5 times its body width
+Tarsier is the smallest (SPEC-LOCKED). Eagle is the cast reference (`k` = 1.000) and the tallest, with a wingspan of about 2.5 times its body width
 (05). The earlier rule that Click appears smaller than a starter is **withdrawn**: Click equals
-Bronco and is taller than Dino, Koala, and Tarsier. These numbers are a working reference only.
+Bronco and is taller than Dino, Koala, and Tarsier.
+
+Rule text:
+
+- `k` is a relative factor against the Eagle reference height. It is not a measurement in centimeters. The
+  sheet-07 centimeter readings in the third column are history; the final sheet 07 composite in `production-v1.1`
+  (single M4 composite pass) prints the factors without units.
+- The factors govern the turnaround and the proportion guide only ([15](15-character-sheet-template.md)
+  sections 6 and 7).
+- Expression cells are not cast-scale authority. They use the per-character core head scale: core safe width
+  109 px, effect allowance 137 px, 1 px tolerance, uniform fit-down of a whole asset when a cell is too wide,
+  and short busts bottom-anchored (15 section 6).
 
 ## 3. Head-to-height, descriptive only (PROVISIONAL)
 
@@ -64,6 +78,12 @@ Use these to describe the style (large heads, chibi-leaning), not as a construct
 | Tarsier | Huge eyes and ears in a small crouched body | Hood point, curled tail |
 | Eagle | Wide wedge (wings) | Spiky crest, hooked beak |
 | Bronco | Long face under a wide hat brim | Wavy mane, full tail, feathered socks |
+
+**Canonical silhouette artwork (M4).** The silhouettes used on the canonical sheets are derived
+deterministically from approved matted alpha: front, 3/4, side and back from the approved turnaround
+cutouts, and the action silhouette from the approved hero/action asset (for Koala, the reading hero is the
+action slot). Ears, tails, wings, hats, crests and packs are preserved. The earlier flat-sheet silhouette
+artwork is historical and used for QA comparison only; it never fills a canonical slot.
 
 ## 5. The 48 px silhouette test (PROPOSED)
 

@@ -1,0 +1,1435 @@
+{
+  "schema": "m4-release-library-manifest/1",
+  "generated": "2026-10-13",
+  "character": "tarsier",
+  "source_sheet": "tarsier.png = production-v1 04_Tarsier_Character_Sheet (read-only)",
+  "excluded": "six expression states",
+  "role_vocabulary": {
+    "canonical": "fills one doc 15/16 slot",
+    "supplemental": "real art, not a canonical slot; must not be used as canonical",
+    "historical": "old flat-sheet silhouettes, QA comparison only",
+    "superseded": "earlier versions, audit only"
+  },
+  "status_vocabulary": [
+    "READY WITH CROP/MATTING",
+    "NEEDS CONTROLLED EDIT",
+    "MISSING / TO AUTHOR",
+    "PROVISIONAL",
+    "HISTORICAL / QA-COMPARISON ONLY"
+  ],
+  "owner_accepted_minor_renders_as": "READY WITH CROP/MATTING",
+  "canonical_slots": {
+    "F detail 2": "tarsier_detail_backpack_front.png",
+    "F detail 1": "tarsier_detail_goggles_front.png",
+    "F detail 4": "tarsier_detail_hood_scout_jacket.png",
+    "F detail 3": "tarsier_detail_paw_emblem.png",
+    "C head": "tarsier_head.png",
+    "B hero": "tarsier_hero.png",
+    "A turnaround 34": "tarsier_turnaround_34.png",
+    "A turnaround back": "tarsier_turnaround_back.png",
+    "A turnaround front": "tarsier_turnaround_front.png",
+    "A turnaround side": "tarsier_turnaround_side.png",
+    "E silhouette front": "tarsier_silhouette_front.png",
+    "E silhouette 34": "tarsier_silhouette_34.png",
+    "E silhouette side": "tarsier_silhouette_side.png",
+    "E silhouette back": "tarsier_silhouette_back.png",
+    "E silhouette action": "tarsier_silhouette_action.png"
+  },
+  "counts": {
+    "canonical": 15,
+    "supplemental": 3,
+    "historical_silhouettes": 4,
+    "superseded": 1,
+    "status_by_role": {
+      "supplemental": {
+        "READY WITH CROP/MATTING": 2,
+        "PROVISIONAL": 1
+      },
+      "canonical": {
+        "READY WITH CROP/MATTING": 14,
+        "OWNER-ACCEPTED MINOR": 1
+      }
+    }
+  },
+  "assets": [
+    {
+      "file": "tarsier_detail_backpack_back.png",
+      "asset": "detail_backpack_back",
+      "role": "supplemental",
+      "slot": null,
+      "status": "READY WITH CROP/MATTING",
+      "sha256": "f38e986016ea9d5c6378bbe910b3b0cc42e8c1de0977f7c68443b9116af1e037",
+      "png_size": [
+        114,
+        105
+      ],
+      "mode": "RGBA",
+      "preview_4bg": "tarsier_detail_backpack_back_4bg.png",
+      "source_provenance": {
+        "source_sheet": "tarsier.png = production-v1 04_Tarsier_Character_Sheet (read-only)",
+        "source_panel_box": [
+          876,
+          931,
+          997,
+          1039
+        ],
+        "trim_origin_xy": [
+          879,
+          932
+        ],
+        "derived_from": null,
+        "derived_rect_in_source_asset": null,
+        "method": "parchment_matte",
+        "auto_metrics": {
+          "clipping": false,
+          "clip_edges": {
+            "clip_left": 0.0,
+            "clip_right": 0.0,
+            "clip_top": 0.0,
+            "clip_bottom": 0.0
+          },
+          "halo_fraction": 0.0,
+          "extra_components": [],
+          "outline_missing_px": 0,
+          "auto_pass": true,
+          "flags": []
+        },
+        "pass": true,
+        "pass_basis": "auto",
+        "needs_attention": false,
+        "drawn_height_px": 105,
+        "png_size": [
+          114,
+          105
+        ],
+        "recommended_eye_line_src_y": null,
+        "eye_line_sheet_y": null,
+        "eye_line_basis": null,
+        "notes": "supplemental extra (beyond the four doc 16 section 9 detail cells)"
+      },
+      "role_reason": "SUPPLEMENTAL: beyond the four doc 16 section 9 detail slots (Tarsier uses backpack FRONT).",
+      "canonical_slot_references": [],
+      "recommended_eye_line_src_y": null,
+      "eye_line_basis": null
+    },
+    {
+      "file": "tarsier_detail_backpack_front.png",
+      "asset": "detail_backpack_front",
+      "role": "canonical",
+      "slot": "F detail 2",
+      "status": "READY WITH CROP/MATTING",
+      "sha256": "87d5dbadbb19198271515ebd2bbbe5a568bec650c4403d028594f0888169808b",
+      "png_size": [
+        113,
+        107
+      ],
+      "mode": "RGBA",
+      "preview_4bg": "tarsier_detail_backpack_front_4bg.png",
+      "source_provenance": {
+        "source_sheet": "tarsier.png = production-v1 04_Tarsier_Character_Sheet (read-only)",
+        "source_panel_box": [
+          763,
+          931,
+          885,
+          1039
+        ],
+        "trim_origin_xy": [
+          768,
+          932
+        ],
+        "derived_from": null,
+        "derived_rect_in_source_asset": null,
+        "method": "parchment_matte",
+        "auto_metrics": {
+          "clipping": false,
+          "clip_edges": {
+            "clip_left": 0.0,
+            "clip_right": 0.0,
+            "clip_top": 0.0,
+            "clip_bottom": 0.0
+          },
+          "halo_fraction": 0.0,
+          "extra_components": [],
+          "outline_missing_px": 0,
+          "auto_pass": true,
+          "flags": []
+        },
+        "pass": true,
+        "pass_basis": "auto",
+        "needs_attention": false,
+        "drawn_height_px": 107,
+        "png_size": [
+          113,
+          107
+        ],
+        "recommended_eye_line_src_y": null,
+        "eye_line_sheet_y": null,
+        "eye_line_basis": null,
+        "notes": ""
+      },
+      "recommended_eye_line_src_y": null,
+      "eye_line_basis": null
+    },
+    {
+      "file": "tarsier_detail_goggles_front.png",
+      "asset": "detail_goggles_front",
+      "role": "canonical",
+      "slot": "F detail 1",
+      "status": "READY WITH CROP/MATTING",
+      "sha256": "5b967528a1640ebb4ef2b0d555a76dbe157651d05b5688ffbdb86e5a5f690e3a",
+      "png_size": [
+        181,
+        63
+      ],
+      "mode": "RGBA",
+      "preview_4bg": "tarsier_detail_goggles_front_4bg.png",
+      "source_provenance": {
+        "source_sheet": "tarsier.png = production-v1 04_Tarsier_Character_Sheet (read-only)",
+        "source_panel_box": [
+          783,
+          850,
+          964,
+          936
+        ],
+        "trim_origin_xy": [
+          783,
+          850
+        ],
+        "derived_from": null,
+        "derived_rect_in_source_asset": null,
+        "method": "parchment_matte",
+        "auto_metrics": {
+          "clipping": false,
+          "clip_edges": {
+            "clip_left": 0.004,
+            "clip_right": 0.0,
+            "clip_top": 0.0,
+            "clip_bottom": 0.0
+          },
+          "halo_fraction": 0.0073,
+          "extra_components": [],
+          "outline_missing_px": 0,
+          "auto_pass": true,
+          "flags": []
+        },
+        "pass": true,
+        "pass_basis": "auto",
+        "needs_attention": false,
+        "drawn_height_px": 63,
+        "png_size": [
+          181,
+          63
+        ],
+        "recommended_eye_line_src_y": null,
+        "eye_line_sheet_y": null,
+        "eye_line_basis": null,
+        "notes": ""
+      },
+      "recommended_eye_line_src_y": null,
+      "eye_line_basis": null
+    },
+    {
+      "file": "tarsier_detail_goggles_side.png",
+      "asset": "detail_goggles_side",
+      "role": "supplemental",
+      "slot": null,
+      "status": "READY WITH CROP/MATTING",
+      "sha256": "112a5e470854c23be833c6f521ba7b7fe7cc51fe1741e14ce2f16f51e9d3d293",
+      "png_size": [
+        155,
+        79
+      ],
+      "mode": "RGBA",
+      "preview_4bg": "tarsier_detail_goggles_side_4bg.png",
+      "source_provenance": {
+        "source_sheet": "tarsier.png = production-v1 04_Tarsier_Character_Sheet (read-only)",
+        "source_panel_box": [
+          978,
+          850,
+          1142,
+          936
+        ],
+        "trim_origin_xy": [
+          980,
+          850
+        ],
+        "derived_from": null,
+        "derived_rect_in_source_asset": null,
+        "method": "parchment_matte",
+        "auto_metrics": {
+          "clipping": false,
+          "clip_edges": {
+            "clip_left": 0.0,
+            "clip_right": 0.0,
+            "clip_top": 0.0,
+            "clip_bottom": 0.0
+          },
+          "halo_fraction": 0.0,
+          "extra_components": [],
+          "outline_missing_px": 0,
+          "auto_pass": true,
+          "flags": []
+        },
+        "pass": true,
+        "pass_basis": "auto",
+        "needs_attention": false,
+        "drawn_height_px": 79,
+        "png_size": [
+          155,
+          79
+        ],
+        "recommended_eye_line_src_y": null,
+        "eye_line_sheet_y": null,
+        "eye_line_basis": null,
+        "notes": "supplemental extra (beyond the four doc 16 section 9 detail cells)"
+      },
+      "role_reason": "SUPPLEMENTAL: beyond the four doc 16 section 9 detail slots (Tarsier uses goggles FRONT).",
+      "canonical_slot_references": [],
+      "recommended_eye_line_src_y": null,
+      "eye_line_basis": null
+    },
+    {
+      "file": "tarsier_detail_hood_scout_jacket.png",
+      "asset": "detail_hood_scout_jacket",
+      "role": "canonical",
+      "slot": "F detail 4",
+      "status": "READY WITH CROP/MATTING",
+      "sha256": "65324d78b9cd263f3148bc5a6e81e1e3b22270a31e63ba00272680483816390e",
+      "png_size": [
+        216,
+        172
+      ],
+      "mode": "RGBA",
+      "preview_4bg": "tarsier_detail_hood_scout_jacket_4bg.png",
+      "source_provenance": {
+        "source_sheet": "tarsier.png = production-v1 04_Tarsier_Character_Sheet (read-only)",
+        "source_panel_box": null,
+        "trim_origin_xy": null,
+        "derived_from": "tarsier_turnaround_front",
+        "derived_rect_in_source_asset": [
+          33,
+          0,
+          249,
+          172
+        ],
+        "method": "derived_crop",
+        "auto_metrics": {
+          "clipping": false,
+          "clip_edges": {
+            "clip_left": 0,
+            "clip_right": 0,
+            "clip_top": 0,
+            "clip_bottom": 0
+          },
+          "halo_fraction": 0.0035,
+          "extra_components": [],
+          "outline_missing_px": 0,
+          "auto_pass": true,
+          "flags": []
+        },
+        "pass": true,
+        "pass_basis": "auto",
+        "needs_attention": false,
+        "drawn_height_px": 172,
+        "png_size": [
+          216,
+          172
+        ],
+        "recommended_eye_line_src_y": null,
+        "eye_line_sheet_y": null,
+        "eye_line_basis": null,
+        "notes": "derived crop (hood + scout jacket) from matted front turnaround; alpha inherited"
+      },
+      "recommended_eye_line_src_y": null,
+      "eye_line_basis": null
+    },
+    {
+      "file": "tarsier_detail_paw_emblem.png",
+      "asset": "detail_paw_emblem",
+      "role": "canonical",
+      "slot": "F detail 3",
+      "status": "READY WITH CROP/MATTING",
+      "sha256": "39759af9ceca335d080c7f6bb3145fe27f59ac61fc3dc18e6238e395149852a4",
+      "png_size": [
+        139,
+        93
+      ],
+      "mode": "RGBA",
+      "preview_4bg": "tarsier_detail_paw_emblem_4bg.png",
+      "source_provenance": {
+        "source_sheet": "tarsier.png = production-v1 04_Tarsier_Character_Sheet (read-only)",
+        "source_panel_box": [
+          993,
+          939,
+          1140,
+          1035
+        ],
+        "trim_origin_xy": [
+          996,
+          941
+        ],
+        "derived_from": null,
+        "derived_rect_in_source_asset": null,
+        "method": "parchment_matte",
+        "auto_metrics": {
+          "clipping": false,
+          "clip_edges": {
+            "clip_left": 0.0,
+            "clip_right": 0.0,
+            "clip_top": 0.0,
+            "clip_bottom": 0.0
+          },
+          "halo_fraction": 0.0,
+          "extra_components": [],
+          "outline_missing_px": 0,
+          "auto_pass": true,
+          "flags": []
+        },
+        "pass": true,
+        "pass_basis": "auto",
+        "needs_attention": false,
+        "drawn_height_px": 93,
+        "png_size": [
+          139,
+          93
+        ],
+        "recommended_eye_line_src_y": null,
+        "eye_line_sheet_y": null,
+        "eye_line_basis": null,
+        "notes": ""
+      },
+      "recommended_eye_line_src_y": null,
+      "eye_line_basis": null
+    },
+    {
+      "file": "tarsier_head.png",
+      "asset": "head",
+      "role": "canonical",
+      "slot": "C head",
+      "status": "READY WITH CROP/MATTING",
+      "sha256": "740a87774251a54ce145668e89a55164bfbb3f0c3923ef85ef32144b536c57ca",
+      "png_size": [
+        283,
+        182
+      ],
+      "mode": "RGBA",
+      "preview_4bg": "tarsier_head_4bg.png",
+      "source_provenance": {
+        "source_sheet": "tarsier.png = production-v1 04_Tarsier_Character_Sheet (read-only)",
+        "source_panel_box": null,
+        "trim_origin_xy": [
+          1105,
+          278
+        ],
+        "derived_from": "tarsier_turnaround_front",
+        "derived_rect_in_source_asset": [
+          0,
+          0,
+          283,
+          182
+        ],
+        "method": "derived_crop",
+        "auto_metrics": {
+          "clipping": false,
+          "clip_edges": {
+            "clip_left": 0.0,
+            "clip_right": 0.0,
+            "clip_top": 0.0,
+            "clip_bottom": 0.0
+          },
+          "halo_fraction": 0.0,
+          "extra_components": [],
+          "outline_missing_px": 0,
+          "auto_pass": true,
+          "flags": []
+        },
+        "pass": true,
+        "pass_basis": "auto + visual (both ears whole, no panel edges)",
+        "needs_attention": false,
+        "drawn_height_px": 182,
+        "png_size": [
+          283,
+          182
+        ],
+        "recommended_eye_line_src_y": null,
+        "eye_line_sheet_y": 398,
+        "eye_line_basis": null,
+        "notes": "Head+shoulder bust cropped from the matted front turnaround (rows 0-182 of that asset = sheet y 277-459, x 19-302), 10 px bottom fade. Both ears whole, goggles/hood/shoulders included; no pixels repainted. Limits: scale is ~0.85x of the panel head; ear span makes the bust wide (283x182); at 88% of a 200 px box (176 px wide) it is ~94 px tall, so the 246 px height cannot be filled with whole ears from any tarsier source. A small piece of tail curl shows lower-left (original art). The closer panel view is kept as head_panel_alt (right ear clipped).",
+        "eye_line_asset_y": null
+      },
+      "recommended_eye_line_src_y": null,
+      "eye_line_basis": null
+    },
+    {
+      "file": "tarsier_head_panel_alt.png",
+      "asset": "head_panel_alt",
+      "role": "supplemental",
+      "slot": null,
+      "status": "PROVISIONAL",
+      "sha256": "9398690b0cd8e2010b7fd0e0cf4d9bc9e8cffe99aecf1c91d880bfdbe317a555",
+      "png_size": [
+        327,
+        263
+      ],
+      "mode": "RGBA",
+      "preview_4bg": "tarsier_head_panel_alt_4bg.png",
+      "source_provenance": {
+        "source_sheet": "tarsier.png = production-v1 04_Tarsier_Character_Sheet (read-only)",
+        "source_panel_box": [
+          1105,
+          278,
+          1432,
+          541
+        ],
+        "trim_origin_xy": [
+          1105,
+          278
+        ],
+        "derived_from": null,
+        "derived_rect_in_source_asset": null,
+        "method": "scenic",
+        "auto_metrics": {
+          "clipping": true,
+          "clip_edges": {
+            "clip_left": 0.113,
+            "clip_right": 0.131,
+            "clip_top": 0.001,
+            "clip_bottom": 0.648
+          },
+          "halo_fraction": 0.0,
+          "extra_components": [],
+          "outline_missing_px": 10,
+          "auto_pass": false,
+          "flags": [
+            "clipping"
+          ]
+        },
+        "pass": false,
+        "pass_basis": "auto FAIL (see flags/notes)",
+        "needs_attention": true,
+        "drawn_height_px": 263,
+        "png_size": [
+          327,
+          263
+        ],
+        "recommended_eye_line_src_y": 120,
+        "eye_line_sheet_y": 398,
+        "eye_line_basis": "visual estimate (png px from top)",
+        "notes": "Original Head Close-Up panel matte (closer, 3/4-tilted view, goggles/eyes at large scale). Left ear whole; RIGHT EAR CLIPPED by the panel interior edge at sheet x~1430 (tip beyond panel; source has no more art), bottom is the panel cut at sheet y~538. ART/TEMPLATE REVIEW REQUIRED. Source box [1105,278,1432,541], trim origin [1105,278]. Supplemental; not canonical head."
+      },
+      "role_reason": "SUPPLEMENTAL / UNVERIFIED: alternate head panel (PROVISIONAL, ears clipped at source); canonical Tarsier head is tarsier_head.",
+      "canonical_slot_references": [],
+      "recommended_eye_line_src_y": 120,
+      "eye_line_basis": "visual estimate (png px from top)"
+    },
+    {
+      "file": "tarsier_hero.png",
+      "asset": "hero",
+      "role": "canonical",
+      "slot": "B hero",
+      "status": "OWNER-ACCEPTED MINOR",
+      "sha256": "f9ebc6925b3362db8c5c01c3e5af6b6293e8399a81c4f6175b50fe82e5463f0f",
+      "png_size": [
+        286,
+        188
+      ],
+      "mode": "RGBA",
+      "preview_4bg": "tarsier_hero_4bg.png",
+      "source_provenance": {
+        "source_sheet": "tarsier.png = production-v1 04_Tarsier_Character_Sheet (read-only)",
+        "source_panel_box": [
+          1003,
+          560,
+          1440,
+          802
+        ],
+        "trim_origin_xy": [
+          1046,
+          587
+        ],
+        "derived_from": null,
+        "derived_rect_in_source_asset": null,
+        "method": "scenic",
+        "auto_metrics": {
+          "clipping": false,
+          "clip_edges": {
+            "clip_left": 0.0,
+            "clip_right": 0.0,
+            "clip_top": 0.0,
+            "clip_bottom": 0.0
+          },
+          "halo_fraction": 0.0,
+          "extra_components": [],
+          "outline_missing_px": 97,
+          "auto_pass": false,
+          "flags": [
+            "outline_missing"
+          ]
+        },
+        "pass": true,
+        "pass_basis": "W1 repair pass, visually reviewed on 4 backgrounds",
+        "needs_attention": true,
+        "drawn_height_px": 188,
+        "png_size": [
+          286,
+          188
+        ],
+        "recommended_eye_line_src_y": 67,
+        "eye_line_sheet_y": 654,
+        "eye_line_basis": "visual estimate (png px from top)",
+        "notes": "W1: pale-blue sky scraps behind tail/backpack/head removed (goggle and binocular lenses protected). A thin yellow sparkle fringe at the hood top and tiny fur flecks remain; invisible at display size. | prev: outline_missing_px=97 is dark leaf/branch pixels beside the outline excluded on purpose; character edge visually intact; scenic matte (polygon-assisted GrabCut + sky/leaf clean); a few light sky/leaf ",
+        "w1_repaired": true
+      },
+      "renders_as": "READY WITH CROP/MATTING",
+      "recommended_eye_line_src_y": 67,
+      "eye_line_basis": "visual estimate (png px from top)"
+    },
+    {
+      "file": "tarsier_turnaround_34.png",
+      "asset": "turnaround_34",
+      "role": "canonical",
+      "slot": "A turnaround 34",
+      "status": "READY WITH CROP/MATTING",
+      "sha256": "20db660ea8da88be4aa5dbb5caa7625d6f3805d0b46bbfe79ae91e52eb259406",
+      "png_size": [
+        296,
+        235
+      ],
+      "mode": "RGBA",
+      "preview_4bg": "tarsier_turnaround_34_4bg.png",
+      "source_provenance": {
+        "source_sheet": "tarsier.png = production-v1 04_Tarsier_Character_Sheet (read-only)",
+        "source_panel_box": [
+          260,
+          250,
+          570,
+          511
+        ],
+        "trim_origin_xy": [
+          265,
+          275
+        ],
+        "derived_from": null,
+        "derived_rect_in_source_asset": null,
+        "method": "turnaround_watershed",
+        "auto_metrics": {
+          "clipping": false,
+          "clip_edges": {
+            "clip_left": 0.0,
+            "clip_right": 0.0,
+            "clip_top": 0.0,
+            "clip_bottom": 0.0
+          },
+          "halo_fraction": 0.0071,
+          "extra_components": [],
+          "outline_missing_px": 0,
+          "auto_pass": true,
+          "flags": []
+        },
+        "pass": true,
+        "pass_basis": "auto",
+        "needs_attention": false,
+        "drawn_height_px": 235,
+        "png_size": [
+          296,
+          235
+        ],
+        "recommended_eye_line_src_y": 94,
+        "eye_line_sheet_y": 369,
+        "eye_line_basis": "visual estimate (png px from top)",
+        "notes": "parchment matte with local-background field + touching-neighbor watershed split + floor-shadow removal; floor contact shadow removed"
+      },
+      "recommended_eye_line_src_y": 94,
+      "eye_line_basis": "visual estimate (png px from top)"
+    },
+    {
+      "file": "tarsier_turnaround_back.png",
+      "asset": "turnaround_back",
+      "role": "canonical",
+      "slot": "A turnaround back",
+      "status": "READY WITH CROP/MATTING",
+      "sha256": "aa16fe527d0ae45d9a7fbb3aef72fc18d4c5eea9e9d43644e42ba74a520b4d97",
+      "png_size": [
+        305,
+        233
+      ],
+      "mode": "RGBA",
+      "preview_4bg": "tarsier_turnaround_back_4bg.png",
+      "source_provenance": {
+        "source_sheet": "tarsier.png = production-v1 04_Tarsier_Character_Sheet (read-only)",
+        "source_panel_box": [
+          772,
+          250,
+          1095,
+          511
+        ],
+        "trim_origin_xy": [
+          780,
+          273
+        ],
+        "derived_from": null,
+        "derived_rect_in_source_asset": null,
+        "method": "turnaround_watershed",
+        "auto_metrics": {
+          "clipping": false,
+          "clip_edges": {
+            "clip_left": 0.0,
+            "clip_right": 0.0,
+            "clip_top": 0.0,
+            "clip_bottom": 0.0
+          },
+          "halo_fraction": 0.0038,
+          "extra_components": [],
+          "outline_missing_px": 0,
+          "auto_pass": true,
+          "flags": []
+        },
+        "pass": true,
+        "pass_basis": "auto",
+        "needs_attention": false,
+        "drawn_height_px": 233,
+        "png_size": [
+          305,
+          233
+        ],
+        "recommended_eye_line_src_y": null,
+        "eye_line_sheet_y": null,
+        "eye_line_basis": null,
+        "notes": "parchment matte with local-background field + touching-neighbor watershed split + floor-shadow removal; floor contact shadow removed"
+      },
+      "recommended_eye_line_src_y": null,
+      "eye_line_basis": null
+    },
+    {
+      "file": "tarsier_turnaround_front.png",
+      "asset": "turnaround_front",
+      "role": "canonical",
+      "slot": "A turnaround front",
+      "status": "READY WITH CROP/MATTING",
+      "sha256": "fde2929c1e37b1ee1cc25c367d6b8d63e136ba083b31cd2243092b9fc8b71d9e",
+      "png_size": [
+        283,
+        234
+      ],
+      "mode": "RGBA",
+      "preview_4bg": "tarsier_turnaround_front_4bg.png",
+      "source_provenance": {
+        "source_sheet": "tarsier.png = production-v1 04_Tarsier_Character_Sheet (read-only)",
+        "source_panel_box": [
+          10,
+          250,
+          308,
+          511
+        ],
+        "trim_origin_xy": [
+          19,
+          277
+        ],
+        "derived_from": null,
+        "derived_rect_in_source_asset": null,
+        "method": "turnaround_watershed",
+        "auto_metrics": {
+          "clipping": false,
+          "clip_edges": {
+            "clip_left": 0.0,
+            "clip_right": 0.0,
+            "clip_top": 0.0,
+            "clip_bottom": 0.084
+          },
+          "halo_fraction": 0.0035,
+          "extra_components": [],
+          "outline_missing_px": 0,
+          "auto_pass": true,
+          "flags": []
+        },
+        "pass": true,
+        "pass_basis": "auto",
+        "needs_attention": false,
+        "drawn_height_px": 234,
+        "png_size": [
+          283,
+          234
+        ],
+        "recommended_eye_line_src_y": 100,
+        "eye_line_sheet_y": 377,
+        "eye_line_basis": "visual estimate (png px from top)",
+        "notes": "parchment matte with local-background field + touching-neighbor watershed split + floor-shadow removal; floor contact shadow removed"
+      },
+      "recommended_eye_line_src_y": 100,
+      "eye_line_basis": "visual estimate (png px from top)"
+    },
+    {
+      "file": "tarsier_turnaround_side.png",
+      "asset": "turnaround_side",
+      "role": "canonical",
+      "slot": "A turnaround side",
+      "status": "READY WITH CROP/MATTING",
+      "sha256": "3f6041cb79a6a49a869a3f47bd6b8053daa50796c8f054a102ea45f01a997b45",
+      "png_size": [
+        249,
+        229
+      ],
+      "mode": "RGBA",
+      "preview_4bg": "tarsier_turnaround_side_4bg.png",
+      "source_provenance": {
+        "source_sheet": "tarsier.png = production-v1 04_Tarsier_Character_Sheet (read-only)",
+        "source_panel_box": [
+          520,
+          250,
+          793,
+          511
+        ],
+        "trim_origin_xy": [
+          527,
+          277
+        ],
+        "derived_from": null,
+        "derived_rect_in_source_asset": null,
+        "method": "turnaround_watershed",
+        "auto_metrics": {
+          "clipping": false,
+          "clip_edges": {
+            "clip_left": 0.0,
+            "clip_right": 0.0,
+            "clip_top": 0.0,
+            "clip_bottom": 0.0
+          },
+          "halo_fraction": 0.0077,
+          "extra_components": [],
+          "outline_missing_px": 0,
+          "auto_pass": true,
+          "flags": []
+        },
+        "pass": true,
+        "pass_basis": "auto",
+        "needs_attention": false,
+        "drawn_height_px": 229,
+        "png_size": [
+          249,
+          229
+        ],
+        "recommended_eye_line_src_y": 85,
+        "eye_line_sheet_y": 362,
+        "eye_line_basis": "visual estimate (png px from top)",
+        "notes": "parchment matte with local-background field + touching-neighbor watershed split + floor-shadow removal; floor contact shadow removed"
+      },
+      "recommended_eye_line_src_y": 85,
+      "eye_line_basis": "visual estimate (png px from top)"
+    },
+    {
+      "file": "tarsier_silhouette_front.png",
+      "asset": "silhouette_front",
+      "role": "canonical",
+      "slot": "E silhouette front",
+      "status": "READY WITH CROP/MATTING",
+      "sha256": "8bbb2d297809e0c68acca2cee0a141de45967ad085e7604594ab6835ee36b8ef",
+      "png_size": [
+        273,
+        227
+      ],
+      "mode": "RGBA",
+      "preview_4bg": "tarsier_silhouette_front_4bg.png",
+      "fill": "#1E3A5F (doc 15 section 9 silhouette fill, flat navy)",
+      "derived_from": {
+        "asset": "tarsier_turnaround_front.png",
+        "sha256": "fde2929c1e37b1ee1cc25c367d6b8d63e136ba083b31cd2243092b9fc8b71d9e",
+        "source_library_path": "library/tarsier/tarsier_turnaround_front.png"
+      },
+      "derivation": {
+        "tool": "library-tools/derive_silhouettes.py + library-tools/sil_config.py (deterministic)",
+        "source_size": [
+          283,
+          234
+        ],
+        "bbox_in_source_xywh": [
+          5,
+          4,
+          273,
+          227
+        ],
+        "source_opaque_px": 41676,
+        "removed_px": 697,
+        "final_mask_px": 41050,
+        "detached_specks_dropped_px": [
+          23,
+          1,
+          5
+        ],
+        "holes": [
+          {
+            "area_px": 195,
+            "centroid_xy": [
+              70.9,
+              162.7
+            ],
+            "action": "kept (real negative space)"
+          },
+          {
+            "area_px": 5,
+            "centroid_xy": [
+              71.8,
+              220.4
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 10,
+            "centroid_xy": [
+              94.6,
+              221.4
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 8,
+            "centroid_xy": [
+              103.1,
+              221.1
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 14,
+            "centroid_xy": [
+              120.9,
+              221.6
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 117,
+            "centroid_xy": [
+              146.1,
+              221.6
+            ],
+            "action": "kept (real negative space)"
+          },
+          {
+            "area_px": 24,
+            "centroid_xy": [
+              178.8,
+              222.2
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 28,
+            "centroid_xy": [
+              192.5,
+              221.5
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 5,
+            "centroid_xy": [
+              204.2,
+              220.8
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 6,
+            "centroid_xy": [
+              211.3,
+              220.7
+            ],
+            "action": "filled (artifact)"
+          }
+        ],
+        "cleanup": {
+          "strip": 14,
+          "cut": [
+            [
+              56,
+              146,
+              76,
+              174
+            ]
+          ]
+        },
+        "alpha": "gaussian(0.8) antialias of the cleaned binary mask, 50% contour = mask edge"
+      },
+      "caveat": "inherits any silhouette-affecting matte defects of the source alpha beyond the listed cleanups; see library-qa/silhouette_comparison_tarsier.png",
+      "recommended_eye_line_src_y": null,
+      "eye_line_basis": null
+    },
+    {
+      "file": "tarsier_silhouette_34.png",
+      "asset": "silhouette_34",
+      "role": "canonical",
+      "slot": "E silhouette 34",
+      "status": "READY WITH CROP/MATTING",
+      "sha256": "08c4afece7a97b018d583967e9b3a9de4506c242732049f1b1815af0b9f5dda1",
+      "png_size": [
+        288,
+        226
+      ],
+      "mode": "RGBA",
+      "preview_4bg": "tarsier_silhouette_34_4bg.png",
+      "fill": "#1E3A5F (doc 15 section 9 silhouette fill, flat navy)",
+      "derived_from": {
+        "asset": "tarsier_turnaround_34.png",
+        "sha256": "20db660ea8da88be4aa5dbb5caa7625d6f3805d0b46bbfe79ae91e52eb259406",
+        "source_library_path": "library/tarsier/tarsier_turnaround_34.png"
+      },
+      "derivation": {
+        "tool": "library-tools/derive_silhouettes.py + library-tools/sil_config.py (deterministic)",
+        "source_size": [
+          296,
+          235
+        ],
+        "bbox_in_source_xywh": [
+          4,
+          4,
+          288,
+          226
+        ],
+        "source_opaque_px": 41619,
+        "removed_px": 1178,
+        "final_mask_px": 40567,
+        "detached_specks_dropped_px": [
+          1,
+          1,
+          1,
+          2,
+          1,
+          2,
+          1
+        ],
+        "holes": [
+          {
+            "area_px": 64,
+            "centroid_xy": [
+              152.1,
+              213.2
+            ],
+            "action": "kept (real negative space)"
+          },
+          {
+            "area_px": 4,
+            "centroid_xy": [
+              94.5,
+              217.5
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 16,
+            "centroid_xy": [
+              123.5,
+              217.9
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 30,
+            "centroid_xy": [
+              138.9,
+              220.7
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 2,
+            "centroid_xy": [
+              197.5,
+              217.0
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 27,
+            "centroid_xy": [
+              204.3,
+              218.4
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 25,
+            "centroid_xy": [
+              231.0,
+              219.5
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 20,
+            "centroid_xy": [
+              241.0,
+              219.2
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 11,
+            "centroid_xy": [
+              210.8,
+              222.6
+            ],
+            "action": "filled (artifact)"
+          }
+        ],
+        "cleanup": {
+          "strip": 18,
+          "cut": [
+            [
+              18,
+              145,
+              52,
+              180
+            ],
+            [
+              140,
+              203,
+              162,
+              216
+            ]
+          ]
+        },
+        "alpha": "gaussian(0.8) antialias of the cleaned binary mask, 50% contour = mask edge"
+      },
+      "caveat": "inherits any silhouette-affecting matte defects of the source alpha beyond the listed cleanups; see library-qa/silhouette_comparison_tarsier.png"
+    },
+    {
+      "file": "tarsier_silhouette_side.png",
+      "asset": "silhouette_side",
+      "role": "canonical",
+      "slot": "E silhouette side",
+      "status": "READY WITH CROP/MATTING",
+      "sha256": "b270e1d13d3c102a2e320e8203652ac62b86f959ab144d8bb7bdfb4adf8742c3",
+      "png_size": [
+        240,
+        219
+      ],
+      "mode": "RGBA",
+      "preview_4bg": "tarsier_silhouette_side_4bg.png",
+      "fill": "#1E3A5F (doc 15 section 9 silhouette fill, flat navy)",
+      "derived_from": {
+        "asset": "tarsier_turnaround_side.png",
+        "sha256": "3f6041cb79a6a49a869a3f47bd6b8053daa50796c8f054a102ea45f01a997b45",
+        "source_library_path": "library/tarsier/tarsier_turnaround_side.png"
+      },
+      "derivation": {
+        "tool": "library-tools/derive_silhouettes.py + library-tools/sil_config.py (deterministic)",
+        "source_size": [
+          249,
+          229
+        ],
+        "bbox_in_source_xywh": [
+          4,
+          5,
+          240,
+          219
+        ],
+        "source_opaque_px": 32223,
+        "removed_px": 738,
+        "final_mask_px": 31541,
+        "detached_specks_dropped_px": [],
+        "holes": [
+          {
+            "area_px": 178,
+            "centroid_xy": [
+              170.9,
+              203.8
+            ],
+            "action": "kept (real negative space)"
+          },
+          {
+            "area_px": 8,
+            "centroid_xy": [
+              158.1,
+              212.4
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 7,
+            "centroid_xy": [
+              169.3,
+              212.3
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 57,
+            "centroid_xy": [
+              100.7,
+              216.8
+            ],
+            "action": "kept (real negative space)"
+          },
+          {
+            "area_px": 19,
+            "centroid_xy": [
+              162.7,
+              217.1
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 6,
+            "centroid_xy": [
+              171.0,
+              215.5
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 10,
+            "centroid_xy": [
+              224.7,
+              216.2
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 6,
+            "centroid_xy": [
+              234.2,
+              215.7
+            ],
+            "action": "filled (artifact)"
+          }
+        ],
+        "cleanup": {
+          "strip": 14,
+          "cut": [
+            [
+              146,
+              191,
+              178,
+              214
+            ],
+            [
+              60,
+              164,
+              72,
+              174
+            ],
+            [
+              90,
+              158,
+              102,
+              170
+            ]
+          ]
+        },
+        "alpha": "gaussian(0.8) antialias of the cleaned binary mask, 50% contour = mask edge"
+      },
+      "caveat": "inherits any silhouette-affecting matte defects of the source alpha beyond the listed cleanups; see library-qa/silhouette_comparison_tarsier.png",
+      "recommended_eye_line_src_y": null,
+      "eye_line_basis": null
+    },
+    {
+      "file": "tarsier_silhouette_back.png",
+      "asset": "silhouette_back",
+      "role": "canonical",
+      "slot": "E silhouette back",
+      "status": "READY WITH CROP/MATTING",
+      "sha256": "43c217c51e552675fdbf59768225acf4254607b0a3a04a50e90bdb25508e37d8",
+      "png_size": [
+        295,
+        222
+      ],
+      "mode": "RGBA",
+      "preview_4bg": "tarsier_silhouette_back_4bg.png",
+      "fill": "#1E3A5F (doc 15 section 9 silhouette fill, flat navy)",
+      "derived_from": {
+        "asset": "tarsier_turnaround_back.png",
+        "sha256": "aa16fe527d0ae45d9a7fbb3aef72fc18d4c5eea9e9d43644e42ba74a520b4d97",
+        "source_library_path": "library/tarsier/tarsier_turnaround_back.png"
+      },
+      "derivation": {
+        "tool": "library-tools/derive_silhouettes.py + library-tools/sil_config.py (deterministic)",
+        "source_size": [
+          305,
+          233
+        ],
+        "bbox_in_source_xywh": [
+          5,
+          5,
+          295,
+          222
+        ],
+        "source_opaque_px": 42392,
+        "removed_px": 537,
+        "final_mask_px": 41869,
+        "detached_specks_dropped_px": [],
+        "holes": [
+          {
+            "area_px": 14,
+            "centroid_xy": [
+              132.5,
+              220.4
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 33,
+            "centroid_xy": [
+              199.4,
+              220.8
+            ],
+            "action": "kept (real negative space)"
+          }
+        ],
+        "cleanup": {
+          "strip": 14,
+          "cut": [
+            [
+              84,
+              184,
+              92,
+              194
+            ],
+            [
+              96,
+              152,
+              106,
+              162
+            ]
+          ]
+        },
+        "alpha": "gaussian(0.8) antialias of the cleaned binary mask, 50% contour = mask edge"
+      },
+      "caveat": "inherits any silhouette-affecting matte defects of the source alpha beyond the listed cleanups; see library-qa/silhouette_comparison_tarsier.png"
+    },
+    {
+      "file": "tarsier_silhouette_action.png",
+      "asset": "silhouette_action",
+      "role": "canonical",
+      "slot": "E silhouette action",
+      "status": "READY WITH CROP/MATTING",
+      "sha256": "b8aaceb3d6678c55fba71e2598fd8e731d19094952ecf5607a012795d54ee1f3",
+      "png_size": [
+        280,
+        182
+      ],
+      "mode": "RGBA",
+      "preview_4bg": "tarsier_silhouette_action_4bg.png",
+      "fill": "#1E3A5F (doc 15 section 9 silhouette fill, flat navy)",
+      "derived_from": {
+        "asset": "tarsier_hero.png",
+        "sha256": "f9ebc6925b3362db8c5c01c3e5af6b6293e8399a81c4f6175b50fe82e5463f0f",
+        "source_library_path": "library/tarsier/tarsier_hero.png"
+      },
+      "derivation": {
+        "tool": "library-tools/derive_silhouettes.py + library-tools/sil_config.py (deterministic)",
+        "source_size": [
+          286,
+          188
+        ],
+        "bbox_in_source_xywh": [
+          3,
+          3,
+          280,
+          182
+        ],
+        "source_opaque_px": 31109,
+        "removed_px": 0,
+        "final_mask_px": 31112,
+        "detached_specks_dropped_px": [],
+        "holes": [
+          {
+            "area_px": 2,
+            "centroid_xy": [
+              193.5,
+              69.0
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 1,
+            "centroid_xy": [
+              99.0,
+              81.0
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 180,
+            "centroid_xy": [
+              81.8,
+              116.7
+            ],
+            "action": "kept (real negative space)"
+          }
+        ],
+        "cleanup": {},
+        "alpha": "gaussian(0.8) antialias of the cleaned binary mask, 50% contour = mask edge"
+      },
+      "caveat": "inherits any silhouette-affecting matte defects of the source alpha beyond the listed cleanups; see library-qa/silhouette_comparison_tarsier.png",
+      "recommended_eye_line_src_y": null,
+      "eye_line_basis": null
+    }
+  ],
+  "historical_silhouettes": [
+    {
+      "file": "_historical-silhouettes/tarsier_silhouette_34_or_back_UNVERIFIED.png",
+      "role": "historical",
+      "status": "HISTORICAL / QA-COMPARISON ONLY",
+      "pre_m4_status": "PROVISIONAL",
+      "sha256": "cec137cf40017e8adf2a3604b51afd5f8c59fee6f33be738cc8997099a1abca4",
+      "png_size": [
+        117,
+        122
+      ],
+      "mode": "RGBA",
+      "reason": "flat-sheet silhouette artwork, not derived from matted alpha; never a canonical slot",
+      "flag": "unverified 3/4-vs-back ambiguity; resolved by deriving both tarsier_silhouette_34 and _back from the approved turnaround assets"
+    },
+    {
+      "file": "_historical-silhouettes/tarsier_silhouette_action.png",
+      "role": "historical",
+      "status": "HISTORICAL / QA-COMPARISON ONLY",
+      "pre_m4_status": "READY WITH CROP/MATTING",
+      "sha256": "8669eb60378a5a7a34d73b5ce1d64f2f17244ce678a07abf86fa992c5d2d7721",
+      "png_size": [
+        136,
+        122
+      ],
+      "mode": "RGBA",
+      "reason": "flat-sheet silhouette artwork, not derived from matted alpha; never a canonical slot"
+    },
+    {
+      "file": "_historical-silhouettes/tarsier_silhouette_front.png",
+      "role": "historical",
+      "status": "HISTORICAL / QA-COMPARISON ONLY",
+      "pre_m4_status": "READY WITH CROP/MATTING",
+      "sha256": "86d3b096ace5856e26062b7928693598d6c7f57bd86f6198e2181d0b07ee2b04",
+      "png_size": [
+        108,
+        122
+      ],
+      "mode": "RGBA",
+      "reason": "flat-sheet silhouette artwork, not derived from matted alpha; never a canonical slot"
+    },
+    {
+      "file": "_historical-silhouettes/tarsier_silhouette_side.png",
+      "role": "historical",
+      "status": "HISTORICAL / QA-COMPARISON ONLY",
+      "pre_m4_status": "READY WITH CROP/MATTING",
+      "sha256": "21c7d5f71e8de6d59332d1bd5fc5e3759eb3ce5c8ee4bf0e7f41bbf68abbb515",
+      "png_size": [
+        118,
+        121
+      ],
+      "mode": "RGBA",
+      "reason": "flat-sheet silhouette artwork, not derived from matted alpha; never a canonical slot"
+    }
+  ],
+  "superseded": [
+    {
+      "file": "_superseded/tarsier_hero.png",
+      "role": "superseded",
+      "sha256": "8443c40f83d62ffb15c1c43c210c3fbfb5f453d91392e304dd5c29f18b787548",
+      "png_size": [
+        286,
+        188
+      ],
+      "mode": "RGBA"
+    }
+  ]
+}

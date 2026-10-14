@@ -1,0 +1,36 @@
+{
+ "name": "tarsier_cheer",
+ "box": [
+  679,
+  598,
+  837,
+  760
+ ],
+ "mode": "scenic",
+ "bg_rgb": [
+  181,
+  166,
+  123
+ ],
+ "clip_left": 0.05761316872427984,
+ "clip_right": 0.05555555555555555,
+ "clip_top": 0.0,
+ "clip_bottom": 0.0,
+ "clipping": true,
+ "extra_components": [],
+ "contamination": false,
+ "halo_fraction": 0.0,
+ "halo": false,
+ "outline_missing_px": 16,
+ "outline_missing": false,
+ "pass": false,
+ "trim_origin_sheet": [
+  679,
+  601
+ ],
+ "size": [
+  158,
+  159
+ ],
+ "alpha_smooth_sigma": 1.3
+}

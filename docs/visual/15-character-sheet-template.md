@@ -5,6 +5,11 @@ Status: **APPROVED — CANONICAL CHARACTER-SHEET TEMPLATE**. Final geometry revi
 Document only.
 Branch: `feature/world-expedition-visuals`.
 
+**M4 docs sync (October 13, 2026).** Docs-only update to the final M4 state: authoritative cast factors,
+Nunito Sans files in place, `LOGO_ASSET` reconstructed, six palette slots defined, canonical silhouettes, the
+expression-size rules adopted by owner decision on October 13, 2026, renderer fit findings and asset status words.
+No coordinate, box, panel size, expression order or turnaround order was changed.
+
 This document locks the **sheet system**: the fixed layout, text and rules that every canonical
 character sheet uses. It does **not** finish missing character art, render any sheet, or change any
 PNG, `production-v1/`, `production-v1.1/`, runtime code, tests or identity.
@@ -18,8 +23,9 @@ PNG, `production-v1/`, `production-v1.1/`, runtime code, tests or identity.
   `MISSING / TO AUTHOR`, and that never blocks the template.
 - Exactly four detail cells. Exactly six palette slots. A relative-scale proportion guide with no
   fabricated numbers.
-- One reusable header built around one fixed `LOGO_ASSET`. The asset is `REQUIRED / TO AUTHOR`. No
-  logo is cropped from any historical sheet.
+- One reusable header built around one fixed `LOGO_ASSET`. The asset status is `RECONSTRUCTED MASTER`
+  (M4, section 8). It is a controlled reconstruction of the approved logo instance, not a raw crop of any
+  historical sheet.
 - Turnaround is a **full-width row** of four 335 px cells, so cast-relative Bronco and Eagle views fit.
   Hero, head close-up and expressions share the next row.
 - Turnaround scale mode is **CAST-RELATIVE**. No per-character "fill the box" scaling.
@@ -122,7 +128,8 @@ Checks:
 - Art boxes keep an 8 px inner safe inset. No character pixel sits within 8 px of an art-box edge,
   except in the Hero and Head close-up boxes, where the common background fills the box to its edge.
   Turnaround cells are the one exception on the horizontal axis: wide poses may use the full 335 px
-  cell width (section 6). The vertical limits in section 6 still apply.
+  cell width (section 6). The vertical limits in section 6 still apply. In expression cells only the core
+  is held to the 8 px inset; limbs, props and effects may use the 137 px effect allowance (section 6).
 - Text keeps 8 px from its container edge (12 px for chips and pills, which use horizontal padding).
 
 ---
@@ -142,7 +149,7 @@ rows of 108 px with a 10 px gap (y = 824, 942).
 | 3 | `1020,824,88,108` | ACCENT |
 | 4 | `828,942,88,108` | GEAR |
 | 5 | `924,942,88,108` | DETAIL |
-| 6 | `1020,942,88,108` | CHARACTER-SPECIFIC |
+| 6 | `1020,942,88,108` | CHARACTER-SPECIFIC (role; the label is a short custom string, see rules) |
 
 Inside each slot (offsets from the slot origin):
 
@@ -155,15 +162,21 @@ Inside each slot (offsets from the slot origin):
 
 Rules:
 
-- Slots 1-5 use the default role labels. Slot 6 may carry a character-specific name when that is
-  clearer. Example: Bronco slot 6 is **BANDANA — MAROON**.
+- Slots 1-5 use the default role labels. Slot 6 carries a short character-specific label, because the default
+  `CHARACTER-SPECIFIC` does not fit the 88 px label box in Nunito Sans (section 4, fit findings); the descriptive
+  text goes in the name line. Example: Bronco slot 6 is label **BANDANA**, name **Maroon** (the earlier
+  `BANDANA — MAROON` is also too wide). Final slot 6 labels: Click `C GOLD`, Dino `PACK BODY`, Koala `BOOK`,
+  Tarsier `EYE RING`, Eagle `EYES`, Bronco `BANDANA`.
 - The role label may be replaced by a character-specific semantic name for any slot, within the text
   limits in section 4.
 - Unused slots stay blank: the swatch shows the empty pattern from section 10, the label reads
-  `OPEN`, and the name and hex lines are empty.
+  `OPEN`, and the name and hex lines are empty. As of M4 all six slots are defined on all six sheets, so no
+  slot renders as `OPEN`.
 - Hex is printed only when a value exists. Every printed hex is **PROVISIONAL**, and the panel always
-  shows the "PROVISIONAL" tag. No final production hex is locked by this document.
-- Red gear and star accents on Bronco remain separate from the maroon bandana.
+  shows the "PROVISIONAL" tag. No final production hex is locked by this document. The M4 hex values are
+  sampled from final approved art and remain PROVISIONAL.
+- Red gear and star accents on Bronco remain separate from the maroon bandana: Bronco ACCENT (slot 3) is the red
+  star / gear, and slot 6 is the maroon bandana.
 
 ---
 
@@ -190,8 +203,9 @@ Four cells, 142 x 106 px each. Inside a cell: art area `0,0,142,82` (radius 12, 
 Production family: **Nunito Sans** (LOCKED). No other family on a production sheet. No AI-generated
 lettering. No Poppins. Weights used: Regular 400, SemiBold 600, Bold 700, ExtraBold 800.
 
-Font binaries are **not** embedded or committed in this step. Font files and license handling are set
-up explicitly before the first rendered sheet.
+Nunito Sans is **final**. The renderer uses the static SIL OFL 1.1 files for weights 400, 600, 700 and 800, shipped
+with the license text and a provenance file. It has no fallback family: a missing, non-Nunito, variable or
+glyph-poor font file is a hard error, so no final sheet can contain a substitute face.
 
 Sizes are nominal pixels on the 1448 x 1086 canvas. "Min" is the smallest size after shrink-to-fit.
 Text color is the common ink color in section 9.
@@ -220,6 +234,26 @@ Rules:
 - Text is always rendered by the layout engine from the manifest. No text is baked into character art.
 - Fixed strings are listed in this document. A fixed string that does not fit is a template defect,
   not something to shrink.
+
+### Fixed-string fit in Nunito Sans (M4 findings)
+
+Every fixed string was measured with the renderer's Nunito Sans metrics. All role tags, panel chips,
+turnaround and expression label pills, silhouette labels, `PROVISIONAL SCALE`, and the default palette role
+labels PRIMARY, SECONDARY, ACCENT, GEAR and DETAIL fit at their nominal sizes. Seven strings do not fit. They are
+recorded here with the rule the renderer applies; no box was changed and nothing is shrunk below 10 px:
+
+| String | Box | Width / available | Rule applied |
+| --- | --- | --- | --- |
+| `CHARACTER-SPECIFIC` (slot 6 default label) | palette label, 88 px | 127.2 / 88 | not rendered; slot 6 carries a short custom label and a name line (section 2) |
+| `BANDANA — MAROON` | palette label, 88 px | 130.0 / 88 | Bronco slot 6 is label `BANDANA`, name `Maroon` |
+| `MISSING / TO AUTHOR`, `OPEN — TO AUTHOR`, `NEEDS EDIT — NOT APPROVED` | standing silhouette cell, 72 px (56 px after the 8 px inset) | 71.2 to 91.4 / 56 | not used by any final sheet; if one were drawn there it would be set at the 10 px minimum and reported as a template defect |
+| `NEEDS EDIT — NOT APPROVED` | palette swatch, 88 px (72 px after inset) | 91.4 / 72 | renderer-only string (not defined by this document); not used by any final sheet |
+| `PROVISIONAL` tag | standing silhouette cell, 72 px (tag plus 8 px) | 80.0 / 72 | the tag is omitted in the 72 px silhouette cells and the renderer logs a warning; no silhouette slot on a final sheet is provisional |
+
+`MISSING / TO AUTHOR` is not used by any final sheet. A two-line detail caption (2 x 13 px = 26 px) is taller than the
+20 px caption box in section 3; the renderer draws both lines (the second extends 6 px into the panel padding,
+inside the panel) and logs a text adjustment. On the six final sheets there are no template defects, no warnings
+and no placeholders.
 
 ---
 
@@ -263,13 +297,15 @@ Bronco 3/4 BACK) belong on a supplemental sheet.
 
 Characters are drawn at a scale tied to the cast, not to the box.
 
-- Each character manifest carries a **relative scale factor** `k` (1.00 is the cast reference
-  height). The factors are **PROVISIONAL** until final approved turnaround art establishes the
-  normalized cast proportions. The working reference is the table in
-  [08](08-proportions-silhouettes.md).
+- Each character manifest carries a **relative scale factor** `k`. The cast factors are **authoritative**
+  (owner, October 13, 2026): Eagle 1.000 (the cast reference, `k` = 1.000), Click 0.92, Bronco 0.92, Dino 0.85,
+  Koala 0.76, Tarsier 0.57. They govern the turnaround and the proportion guide only. Expression cells are not
+  cast-scale authority (see "Other boxes"). The same values are in [08](08-proportions-silhouettes.md).
 - The sheet scale is `px per source unit = S0 x k`, with the cast constant `S0` chosen once for the
-  whole cast so that the tallest cast member fits the turnaround height limit (184 px). `S0` is
-  PROVISIONAL and is the same for all six sheets.
+  whole cast so that `k` = 1.000 (the Eagle, the tallest) draws at the turnaround height limit (184 px). `S0`
+  is the same for all six sheets. Renderer values, recorded for audit and not design values: `S0` = 0.184 px per
+  unit, one unit being 1/1000 of a character's reference height, and the reference height of a character being
+  its tallest matted turnaround view.
 - **All four views of one character use exactly the same scale.** FRONT, 3/4, SIDE and BACK never
   scale independently.
 - **No character is enlarged to remove empty space or fill a cell.** A small character (Tarsier) sits
@@ -294,7 +330,7 @@ or wider than 335 px), the sheet manifest flags:
 
 The renderer does not silently shrink that pose, does not shrink one view, and does not crop. The flag
 goes to the owner to decide between changing the approved pose, the cast constant `S0`, or the cell
-geometry.
+geometry. None of the six final sheets raises this flag at the turnaround.
 
 Cell art sits on the common cell background (section 9). The label pill sits centered under the cell
 at `y420`, width `min(335 - 16, text width + 24)`.
@@ -313,18 +349,36 @@ used to infer actual cast size.
 
 ### Other boxes
 
-Head close-up (`366,512,200,246`): portrait box. Head bounding box about 88 percent of the box width
-(176 px), horizontally centered, eye line at 40 percent of the box height (`y = 610`). Crop-to-fill is
-allowed here and in the hero.
+Head close-up (`366,512,200,246`): portrait box. Head (core) bounding box about 88 percent of the box width
+(176 px), horizontally centered; the nominal eye line is at 40 percent of the box height (`y = 610`). The art is
+bottom-anchored (art bottom on the box bottom edge, `y = 754`), so the eye-line guide is not enforced on it. A head
+that is shorter than the box leaves empty space above it: valid, never stretched, no torso invented. Cropping at
+the bottom edge is allowed here and in the hero.
 
 Expression cells (`125 x 214`, portrait head-expression views): all six cells for one character use the
-same head scale, centered horizontally.
+same head scale (one `head_scale` per character), centered horizontally. Expression cells are not
+cast-scale authority: the cast factors above do not apply to them.
 
-- Usable width after the 8 px inset is 109 px. The nominal head bounding-box width is 100 px.
-- Eye line at 40 percent of the cell height (`y = 512 + 86 = 598`).
-- Crown at least 8 px inside the top of the box. Shoulders and chest may bleed off the bottom edge.
-- If the widest head among the six (ears, crest, hat brim) exceeds 109 px at the character's head
-  scale, flag **ART/TEMPLATE REVIEW REQUIRED**. Do not shrink one cell.
+- **Core and allowance.** The core is head + hat/hood/goggles + ears (+ Bronco's mane); limbs, props and
+  detached effects are not core. The core stays inside the 109 px safe width (the cell minus the 8 px inset),
+  and its crown is no higher than `y = 520` (at least 8 px inside the top of the box). Limbs, props and effects may
+  use the effect allowance of 137 px (the cell plus half of each 12 px gutter, `x` from cell.x - 6 to
+  cell.x + 131); they never enter a neighbor's core safe window.
+- **Scale.** The nominal core width is 100 px, large enough that no core is scaled down for being wide and small
+  enough that the widest core of the six fits 109 px. A state drawn at a very different source density
+  (crown-to-eye distance more than 27 percent off the character's median) is density-normalized first.
+- **Eye line and anchor.** Full-bust cells keep the eye line at 40 percent of the cell height
+  (`y = 512 + 86 = 598`); shoulders and chest may bleed off the bottom edge (clipped at `y = 724`). Head-only
+  crops (art that ends at a hard crop: Dino, Tarsier and Eagle IDLE) are bottom-anchored, art bottom on `y = 724`,
+  so the hard edge is hidden and the head does not float; the eye-line lock does not apply to them.
+- **Tolerance and fit-down.** Width checks have a 1 px tolerance. If a core is wider than 109 px, or art leaves
+  the allowance after a sideways slide that keeps the core inside its window, by more than the tolerance, the
+  whole asset is scaled down uniformly: aspect preserved, no independent X squash, no crop of ears, hats, crest
+  or muzzle, eye line unchanged. The factor is recorded per cell. **ART/TEMPLATE REVIEW REQUIRED** remains for
+  a crown above `y = 520` and for any excess the fit-down cannot remove. All 36 final cells have fit factor 1.0000.
+- **Short busts.** A portrait does not have to fill the cell: empty space above a bottom-anchored bust, or below
+  the art, is valid. Judge by consistent head and face scale, eye line and framing. Never stretch vertically,
+  invent a torso, or enlarge until ears or hats overflow.
 - Cells show a cutout on the common expression-cell background (section 9). A missing state shows the
   section 10 marker and keeps its label pill at `y732`.
 
@@ -338,6 +392,12 @@ action silhouette is uniformly fit inside 108 x 182 on the same baseline. Every 
 matted alpha of approved art, flat navy fill. Labels: FRONT, 3/4, SIDE, BACK, ACTION. Fit scale here is
 for recognition only (see "Cast-relative scale authority").
 
+Canonical silhouettes (M4) are derived deterministically from approved matted alpha: the four standing
+silhouettes from the approved front, 3/4, side and back turnaround cutouts, the action silhouette from the
+approved hero/action asset (for Koala, the reading hero; the Koala action slot is the reading pose). The
+earlier flat-sheet silhouette artwork is historical and used for QA comparison only; it never fills a
+canonical slot.
+
 ---
 
 ## 7. Proportion guide (relative scale only)
@@ -345,8 +405,9 @@ for recognition only (see "Cast-relative scale authority").
 The panel box stays `1132,780,292,282`. The side/back thumbnails are **removed**: they duplicate the
 canonical turnaround and are too small to be useful.
 
-No numeric heads-tall values and no centimeter or other printed measurements are used. The exact
-normalized cast scale remains open until turnaround art is finalized.
+No numeric heads-tall values and no centimeter or other printed measurements are used. The normalized cast
+scale is the set of authoritative factors `k` in section 6; the guide shows them only as heights against the
+reference tick, with no number printed.
 
 Inner area `1144,824,268,226`:
 
@@ -360,16 +421,20 @@ Inner area `1144,824,268,226`:
 
 Rules:
 
-- The cast reference height `R` is 168 px, from baseline `y = 1006` up to `y = 838`. The front
-  reference is drawn at `R x k`, where `k` is the character's cast-relative scale factor (the same
-  value used for the turnaround). `k` is PROVISIONAL.
+- The cast reference height `R` is 168 px, from baseline `y = 1006` up to `y = 838`; it is the height of the
+  cast reference character (Eagle, `k` = 1.000). The front reference is drawn at `R x k`, where `k` is the
+  character's authoritative cast factor (the same value used for the turnaround, section 6). The guide and the
+  turnaround use different absolute scales (`R` = 168 px here, 184 px for `k` = 1.000 in the turnaround); only
+  `k` is shared.
 - The solid marker shows where this character's top sits against the dashed reference tick. It is the
   only height cue. No number is printed.
 - The optional comparison marker is a second dashed tick for one other cast member (for example the
   smallest, Tarsier) with a 3-letter tag. It is optional and listed in the manifest. When absent, the
   column holds only the reference tick and the character marker.
 - The status label `PROVISIONAL SCALE` stays on every canonical sheet until the owner approves final
-  normalized proportions. The label is then changed by owner decision, not by the renderer.
+  normalized proportions. The label is then changed by owner decision, not by the renderer. The cast factors
+  are set (section 6), but retiring the label is a separate owner decision that has not been made, so the
+  label is still rendered.
 - Locked relative requirements (from the Bible and [08](08-proportions-silhouettes.md)): Tarsier is
   clearly the smallest; Click and Bronco read among the taller, larger characters; every silhouette
   stays distinct at small size.
@@ -399,15 +464,25 @@ Title and subtitle are centered horizontally in the 664 px block. The title and 
 
 ### Logo
 
-- `LOGO_ASSET` = **REQUIRED / TO AUTHOR**.
+- `LOGO_ASSET` = **RECONSTRUCTED MASTER (M4), OWNER-APPROVED for production-v1.1.** A future professionally redrawn/vector master may supersede it later (outside M4 scope). One clean transparent
+  master (RGBA PNG, 1467 x 633), reconstructed from the approved logo instance in the header of the Dino sheet
+  (`production-v1` sheet 02), the only instance that sits on flat parchment with nothing overlapping it. It is not
+  a redesign: the wording (`BidaZoo` over `WORLD EXPEDITION`), the mark/text relationship, palette and composition
+  are unchanged. The background was removed, the bottom foliage that the source panel clipped flat was tapered,
+  and the 489 x 211 px source was upscaled 3x. No SVG exists: the lockup is a glossy raster render and tracing
+  it would change the identity. Release layout path: `production-v1.1/logo/BidaZoo_World_Expedition_logo_master.png`;
+  method, checks and provenance are in the logo README delivered with the master.
 - The logo contains the product name "BidaZoo World Expedition". The name is **not** repeated as
   separate typeset text anywhere in the header.
 - One asset is used for every sheet. A separate logo is **never cropped from any historical character
   sheet**, and no historical crop becomes canonical automatically.
-- Existing production artwork may be used as a **visual reference** for authoring the clean logo master.
-- Until the asset exists, the slot renders the section 10 empty-pattern marker with the text
+- The master is a reconstruction, not a raw crop, and the rule above still holds: it became the canonical
+  `LOGO_ASSET` on the owner's approval (October 13, 2026).
+- If the asset is missing, the slot renders the section 10 empty-pattern marker with the text
   `LOGO_ASSET` over `REQUIRED / TO AUTHOR`. A sheet rendered with the marker is a layout proof only.
-- The clean master and its license/provenance are set up explicitly before the first final render.
+- Slot fit: contain-fit with 12 px padding makes the 2.32 : 1 lockup height-limited. It draws at 222 x 96 px at
+  (81, 36), centered, using about 66 percent of the slot width; the `WORLD EXPEDITION` cap height is about 8 px at
+  that size. The slot geometry is unchanged.
 
 ### Role tag (LOCKED strings)
 
@@ -500,6 +575,8 @@ marker" role, centered.
 - Missing art does not block locking this template or rendering a sheet. It does block calling a
   sheet final.
 - The manifest lists each missing and open slot, so the production backlog is generated from it.
+- M4 outcome: on the six final sheets no art slot is missing, open or provisional, and no palette slot is open.
+  The only provisional items are the palette hex values (section 2).
 - A sheet with any `missing`, `open` or `provisional` slot carries the sheet status line in the
   manifest, not on the artwork.
 
@@ -577,33 +654,52 @@ Applies identically to Click, Dino, Koala, Tarsier, Eagle and Bronco. Only manif
 ### Current art state (recorded October 13, 2026)
 
 - `production-v1/` is **immutable** and unchanged.
-- `production-v1.1/` is a **CORRECTION CANDIDATE — NOT FINAL**, uncommitted. Neither folder is touched
-  by this document.
-- Accepted candidate corrections that exist in v1.1: the Bronco bandana is maroon; Click is removed
+- `production-v1.1/` was a correction candidate and is now the release folder for the M4 release (intended content of
+  the M4 release commit; Git is operator-run, and nothing here records a commit or push). Composites `00`, `07` and `08`
+  in it are final release content produced by the single M4 composite pass. The owner accepted the six-sheet contact sheet for M4
+  closure and approved the logo master (October 13, 2026). Neither folder is touched by this document.
+- Accepted corrections that exist in v1.1: the Bronco bandana is maroon; Click is removed
   from the selectable starter/profile options; exactly five starter choices remain; Click is separated
   as HOST & GUIDE; the miss feedback is orange/amber with a retry arrow and the copy "Try again!"; and
   the child-facing modal close button is brass/neutral.
-- Sheet `07` palette-row compression was removed, and the dedicated Bronco maroon palette swatch is
-  deferred.
-- Poppins remains in interim Sheet `08` and is not production-final. It is replaced during final
-  typesetting.
+- Sheet `07` palette-row compression was removed. The dedicated Bronco maroon swatch is no longer deferred: it
+  is the BANDANA slot (slot 6) of the Bronco canonical palette, separate from the red star / gear accent (section 2).
+- History: interim Sheet `08` carried Poppins stand-ins. The M4 composite pass retypesets them in Nunito Sans
+  (final composite in `production-v1.1`, produced by the single M4 composite pass). Poppins is not used on any canonical sheet.
 - The v1.1 `README.md` hashes are stale/interim and must not be treated as final.
 - Unnecessary PNG rewrites create provenance-byte churn with no pixel change. Final PNGs should be
   written as few times as practical, after art approval.
-- Eagle art is pending the controlled correction. The base source is
+- Eagle art was corrected under the controlled edit. The base source is
   `production-v1/05_Eagle_Character_Sheet.png`, plus the owner-approved correction: clearly
-  white-headed, blue eyes, brown wings, green varsity jacket, original prominent A. The corrected Eagle
-  art will later be inserted into this template.
+  white-headed, blue eyes, brown wings, green varsity jacket, original varsity A (gold letter on the green jacket). The corrected sheet
+  (`production-v1.1/05_Eagle_Character_Sheet.png`) is the source of the Eagle library and expression art that
+  fills this template.
 - A newly generated alternate Eagle full-sheet poster is **not** canonical sheet authority and is not
   added to the repo.
 
+### Asset status words (library manifest, M4)
+
+Every library asset carries a role and a status:
+
+| Role | Meaning | Status words | Count |
+| --- | --- | --- | --- |
+| canonical | fills one of the 15 slots per character on the canonical sheet (4 turnaround, hero, head, 5 silhouettes, 4 details) | READY WITH CROP/MATTING 82; OWNER-ACCEPTED MINOR 8 | 90 |
+| supplemental | extra reference for supplemental sheets (section 12); never fills a canonical slot | READY WITH CROP/MATTING 9; NEEDS CONTROLLED EDIT 1 (`koala_hero_overview`, deferred); PROVISIONAL 1 (`tarsier_head_panel_alt`, clipped ears) | 11 |
+| historical | flat-sheet silhouette artwork from before M4 | HISTORICAL / QA-COMPARISON ONLY | 28 |
+| superseded | pre-correction copies kept for audit | not used | 9 |
+
+OWNER-ACCEPTED MINOR renders exactly like READY WITH CROP/MATTING (no PROVISIONAL tag, no warning); the
+manifest keeps the status for audit. The 36 expression states follow the same rule: 32 READY and 4
+OWNER-ACCEPTED MINOR (Eagle THINKING, Eagle TRY AGAIN, Koala CHEER, Bronco CHEER).
+
 ### OPEN items
 
-1. `LOGO_ASSET`: REQUIRED / TO AUTHOR (clean master and its license/provenance).
-2. Cast-relative scale factors `k` and the cast constant `S0`: PROVISIONAL until approved turnaround
-   art establishes normalized proportions.
-3. Chrome token hex values (section 9): PROVISIONAL.
-4. Font files and license setup for Nunito Sans (before the first render).
+1. `LOGO_ASSET`: RESOLVED by the M4 reconstruction (section 8); OWNER-APPROVED for production-v1.1.
+2. Cast-relative scale factors `k`: RESOLVED, authoritative (section 6). The cast constant `S0` and the
+   reference-height definition are renderer choices recorded in section 6 for audit.
+3. Chrome token hex values (section 9) and palette hex values (section 2): PROVISIONAL.
+4. Font files and license setup for Nunito Sans: RESOLVED (section 4).
 5. Per-character manifests: expression mapping, the four details, palette roles, status per slot.
 6. Matting approach for turnaround, expression, silhouette and detail art.
-7. Review of art that overflows at cast-relative scale (`ART/TEMPLATE REVIEW REQUIRED`).
+7. Review of art that overflows at cast-relative scale (`ART/TEMPLATE REVIEW REQUIRED`): no final sheet raises
+   the flag; expression-cell fit follows section 6.

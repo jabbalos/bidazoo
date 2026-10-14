@@ -33,7 +33,7 @@ left shoulder with straps, mint snout and belly, purple eyes. The one-backpack r
   prohibited. The test is visual: if an accessory reads as a second bag, a chest pack, or a
   duplicate backpack, reject it. Otherwise it stays open for review.
 - **Face.** Wide eyes, big smile, upturned snout. Curious tilt in `discover`.
-- **Scale.** Short and sturdy; 0.90 on the 07 lineup (see [08](08-proportions-silhouettes.md)).
+- **Scale.** Short and sturdy; cast factor 0.85 (see [08](08-proportions-silhouettes.md); sheet 07 v1 printed 0.90).
 - **Texture.** Subtle speckles only. Keep shapes clean so the sprite stays readable on busy
   backdrops. Dino's teal must stay distinct from teal water and sky in the destinations.
 
@@ -65,4 +65,4 @@ Source: `02_Dino_Character_Sheet.png`. Full catalog in [INGESTION-REPORT.md](ING
   read clearly orange.
 - **Backpack color (RESOLVED):** a green backpack is acceptable (owner, October 12, 2026). The
   one-backpack rule is unchanged.
-- **Scale:** 0.90 on 07. Dino is the third smallest of the six (after Tarsier and Koala).
+- **Scale:** cast factor 0.85 (sheet 07 v1 printed 0.90). Dino is the third smallest of the six (after Tarsier and Koala).

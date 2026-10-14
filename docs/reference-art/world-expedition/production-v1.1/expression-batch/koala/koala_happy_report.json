@@ -1,0 +1,62 @@
+{
+ "name": "koala_happy",
+ "box": [
+  796,
+  566,
+  948,
+  727
+ ],
+ "mode": "parchment",
+ "bg_rgb": [
+  253,
+  244,
+  229
+ ],
+ "clip_left": 0.0,
+ "clip_right": 0.0,
+ "clip_top": 0.0,
+ "clip_bottom": 0.0,
+ "clipping": false,
+ "extra_components": [],
+ "contamination": false,
+ "halo_fraction": 0.005212858384013901,
+ "halo": false,
+ "outline_missing_px": 2,
+ "outline_missing": false,
+ "pass": true,
+ "size": [
+  152,
+  153
+ ],
+ "params": {
+  "fade": 12,
+  "paints": [
+   [
+    796,
+    725,
+    948,
+    727
+   ]
+  ],
+  "force": [
+   [
+    [
+     861,
+     711
+    ],
+    [
+     876,
+     711
+    ],
+    [
+     874,
+     724
+    ],
+    [
+     859,
+     724
+    ]
+   ]
+  ]
+ }
+}

@@ -1,0 +1,591 @@
+{
+ "asset-library/bronco/bronco_head.png": {
+  "core_box": [
+   0,
+   0,
+   255,
+   174
+  ],
+  "eye_line_src_y": 112,
+  "size": [
+   255,
+   297
+  ],
+  "source": "derived"
+ },
+ "asset-library/click/click_head.png": {
+  "core_box": [
+   2,
+   3,
+   249,
+   240
+  ],
+  "eye_line_src_y": 156,
+  "size": [
+   252,
+   301
+  ],
+  "source": "derived"
+ },
+ "asset-library/dino/dino_head.png": {
+  "core_box": [
+   5,
+   2,
+   216,
+   174
+  ],
+  "eye_line_src_y": 113,
+  "size": [
+   238,
+   304
+  ],
+  "source": "derived"
+ },
+ "asset-library/eagle/eagle_head.png": {
+  "core_box": [
+   12,
+   3,
+   238,
+   156
+  ],
+  "eye_line_src_y": 102,
+  "size": [
+   241,
+   215
+  ],
+  "source": "derived"
+ },
+ "asset-library/koala/koala_head.png": {
+  "core_box": [
+   3,
+   3,
+   318,
+   180
+  ],
+  "eye_line_src_y": 117,
+  "size": [
+   321,
+   258
+  ],
+  "source": "derived"
+ },
+ "asset-library/tarsier/tarsier_head.png": {
+  "core_box": [
+   3,
+   3,
+   280,
+   146
+  ],
+  "eye_line_src_y": 95,
+  "size": [
+   283,
+   182
+  ],
+  "source": "derived"
+ },
+ "expression-batch/bronco/bronco_cheer.png": {
+  "core_box": [
+   4,
+   5,
+   167,
+   144
+  ],
+  "eye_line_src_y": 77,
+  "size": [
+   172,
+   147
+  ],
+  "source": "report"
+ },
+ "expression-batch/bronco/bronco_discover.png": {
+  "core_box": [
+   5,
+   4,
+   165,
+   106
+  ],
+  "eye_line_src_y": 70,
+  "size": [
+   168,
+   154
+  ],
+  "source": "derived"
+ },
+ "expression-batch/bronco/bronco_happy.png": {
+  "core_box": [
+   7,
+   3,
+   157,
+   98
+  ],
+  "eye_line_src_y": 64,
+  "size": [
+   162,
+   153
+  ],
+  "source": "derived"
+ },
+ "expression-batch/bronco/bronco_idle.png": {
+  "core_box": [
+   2,
+   0,
+   173,
+   105
+  ],
+  "eye_line_src_y": 68,
+  "size": [
+   176,
+   144
+  ],
+  "source": "derived"
+ },
+ "expression-batch/bronco/bronco_thinking.png": {
+  "core_box": [
+   3,
+   8,
+   179,
+   149
+  ],
+  "eye_line_src_y": 74,
+  "size": [
+   195,
+   151
+  ],
+  "source": "report"
+ },
+ "expression-batch/bronco/bronco_tryAgain.png": {
+  "core_box": [
+   0,
+   3,
+   167,
+   110
+  ],
+  "eye_line_src_y": 72,
+  "size": [
+   168,
+   151
+  ],
+  "source": "derived"
+ },
+ "expression-batch/click/click_cheer.png": {
+  "core_box": [
+   17,
+   8,
+   176,
+   99
+  ],
+  "eye_line_src_y": 67,
+  "size": [
+   198,
+   157
+  ],
+  "source": "derived"
+ },
+ "expression-batch/click/click_discover.png": {
+  "core_box": [
+   2,
+   1,
+   138,
+   136
+  ],
+  "eye_line_src_y": 88,
+  "size": [
+   141,
+   160
+  ],
+  "source": "derived"
+ },
+ "expression-batch/click/click_happy.png": {
+  "core_box": [
+   4,
+   8,
+   148,
+   113
+  ],
+  "eye_line_src_y": 76,
+  "size": [
+   155,
+   150
+  ],
+  "source": "derived"
+ },
+ "expression-batch/click/click_idle.png": {
+  "core_box": [
+   3,
+   0,
+   187,
+   144
+  ],
+  "eye_line_src_y": 93,
+  "size": [
+   190,
+   149
+  ],
+  "source": "derived"
+ },
+ "expression-batch/click/click_thinking.png": {
+  "core_box": [
+   3,
+   5,
+   143,
+   123
+  ],
+  "eye_line_src_y": 81,
+  "size": [
+   165,
+   164
+  ],
+  "source": "derived"
+ },
+ "expression-batch/click/click_tryAgain.png": {
+  "core_box": [
+   3,
+   2,
+   141,
+   118
+  ],
+  "eye_line_src_y": 77,
+  "size": [
+   162,
+   154
+  ],
+  "source": "derived"
+ },
+ "expression-batch/dino/dino_cheer.png": {
+  "core_box": [
+   32,
+   3,
+   154,
+   85
+  ],
+  "eye_line_src_y": 56,
+  "size": [
+   183,
+   163
+  ],
+  "source": "report"
+ },
+ "expression-batch/dino/dino_discover.png": {
+  "core_box": [
+   4,
+   3,
+   135,
+   102
+  ],
+  "eye_line_src_y": 67,
+  "size": [
+   166,
+   164
+  ],
+  "source": "report"
+ },
+ "expression-batch/dino/dino_happy.png": {
+  "core_box": [
+   6,
+   2,
+   132,
+   80
+  ],
+  "eye_line_src_y": 52,
+  "size": [
+   146,
+   165
+  ],
+  "source": "derived"
+ },
+ "expression-batch/dino/dino_idle.png": {
+  "core_box": [
+   0,
+   0,
+   126,
+   87
+  ],
+  "eye_line_src_y": 56,
+  "size": [
+   133,
+   106
+  ],
+  "source": "derived"
+ },
+ "expression-batch/dino/dino_thinking.png": {
+  "core_box": [
+   4,
+   3,
+   133,
+   98
+  ],
+  "eye_line_src_y": 64,
+  "size": [
+   153,
+   164
+  ],
+  "source": "derived"
+ },
+ "expression-batch/dino/dino_tryAgain.png": {
+  "core_box": [
+   22,
+   3,
+   158,
+   104
+  ],
+  "eye_line_src_y": 68,
+  "size": [
+   176,
+   161
+  ],
+  "source": "derived"
+ },
+ "expression-batch/eagle/eagle_cheer.png": {
+  "core_box": [
+   3,
+   4,
+   158,
+   163
+  ],
+  "eye_line_src_y": 65,
+  "size": [
+   193,
+   168
+  ],
+  "source": "report"
+ },
+ "expression-batch/eagle/eagle_discover.png": {
+  "core_box": [
+   11,
+   3,
+   152,
+   110
+  ],
+  "eye_line_src_y": 72,
+  "note": "report core_box [4, 3, 178, 163] rejected: 23% wider than the derived core (likely includes fist/limb/body)",
+  "size": [
+   185,
+   168
+  ],
+  "source": "derived (report rejected)"
+ },
+ "expression-batch/eagle/eagle_happy.png": {
+  "core_box": [
+   3,
+   3,
+   159,
+   163
+  ],
+  "eye_line_src_y": 62,
+  "size": [
+   163,
+   168
+  ],
+  "source": "report"
+ },
+ "expression-batch/eagle/eagle_idle.png": {
+  "core_box": [
+   12,
+   2,
+   161,
+   104
+  ],
+  "eye_line_src_y": 68,
+  "size": [
+   163,
+   141
+  ],
+  "source": "derived"
+ },
+ "expression-batch/eagle/eagle_thinking.png": {
+  "core_box": [
+   3,
+   7,
+   155,
+   164
+  ],
+  "eye_line_src_y": 68,
+  "size": [
+   163,
+   168
+  ],
+  "source": "report"
+ },
+ "expression-batch/eagle/eagle_tryAgain.png": {
+  "core_box": [
+   3,
+   3,
+   157,
+   164
+  ],
+  "eye_line_src_y": 66,
+  "size": [
+   163,
+   168
+  ],
+  "source": "report"
+ },
+ "expression-batch/koala/koala_cheer.png": {
+  "core_box": [
+   39,
+   4,
+   186,
+   153
+  ],
+  "eye_line_src_y": 85,
+  "size": [
+   225,
+   155
+  ],
+  "source": "report"
+ },
+ "expression-batch/koala/koala_discover.png": {
+  "core_box": [
+   3,
+   2,
+   152,
+   129
+  ],
+  "eye_line_src_y": 84,
+  "size": [
+   155,
+   155
+  ],
+  "source": "derived"
+ },
+ "expression-batch/koala/koala_happy.png": {
+  "core_box": [
+   1,
+   3,
+   150,
+   125
+  ],
+  "eye_line_src_y": 82,
+  "size": [
+   152,
+   153
+  ],
+  "source": "derived"
+ },
+ "expression-batch/koala/koala_idle.png": {
+  "core_box": [
+   3,
+   2,
+   157,
+   131
+  ],
+  "eye_line_src_y": 85,
+  "size": [
+   160,
+   152
+  ],
+  "source": "derived"
+ },
+ "expression-batch/koala/koala_thinking_analytical.png": {
+  "core_box": [
+   1,
+   3,
+   154,
+   133
+  ],
+  "eye_line_src_y": 87,
+  "size": [
+   157,
+   155
+  ],
+  "source": "derived"
+ },
+ "expression-batch/koala/koala_tryAgain.png": {
+  "core_box": [
+   3,
+   4,
+   176,
+   152
+  ],
+  "eye_line_src_y": 75,
+  "size": [
+   195,
+   154
+  ],
+  "source": "report"
+ },
+ "expression-batch/tarsier/tarsier_cheer.png": {
+  "core_box": [
+   5,
+   2,
+   156,
+   100
+  ],
+  "eye_line_src_y": 65,
+  "size": [
+   158,
+   159
+  ],
+  "source": "derived"
+ },
+ "expression-batch/tarsier/tarsier_discover.png": {
+  "core_box": [
+   1,
+   2,
+   173,
+   115
+  ],
+  "eye_line_src_y": 75,
+  "size": [
+   175,
+   161
+  ],
+  "source": "derived"
+ },
+ "expression-batch/tarsier/tarsier_happy.png": {
+  "core_box": [
+   1,
+   2,
+   156,
+   100
+  ],
+  "eye_line_src_y": 65,
+  "size": [
+   167,
+   158
+  ],
+  "source": "derived"
+ },
+ "expression-batch/tarsier/tarsier_idle.png": {
+  "core_box": [
+   3,
+   2,
+   280,
+   149
+  ],
+  "eye_line_src_y": 97,
+  "size": [
+   283,
+   159
+  ],
+  "source": "derived"
+ },
+ "expression-batch/tarsier/tarsier_thinking.png": {
+  "core_box": [
+   2,
+   2,
+   166,
+   110
+  ],
+  "eye_line_src_y": 72,
+  "size": [
+   168,
+   156
+  ],
+  "source": "derived"
+ },
+ "expression-batch/tarsier/tarsier_tryAgain.png": {
+  "core_box": [
+   3,
+   3,
+   277,
+   163
+  ],
+  "eye_line_src_y": 98,
+  "size": [
+   294,
+   194
+  ],
+  "source": "report"
+ }
+}

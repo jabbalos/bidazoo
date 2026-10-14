@@ -1,8 +1,16 @@
 # 16 Character Art Production Plan
 
-Status: ACTIVE PLAN. Owner decisions applied October 13, 2026. Document only.
+Status: ACTIVE PLAN; executed through M4 (status refreshed October 13, 2026, docs-only). Owner decisions applied
+October 13, 2026. Document only.
 Base checkpoint: `5cee4d7747fa2b8a9c779aa3a55af34ec9290045`
 `docs(visual): lock canonical character sheet template`. Branch: `feature/world-expedition-visuals`.
+
+**M4 status sync (October 13, 2026).** Plan structure, locked decisions and cast-factor lines are unchanged. Status
+text that the closed M4 state superseded is refreshed and marked "M4 status". Codes and counts that are not marked
+(sections 4.4, 5 and 11, and the Done-when column of section 12) are the plan-time baseline. Final state: expressions
+36 of 36 (32 PASS, 4 OWNER-ACCEPTED MINOR); library 90 canonical + 11 supplemental assets; Nunito Sans final; `LOGO_ASSET`
+reconstructed (OWNER-APPROVED for production-v1.1); palette hex values and the `PROVISIONAL SCALE` label stay
+PROVISIONAL (docs 09 and 15).
 
 This is the canonical execution checklist for finishing all six standardized character sheets (Click,
 Dino, Koala, Tarsier, Eagle, Bronco). It turns the read-only art-gap inventory into work items. It
@@ -33,7 +41,10 @@ Rules:
 
 - Dedicated character sheets outrank composites for character identity.
 - `production-v1/` is **immutable**.
-- `production-v1.1/` is an uncommitted **CORRECTION CANDIDATE — NOT FINAL**.
+- `production-v1.1/` was a correction candidate at plan time (history). M4 status: it is the release folder for the M4
+  release (intended content of the M4 release commit; Git LFS, commit and push are run by the operator). Composites `00`,
+  `07` and `08` in it are final release content from the single M4 composite pass. The owner accepted the six-sheet contact sheet for M4
+  closure and approved the logo master (October 13, 2026).
 - The original ZIP is no longer an operational source of truth.
 - The Eagle base is `production-v1/05_Eagle_Character_Sheet.png`. A newly generated alternate Eagle
   full-sheet poster is **not** canonical and is not a source.
@@ -58,6 +69,9 @@ Only these four statuses are used:
   sign-off recorded in that character's manifest.
 - A PROVISIONAL expression whose mapping is LOCKED (section 4) stays PROVISIONAL until the matted crop
   is visually verified to read as the state. The mapping is settled; the verification is not.
+- M4 status: the library adds `OWNER-ACCEPTED MINOR` (renders exactly like READY WITH CROP/MATTING; the status is kept
+  for audit), `HISTORICAL / QA-COMPARISON ONLY` (pre-M4 flat-sheet silhouettes), and the roles canonical, supplemental
+  and superseded ([15](15-character-sheet-template.md) section 13).
 
 ---
 
@@ -72,9 +86,11 @@ Only these four statuses are used:
 - The copy reads "Try again!".
 - The child-facing close control is brass/neutral.
 - The Sheet `07` compressed palette layout was reverted.
-- The dedicated Bronco maroon palette swatch on `07` remains deferred.
-- Poppins remains in interim Sheet `08` and is **not** production-final.
-- The current `production-v1.1/README.md` contains stale interim hashes.
+- The dedicated Bronco maroon palette swatch on `07` remains deferred. M4 status: it is the BANDANA slot (slot 6)
+  of the Bronco canonical palette.
+- Poppins remains in interim Sheet `08` and is **not** production-final. M4 status: Nunito Sans is final and the M4
+  composite pass retypesets Sheet `08` in it (final composite in `production-v1.1`). Poppins is history only.
+- The current `production-v1.1/README.md` contains stale interim hashes (M4 status: superseded by the release README).
 - PNG rewrite operations create provenance-byte churn with no pixel change.
 - Final PNGs are rewritten as few times as practical.
 
@@ -115,7 +131,7 @@ part of the seven.
 | Click | HAPPY / THINKING / CHEER | Happy / Thinking / Celebrate | |
 | Dino | HAPPY / THINKING / TRY AGAIN | Happy / Thinking / Try-again | Try-again reads gentle (winking smile) |
 | Koala | IDLE | Calm (Neutral) | |
-| Koala | THINKING | Focused or Analytical (both labeled Thinking) | one is chosen in the pilot |
+| Koala | THINKING | Focused or Analytical (both labeled Thinking) | M4 status: Analytical is canonical (`koala_thinking_analytical`) |
 | Koala | HAPPY | Happy | |
 | Tarsier | HAPPY / THINKING | Happy / Thinking | |
 | Eagle | HAPPY / CHEER / DISCOVER / TRY AGAIN | Happy / Celebrate / Surprised / Determined | DISCOVER mapping is not among the seven; see section 12 |
@@ -126,7 +142,11 @@ Curious; Koala Kind; Tarsier Curious, Surprised and Playful; Eagle Bold and Focu
 and Determined. The sheet-07 expression matrix is low-resolution reference only (about 160 x 85 px, with
 the crowns cut off). It is not a production source.
 
-### 4.4 Exactly 12 MISSING / TO AUTHOR expression assets
+### 4.4 Exactly 12 MISSING / TO AUTHOR expression assets (plan-time baseline; all authored, M1 CLOSED)
+
+M4 status: all 36 canonical expression states exist (32 PASS and 4 OWNER-ACCEPTED MINOR: Eagle THINKING, Eagle TRY AGAIN,
+Koala CHEER, Bronco CHEER; 0 REJECT, 0 MISSING). Koala THINKING is `koala_thinking_analytical`. Expression art is
+frozen. The table below is the list that was authored.
 
 | Character | Missing states | Count |
 | --- | --- | --- |
@@ -148,6 +168,12 @@ the tone review.
 
 Codes: **CM** = READY WITH CROP/MATTING; **CE** = NEEDS CONTROLLED EDIT; **MS** = MISSING / TO AUTHOR;
 **PR** = PROVISIONAL.
+
+The codes in this section are the plan-time baseline. M4 status: the library holds 90 canonical assets (15 slots x 6
+characters: READY WITH CROP/MATTING 82, OWNER-ACCEPTED MINOR 8) and 11 supplemental assets. No canonical slot is CE, MS or
+PR any more; the Eagle controlled edit is complete. The only remaining PROVISIONAL items are the palette hex values and
+the `PROVISIONAL SCALE` label. Deferred supplemental: `koala_hero_overview` (NEEDS CONTROLLED EDIT), not used by any
+canonical slot.
 
 ### 5.1 Assets A, B, C, E, F, G, H
 
@@ -190,14 +216,19 @@ until the matted crop is verified (section 2).
   kept for consistency.
 - **F Details:** exactly four per character, proposed selection in section 9. Eagle's four detail crops
   do not require redesign.
-- **G Palette:** all hex values are PROVISIONAL. See section 7 for Bronco.
-- **H Scale:** working cast-relative factors from [08](08-proportions-silhouettes.md): Eagle 1.10, Click
-  1.00, Bronco 1.00, Dino 0.90, Koala 0.80, Tarsier 0.60. All PROVISIONAL. Eagle's front reference also
-  depends on the corrected Eagle art.
+- **G Palette:** all hex values are PROVISIONAL. See section 7 for Bronco. M4 status: six slots are defined on all
+  six sheets.
+- **H Scale:** cast-relative factors from [08](08-proportions-silhouettes.md): Eagle 1.000, Click
+  0.92, Bronco 0.92, Dino 0.85, Koala 0.76, Tarsier 0.57. Owner-approved and authoritative (October 13, 2026) for the
+  turnaround and proportion guide; the scale-guide label `PROVISIONAL SCALE` stays until the owner retires it.
+  The corrected Eagle art is in place.
 
 ---
 
 ## 6. Eagle controlled edit (LOCKED)
+
+M4 status: complete. The corrected Eagle art (`production-v1.1/05_Eagle_Character_Sheet.png`) is the source of the Eagle
+library and expressions; Eagle silhouettes were re-derived from it. The plan-time specification follows.
 
 Base authority: `production-v1/05_Eagle_Character_Sheet.png`. Preserve the established Eagle identity.
 
@@ -207,7 +238,7 @@ Required appearance:
 - blue eyes
 - brown wings
 - green varsity jacket
-- original prominent A
+- original varsity A (gold letter on the green jacket)
 - yellow beak
 - orange/yellow feet
 
@@ -244,14 +275,15 @@ Bronco has two distinct semantic colors:
 | Template palette slot | Meaning |
 | --- | --- |
 | ACCENT (slot 3) | red star / gear treatment |
-| CHARACTER-SPECIFIC (slot 6) | **BANDANA — MAROON** |
+| CHARACTER-SPECIFIC (slot 6) | **BANDANA — MAROON** (sheet label `BANDANA`, name `Maroon`; doc 15 section 2) |
 
 - Do **not** recolor the red star/gear treatment to maroon.
 - Do **not** treat the old crimson Accent entry (on sheet `07`) as the bandana definition.
 - Exact final hex values remain PROVISIONAL.
 - The dedicated maroon swatch on `07` is deferred to the final composite correction (step 13).
 - Open item for step 9: sheet `07` also lists a red value under Gear. The GEAR slot content (saddle and
-  leather versus red) is decided in the palette-role mapping. Red stays on ACCENT only.
+  leather versus red) is decided in the palette-role mapping. Red stays on ACCENT only. M4 status: decided; GEAR is
+  saddle leather, ACCENT is the red star / gear, slot 6 is the maroon bandana.
 
 ---
 
@@ -303,11 +335,12 @@ cannot be filled stays `OPEN` (template section 10). No filler crops.
 
 ## 10. LOGO_ASSET
 
-`LOGO_ASSET` status: **MISSING / TO AUTHOR**.
+`LOGO_ASSET` status: **RECONSTRUCTED MASTER (M4), OWNER-APPROVED for production-v1.1** (was MISSING / TO AUTHOR).
 
-It must eventually be **one** reusable, clean, transparent brand asset used identically by every sheet.
-Six different logos are never cropped from historical sheets, and no historical crop becomes canonical.
-Existing production artwork is visual reference only. Until it exists, renders show the template's
+It is **one** reusable, clean, transparent brand asset used identically by every sheet: a controlled reconstruction of
+the approved logo instance on the Dino sheet, with no redesign (details and provenance: [15](15-character-sheet-template.md)
+section 8). Six different logos are never cropped from historical sheets, and no historical crop becomes canonical;
+the master became canonical on the owner's approval (October 13, 2026). If the asset is missing, renders show the template's
 layout-proof marker.
 
 ---
@@ -317,114 +350,118 @@ layout-proof marker.
 Status tags follow section 5. Check a box only when the asset is produced, matted on the common
 background, and recorded in the character manifest.
 
+M4 status: every item below is produced and recorded in the library and renderer manifests, so all boxes are checked.
+The parenthetical codes (CM, CE, MS, PR) are the plan-time baseline. Palette hex values (G) and the scale-guide label
+(H) remain PROVISIONAL.
+
 ### Click (HOST & GUIDE — NOT SELECTABLE)
 
-- [ ] A Turnaround, 4 views (CM), from `01`
-- [ ] B Hero (CM), from `01` action pose
-- [ ] C Head close-up (CM), from `01`
-- [ ] D IDLE (MS)
-- [ ] D HAPPY (CM), THINKING (CM), CHEER (CM, Celebrate)
-- [ ] D DISCOVER (PR, Surprised, LOCKED mapping)
-- [ ] D TRY AGAIN (MS). Author as gentle determination. No furrowed-brow or clenched-fist read.
-- [ ] E Silhouettes, 5 (CM, derive)
-- [ ] F Four details (CM)
-- [ ] G Six palette roles (PR)
-- [ ] H Scale reference (PR, k about 1.00)
+- [x] A Turnaround, 4 views (CM), from `01`
+- [x] B Hero (CM), from `01` action pose
+- [x] C Head close-up (CM), from `01`
+- [x] D IDLE (MS)
+- [x] D HAPPY (CM), THINKING (CM), CHEER (CM, Celebrate)
+- [x] D DISCOVER (PR, Surprised, LOCKED mapping)
+- [x] D TRY AGAIN (MS). Author as gentle determination. No furrowed-brow or clenched-fist read.
+- [x] E Silhouettes, 5 (CM, derive)
+- [x] F Four details (CM)
+- [x] G Six palette roles (PR)
+- [x] H Scale reference (PR, k about 0.92)
 
 ### Dino
 
-- [ ] A Turnaround, 4 views (CM), from `02`
-- [ ] B Hero (CM)
-- [ ] C Head close-up (CM)
-- [ ] D IDLE (MS)
-- [ ] D HAPPY (CM), THINKING (CM), TRY AGAIN (CM)
-- [ ] D CHEER (PR, Excited, LOCKED), DISCOVER (PR, Surprised, LOCKED)
-- [ ] E Silhouettes, 5 (CM)
-- [ ] F Four details (CM)
-- [ ] G Six palette roles (PR). Identity: teal body, orange dorsal spikes, exactly one backpack.
-- [ ] H Scale reference (PR, k about 0.90)
+- [x] A Turnaround, 4 views (CM), from `02`
+- [x] B Hero (CM)
+- [x] C Head close-up (CM)
+- [x] D IDLE (MS)
+- [x] D HAPPY (CM), THINKING (CM), TRY AGAIN (CM)
+- [x] D CHEER (PR, Excited, LOCKED), DISCOVER (PR, Surprised, LOCKED)
+- [x] E Silhouettes, 5 (CM)
+- [x] F Four details (CM)
+- [x] G Six palette roles (PR). Identity: teal body, orange dorsal spikes, exactly one backpack.
+- [x] H Scale reference (PR, k about 0.85)
 
 ### Koala
 
-- [ ] A Turnaround, 4 views (CM), from `03`
-- [ ] B Hero (CM)
-- [ ] C Head close-up (CM; wide, see section 8)
-- [ ] D IDLE (CM, Calm), HAPPY (CM), THINKING (CM; choose Focused or Analytical)
-- [ ] D CHEER (MS)
-- [ ] D DISCOVER (PR, Surprised, LOCKED)
-- [ ] D TRY AGAIN (MS)
-- [ ] E Silhouettes, 5 (CM)
-- [ ] F Four details (CM)
-- [ ] G Six palette roles (PR). Identity: gray-lavender scholar, no backpack.
-- [ ] H Scale reference (PR, k about 0.80)
+- [x] A Turnaround, 4 views (CM), from `03`
+- [x] B Hero (CM)
+- [x] C Head close-up (CM; wide, see section 8)
+- [x] D IDLE (CM, Calm), HAPPY (CM), THINKING (CM; choose Focused or Analytical)
+- [x] D CHEER (MS)
+- [x] D DISCOVER (PR, Surprised, LOCKED)
+- [x] D TRY AGAIN (MS)
+- [x] E Silhouettes, 5 (CM)
+- [x] F Four details (CM)
+- [x] G Six palette roles (PR). Identity: gray-lavender scholar, no backpack.
+- [x] H Scale reference (PR, k about 0.76)
 
 ### Tarsier
 
-- [ ] A Turnaround, 4 views (CM), from `04`
-- [ ] B Hero (CM; scenic)
-- [ ] C Head close-up (CM; ear clipped at source, see section 8)
-- [ ] D IDLE (MS)
-- [ ] D HAPPY (CM), THINKING (CM; scenic backgrounds)
-- [ ] D CHEER (MS)
-- [ ] D DISCOVER (PR, Observant, LOCKED)
-- [ ] D TRY AGAIN (MS)
-- [ ] E Silhouettes, 5 (CM, derive action)
-- [ ] F Four details (CM)
-- [ ] G Six palette roles (PR). Identity: huge eyes, goggles, scout/discovery.
-- [ ] H Scale reference (PR, k about 0.60; clearly the smallest cast member)
+- [x] A Turnaround, 4 views (CM), from `04`
+- [x] B Hero (CM; scenic)
+- [x] C Head close-up (CM; ear clipped at source, see section 8)
+- [x] D IDLE (MS)
+- [x] D HAPPY (CM), THINKING (CM; scenic backgrounds)
+- [x] D CHEER (MS)
+- [x] D DISCOVER (PR, Observant, LOCKED)
+- [x] D TRY AGAIN (MS)
+- [x] E Silhouettes, 5 (CM, derive action)
+- [x] F Four details (CM)
+- [x] G Six palette roles (PR). Identity: huge eyes, goggles, scout/discovery.
+- [x] H Scale reference (PR, k about 0.57; clearly the smallest cast member)
 
 ### Eagle
 
-- [ ] A Turnaround, 4 views (CE), base `production-v1/05`
-- [ ] B Hero (CE)
-- [ ] C Head close-up (CE)
-- [ ] D IDLE (MS), THINKING (MS)
-- [ ] D HAPPY (CE), CHEER (CE), DISCOVER (CE)
-- [ ] D TRY AGAIN (CE; soften)
-- [ ] E Silhouettes, 5 (CE, re-derive after approval)
-- [ ] F Four details (CM)
-- [ ] G Six palette roles (PR). Identity: white head, blue eyes, brown wings, green varsity jacket, A.
-- [ ] H Scale reference (PR, k about 1.10; depends on corrected front view)
+- [x] A Turnaround, 4 views (CE), base `production-v1/05`
+- [x] B Hero (CE)
+- [x] C Head close-up (CE)
+- [x] D IDLE (MS), THINKING (MS)
+- [x] D HAPPY (CE), CHEER (CE), DISCOVER (CE)
+- [x] D TRY AGAIN (CE; soften)
+- [x] E Silhouettes, 5 (CE, re-derive after approval)
+- [x] F Four details (CM)
+- [x] G Six palette roles (PR). Identity: white head, blue eyes, brown wings, green varsity jacket, A.
+- [x] H Scale reference (PR, k about 1.000; depends on corrected front view)
 
 ### Bronco
 
-- [ ] A Turnaround, 4 views (CM), from `production-v1.1/06` (maroon bandana). 3/4 BACK goes supplemental.
-- [ ] B Hero (CM)
-- [ ] C Head close-up (CM)
-- [ ] D IDLE (MS), THINKING (MS)
-- [ ] D HAPPY (CM), CHEER (CM, Celebrate)
-- [ ] D DISCOVER (PR, Surprised, LOCKED)
-- [ ] D TRY AGAIN (PR, Resilient, LOCKED)
-- [ ] E Silhouettes, 5 (CM)
-- [ ] F Four details (CM)
-- [ ] G Six palette roles (PR). ACCENT = red star/gear; CHARACTER-SPECIFIC = BANDANA — MAROON.
-- [ ] H Scale reference (PR, k about 1.00)
+- [x] A Turnaround, 4 views (CM), from `production-v1.1/06` (maroon bandana). 3/4 BACK goes supplemental.
+- [x] B Hero (CM)
+- [x] C Head close-up (CM)
+- [x] D IDLE (MS), THINKING (MS)
+- [x] D HAPPY (CM), CHEER (CM, Celebrate)
+- [x] D DISCOVER (PR, Surprised, LOCKED)
+- [x] D TRY AGAIN (PR, Resilient, LOCKED)
+- [x] E Silhouettes, 5 (CM)
+- [x] F Four details (CM)
+- [x] G Six palette roles (PR). ACCENT = red star/gear; CHARACTER-SPECIFIC = BANDANA — MAROON.
+- [x] H Scale reference (PR, k about 0.92)
 
 ---
 
 ## 12. Production sequence (LOCKED, 19 steps)
 
-| # | Step | Done when |
-| --- | --- | --- |
-| 1 | Eagle controlled edit | all Eagle targets in section 6 are owner-approved |
-| 2 | Matting/extraction pilot using Dino | Dino turnaround, head, expressions and details are matted and checked on the common background |
-| 3 | Validate the provisional cast constant against real matted turnaround art | the cast constant is tested, and any overflow is listed as `ART/TEMPLATE REVIEW REQUIRED` |
-| 4 | Author missing IDLE states | Click, Dino, Tarsier, Eagle and Bronco IDLE approved |
-| 5 | Author missing TRY AGAIN states | Click, Koala and Tarsier TRY AGAIN approved, all gentle determination |
-| 6 | Author missing THINKING states | Eagle and Bronco THINKING approved |
-| 7 | Author missing CHEER states | Koala and Tarsier CHEER approved |
-| 8 | Produce the clean reusable `LOGO_ASSET` | one clean transparent asset approved |
-| 9 | Finalize the six palette-role mappings | per-character manifests list six roles; Bronco semantics per section 7 |
-| 10 | Finalize provisional cast factors | `k` values approved from real turnaround art |
-| 11 | Build the deterministic character-sheet renderer | renders the locked template from manifests |
-| 12 | Generate all six canonical character sheets | six sheets rendered and reviewed |
-| 13 | Correct composite sheets `00`, `07`, `08` | corrected Eagle and the Bronco swatch applied; final typesetting replaces Poppins |
-| 14 | Final v1.1 visual review | owner review complete |
-| 15 | Finalize README and manifest | stale interim hashes replaced; manifest final |
-| 16 | Generate final SHA-256 hashes | hashes computed on the final bytes |
-| 17 | Verify Git LFS handling | `production-v1.1/*.png` stored as LFS |
-| 18 | Commit and push `production-v1.1` | operator commit and push |
-| 19 | Only then begin Phaser asset integration | not started earlier |
+| # | Step | Done when | M4 status |
+| --- | --- | --- | --- |
+| 1 | Eagle controlled edit | all Eagle targets in section 6 are owner-approved | DONE |
+| 2 | Matting/extraction pilot using Dino | Dino turnaround, head, expressions and details are matted and checked on the common background | DONE |
+| 3 | Validate the provisional cast constant against real matted turnaround art | the cast constant is tested, and any overflow is listed as `ART/TEMPLATE REVIEW REQUIRED` | DONE (no turnaround overflow flag on the six final sheets) |
+| 4 | Author missing IDLE states | Click, Dino, Tarsier, Eagle and Bronco IDLE approved | DONE (M1 closed; IDLE assets frozen) |
+| 5 | Author missing TRY AGAIN states | Click, Koala and Tarsier TRY AGAIN approved, all gentle determination | DONE (M1 closed) |
+| 6 | Author missing THINKING states | Eagle and Bronco THINKING approved | DONE (Eagle THINKING OWNER-ACCEPTED MINOR) |
+| 7 | Author missing CHEER states | Koala and Tarsier CHEER approved | DONE (Koala CHEER OWNER-ACCEPTED MINOR) |
+| 8 | Produce the clean reusable `LOGO_ASSET` | one clean transparent asset approved | DONE (reconstructed master; OWNER-APPROVED for production-v1.1) |
+| 9 | Finalize the six palette-role mappings | per-character manifests list six roles; Bronco semantics per section 7 | DONE (hex values stay PROVISIONAL) |
+| 10 | Finalize provisional cast factors | `k` values approved from real turnaround art | DONE (owner-approved October 13, 2026) |
+| 11 | Build the deterministic character-sheet renderer | renders the locked template from manifests | DONE (M3 closed) |
+| 12 | Generate all six canonical character sheets | six sheets rendered and reviewed | DONE (rendered; strict build gates pass; repeat renders byte-identical); owner review is step 14 |
+| 13 | Correct composite sheets `00`, `07`, `08` | corrected Eagle and the Bronco swatch applied; final typesetting replaces Poppins | DONE (final composites 00/07/08 from the single M4 pass, in `production-v1.1`) |
+| 14 | Final v1.1 visual review | owner review complete | DONE (owner accepted the six-sheet contact sheet for M4 closure, October 13, 2026) |
+| 15 | Finalize README and manifest | stale interim hashes replaced; manifest final | PENDING (lead) |
+| 16 | Generate final SHA-256 hashes | hashes computed on the final bytes | PENDING (lead) |
+| 17 | Verify Git LFS handling | `production-v1.1/*.png` stored as LFS | PENDING (operator) |
+| 18 | Commit and push `production-v1.1` | operator commit and push | PENDING (operator) |
+| 19 | Only then begin Phaser asset integration | not started earlier | NOT STARTED |
 
 Rules for the sequence:
 
@@ -450,7 +487,9 @@ Rules for the sequence:
 
 ## 14. Conflict and open-item register
 
-Items found when reconciling the inventory with the locked template and the owner decisions:
+Items found when reconciling the inventory with the locked template and the owner decisions. M4 status: items 1, 3, 4,
+5 and 6 are resolved (library statuses, Koala THINKING = Analytical, Bronco GEAR = saddle leather with red on ACCENT only,
+derived silhouettes, details confirmed in the manifests). Item 2 has no recorded confirmation in the files reviewed.
 
 1. **PROVISIONAL after locked mappings.** Seven expression cells stay PROVISIONAL even though their
    mappings are final, because the vocabulary has no status for "mapping locked, art not yet verified".

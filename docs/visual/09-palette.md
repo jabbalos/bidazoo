@@ -100,7 +100,7 @@ Hex values are sRGB. Provide a 3:1 or better contrast for any text on a card.
 | Eagle | Wings (LOCKED: brown) | `#7b4a25` / `#4b2c14` | Code |
 | Eagle | Beak | `#f7c52b` | Code |
 | Eagle | Jacket (LOCKED: green) | `#1f7d49` / `#145a33` | Code |
-| Eagle | Letter and trim | `#f6ecc4` (cream) | Code |
+| Eagle | Letter and trim (canonical: gold, see `palettes.json` "Beak and letter gold") | gold | Sheet |
 | Bronco | Coat | `#b9672a` / `#8f4a1c` | Code |
 | Bronco | Mane | `#3a2314` | Code |
 | Bronco | Muzzle / blaze | `#e9b790` / `#f7f1e6` | Code |
@@ -146,11 +146,15 @@ Meaningful differences flagged for owner approval:
 | Koala fur (LOCKED gray-lavender) | `#AAA0CC` | `#8C85A8`, `#C2B1E5` | `#D9D9ED`, `#8B7DE6` | `#9D86B8` |
 | Tarsier hood | `#F2C230` | `#FDC744` | `#FFCF5C` | `#FDC503` |
 | Eagle jacket green | `#1F7D49` | `#0F5B3A` | `#167F5B` | `#114A2C` |
-| Eagle "A" and trim | cream `#F6ECC4` | gold `#FFC531` | Gear `#F2C94C` | gold |
+| Eagle "A" and trim | legacy code value (superseded) | gold `#FFC531` | Gear `#F2C94C` | gold |
 | Bronco coat | `#B9672A` | `#DA6B2D` | `#C66A3A` | `#DE7138` |
 | Bronco bandana (LOCKED maroon) | `#8E1B30` | `#9F0A26` ("Maroon") | none (`#E63946`, `#B91C1C`) | `#A30620`, lit `#D21D2C` |
 
 Application of the color authority order above (sheets 01–06 lead, then 07, 00, 11, code) is what resolves these; hex stays PROVISIONAL. Items still to be tabulated: Click fur and emblem, Dino teal and spike hue, Koala fur, Eagle green and gold, Bronco coat, Tarsier fur. Eagle eye color is RESOLVED as blue (hex PROVISIONAL).
+
+M4 status (October 13, 2026): the canonical sheets now define all six palette slots for every character, sampled
+from final approved art ([15](15-character-sheet-template.md) section 2). Every hex stays **PROVISIONAL**, and the table
+above is unchanged. Bronco's slot 6 is the maroon BANDANA; the red star / gear accent is a separate slot.
 
 Next step after owner review: propose a single final production palette per character. Until then
 nothing here is a palette authority. The earlier reference-board samples in section 3 are superseded

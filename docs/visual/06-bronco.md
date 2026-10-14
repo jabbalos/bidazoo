@@ -68,5 +68,5 @@ Source: `06_Bronco_Character_Sheet.png`. Full catalog in [INGESTION-REPORT.md](I
   the corrected production render must read maroon.
 - **Look-alike review (RETAINED):** the gold star, the blue hat band, and the red star plate.
 - **Expressions shown:** Energetic, Determined, Happy, Resilient, Surprised, Celebrate (raised hoof).
-- **Scale:** 1.00 on 07, equal to Click.
+- **Scale:** cast factor 0.92, equal to Click (sheet 07 v1 printed 1.00).
 - **Coat:** the code is browner (`#B9672A`) than the sheet (`#DA6B2D`) and the render (`#DE7138`).

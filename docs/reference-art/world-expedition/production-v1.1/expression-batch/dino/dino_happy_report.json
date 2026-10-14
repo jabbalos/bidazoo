@@ -1,0 +1,31 @@
+{
+ "name": "dino_happy",
+ "box": [
+  329,
+  601,
+  486,
+  766
+ ],
+ "mode": "parchment",
+ "bg_rgb": [
+  252,
+  241,
+  223
+ ],
+ "clip_left": 0.0,
+ "clip_right": 0.0,
+ "clip_top": 0.0,
+ "clip_bottom": 0.2823779193205945,
+ "clipping": false,
+ "extra_components": [],
+ "contamination": false,
+ "halo_fraction": 0.0,
+ "halo": false,
+ "outline_missing_px": 4,
+ "outline_missing": false,
+ "pass": true,
+ "size": [
+  146,
+  165
+ ]
+}

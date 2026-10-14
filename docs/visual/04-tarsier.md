@@ -55,7 +55,7 @@ Source: `04_Tarsier_Character_Sheet.png`. Full catalog in [INGESTION-REPORT.md](
 - **Eyes:** the largest in the cast, with dark pupils, a thin amber ring, and multiple catchlights.
   The code uses amber irises. The render is darker.
 - **Expressions shown:** Curious, Observant, Happy, Thinking, Surprised, Playful.
-- **Scale:** 0.60 on 07, the smallest. The sheet says "1 head = body height (approx.)"; by eye the
+- **Scale:** cast factor 0.57, the smallest (sheet 07 v1 printed 0.60). The sheet says "1 head = body height (approx.)"; by eye the
   head is about 55 percent of height.
 - **Note:** the Tarsier carries a backpack. No rule forbids it. Keep it distinct from Dino's single
   locked pack.
@@ -64,5 +64,5 @@ Source: `04_Tarsier_Character_Sheet.png`. Full catalog in [INGESTION-REPORT.md](
 
 Preserve the approved character identity from the renders and the Bible (huge eyes, agile scout,
 goggles, hood and jacket, small backpack as drawn). Tarsier is clearly the smallest character
-(SPEC-LOCKED relative rule; exact numbers PROVISIONAL, see
+(SPEC-LOCKED relative rule; cast factor 0.57, see
 [08](08-proportions-silhouettes.md)).

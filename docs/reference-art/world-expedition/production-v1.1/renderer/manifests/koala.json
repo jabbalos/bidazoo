@@ -1,0 +1,168 @@
+{
+  "schema_version": 1,
+  "character": {
+    "id": "koala",
+    "name": "Koala",
+    "role": "Gray-lavender scholar",
+    "tagline": null,
+    "kind": "starter"
+  },
+  "sheet": {
+    "status_line": "LAYOUT PROOF - placeholders only; LOGO_ASSET and most art MISSING / TO AUTHOR",
+    "logo": {
+      "path": null,
+      "status": "MISSING / TO AUTHOR"
+    }
+  },
+  "cast": {
+    "k": 0.76,
+    "k_status": "PROVISIONAL",
+    "s0": 0.184
+  },
+  "palette": {
+    "status": "PROVISIONAL",
+    "mapping_note": "Names/hex from doc 09 s3 (code/ref values, not authority). Role mapping is a PROPOSAL pending production-plan step 9.",
+    "slots": [
+      {
+        "label": "PRIMARY",
+        "name": "Gray-lavender fur",
+        "hex": "#AAA0CC",
+        "status": "PROVISIONAL"
+      },
+      {
+        "label": "SECONDARY",
+        "name": "Light fur",
+        "hex": "#D9D2EE",
+        "status": "PROVISIONAL"
+      },
+      {
+        "status": "OPEN"
+      },
+      {
+        "status": "OPEN"
+      },
+      {
+        "label": "DETAIL",
+        "name": "Inner ear",
+        "hex": "#F0D9E8",
+        "status": "PROVISIONAL"
+      },
+      {
+        "status": "OPEN"
+      }
+    ]
+  },
+  "turnaround": {
+    "front": {
+      "path": null,
+      "status": "MISSING / TO AUTHOR",
+      "plan_status": "READY WITH CROP/MATTING",
+      "transform_hint": "when authored: transform.ref_height_src_px (or units_per_source_px), optional ground_y_src"
+    },
+    "threeQuarter": {
+      "path": null,
+      "status": "MISSING / TO AUTHOR",
+      "plan_status": "READY WITH CROP/MATTING",
+      "transform_hint": "when authored: transform.ref_height_src_px (or units_per_source_px), optional ground_y_src"
+    },
+    "side": {
+      "path": null,
+      "status": "MISSING / TO AUTHOR",
+      "plan_status": "READY WITH CROP/MATTING",
+      "transform_hint": "when authored: transform.ref_height_src_px (or units_per_source_px), optional ground_y_src"
+    },
+    "back": {
+      "path": null,
+      "status": "MISSING / TO AUTHOR",
+      "plan_status": "READY WITH CROP/MATTING",
+      "transform_hint": "when authored: transform.ref_height_src_px (or units_per_source_px), optional ground_y_src"
+    }
+  },
+  "hero": {
+    "path": null,
+    "status": "MISSING / TO AUTHOR",
+    "plan_status": "READY WITH CROP/MATTING"
+  },
+  "head": {
+    "path": null,
+    "status": "MISSING / TO AUTHOR",
+    "plan_status": "READY WITH CROP/MATTING"
+  },
+  "expressions": {
+    "head_scale": 0.5682,
+    "head_scale_basis": "PROVISIONAL: matted bbox width of the first wired expression asset = nominal 100 px; replace once real matted heads exist",
+    "idle": {
+      "path": null,
+      "status": "MISSING / TO AUTHOR",
+      "plan_status": "READY WITH CROP/MATTING"
+    },
+    "happy": {
+      "path": null,
+      "status": "MISSING / TO AUTHOR",
+      "plan_status": "READY WITH CROP/MATTING"
+    },
+    "thinking": {
+      "path": null,
+      "status": "MISSING / TO AUTHOR",
+      "plan_status": "READY WITH CROP/MATTING"
+    },
+    "cheer": {
+      "path": null,
+      "status": "MISSING / TO AUTHOR",
+      "plan_status": "MISSING / TO AUTHOR"
+    },
+    "discover": {
+      "path": null,
+      "status": "MISSING / TO AUTHOR",
+      "plan_status": "PROVISIONAL"
+    },
+    "tryAgain": {
+      "path": "try-again-review/koala_tryagain.png",
+      "sha256": "9fe22ec64c47b5d0eb081ef8298cfcd5f6721011041bc769dcec396e8e4860c4",
+      "status": "PROVISIONAL",
+      "plan_status": "MISSING / TO AUTHOR",
+      "transform": {
+        "units_per_source_px": 1.0,
+        "eye_line_src_y": 77
+      },
+      "notes": "Existing transparent PNG wired for layout proof. No sign-off recorded, so it stays PROVISIONAL (doc 16 s2). eye_line_src_y is a manual visual estimate (+-3 src px)."
+    }
+  },
+  "details": [
+    {
+      "path": null,
+      "status": "MISSING / TO AUTHOR",
+      "plan_status": "READY WITH CROP/MATTING",
+      "caption": "Scholar hat"
+    },
+    {
+      "path": null,
+      "status": "MISSING / TO AUTHOR",
+      "plan_status": "READY WITH CROP/MATTING",
+      "caption": "Signature glasses"
+    },
+    {
+      "path": null,
+      "status": "MISSING / TO AUTHOR",
+      "plan_status": "READY WITH CROP/MATTING",
+      "caption": "Scholar's book"
+    },
+    {
+      "path": null,
+      "status": "MISSING / TO AUTHOR",
+      "plan_status": "READY WITH CROP/MATTING",
+      "caption": "Scholar jacket"
+    }
+  ],
+  "silhouettes": {
+    "derive": true,
+    "items": {}
+  },
+  "proportion": {
+    "front_reference": "turnaround.front",
+    "comparison": {
+      "tag": "TAR",
+      "k": 0.57
+    }
+  }
+}

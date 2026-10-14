@@ -1,0 +1,174 @@
+{
+  "schema_version": 1,
+  "character": {
+    "id": "dino",
+    "name": "Dino",
+    "role": "Teal explorer dinosaur",
+    "tagline": null,
+    "kind": "starter"
+  },
+  "sheet": {
+    "status_line": "LAYOUT PROOF - placeholders only; LOGO_ASSET and most art MISSING / TO AUTHOR",
+    "logo": {
+      "path": null,
+      "status": "MISSING / TO AUTHOR"
+    }
+  },
+  "cast": {
+    "k": 0.85,
+    "k_status": "PROVISIONAL",
+    "s0": 0.184
+  },
+  "palette": {
+    "status": "PROVISIONAL",
+    "mapping_note": "Names/hex from doc 09 s3 (code/ref values, not authority). Role mapping is a PROPOSAL pending production-plan step 9.",
+    "slots": [
+      {
+        "label": "PRIMARY",
+        "name": "Teal body",
+        "hex": "#2FC4B2",
+        "status": "PROVISIONAL"
+      },
+      {
+        "label": "SECONDARY",
+        "name": "Mint belly",
+        "hex": "#CDF3E4",
+        "status": "PROVISIONAL"
+      },
+      {
+        "label": "ACCENT",
+        "name": "Orange dorsal spikes",
+        "hex": "#FF8A2B",
+        "status": "PROVISIONAL"
+      },
+      {
+        "status": "OPEN"
+      },
+      {
+        "status": "OPEN"
+      },
+      {
+        "status": "OPEN"
+      }
+    ]
+  },
+  "turnaround": {
+    "front": {
+      "path": null,
+      "status": "MISSING / TO AUTHOR",
+      "plan_status": "READY WITH CROP/MATTING",
+      "transform_hint": "when authored: transform.ref_height_src_px (or units_per_source_px), optional ground_y_src"
+    },
+    "threeQuarter": {
+      "path": null,
+      "status": "MISSING / TO AUTHOR",
+      "plan_status": "READY WITH CROP/MATTING",
+      "transform_hint": "when authored: transform.ref_height_src_px (or units_per_source_px), optional ground_y_src"
+    },
+    "side": {
+      "path": null,
+      "status": "MISSING / TO AUTHOR",
+      "plan_status": "READY WITH CROP/MATTING",
+      "transform_hint": "when authored: transform.ref_height_src_px (or units_per_source_px), optional ground_y_src"
+    },
+    "back": {
+      "path": null,
+      "status": "MISSING / TO AUTHOR",
+      "plan_status": "READY WITH CROP/MATTING",
+      "transform_hint": "when authored: transform.ref_height_src_px (or units_per_source_px), optional ground_y_src"
+    }
+  },
+  "hero": {
+    "path": null,
+    "status": "MISSING / TO AUTHOR",
+    "plan_status": "READY WITH CROP/MATTING"
+  },
+  "head": {
+    "path": null,
+    "status": "MISSING / TO AUTHOR",
+    "plan_status": "READY WITH CROP/MATTING"
+  },
+  "expressions": {
+    "head_scale": 0.7692,
+    "head_scale_basis": "PROVISIONAL: matted bbox width of the first wired expression asset = nominal 100 px; replace once real matted heads exist",
+    "idle": {
+      "path": "idle-review-3/dino_idle2.png",
+      "sha256": "95aa9a23772dbf312408f4c4e0d4e0097dd512a46bd7c9bd2762b9817e217f76",
+      "status": "PROVISIONAL",
+      "plan_status": "MISSING / TO AUTHOR",
+      "transform": {
+        "units_per_source_px": 1.0,
+        "eye_line_src_y": 59
+      },
+      "notes": "Existing transparent PNG wired for layout proof. No sign-off recorded, so it stays PROVISIONAL (doc 16 s2). eye_line_src_y is a manual visual estimate (+-3 src px)."
+    },
+    "happy": {
+      "path": null,
+      "status": "MISSING / TO AUTHOR",
+      "plan_status": "READY WITH CROP/MATTING"
+    },
+    "thinking": {
+      "path": null,
+      "status": "MISSING / TO AUTHOR",
+      "plan_status": "READY WITH CROP/MATTING"
+    },
+    "cheer": {
+      "path": null,
+      "status": "MISSING / TO AUTHOR",
+      "plan_status": "PROVISIONAL"
+    },
+    "discover": {
+      "path": null,
+      "status": "MISSING / TO AUTHOR",
+      "plan_status": "PROVISIONAL"
+    },
+    "tryAgain": {
+      "path": "try-again-review/dino_tryagain.png",
+      "sha256": "8b842df393be3a660d8c1781fb28327e7b50a4c251876e44ed750cf63e62d9bf",
+      "status": "PROVISIONAL",
+      "plan_status": "READY WITH CROP/MATTING",
+      "transform": {
+        "units_per_source_px": 1.0,
+        "eye_line_src_y": 55
+      },
+      "notes": "Existing transparent PNG wired for layout proof. No sign-off recorded, so it stays PROVISIONAL (doc 16 s2). eye_line_src_y is a manual visual estimate (+-3 src px)."
+    }
+  },
+  "details": [
+    {
+      "path": null,
+      "status": "MISSING / TO AUTHOR",
+      "plan_status": "READY WITH CROP/MATTING",
+      "caption": "Backpack (front)"
+    },
+    {
+      "path": null,
+      "status": "MISSING / TO AUTHOR",
+      "plan_status": "READY WITH CROP/MATTING",
+      "caption": "Strap & buckle"
+    },
+    {
+      "path": null,
+      "status": "MISSING / TO AUTHOR",
+      "plan_status": "READY WITH CROP/MATTING",
+      "caption": "Paw badge"
+    },
+    {
+      "path": null,
+      "status": "MISSING / TO AUTHOR",
+      "plan_status": "READY WITH CROP/MATTING",
+      "caption": "Dorsal spikes"
+    }
+  ],
+  "silhouettes": {
+    "derive": true,
+    "items": {}
+  },
+  "proportion": {
+    "front_reference": "turnaround.front",
+    "comparison": {
+      "tag": "TAR",
+      "k": 0.57
+    }
+  }
+}
