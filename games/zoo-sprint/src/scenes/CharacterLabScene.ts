@@ -1,36 +1,39 @@
 import Phaser from 'phaser';
 import { loadProductionCharacterArt, loadedProductionTextureCount } from '../character-art';
 import { EYE_LINE_Y_FRACTION } from '../character-assets';
-import { EXPRESSION_STATES, type ExpressionState } from '../character-definitions';
+import { EXPRESSION_STATES, getCharacterDefinition, isCastId, type CastId, type ExpressionState } from '../character-definitions';
 import { Character, type CharacterLook } from '../characters';
 import { getContext } from '../context';
 import { COLORS, CSS, clamp } from '../theme';
 import { BUTTON_STYLES, TapButton, publishSurface, text, type HitTarget } from '../ui';
 
 /**
- * DEVELOPER-ONLY. Shows Dino in each of the six production expressions without playing a run.
+ * DEVELOPER-ONLY. Shows any cast member (the five starters and Click) in each of the six production
+ * expressions without playing a run. Showing a character here does not make it selectable.
  *
  * It exists only in a build made with `--mode character-lab` (npm run build:character-lab -w
  * @bidazoo/play); index.ts compiles it out of every normal build, so it is not part of the
  * player-facing game. It never talks to the platform: no guest, no questions, no attempts, no
  * XP or coins, and it reads and writes no saved state.
  *
- * Query options (all optional): `state=<expression>`, `view=single|strip`, `guides=0|1`.
+ * Query options (all optional): `cast=<dino|koala|tarsier|eagle|bronco|click>` (default dino),
+ * `state=<expression>`, `view=single|strip`, `guides=0|1`.
  * Keys: 1-6 pick an expression, N cycles, G toggles the guide lines.
  */
 type View = 'single' | 'strip';
 
-const LAB_CHARACTER = 'dino' as const;
-
-function readOptions(): { state: ExpressionState; view: View; guides: boolean } {
+function readOptions(): { cast: CastId; state: ExpressionState; view: View; guides: boolean } {
   const params = new URLSearchParams(window.location.search);
   const wanted = params.get('state');
   const state = EXPRESSION_STATES.find((s) => s === wanted) ?? 'idle';
-  return { state, view: params.get('view') === 'strip' ? 'strip' : 'single', guides: params.get('guides') !== '0' };
+  const wantedCast = params.get('cast');
+  const cast: CastId = isCastId(wantedCast) ? wantedCast : 'dino';
+  return { cast, state, view: params.get('view') === 'strip' ? 'strip' : 'single', guides: params.get('guides') !== '0' };
 }
 
 export class CharacterLabScene extends Phaser.Scene {
   private layer!: Phaser.GameObjects.Container;
+  private cast: CastId = 'dino';
   private state: ExpressionState = 'idle';
   private view: View = 'single';
   private guides = true;
@@ -45,6 +48,7 @@ export class CharacterLabScene extends Phaser.Scene {
 
   create(): void {
     const options = readOptions();
+    this.cast = options.cast;
     this.state = options.state;
     this.view = options.view;
     this.guides = options.guides;
@@ -103,7 +107,7 @@ export class CharacterLabScene extends Phaser.Scene {
     const unit = Math.min(w, h);
     const pad = clamp(unit * 0.04, 10, 28);
     const titleSize = clamp(unit * 0.045, 13, 22);
-    const title = text(this, 'Dino expression lab (developer only)', CSS.mist, { size: titleSize }).setOrigin(0.5, 0);
+    const title = text(this, `${getCharacterDefinition(this.cast).displayName} expression lab (developer only)`, CSS.mist, { size: titleSize }).setOrigin(0.5, 0);
     title.setPosition(w / 2, pad);
     this.layer.add(title);
 
@@ -152,7 +156,7 @@ export class CharacterLabScene extends Phaser.Scene {
   }
 
   private addBust(x: number, y: number, size: number, state: ExpressionState, label: ExpressionState | null): void {
-    const character = new Character(this, x, y, LAB_CHARACTER, size);
+    const character = new Character(this, x, y, this.cast, size);
     character.setExpression(state);
     this.shown.push({ character, size });
     if (this.guides) {
@@ -192,6 +196,7 @@ export class CharacterLabScene extends Phaser.Scene {
     const ctx = getContext(this);
     publishSurface(ctx.parent, 'character-lab', this.targets, {
       'lab-ready': String(this.ready),
+      'lab-cast': this.cast,
       'lab-state': this.state,
       'lab-view': this.view,
       'lab-count': String(this.shown.length),
@@ -202,7 +207,7 @@ export class CharacterLabScene extends Phaser.Scene {
 
   private announce(): void {
     const ctx = getContext(this);
-    ctx.a11y.set(`Dino expression lab. Showing ${this.state}. Developer only.`, [
+    ctx.a11y.set(`${getCharacterDefinition(this.cast).displayName} expression lab. Showing ${this.state}. Developer only.`, [
       ...EXPRESSION_STATES.map((state) => ({ id: `lab-state-${state}`, label: state, onClick: () => this.select(state) })),
       { id: 'lab-guides', label: this.guides ? 'Hide guides' : 'Show guides', onClick: () => this.toggleGuides() },
     ]);

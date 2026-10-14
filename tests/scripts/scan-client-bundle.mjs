@@ -39,6 +39,7 @@ const FORBIDDEN = [
   // Developer-only character lab: it must exist only in the separate `--mode character-lab` build.
   ['CharacterLabScene', 'developer character lab scene'],
   ['Dino expression lab', 'developer character lab text'],
+  ['expression lab (developer only)', 'developer character lab text'],
   // The canonical art library is documentation, never browser payload.
   ['docs/reference-art', 'reference-art path'],
   ['production-v1', 'reference-art library name'],
@@ -54,9 +55,14 @@ const files = [];
 })(root);
 
 // Character art: every PNG in the build must be byte-identical to a curated runtime file listed in
-// PROVENANCE.json (so no QA sheet, silhouette, logo, library asset, or Git LFS pointer text can ship).
-const provenance = JSON.parse(readFileSync('games/zoo-sprint/assets/world-expedition/characters/dino/PROVENANCE.json', 'utf8'));
-const allowedPngs = new Map(Object.entries(provenance.expressions).map(([state, e]) => [e.runtimeSha256, `dino/${state}`]));
+// a character's PROVENANCE.json (so no QA sheet, silhouette, logo, library asset, or Git LFS pointer
+// text can ship), and all 36 curated files (six cast members x six expressions) must be present.
+const CAST = ['dino', 'koala', 'tarsier', 'eagle', 'bronco', 'click'];
+const allowedPngs = new Map();
+for (const id of CAST) {
+  const provenance = JSON.parse(readFileSync(`games/zoo-sprint/assets/world-expedition/characters/${id}/PROVENANCE.json`, 'utf8'));
+  for (const [state, e] of Object.entries(provenance.expressions)) allowedPngs.set(e.runtimeSha256, `${id}/${state}`);
+}
 const pngs = files.filter((f) => f.endsWith('.png'));
 const seenPngs = new Set();
 let hits = 0;
@@ -69,7 +75,13 @@ for (const file of pngs) {
     console.log(`LEAK  ${relative('.', file)} is a PNG that is not a curated runtime asset (sha256 ${sha})`);
   } else seenPngs.add(known);
 }
-console.log(`PNGs in build: ${pngs.length} (${[...seenPngs].sort().join(', ') || 'none'}).`);
+for (const known of allowedPngs.values()) {
+  if (!seenPngs.has(known)) {
+    hits += 1;
+    console.log(`MISSING  curated runtime art ${known} is not in the build`);
+  }
+}
+console.log(`PNGs in build: ${pngs.length} of ${allowedPngs.size} curated (${seenPngs.size} matched).`);
 
 let bytes = 0;
 for (const file of files) {

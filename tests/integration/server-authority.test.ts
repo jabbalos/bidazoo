@@ -167,6 +167,12 @@ describe.skipIf(!HAS_DB)('server authority', () => {
         { responseMs: 1 },
         { elapsedMs: 1 },
         { correctAnswer: 56 },
+        // Which character a child plays as is presentation only and never reaches the server
+        // (F4: Click, the host and guide, must not be smuggled in as a "starter" either).
+        { starter: 'click' },
+        { character: 'click' },
+        { characterId: 'click' },
+        { expression: 'cheer' },
       ];
       for (const extra of forbidden) {
         const res = await player.request('POST', PATHS.answers(sessionId), {

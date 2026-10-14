@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "purpose": "Provenance for the curated runtime Dino expression PNGs (Checkpoint F3). Machine-readable authority; verified by tests/integration/dino-runtime-assets.test.ts.",
+  "purpose": "Provenance for the curated runtime Dino expression PNGs (Checkpoint F3). Machine-readable authority; verified by tests/integration/character-runtime-assets.test.ts.",
   "character": "dino",
   "runtimeDirectory": "games/zoo-sprint/assets/world-expedition/characters/dino",
   "canonicalLibrary": "docs/reference-art/world-expedition/production-v1.1",

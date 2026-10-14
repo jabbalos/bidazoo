@@ -16,17 +16,61 @@ import { expressionTextureKey, hasRuntimeArt } from './character-assets';
  * in index.ts). Phaser's default XHR path would turn each PNG into a `blob:` URL, which the
  * client Content-Security-Policy (`img-src 'self' data:`) correctly refuses.
  */
-const DINO_URLS: Readonly<Record<ExpressionState, string>> = {
-  idle: new URL('../assets/world-expedition/characters/dino/dino_idle.png', import.meta.url).href,
-  happy: new URL('../assets/world-expedition/characters/dino/dino_happy.png', import.meta.url).href,
-  thinking: new URL('../assets/world-expedition/characters/dino/dino_thinking.png', import.meta.url).href,
-  cheer: new URL('../assets/world-expedition/characters/dino/dino_cheer.png', import.meta.url).href,
-  discover: new URL('../assets/world-expedition/characters/dino/dino_discover.png', import.meta.url).href,
-  tryAgain: new URL('../assets/world-expedition/characters/dino/dino_tryAgain.png', import.meta.url).href,
+/**
+ * Browser URLs for every cast member's six expressions (F4: the whole cast, 36 files). Written out
+ * as literals on purpose: Vite only sees, hashes and emits a file when its `new URL(...)` argument
+ * is a string literal, so there is deliberately no loop or template here.
+ */
+const ART_URLS: Readonly<Record<CastId, Readonly<Record<ExpressionState, string>>>> = {
+  dino: {
+    idle: new URL('../assets/world-expedition/characters/dino/dino_idle.png', import.meta.url).href,
+    happy: new URL('../assets/world-expedition/characters/dino/dino_happy.png', import.meta.url).href,
+    thinking: new URL('../assets/world-expedition/characters/dino/dino_thinking.png', import.meta.url).href,
+    cheer: new URL('../assets/world-expedition/characters/dino/dino_cheer.png', import.meta.url).href,
+    discover: new URL('../assets/world-expedition/characters/dino/dino_discover.png', import.meta.url).href,
+    tryAgain: new URL('../assets/world-expedition/characters/dino/dino_tryAgain.png', import.meta.url).href,
+  },
+  koala: {
+    idle: new URL('../assets/world-expedition/characters/koala/koala_idle.png', import.meta.url).href,
+    happy: new URL('../assets/world-expedition/characters/koala/koala_happy.png', import.meta.url).href,
+    thinking: new URL('../assets/world-expedition/characters/koala/koala_thinking.png', import.meta.url).href,
+    cheer: new URL('../assets/world-expedition/characters/koala/koala_cheer.png', import.meta.url).href,
+    discover: new URL('../assets/world-expedition/characters/koala/koala_discover.png', import.meta.url).href,
+    tryAgain: new URL('../assets/world-expedition/characters/koala/koala_tryAgain.png', import.meta.url).href,
+  },
+  tarsier: {
+    idle: new URL('../assets/world-expedition/characters/tarsier/tarsier_idle.png', import.meta.url).href,
+    happy: new URL('../assets/world-expedition/characters/tarsier/tarsier_happy.png', import.meta.url).href,
+    thinking: new URL('../assets/world-expedition/characters/tarsier/tarsier_thinking.png', import.meta.url).href,
+    cheer: new URL('../assets/world-expedition/characters/tarsier/tarsier_cheer.png', import.meta.url).href,
+    discover: new URL('../assets/world-expedition/characters/tarsier/tarsier_discover.png', import.meta.url).href,
+    tryAgain: new URL('../assets/world-expedition/characters/tarsier/tarsier_tryAgain.png', import.meta.url).href,
+  },
+  eagle: {
+    idle: new URL('../assets/world-expedition/characters/eagle/eagle_idle.png', import.meta.url).href,
+    happy: new URL('../assets/world-expedition/characters/eagle/eagle_happy.png', import.meta.url).href,
+    thinking: new URL('../assets/world-expedition/characters/eagle/eagle_thinking.png', import.meta.url).href,
+    cheer: new URL('../assets/world-expedition/characters/eagle/eagle_cheer.png', import.meta.url).href,
+    discover: new URL('../assets/world-expedition/characters/eagle/eagle_discover.png', import.meta.url).href,
+    tryAgain: new URL('../assets/world-expedition/characters/eagle/eagle_tryAgain.png', import.meta.url).href,
+  },
+  bronco: {
+    idle: new URL('../assets/world-expedition/characters/bronco/bronco_idle.png', import.meta.url).href,
+    happy: new URL('../assets/world-expedition/characters/bronco/bronco_happy.png', import.meta.url).href,
+    thinking: new URL('../assets/world-expedition/characters/bronco/bronco_thinking.png', import.meta.url).href,
+    cheer: new URL('../assets/world-expedition/characters/bronco/bronco_cheer.png', import.meta.url).href,
+    discover: new URL('../assets/world-expedition/characters/bronco/bronco_discover.png', import.meta.url).href,
+    tryAgain: new URL('../assets/world-expedition/characters/bronco/bronco_tryAgain.png', import.meta.url).href,
+  },
+  click: {
+    idle: new URL('../assets/world-expedition/characters/click/click_idle.png', import.meta.url).href,
+    happy: new URL('../assets/world-expedition/characters/click/click_happy.png', import.meta.url).href,
+    thinking: new URL('../assets/world-expedition/characters/click/click_thinking.png', import.meta.url).href,
+    cheer: new URL('../assets/world-expedition/characters/click/click_cheer.png', import.meta.url).href,
+    discover: new URL('../assets/world-expedition/characters/click/click_discover.png', import.meta.url).href,
+    tryAgain: new URL('../assets/world-expedition/characters/click/click_tryAgain.png', import.meta.url).href,
+  },
 };
-
-/** Browser URLs for every character that has runtime art. Dino only in F3. */
-const ART_URLS: Readonly<Partial<Record<CastId, Readonly<Record<ExpressionState, string>>>>> = { dino: DINO_URLS };
 
 /** The characters this build ships production art for. */
 export function productionArtCast(): CastId[] {

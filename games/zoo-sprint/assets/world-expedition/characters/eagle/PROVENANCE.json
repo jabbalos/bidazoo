@@ -1,0 +1,134 @@
+{
+  "schemaVersion": 1,
+  "purpose": "Provenance for the curated runtime Eagle expression PNGs (Checkpoint F4). Machine-readable authority; verified by tests/integration/character-runtime-assets.test.ts.",
+  "character": "eagle",
+  "runtimeDirectory": "games/zoo-sprint/assets/world-expedition/characters/eagle",
+  "canonicalLibrary": "docs/reference-art/world-expedition/production-v1.1",
+  "canonicalManifest": "docs/reference-art/world-expedition/production-v1.1/renderer/final-manifests/eagle.json",
+  "storage": "normal Git blobs (no Git LFS rule matches the runtime directory)",
+  "derivation": "byte-for-byte copy of the canonical M4 file: no re-encode, no crop, no resize, no recolor, no metadata edit",
+  "headScale": 0.6535,
+  "expressions": {
+    "idle": {
+      "runtimeFile": "eagle_idle.png",
+      "runtimeSha256": "2a35baf058d0f3ad7b5f0f4918fbbc2ebc08b5e521e758ee7049a7f2d6a1a78a",
+      "runtimeBytes": 53241,
+      "width": 163,
+      "height": 141,
+      "canonicalSourcePath": "docs/reference-art/world-expedition/production-v1.1/expression-batch/eagle/eagle_idle.png",
+      "canonicalSha256": "2a35baf058d0f3ad7b5f0f4918fbbc2ebc08b5e521e758ee7049a7f2d6a1a78a",
+      "derivation": "byte-for-byte copy",
+      "anchor": {
+        "eyeLineSrcY": 68,
+        "coreBox": [
+          12,
+          2,
+          161,
+          104
+        ],
+        "cropKind": "head_only"
+      }
+    },
+    "happy": {
+      "runtimeFile": "eagle_happy.png",
+      "runtimeSha256": "c84c8b04b4d6e136cc3c1680a05657be0b1ecada0fcb30755445c39019ed8af5",
+      "runtimeBytes": 58869,
+      "width": 163,
+      "height": 168,
+      "canonicalSourcePath": "docs/reference-art/world-expedition/production-v1.1/expression-batch/eagle/eagle_happy.png",
+      "canonicalSha256": "c84c8b04b4d6e136cc3c1680a05657be0b1ecada0fcb30755445c39019ed8af5",
+      "derivation": "byte-for-byte copy",
+      "anchor": {
+        "eyeLineSrcY": 62,
+        "coreBox": [
+          3,
+          3,
+          159,
+          163
+        ],
+        "cropKind": "bust"
+      }
+    },
+    "thinking": {
+      "runtimeFile": "eagle_thinking.png",
+      "runtimeSha256": "1f5e337c6df287d95a1e8e839327664904b3b3a84b2dd8b0fdb037bcfe60571d",
+      "runtimeBytes": 57881,
+      "width": 163,
+      "height": 168,
+      "canonicalSourcePath": "docs/reference-art/world-expedition/production-v1.1/expression-batch/eagle/eagle_thinking.png",
+      "canonicalSha256": "1f5e337c6df287d95a1e8e839327664904b3b3a84b2dd8b0fdb037bcfe60571d",
+      "derivation": "byte-for-byte copy",
+      "anchor": {
+        "eyeLineSrcY": 68,
+        "coreBox": [
+          3,
+          7,
+          155,
+          164
+        ],
+        "cropKind": "bust"
+      }
+    },
+    "cheer": {
+      "runtimeFile": "eagle_cheer.png",
+      "runtimeSha256": "21110400bf55802b723cbc0e88283f14fb350c86dcfdf6c5a52512886e0393b0",
+      "runtimeBytes": 61152,
+      "width": 193,
+      "height": 168,
+      "canonicalSourcePath": "docs/reference-art/world-expedition/production-v1.1/expression-batch/eagle/eagle_cheer.png",
+      "canonicalSha256": "21110400bf55802b723cbc0e88283f14fb350c86dcfdf6c5a52512886e0393b0",
+      "derivation": "byte-for-byte copy",
+      "anchor": {
+        "eyeLineSrcY": 65,
+        "coreBox": [
+          3,
+          4,
+          158,
+          163
+        ],
+        "cropKind": "bust"
+      }
+    },
+    "discover": {
+      "runtimeFile": "eagle_discover.png",
+      "runtimeSha256": "91ad39e3507ada55a1bb7535474127830a413d8022543791bebb47fb9ebc587e",
+      "runtimeBytes": 62556,
+      "width": 185,
+      "height": 168,
+      "canonicalSourcePath": "docs/reference-art/world-expedition/production-v1.1/expression-batch/eagle/eagle_discover.png",
+      "canonicalSha256": "91ad39e3507ada55a1bb7535474127830a413d8022543791bebb47fb9ebc587e",
+      "derivation": "byte-for-byte copy",
+      "anchor": {
+        "eyeLineSrcY": 72,
+        "coreBox": [
+          11,
+          3,
+          152,
+          110
+        ],
+        "cropKind": "bust"
+      }
+    },
+    "tryAgain": {
+      "runtimeFile": "eagle_tryAgain.png",
+      "runtimeSha256": "bb4473f5c262f6f2421c313832a3735a413483af893a2412e0dc4b709f12986e",
+      "runtimeBytes": 59845,
+      "width": 163,
+      "height": 168,
+      "canonicalSourcePath": "docs/reference-art/world-expedition/production-v1.1/expression-batch/eagle/eagle_tryAgain.png",
+      "canonicalSha256": "bb4473f5c262f6f2421c313832a3735a413483af893a2412e0dc4b709f12986e",
+      "derivation": "byte-for-byte copy",
+      "anchor": {
+        "eyeLineSrcY": 66,
+        "coreBox": [
+          3,
+          3,
+          157,
+          164
+        ],
+        "cropKind": "bust"
+      }
+    }
+  },
+  "totalRuntimeBytes": 353544
+}

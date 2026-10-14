@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 import { computeExpressionPlacement, expressionTextureKey } from './character-assets';
 import { hasProductionArt } from './character-art';
-import type { ExpressionState } from './character-definitions';
+import type { CastId, ExpressionState } from './character-definitions';
 import type { CharacterId } from './roster';
 
 /**
@@ -15,7 +15,7 @@ import type { CharacterId } from './roster';
  * spritesheets, animated WebP) can replace `ensureCharacterTexture` without touching any scene,
  * the API, or the learning systems. Nothing here knows about questions, grading, XP, or coins.
  *
- * F3: a character with curated production art (Dino so far; see character-assets.ts) is drawn from
+ * F3/F4: a character with curated production art (the whole cast since F4; see character-assets.ts) is drawn from
  * its six production expressions instead, placed by the M4 eye-line anchor. If any of its six
  * textures is missing, the code-drawn art below is used, so the fallback is always there. The
  * public API (constructor, setBustSize, celebrate, wobble) is unchanged.
@@ -487,6 +487,18 @@ export function ensureCharacterTexture(scene: Phaser.Scene, id: CharacterId, moo
   return key;
 }
 
+const BLANK_TEXTURE_KEY = 'bz-character-blank';
+
+/** A 1 x 1 transparent texture: what a cast member without code-drawn art shows if its production art is missing. */
+function ensureBlankTexture(scene: Phaser.Scene): string {
+  if (!scene.textures.exists(BLANK_TEXTURE_KEY)) {
+    const g = scene.make.graphics({ x: 0, y: 0 }, false);
+    g.generateTexture(BLANK_TEXTURE_KEY, 1, 1);
+    g.destroy();
+  }
+  return BLANK_TEXTURE_KEY;
+}
+
 /** The code-drawn art only has three moods; richer states borrow the closest one. */
 function fallbackMood(state: ExpressionState): Mood {
   if (state === 'tryAgain') return 'tryAgain';
@@ -496,7 +508,7 @@ function fallbackMood(state: ExpressionState): Mood {
 
 /** What a character is showing right now. Read-only, for tests and the developer lab. */
 export interface CharacterLook {
-  readonly id: CharacterId;
+  readonly id: CastId;
   readonly expression: ExpressionState;
   readonly production: boolean;
   readonly textureKey: string;
@@ -518,7 +530,7 @@ export class Character extends Phaser.GameObjects.Container {
   private expression: ExpressionState = 'idle';
   private size = 0;
 
-  constructor(scene: Phaser.Scene, x: number, y: number, readonly id: CharacterId, size: number) {
+  constructor(scene: Phaser.Scene, x: number, y: number, readonly id: CastId, size: number) {
     super(scene, x, y);
     this.production = hasProductionArt(scene, id);
     this.image = scene.add.image(0, 0, this.textureFor('idle'));
@@ -561,7 +573,11 @@ export class Character extends Phaser.GameObjects.Container {
   }
 
   private textureFor(state: ExpressionState): string {
-    return this.production ? expressionTextureKey(this.id, state) : ensureCharacterTexture(this.scene, this.id, fallbackMood(state));
+    if (this.production) return expressionTextureKey(this.id, state);
+    // Click (the host and guide) has no code-drawn art: if his production art is missing he is simply
+    // not drawn, rather than being drawn as a different character. The five starters fall back to
+    // their code-drawn busts as before.
+    return this.id === 'click' ? ensureBlankTexture(this.scene) : ensureCharacterTexture(this.scene, this.id, fallbackMood(state));
   }
 
   private applyLook(): void {

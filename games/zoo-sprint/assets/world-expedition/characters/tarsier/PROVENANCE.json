@@ -1,0 +1,134 @@
+{
+  "schemaVersion": 1,
+  "purpose": "Provenance for the curated runtime Tarsier expression PNGs (Checkpoint F4). Machine-readable authority; verified by tests/integration/character-runtime-assets.test.ts.",
+  "character": "tarsier",
+  "runtimeDirectory": "games/zoo-sprint/assets/world-expedition/characters/tarsier",
+  "canonicalLibrary": "docs/reference-art/world-expedition/production-v1.1",
+  "canonicalManifest": "docs/reference-art/world-expedition/production-v1.1/renderer/final-manifests/tarsier.json",
+  "storage": "normal Git blobs (no Git LFS rule matches the runtime directory)",
+  "derivation": "byte-for-byte copy of the canonical M4 file: no re-encode, no crop, no resize, no recolor, no metadata edit",
+  "headScale": 0.5228,
+  "expressions": {
+    "idle": {
+      "runtimeFile": "tarsier_idle.png",
+      "runtimeSha256": "dace8b6cc79e4be0c869807ecb6ae5158b8221094547545f7e958bcc544da2f0",
+      "runtimeBytes": 87154,
+      "width": 283,
+      "height": 159,
+      "canonicalSourcePath": "docs/reference-art/world-expedition/production-v1.1/expression-batch/tarsier/tarsier_idle.png",
+      "canonicalSha256": "dace8b6cc79e4be0c869807ecb6ae5158b8221094547545f7e958bcc544da2f0",
+      "derivation": "byte-for-byte copy",
+      "anchor": {
+        "eyeLineSrcY": 97,
+        "coreBox": [
+          3,
+          2,
+          280,
+          149
+        ],
+        "cropKind": "head_only"
+      }
+    },
+    "happy": {
+      "runtimeFile": "tarsier_happy.png",
+      "runtimeSha256": "98fe59d73369c8e391a0b33d4aa060d077d20b3957869f6c5765d1f45de12d95",
+      "runtimeBytes": 57714,
+      "width": 167,
+      "height": 158,
+      "canonicalSourcePath": "docs/reference-art/world-expedition/production-v1.1/expression-batch/tarsier/tarsier_happy.png",
+      "canonicalSha256": "98fe59d73369c8e391a0b33d4aa060d077d20b3957869f6c5765d1f45de12d95",
+      "derivation": "byte-for-byte copy",
+      "anchor": {
+        "eyeLineSrcY": 65,
+        "coreBox": [
+          1,
+          2,
+          156,
+          100
+        ],
+        "cropKind": "bust"
+      }
+    },
+    "thinking": {
+      "runtimeFile": "tarsier_thinking.png",
+      "runtimeSha256": "d5c8326cc10f1537cf3dda03fea9ca38db85feba80656e59d8a100ab2876c2a3",
+      "runtimeBytes": 58566,
+      "width": 168,
+      "height": 156,
+      "canonicalSourcePath": "docs/reference-art/world-expedition/production-v1.1/expression-batch/tarsier/tarsier_thinking.png",
+      "canonicalSha256": "d5c8326cc10f1537cf3dda03fea9ca38db85feba80656e59d8a100ab2876c2a3",
+      "derivation": "byte-for-byte copy",
+      "anchor": {
+        "eyeLineSrcY": 72,
+        "coreBox": [
+          2,
+          2,
+          166,
+          110
+        ],
+        "cropKind": "bust"
+      }
+    },
+    "cheer": {
+      "runtimeFile": "tarsier_cheer.png",
+      "runtimeSha256": "115f23dd63650d663d66462ffbe8fd4a64244647e24dff6a6908e29e3cf38ec6",
+      "runtimeBytes": 57574,
+      "width": 158,
+      "height": 159,
+      "canonicalSourcePath": "docs/reference-art/world-expedition/production-v1.1/expression-batch/tarsier/tarsier_cheer.png",
+      "canonicalSha256": "115f23dd63650d663d66462ffbe8fd4a64244647e24dff6a6908e29e3cf38ec6",
+      "derivation": "byte-for-byte copy",
+      "anchor": {
+        "eyeLineSrcY": 65,
+        "coreBox": [
+          5,
+          2,
+          156,
+          100
+        ],
+        "cropKind": "bust"
+      }
+    },
+    "discover": {
+      "runtimeFile": "tarsier_discover.png",
+      "runtimeSha256": "1a02e1c3a74fec0c071a0ef05a58a83eb44a74d92b2e8fd6afd389fdaade58cf",
+      "runtimeBytes": 62386,
+      "width": 175,
+      "height": 161,
+      "canonicalSourcePath": "docs/reference-art/world-expedition/production-v1.1/expression-batch/tarsier/tarsier_discover.png",
+      "canonicalSha256": "1a02e1c3a74fec0c071a0ef05a58a83eb44a74d92b2e8fd6afd389fdaade58cf",
+      "derivation": "byte-for-byte copy",
+      "anchor": {
+        "eyeLineSrcY": 75,
+        "coreBox": [
+          1,
+          2,
+          173,
+          115
+        ],
+        "cropKind": "bust"
+      }
+    },
+    "tryAgain": {
+      "runtimeFile": "tarsier_tryAgain.png",
+      "runtimeSha256": "c8828c9d856ee56e5db039dc8805f0fb711915f681a2a5edda875aff74b8985e",
+      "runtimeBytes": 100624,
+      "width": 294,
+      "height": 194,
+      "canonicalSourcePath": "docs/reference-art/world-expedition/production-v1.1/expression-batch/tarsier/tarsier_tryAgain.png",
+      "canonicalSha256": "c8828c9d856ee56e5db039dc8805f0fb711915f681a2a5edda875aff74b8985e",
+      "derivation": "byte-for-byte copy",
+      "anchor": {
+        "eyeLineSrcY": 98,
+        "coreBox": [
+          3,
+          3,
+          277,
+          163
+        ],
+        "cropKind": "bust"
+      }
+    }
+  },
+  "totalRuntimeBytes": 424018
+}

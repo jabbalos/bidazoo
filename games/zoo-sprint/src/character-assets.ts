@@ -161,8 +161,12 @@ function runtimeExpression(
 }
 
 /**
- * Characters that have curated runtime art. F3 integrates Dino only; every other character keeps
- * its code-drawn art until a later checkpoint adds it here.
+ * Characters that have curated runtime art: the whole cast (F4). F3 integrated Dino only; F4 adds
+ * Koala, Tarsier, Eagle, Bronco and Click, so every one of the 36 production expressions has a
+ * runtime file. Having art does NOT make a character selectable: Click has art and is still the
+ * host and guide only (see character-definitions.ts and roster.ts). Every number here is copied
+ * from the M4 manifest (renderer/final-manifests/{id}.json) and verified by
+ * tests/integration/character-runtime-assets.test.ts against each character's PROVENANCE.json.
  */
 export const RUNTIME_ART: Readonly<Partial<Record<CastId, RuntimeCharacterArt>>> = Object.freeze({
   dino: Object.freeze({
@@ -174,6 +178,61 @@ export const RUNTIME_ART: Readonly<Partial<Record<CastId, RuntimeCharacterArt>>>
       cheer: runtimeExpression('dino_cheer.png', 183, 163, 56, [32, 3, 154, 85]),
       discover: runtimeExpression('dino_discover.png', 166, 164, 67, [4, 3, 135, 102]),
       tryAgain: runtimeExpression('dino_tryAgain.png', 176, 161, 68, [22, 3, 158, 104]),
+    }),
+  }),
+  koala: Object.freeze({
+    headScale: 0.63,
+    expressions: Object.freeze({
+      idle: runtimeExpression('koala_idle.png', 160, 152, 85, [3, 2, 157, 131]),
+      happy: runtimeExpression('koala_happy.png', 152, 153, 82, [1, 3, 150, 125]),
+      thinking: runtimeExpression('koala_thinking.png', 157, 155, 87, [1, 3, 154, 133]),
+      cheer: runtimeExpression('koala_cheer.png', 225, 155, 85, [39, 4, 186, 153]),
+      discover: runtimeExpression('koala_discover.png', 155, 155, 84, [3, 2, 152, 129]),
+      tryAgain: runtimeExpression('koala_tryAgain.png', 195, 154, 75, [3, 4, 176, 152]),
+    }),
+  }),
+  tarsier: Object.freeze({
+    headScale: 0.5228,
+    expressions: Object.freeze({
+      idle: runtimeExpression('tarsier_idle.png', 283, 159, 97, [3, 2, 280, 149]),
+      happy: runtimeExpression('tarsier_happy.png', 167, 158, 65, [1, 2, 156, 100]),
+      thinking: runtimeExpression('tarsier_thinking.png', 168, 156, 72, [2, 2, 166, 110]),
+      cheer: runtimeExpression('tarsier_cheer.png', 158, 159, 65, [5, 2, 156, 100]),
+      discover: runtimeExpression('tarsier_discover.png', 175, 161, 75, [1, 2, 173, 115]),
+      tryAgain: runtimeExpression('tarsier_tryAgain.png', 294, 194, 98, [3, 3, 277, 163]),
+    }),
+  }),
+  eagle: Object.freeze({
+    headScale: 0.6535,
+    expressions: Object.freeze({
+      idle: runtimeExpression('eagle_idle.png', 163, 141, 68, [12, 2, 161, 104]),
+      happy: runtimeExpression('eagle_happy.png', 163, 168, 62, [3, 3, 159, 163]),
+      thinking: runtimeExpression('eagle_thinking.png', 163, 168, 68, [3, 7, 155, 164]),
+      cheer: runtimeExpression('eagle_cheer.png', 193, 168, 65, [3, 4, 158, 163]),
+      discover: runtimeExpression('eagle_discover.png', 185, 168, 72, [11, 3, 152, 110]),
+      tryAgain: runtimeExpression('eagle_tryAgain.png', 163, 168, 66, [3, 3, 157, 164]),
+    }),
+  }),
+  bronco: Object.freeze({
+    headScale: 0.606,
+    expressions: Object.freeze({
+      idle: runtimeExpression('bronco_idle.png', 176, 144, 68, [2, 0, 173, 105]),
+      happy: runtimeExpression('bronco_happy.png', 162, 153, 64, [7, 3, 157, 98]),
+      thinking: runtimeExpression('bronco_thinking.png', 195, 151, 74, [3, 8, 179, 149]),
+      cheer: runtimeExpression('bronco_cheer.png', 172, 147, 77, [4, 5, 167, 144]),
+      discover: runtimeExpression('bronco_discover.png', 168, 154, 70, [5, 4, 165, 106]),
+      tryAgain: runtimeExpression('bronco_tryAgain.png', 168, 151, 72, [0, 3, 167, 110]),
+    }),
+  }),
+  click: Object.freeze({
+    headScale: 0.5923,
+    expressions: Object.freeze({
+      idle: runtimeExpression('click_idle.png', 190, 149, 93, [3, 0, 187, 144]),
+      happy: runtimeExpression('click_happy.png', 155, 150, 76, [4, 8, 148, 113]),
+      thinking: runtimeExpression('click_thinking.png', 165, 164, 81, [3, 5, 143, 123]),
+      cheer: runtimeExpression('click_cheer.png', 198, 157, 67, [17, 8, 176, 99]),
+      discover: runtimeExpression('click_discover.png', 141, 160, 88, [2, 1, 138, 136]),
+      tryAgain: runtimeExpression('click_tryAgain.png', 162, 154, 77, [3, 2, 141, 118]),
     }),
   }),
 });
