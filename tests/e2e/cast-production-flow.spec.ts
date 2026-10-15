@@ -310,14 +310,14 @@ test.describe('Cast production art in the real game', () => {
       await expect(page.locator('#game')).toHaveAttribute('data-character', id);
       await tap(page, 'start-run');
       await expect.poll(() => scene(page)).toBe('run');
-      await expect(page.locator('#game[data-phase="question"]')).toBeAttached({ timeout: 15_000 });
+      await expect(page.locator('#game[data-phase="question"]')).toBeAttached({ timeout: 60_000 });
       expect(await page.locator('#game').getAttribute('data-production-art')).toBe('36');
       const status = (await page.locator('#bz-a11y [role="status"]').textContent()) ?? '';
       const m = /(\d+) × (\d+)/.exec(status)!;
       const choices = (await page.locator('#bz-a11y button[data-action^="answer-"]').allTextContents()).map(Number);
       const qid = (await page.locator('#game').getAttribute('data-question-id')) ?? '';
       await tap(page, `answer-${choices.indexOf(Number(m[1]) * Number(m[2]))}`);
-      await expect(page.locator('#game')).not.toHaveAttribute('data-question-id', qid, { timeout: 15_000 });
+      await expect(page.locator('#game')).not.toHaveAttribute('data-question-id', qid, { timeout: 60_000 });
       await shot(page, `run-${id}`);
     });
   }
@@ -336,7 +336,7 @@ test.describe('Cast production art in the real game', () => {
     await shot(page, 'run');
 
     for (let i = 0; i < 10; i++) {
-      await expect(page.locator('#game[data-phase="question"]')).toBeAttached({ timeout: 15_000 });
+      await expect(page.locator('#game[data-phase="question"]')).toBeAttached({ timeout: 60_000 });
       const status = (await page.locator('#bz-a11y [role="status"]').textContent()) ?? '';
       const m = /(\d+) × (\d+)/.exec(status)!;
       const choices = (await page.locator('#bz-a11y button[data-action^="answer-"]').allTextContents()).map(Number);
@@ -347,8 +347,8 @@ test.describe('Cast production art in the real game', () => {
       await tap(page, `answer-${pick}`);
       if (i === 0) await shot(page, 'run-correct');
       if (i === 1) await shot(page, 'run-miss');
-      await expect(page.locator('#game')).not.toHaveAttribute('data-question-id', id, { timeout: 15_000 }).catch(() => undefined);
-      if (i < 9) await expect(page.locator('#game[data-phase="question"]')).toBeAttached({ timeout: 15_000 });
+      await expect(page.locator('#game')).not.toHaveAttribute('data-question-id', id, { timeout: 60_000 }).catch(() => undefined);
+      if (i < 9) await expect(page.locator('#game[data-phase="question"]')).toBeAttached({ timeout: 60_000 });
     }
     await expect.poll(() => scene(page), { timeout: 30_000 }).toBe('results');
     await page.waitForTimeout(500);

@@ -30,6 +30,8 @@ interface Sample {
   questionId: string;
   correct: string;
   character: string;
+  progress: string;
+  streak: string;
 }
 
 /** The five locked starters, in on-screen order. Click is the host and is NOT selectable. */
@@ -46,7 +48,8 @@ const FORBIDDEN_IN_REQUESTS = /expression|emotion|mood|thinking|cheer|discover|t
 
 /** Every starter must pass through these exact (phase | last answer | expression) states. */
 const REQUIRED_STATES = [
-  'question||idle',
+  'question||discover',
+  'question||thinking',
   'submitting||thinking',
   'feedback|true|happy',
   'feedback|false|tryAgain',
@@ -118,7 +121,7 @@ async function bootToMenu(page: Page): Promise<void> {
 }
 
 async function waitForQuestion(page: Page): Promise<{ id: string; a: number; b: number; choices: number[] }> {
-  await expect(page.locator('#game[data-phase="question"]')).toBeAttached({ timeout: 15_000 });
+  await expect(page.locator('#game[data-phase="question"]')).toBeAttached({ timeout: 90_000 });
   const status = await statusText(page);
   const m = /(\d+) × (\d+)/.exec(status);
   expect(m, `status should contain a multiplication prompt: "${status}"`).toBeTruthy();
@@ -145,6 +148,8 @@ async function recordExpressions(page: Page): Promise<void> {
         questionId: game.dataset['questionId'] ?? '',
         correct: game.dataset['lastCorrect'] ?? '',
         character: game.dataset['character'] ?? '',
+        progress: game.dataset['progress'] ?? '',
+        streak: game.dataset['streak'] ?? '',
       };
       // A screen that is not showing a starter publishes no expression: nothing to record.
       if (sample.expression === '') return;
@@ -177,7 +182,11 @@ async function waitForSample(page: Page, find: (s: Sample) => boolean, message: 
 /** What the run screen must show for a recorded state. This is the whole mapping, restated independently. */
 function expectedRunExpression(s: Sample): string {
   if (s.phase === 'submitting') return 'thinking';
-  if (s.phase === 'feedback') return s.correct === 'true' ? 'happy' : s.correct === 'false' ? 'tryAgain' : 'idle';
+  if (s.phase === 'feedback') {
+    if (s.correct === 'true') return Number(s.streak) >= 3 ? 'cheer' : 'happy';
+    return s.correct === 'false' ? 'tryAgain' : 'idle';
+  }
+  if (s.phase === 'question') return s.progress.startsWith('0/') ? 'discover' : 'thinking'; // the first question discovers, the rest present
   return 'idle';
 }
 
@@ -288,7 +297,7 @@ for (const starter of STARTERS) {
 
     // Question 1: waiting rests at idle, submitting thinks, a right answer is happy.
     const q1 = await waitForQuestion(page);
-    await expect(page.locator('#game')).toHaveAttribute('data-expression', 'idle');
+    await expect(page.locator('#game')).toHaveAttribute('data-expression', 'discover');
     await expect(page.locator('#game')).toHaveAttribute('data-character', starter.id);
     await tap(page, `answer-${q1.choices.indexOf(q1.a * q1.b)}`);
     await waitForSample(page, (s) => s.questionId === q1.id && s.phase === 'submitting' && s.expression === 'thinking', 'thinking while submitting question 1');
@@ -298,7 +307,7 @@ for (const starter of STARTERS) {
     await expect.poll(async () => (await page.locator('#game').getAttribute('data-question-id')) ?? '', { timeout: 30_000 }).not.toBe(q1.id);
     const q2 = await waitForQuestion(page);
     expect(q2.id).not.toBe(q1.id);
-    await expect(page.locator('#game')).toHaveAttribute('data-expression', 'idle');
+    await expect(page.locator('#game')).toHaveAttribute('data-expression', 'thinking');
     const wrong = q2.choices.find((c) => c !== q2.a * q2.b)!;
     await tap(page, `answer-${q2.choices.indexOf(wrong)}`);
     await waitForSample(page, (s) => s.questionId === q2.id && s.phase === 'submitting' && s.expression === 'thinking', 'thinking while submitting question 2');
@@ -307,14 +316,14 @@ for (const starter of STARTERS) {
     // Question 3: the temporary states have returned to idle.
     const q3 = await waitForQuestion(page);
     expect(q3.id).not.toBe(q2.id);
-    await expect(page.locator('#game')).toHaveAttribute('data-expression', 'idle');
+    await expect(page.locator('#game')).toHaveAttribute('data-expression', 'thinking');
 
     // The whole log obeys the mapping, names this starter throughout, and passes through the same states as every other starter.
     const all = await samples(page);
     expectRunMapping(all);
     for (const s of all.filter((x) => x.scene === 'run')) expect(s.character).toBe(starter.id);
     for (const required of REQUIRED_STATES) expect(stateKeys(all), `${starter.name} passes through ${required}`).toContain(required);
-    expect(all.some((s) => s.expression === 'cheer' || s.expression === 'discover')).toBe(false); // those belong to the results screen
+    expect(all.some((s) => s.expression === 'cheer')).toBe(false); // no streak of three here, so no cheer on the run screen
 
     // Presentation only: the server counted one right and one wrong answer, nothing else, and heard nothing about the starter.
     const me = await serverTotals(context);
@@ -375,7 +384,7 @@ test('expressions: thinking is held while the answer is out, survives a resize, 
   release();
   await waitForSample(page, (s) => s.questionId === q.id && s.phase === 'feedback' && s.correct === 'true' && s.expression === 'happy', 'happy once the answer is back');
   await waitForQuestion(page);
-  await expect(page.locator('#game')).toHaveAttribute('data-expression', 'idle');
+  await expect(page.locator('#game')).toHaveAttribute('data-expression', 'thinking');
 
   expectRunMapping(await samples(page));
   // Switching expressions loaded no picture: no image was requested at any point after boot.
@@ -440,7 +449,7 @@ test('expressions: a finished run cheers, keeps cheering through a resize, and c
   await recordExpressions(page);
 
   await tap(page, 'start-run'); // resumes the run at question 10
-  await expect(page.locator('#game')).toHaveAttribute('data-progress', '9/10');
+  await expect(page.locator('#game')).toHaveAttribute('data-progress', '9/10', { timeout: 90_000 });
   const q10 = await waitForQuestion(page);
   const wrong = q10.choices.find((c) => c !== q10.a * q10.b)!;
   await tap(page, `answer-${q10.choices.indexOf(wrong)}`);
@@ -448,7 +457,7 @@ test('expressions: a finished run cheers, keeps cheering through a resize, and c
 
   // The results screen: a resting starter first, then the cheer.
   await expect.poll(() => scene(page), { timeout: 20_000 }).toBe('results');
-  await expect(page.locator('#game')).toHaveAttribute('data-expression', 'cheer', { timeout: 15_000 });
+  await expect(page.locator('#game')).toHaveAttribute('data-expression', 'cheer', { timeout: 60_000 });
   await expect(page.locator('#game')).toHaveAttribute('data-character', 'koala');
   await expect(page.locator('#game')).toHaveAttribute('data-correct', '9');
   const results = (await samples(page)).filter((s) => s.scene === 'results');
@@ -473,7 +482,7 @@ test('expressions: a finished run cheers, keeps cheering through a resize, and c
   await tap(page, 'play-again');
   await expect.poll(() => scene(page)).toBe('run');
   await waitForQuestion(page);
-  await expect(page.locator('#game')).toHaveAttribute('data-expression', 'idle');
+  await expect(page.locator('#game')).toHaveAttribute('data-expression', 'discover');
   const afterAgain = await samples(page);
   expectRunMapping(afterAgain);
   expect(afterAgain.filter((s) => s.scene === 'run').some((s) => s.expression === 'cheer')).toBe(false);
@@ -516,7 +525,7 @@ test('expressions: a newly mastered fact is a discovery, not a cheer, and the se
   await tap(page, `answer-${q10.choices.indexOf(wrong)}`);
 
   await expect.poll(() => scene(page), { timeout: 20_000 }).toBe('results');
-  await expect(page.locator('#game')).toHaveAttribute('data-expression', 'discover', { timeout: 15_000 });
+  await expect(page.locator('#game')).toHaveAttribute('data-expression', 'discover', { timeout: 60_000 });
   await expect(page.locator('#game')).toHaveAttribute('data-character', 'bronco');
   expect(await statusText(page)).toContain('Mastered 7 × 8');
   const results = (await samples(page)).filter((s) => s.scene === 'results');

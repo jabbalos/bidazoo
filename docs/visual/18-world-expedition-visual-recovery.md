@@ -35,3 +35,10 @@ technical beta baseline.
 - `PRESENCE_EXPONENT` (how much the smallest buddies are enlarged).
 - Voice preview: not built (no audio assets exist).
 - Upscale softness (about 2-3.4x) until higher-resolution runtime art exists.
+
+## Step 2 polish and Step 3 verification
+
+- Character Select: heroes are sized by a normalized visible height (`visibleHeight` in `computeHeroFit`), so all five starters share one baseline and visible scale; the hero stage is capped at 1.3 x the content width and the freed height goes to breathing room, not sky.
+- Gameplay: buddy reduced about 7.5%; HUD, scenery gap, question card and answer buttons unchanged; answer hit targets are identical in question, submitting and feedback states (no layout jump).
+- Image sharpness audit: the 36 runtime expression PNGs are 106-294 px wide byte-copies of production-v1.1 crops cut from 1448x1086 sheets. No higher-resolution approved source (PSD/TIFF/SVG/larger PNG) exists in the library, so no art was regenerated. A real sharpness fix needs an owner-approved higher-resolution re-render. Upscale on phones is about 1.1x to 2.5x CSS px, doubled again in device px at DPR 2.
+- E2E specs updated to the new presentation (one medallion row, "Choose {Name}" label, Discover on the first question, Thinking on later ones, Cheer on a streak of three, longer waits for the 1 s celebration under software GL). Playwright runs on the cloud Chromium are supplementary; official validation is the studio PC.

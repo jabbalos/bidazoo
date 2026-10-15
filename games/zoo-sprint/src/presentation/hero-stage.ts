@@ -105,8 +105,10 @@ export function buildHeroStage(scene: Phaser.Scene, o: HeroStageOptions): HeroSt
 
   const hero = new Character(scene, 0, 0, o.id, 100);
   const fit = hero.placeInBox(o.charBox.x, o.charBox.y, o.charBox.w, o.charBox.h, {
-    presence: castPresence(o.id as CastId),
-    fillWidth: 0.9,
+    // Normalized: all five starters get the same visible bust height; Tarsier's wide ears are the
+    // only thing allowed to limit it (width guard).
+    visibleHeight: o.charBox.h * 0.8,
+    fillWidth: 0.92,
     maxScale: 3.0,
     overlap: 8,
   });

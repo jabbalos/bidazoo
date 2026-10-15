@@ -64,6 +64,9 @@ function uuid(n) {
   return `00000000-0000-4000-8000-${String(n).padStart(12, '0')}`;
 }
 
+// A shorter run (VTOTAL=5) keeps the very slow software-rendered desktop capture practical.
+const TOTAL = Number(process.env.VTOTAL ?? 10);
+
 function createFakeApi(opts = {}) {
   const slow = { ms: opts.slowMs ?? 0 };
   const state = { answered: 0, correct: 0, xp: 340, coins: 125, qIndex: -1, lastQuestion: null, completed: false };
@@ -85,7 +88,7 @@ function createFakeApi(opts = {}) {
     gameId: 'zoo-sprint',
     mode: 'multiplication',
     status: state.completed ? 'completed' : 'active',
-    total: 10,
+    total: TOTAL,
     answered: state.answered,
     correct: state.correct,
     startedAt: now,
@@ -95,13 +98,13 @@ function createFakeApi(opts = {}) {
     results: state.completed
       ? {
           correct: state.correct,
-          total: 10,
+          total: TOTAL,
           fluent: Math.min(state.correct, 6),
           xpEarned: state.correct * 10 + 20,
           coinsEarned: state.correct * 2 + 10,
           bonus: { xp: 20, coins: 10 },
           newlyMastered: ['6 × 7', '9 × 6'],
-          answers: Array.from({ length: 10 }, (_, i) => ({ sequence: i + 1, prompt: `${FACTS[i][0]} × ${FACTS[i][1]}`, correct: i !== 2, fluent: i % 2 === 0 })),
+          answers: Array.from({ length: TOTAL }, (_, i) => ({ sequence: i + 1, prompt: `${FACTS[i][0]} × ${FACTS[i][1]}`, correct: i !== 2, fluent: i % 2 === 0 })),
         }
       : null,
   });
@@ -138,7 +141,7 @@ function createFakeApi(opts = {}) {
           state.xp += 10;
           state.coins += 2;
         }
-        state.completed = state.answered >= 10;
+        state.completed = state.answered >= TOTAL;
         const next = state.completed ? null : question();
         const result = {
           questionId: q.id,
@@ -233,6 +236,7 @@ async function runViewport(browser, vp) {
     hasTouch: vp.mobile,
   });
   const page = await context.newPage();
+  if (process.env.VNOMASK) await page.addInitScript(() => { window.__noMask = true; });
   page.on('console', (m) => {
     if (process.env.VDEBUG && m.type() !== 'log') console.log('C', m.type(), m.text().slice(0,300)); if (m.type() === 'error' && !/Failed to load resource/.test(m.text())) { report.problems.push(`console: ${m.text()}`); if (process.env.VDEBUG) console.log('CONSOLE', m.text()); }
   });
@@ -272,6 +276,7 @@ async function runViewport(browser, vp) {
   await waitAttr(page, 'phase', 'question', 90000); // software GL at DPR 2 runs the 1 s celebration timer slowly
   await sleep(1500);
   await shot(page, dir, `${num()}-run-question`, report);
+  if (process.env.VFPS === '1') { const fps = await page.evaluate(() => new Promise((res) => { let c = 0; const t0 = performance.now(); const f = () => { c++; if (performance.now() - t0 > 4000) res(c / 4); else requestAnimationFrame(f); }; requestAnimationFrame(f); })); console.log('FPS run-question', vp.name, fps.toFixed(1)); process.exit(0); }
 
   // 7: submitting (thinking) — the fake API holds the answer for 700 ms
   const choices1 = api.currentChoices();
@@ -284,7 +289,7 @@ async function runViewport(browser, vp) {
   // 8: incorrect-answer / tryAgain
   api.slow.ms = 300;
   await waitAttr(page, 'phase', 'feedback', 60000);
-  await sleep(500);
+  await sleep(120); // capture early: a software-rendered screenshot is slow and the feedback window is short
   await shot(page, dir, `${num()}-run-tryagain`, report);
 
   // next question, then a correct answer
@@ -292,20 +297,21 @@ async function runViewport(browser, vp) {
   await sleep(900);
   let right = api.currentRight();
   let choices = api.currentChoices();
-  await tap(page, `answer-${choices.indexOf(right)}`);
-  await waitAttr(page, 'phase', 'feedback');
-  await sleep(450);
+  { const tp = await tap(page, `answer-${choices.indexOf(right)}`); if (process.env.VDEBUG) { console.log('TAP2', JSON.stringify(tp.t), JSON.stringify(tp.canvas)); for (let i = 0; i < 12; i++) { await sleep(500); const hh = await hooks(page); console.log('P', i, hh.attrs.phase, hh.attrs.progress, hh.attrs['question-id']); } } }
+  await waitAttr(page, 'phase', 'feedback', 60000);
+  await sleep(120);
   await shot(page, dir, `${num()}-run-correct`, report);
 
   // play the rest of the run correctly (a streak), grabbing one more reaction on the way
   let streakShot = false;
-  for (let guard = 0; guard < 80; guard++) {
+  for (let guard = 0; guard < 200; guard++) {
     const h = await hooks(page);
     if (h.attrs['scene'] === 'results') break;
     if (h.attrs['phase'] === 'question') {
       await sleep(350);
       right = api.currentRight();
       choices = api.currentChoices();
+      if (process.env.VDEBUG) console.log('LOOP', guard, h.attrs['progress'], h.attrs['question-id'], 'right', right, 'choices', choices.join(','));
       await tap(page, `answer-${choices.indexOf(right)}`);
       await sleep(900);
       if (!streakShot) {
@@ -313,13 +319,14 @@ async function runViewport(browser, vp) {
         if (h2.attrs['phase'] === 'feedback') {
           await shot(page, dir, `${num()}-run-streak`, report);
           streakShot = true;
+          if (process.env.VFPS === '2') { const fps = await page.evaluate(() => new Promise((res) => { let c = 0; const t0 = performance.now(); const f = () => { c++; if (performance.now() - t0 > 4000) res(c / 4); else requestAnimationFrame(f); }; requestAnimationFrame(f); })); console.log('FPS after streak', vp.name, fps.toFixed(1), h2.attrs.progress); process.exit(0); }
         }
       }
     } else {
       await sleep(400);
     }
   }
-  await waitAttr(page, 'scene', 'results', 240000);
+  await waitAttr(page, 'scene', 'results', 1200000);
   await sleep(1800); // celebration
   await shot(page, dir, `${num()}-results`, report);
 

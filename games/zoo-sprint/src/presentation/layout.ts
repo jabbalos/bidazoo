@@ -150,7 +150,7 @@ function selectStack(frame: Frame): SelectLayout {
     let stageH = medallionRow.y - gap - stageTop;
     // Balanced, not stretched: the hero card never grows past a tall portrait card; spare height
     // becomes breathing room around it (above the card, and between the medallions and the button).
-    const maxStageH = Math.round(cw * 1.38);
+    const maxStageH = Math.round(cw * 1.3);
     if (stageH > maxStageH) {
       const excess = stageH - maxStageH;
       stageH = maxStageH;

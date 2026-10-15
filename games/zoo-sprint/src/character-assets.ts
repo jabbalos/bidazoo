@@ -315,6 +315,13 @@ export interface HeroFitOptions {
   readonly presence?: number;
   /** How far (px) the art continues below the box bottom, so the foreground element that hides the flat crop overlaps it. */
   readonly overlap?: number;
+  /**
+   * Normalized mode (Character Select): every character is scaled so its visible bust is this many
+   * pixels tall above the box bottom, so all five starters feel equally present regardless of how
+   * wide their head core is. Width is then only a guard (`fillWidth`, e.g. 0.98) so wide heads such
+   * as Tarsier's ears never clip. When set, `presence` is ignored.
+   */
+  readonly visibleHeight?: number;
 }
 
 export interface HeroFit {
@@ -370,7 +377,11 @@ export function computeHeroFit(id: CastId, box: HeroBox, options: HeroFitOptions
 
   const byWidth = (fillWidth * box.width) / maxCoreWidth;
   const byHeight = (fillHeight * (box.height + overlap)) / (maxEyeAbove + minBelowEye);
-  const scale = Math.min(maxScale, Math.min(byWidth, byHeight) * presence);
+  const normalized = options.visibleHeight !== undefined ? ((options.visibleHeight + overlap) / (maxEyeAbove + minBelowEye)) : undefined;
+  const scale =
+    normalized !== undefined
+      ? Math.min(maxScale, normalized, byWidth, byHeight)
+      : Math.min(maxScale, Math.min(byWidth, byHeight) * presence);
   const anchorY = box.height + overlap - minBelowEye * scale;
   return Object.freeze({
     scale,

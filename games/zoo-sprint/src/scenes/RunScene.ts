@@ -257,7 +257,7 @@ export class RunScene extends Phaser.Scene {
     const overlap = split ? Math.max(12, L.scene.h * 0.05) : 8;
     const fit = hero.placeInBox(L.buddyBox.x, L.buddyBox.y, L.buddyBox.w, L.buddyBox.h, {
       presence: castPresence(ctx.character as CastId),
-      fillWidth: split ? 0.8 : 0.8,
+      fillWidth: split ? 0.8 : 0.74,
       maxScale: 3.4,
       overlap,
     });
@@ -466,6 +466,7 @@ export class RunScene extends Phaser.Scene {
       'question-id': this.question?.id ?? '',
       streak: String(this.streak),
       'buddy-rect': this.buddyRect(),
+      'buddy-upscale': this.heroFit ? this.heroFit.upscale.toFixed(2) : '',
       'last-correct': this.feedback ? String(this.feedback.result.correct) : '',
     };
     publishSurface(ctx.parent, this.phase === 'error' ? 'run-error' : 'run', targets, extra);
