@@ -6,6 +6,7 @@ import {
   type PublicQuestion,
 } from '@bidazoo/game-sdk';
 import { Character } from '../characters';
+import { expressionForAnswer, expressionForRun } from '../character-expression';
 import { getContext } from '../context';
 import { COLORS, CSS, clamp } from '../theme';
 import { BUTTON_STYLES, TapButton, makeAttemptId, publishSurface, text, type HitTarget } from '../ui';
@@ -51,6 +52,8 @@ export class RunScene extends Phaser.Scene {
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
       this.scale.off(Phaser.Scale.Events.RESIZE, this.render, this);
       this.advanceTimer?.remove();
+      // Leave no expression behind for the next screen to inherit.
+      getContext(this).parent.removeAttribute('data-expression');
     });
     this.render();
     void this.begin();
@@ -179,10 +182,16 @@ export class RunScene extends Phaser.Scene {
     this.render();
   }
 
+  /**
+   * The little hop or head shake that goes with a graded answer. The expression itself is derived
+   * from the screen's state in render(), so the reaction keeps it (happy / tryAgain) instead of
+   * snapping back to idle while the feedback is still showing.
+   */
   private celebrate(result: AnswerResult): void {
     if (!this.character) return;
-    if (result.correct) this.character.celebrate();
-    else this.character.wobble();
+    const shown = expressionForAnswer(result);
+    if (result.correct) this.character.celebrate(shown, shown);
+    else this.character.wobble(shown);
   }
 
   // ---------------------------------------------------------------------------
@@ -239,6 +248,9 @@ export class RunScene extends Phaser.Scene {
     const lineY = trackY + trackH * 0.18;
     const characterX = trackLeft + ((trackRight - trackLeft) * answered) / total;
     this.character = new Character(this, characterX, lineY - bust * 0.45, ctx.character, bust);
+    // The expression follows the screen's state, so every rebuild (a resize, the next question)
+    // shows the right one from its first frame. It reads what is already shown; it decides nothing.
+    this.character.setExpression(expressionForRun(this.phase, this.feedback ? this.feedback.result : null));
     this.layer.add(this.character);
 
     // --- Question ---
@@ -334,6 +346,8 @@ export class RunScene extends Phaser.Scene {
     const session = this.session;
     const extra: Record<string, string> = {
       character: this.character?.id ?? ctx.character,
+      // Which picture the starter is showing. Client-only page state, for tests and debugging.
+      expression: this.character?.inspect().expression ?? 'idle',
       phase: this.phase,
       progress: `${session?.answered ?? 0}/${session?.total ?? 10}`,
       'question-id': this.question?.id ?? '',

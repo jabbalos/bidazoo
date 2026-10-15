@@ -595,13 +595,12 @@ export class Character extends Phaser.GameObjects.Container {
     }
   }
 
-  private setMood(mood: Mood): void {
-    this.setExpression(mood);
-  }
-
-  /** A happy hop. */
-  celebrate(): void {
-    this.setMood('happy');
+  /**
+   * A happy hop. By default it shows `happy` and returns to `idle`. A screen that wants a different
+   * picture (a bigger celebration) or wants to keep it afterwards passes them; the hop is the same.
+   */
+  celebrate(show: ExpressionState = 'happy', settleTo: ExpressionState = 'idle'): void {
+    this.setExpression(show);
     this.scene.tweens.add({
       targets: this,
       y: this.y - this.size * 0.28,
@@ -610,13 +609,13 @@ export class Character extends Phaser.GameObjects.Container {
       duration: 160,
       yoyo: true,
       ease: 'Quad.easeOut',
-      onComplete: () => this.setMood('idle'),
+      onComplete: () => this.settle(show, settleTo),
     });
   }
 
   /** A gentle head shake. Deliberately mild: a miss is not a punishment. */
-  wobble(): void {
-    this.setMood('tryAgain');
+  wobble(settleTo: ExpressionState = 'idle'): void {
+    this.setExpression('tryAgain');
     this.scene.tweens.add({
       targets: this,
       angle: { from: -9, to: 9 },
@@ -626,8 +625,13 @@ export class Character extends Phaser.GameObjects.Container {
       onComplete: () => {
         if (!this.active) return;
         this.setAngle(0);
-        this.setMood('idle');
+        this.settle('tryAgain', settleTo);
       },
     });
+  }
+
+  /** Ends a reaction, unless something else has changed the expression in the meantime. */
+  private settle(shown: ExpressionState, settleTo: ExpressionState): void {
+    if (this.expression === shown) this.setExpression(settleTo);
   }
 }

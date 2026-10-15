@@ -441,7 +441,7 @@ test('full run: 10 real taps through the real API; server totals match; a miss t
   }
   // The starter choice never went over the wire: no request carried it.
   expect(apiRequests.length).toBeGreaterThan(10);
-  for (const request of apiRequests) expect(request).not.toMatch(/eagle|character|avatar|starter/i);
+  for (const request of apiRequests) expect(request).not.toMatch(/eagle|character|avatar|starter|expression|emotion|mood|thinking|cheer|discover|tryAgain/i);
   expect(errors).toEqual([]);
   void request;
 });

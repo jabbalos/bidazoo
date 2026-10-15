@@ -173,6 +173,13 @@ describe.skipIf(!HAS_DB)('server authority', () => {
         { character: 'click' },
         { characterId: 'click' },
         { expression: 'cheer' },
+        // F5: how the starter reacts on screen (happy, thinking, tryAgain, cheer, discover) is
+        // client-only presentation, so none of it may be accepted as input either.
+        { expressionState: 'happy' },
+        { emotion: 'cheer' },
+        { mood: 'tryAgain' },
+        { thinking: true },
+        { discover: true },
       ];
       for (const extra of forbidden) {
         const res = await player.request('POST', PATHS.answers(sessionId), {
