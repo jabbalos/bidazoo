@@ -1,0 +1,990 @@
+{
+  "renderer_version": "1.0.0",
+  "placeholders": [],
+  "overflows": [],
+  "placements": [
+    {
+      "zone": "header",
+      "slot": "LOGO_ASSET",
+      "asset": "logo/BidaZoo_World_Expedition_logo_master.png",
+      "bbox": {
+        "x": 79,
+        "y": 36,
+        "w": 226,
+        "h": 96
+      }
+    },
+    {
+      "zone": "turnaround",
+      "slot": "front",
+      "asset": "asset-library/koala/koala_turnaround_front.png",
+      "status": "READY WITH CROP/MATTING",
+      "scale_px_per_source_px": 0.538,
+      "cast": {
+        "s0": 0.184,
+        "k": 0.76,
+        "units_per_source_px": 3.846
+      },
+      "image_origin": [
+        145,
+        262
+      ],
+      "matted_bbox": {
+        "x": 145.413,
+        "y": 262.849,
+        "w": 116.175,
+        "h": 137.151
+      },
+      "baseline_y": 400,
+      "cell_center_x": 203.5,
+      "height_above_baseline_px": 137.151,
+      "limits": {
+        "max_height": 184,
+        "max_width": 335
+      },
+      "overflow": false
+    },
+    {
+      "zone": "turnaround",
+      "slot": "threeQuarter",
+      "asset": "asset-library/koala/koala_turnaround_34.png",
+      "status": "OWNER-ACCEPTED MINOR",
+      "scale_px_per_source_px": 0.538,
+      "cast": {
+        "s0": 0.184,
+        "k": 0.76,
+        "units_per_source_px": 3.846
+      },
+      "image_origin": [
+        500,
+        259
+      ],
+      "matted_bbox": {
+        "x": 503.707,
+        "y": 260.16,
+        "w": 93.585,
+        "h": 139.84
+      },
+      "baseline_y": 400,
+      "cell_center_x": 550.5,
+      "height_above_baseline_px": 139.84,
+      "limits": {
+        "max_height": 184,
+        "max_width": 335
+      },
+      "overflow": false
+    },
+    {
+      "zone": "turnaround",
+      "slot": "side",
+      "asset": "asset-library/koala/koala_turnaround_side.png",
+      "status": "READY WITH CROP/MATTING",
+      "scale_px_per_source_px": 0.538,
+      "cast": {
+        "s0": 0.184,
+        "k": 0.76,
+        "units_per_source_px": 3.846
+      },
+      "image_origin": [
+        852,
+        261
+      ],
+      "matted_bbox": {
+        "x": 855.548,
+        "y": 262.311,
+        "w": 83.904,
+        "h": 137.689
+      },
+      "baseline_y": 400,
+      "cell_center_x": 897.5,
+      "height_above_baseline_px": 137.689,
+      "limits": {
+        "max_height": 184,
+        "max_width": 335
+      },
+      "overflow": false
+    },
+    {
+      "zone": "turnaround",
+      "slot": "back",
+      "asset": "asset-library/koala/koala_turnaround_back.png",
+      "status": "READY WITH CROP/MATTING",
+      "scale_px_per_source_px": 0.538,
+      "cast": {
+        "s0": 0.184,
+        "k": 0.76,
+        "units_per_source_px": 3.846
+      },
+      "image_origin": [
+        1186,
+        261
+      ],
+      "matted_bbox": {
+        "x": 1187.488,
+        "y": 262.311,
+        "w": 114.023,
+        "h": 137.689
+      },
+      "baseline_y": 400,
+      "cell_center_x": 1244.5,
+      "height_above_baseline_px": 137.689,
+      "limits": {
+        "max_height": 184,
+        "max_width": 335
+      },
+      "overflow": false
+    },
+    {
+      "zone": "hero",
+      "slot": "hero",
+      "asset": "asset-library/koala/koala_hero_reading.png",
+      "status": "READY WITH CROP/MATTING",
+      "mode": "fit",
+      "scale_px_per_source_px": 0.843,
+      "image_origin": [
+        98,
+        533
+      ],
+      "matted_bbox": {
+        "x": 98.481,
+        "y": 536.0,
+        "w": 171.038,
+        "h": 198.0
+      },
+      "clearance_px": 24.0,
+      "overflow": false
+    },
+    {
+      "zone": "head",
+      "slot": "head",
+      "asset": "asset-library/koala/koala_head.png",
+      "status": "OWNER-ACCEPTED MINOR",
+      "scale_px_per_source_px": 0.559,
+      "image_origin": [
+        376,
+        612
+      ],
+      "matted_bbox": {
+        "x": 378.0,
+        "y": 614.083,
+        "w": 176.0,
+        "h": 141.917
+      },
+      "head_width_px": 176.0,
+      "eye_line_y": 677.778,
+      "cropped_by_box": false,
+      "bleed_shift_px": 0.0,
+      "bottom_y": 756.0,
+      "bottom_gap_to_box_px": 0.0,
+      "note": "crop-to-fill is allowed in the head close-up"
+    },
+    {
+      "zone": "expressions",
+      "slot": "idle",
+      "asset": "expression-batch/koala/koala_idle.png",
+      "status": "READY WITH CROP/MATTING",
+      "scale_px_per_source_px": 0.63,
+      "head_scale": 0.63,
+      "units_per_source_px": 1.0,
+      "fit_down_factor": 1.0,
+      "effective_head_scale": 0.63,
+      "width_excess_before_fit_px": 0.0,
+      "width_tolerance_px": 1.0,
+      "image_origin": [
+        613,
+        544
+      ],
+      "anchor": "eye_line",
+      "crop_kind": "bust",
+      "core_source": "core_box",
+      "core_box_src": [
+        3.0,
+        2.0,
+        157.0,
+        131.0
+      ],
+      "core_px": {
+        "x": 614.99,
+        "y": 545.71,
+        "w": 97.02,
+        "h": 81.27
+      },
+      "matted_bbox": {
+        "x": 614.99,
+        "y": 545.71,
+        "w": 97.02,
+        "h": 93.24
+      },
+      "eye_line_y": 598.0,
+      "bottom_y": 638.95,
+      "allowance_shift_dx": 0.0,
+      "overflow": false,
+      "limits": {
+        "core_safe_width": 109,
+        "core_nominal_width": 100,
+        "crown_min_y": 520,
+        "allowance_x": [
+          595,
+          732
+        ],
+        "allowance_note": "cell +/- 6 px (gutter midpoint)",
+        "cell_bottom_y": 726
+      }
+    },
+    {
+      "zone": "expressions",
+      "slot": "happy",
+      "asset": "expression-batch/koala/koala_happy.png",
+      "status": "READY WITH CROP/MATTING",
+      "scale_px_per_source_px": 0.63,
+      "head_scale": 0.63,
+      "units_per_source_px": 1.0,
+      "fit_down_factor": 1.0,
+      "effective_head_scale": 0.63,
+      "width_excess_before_fit_px": 0.0,
+      "width_tolerance_px": 1.0,
+      "image_origin": [
+        753,
+        546
+      ],
+      "anchor": "eye_line",
+      "crop_kind": "bust",
+      "core_source": "core_box",
+      "core_box_src": [
+        1.0,
+        3.0,
+        150.0,
+        125.0
+      ],
+      "core_px": {
+        "x": 753.565,
+        "y": 548.23,
+        "w": 93.87,
+        "h": 76.86
+      },
+      "matted_bbox": {
+        "x": 753.565,
+        "y": 548.23,
+        "w": 93.87,
+        "h": 93.24
+      },
+      "eye_line_y": 598.0,
+      "bottom_y": 641.47,
+      "allowance_shift_dx": 0.0,
+      "overflow": false,
+      "limits": {
+        "core_safe_width": 109,
+        "core_nominal_width": 100,
+        "crown_min_y": 520,
+        "allowance_x": [
+          732,
+          869
+        ],
+        "allowance_note": "cell +/- 6 px (gutter midpoint)",
+        "cell_bottom_y": 726
+      }
+    },
+    {
+      "zone": "expressions",
+      "slot": "thinking",
+      "asset": "expression-batch/koala/koala_thinking_analytical.png",
+      "status": "READY WITH CROP/MATTING",
+      "scale_px_per_source_px": 0.63,
+      "head_scale": 0.63,
+      "units_per_source_px": 1.0,
+      "fit_down_factor": 1.0,
+      "effective_head_scale": 0.63,
+      "width_excess_before_fit_px": 0.0,
+      "width_tolerance_px": 1.0,
+      "image_origin": [
+        889,
+        543
+      ],
+      "anchor": "eye_line",
+      "crop_kind": "bust",
+      "core_source": "core_box",
+      "core_box_src": [
+        1.0,
+        3.0,
+        154.0,
+        133.0
+      ],
+      "core_px": {
+        "x": 889.305,
+        "y": 545.08,
+        "w": 96.39,
+        "h": 81.9
+      },
+      "matted_bbox": {
+        "x": 889.305,
+        "y": 545.08,
+        "w": 96.39,
+        "h": 94.5
+      },
+      "eye_line_y": 598.0,
+      "bottom_y": 639.58,
+      "allowance_shift_dx": 0.0,
+      "overflow": false,
+      "limits": {
+        "core_safe_width": 109,
+        "core_nominal_width": 100,
+        "crown_min_y": 520,
+        "allowance_x": [
+          869,
+          1006
+        ],
+        "allowance_note": "cell +/- 6 px (gutter midpoint)",
+        "cell_bottom_y": 726
+      }
+    },
+    {
+      "zone": "expressions",
+      "slot": "cheer",
+      "asset": "expression-batch/koala/koala_cheer.png",
+      "status": "OWNER-ACCEPTED MINOR",
+      "scale_px_per_source_px": 0.63,
+      "head_scale": 0.63,
+      "units_per_source_px": 1.0,
+      "fit_down_factor": 1.0,
+      "effective_head_scale": 0.63,
+      "width_excess_before_fit_px": 0.485,
+      "width_tolerance_px": 1.0,
+      "image_origin": [
+        1004,
+        544
+      ],
+      "anchor": "eye_line",
+      "crop_kind": "bust",
+      "core_source": "core_box",
+      "core_box_src": [
+        39.0,
+        4.0,
+        186.0,
+        153.0
+      ],
+      "core_px": {
+        "x": 1028.195,
+        "y": 546.97,
+        "w": 92.61,
+        "h": 93.87
+      },
+      "matted_bbox": {
+        "x": 1005.515,
+        "y": 546.34,
+        "w": 137.97,
+        "h": 95.76
+      },
+      "eye_line_y": 598.0,
+      "bottom_y": 642.1,
+      "allowance_shift_dx": 0.0,
+      "overflow": false,
+      "limits": {
+        "core_safe_width": 109,
+        "core_nominal_width": 100,
+        "crown_min_y": 520,
+        "allowance_x": [
+          1006,
+          1143
+        ],
+        "allowance_note": "cell +/- 6 px (gutter midpoint)",
+        "cell_bottom_y": 726
+      }
+    },
+    {
+      "zone": "expressions",
+      "slot": "discover",
+      "asset": "expression-batch/koala/koala_discover.png",
+      "status": "READY WITH CROP/MATTING",
+      "scale_px_per_source_px": 0.63,
+      "head_scale": 0.63,
+      "units_per_source_px": 1.0,
+      "fit_down_factor": 1.0,
+      "effective_head_scale": 0.63,
+      "width_excess_before_fit_px": 0.0,
+      "width_tolerance_px": 1.0,
+      "image_origin": [
+        1163,
+        545
+      ],
+      "anchor": "eye_line",
+      "crop_kind": "bust",
+      "core_source": "core_box",
+      "core_box_src": [
+        3.0,
+        2.0,
+        152.0,
+        129.0
+      ],
+      "core_px": {
+        "x": 1164.565,
+        "y": 546.34,
+        "w": 93.87,
+        "h": 80.01
+      },
+      "matted_bbox": {
+        "x": 1164.565,
+        "y": 546.34,
+        "w": 93.87,
+        "h": 95.13
+      },
+      "eye_line_y": 598.0,
+      "bottom_y": 641.47,
+      "allowance_shift_dx": 0.0,
+      "overflow": false,
+      "limits": {
+        "core_safe_width": 109,
+        "core_nominal_width": 100,
+        "crown_min_y": 520,
+        "allowance_x": [
+          1143,
+          1280
+        ],
+        "allowance_note": "cell +/- 6 px (gutter midpoint)",
+        "cell_bottom_y": 726
+      }
+    },
+    {
+      "zone": "expressions",
+      "slot": "tryAgain",
+      "asset": "expression-batch/koala/koala_tryAgain.png",
+      "status": "READY WITH CROP/MATTING",
+      "scale_px_per_source_px": 0.63,
+      "head_scale": 0.63,
+      "units_per_source_px": 1.0,
+      "fit_down_factor": 1.0,
+      "effective_head_scale": 0.63,
+      "width_excess_before_fit_px": 0.0,
+      "width_tolerance_px": 1.0,
+      "image_origin": [
+        1292,
+        551
+      ],
+      "anchor": "eye_line",
+      "crop_kind": "bust",
+      "core_source": "core_box",
+      "core_box_src": [
+        3.0,
+        4.0,
+        176.0,
+        152.0
+      ],
+      "core_px": {
+        "x": 1294.005,
+        "y": 553.27,
+        "w": 108.99,
+        "h": 93.24
+      },
+      "matted_bbox": {
+        "x": 1294.005,
+        "y": 552.64,
+        "w": 119.07,
+        "h": 95.13
+      },
+      "eye_line_y": 598.0,
+      "bottom_y": 647.77,
+      "allowance_shift_dx": 0.0,
+      "overflow": false,
+      "limits": {
+        "core_safe_width": 109,
+        "core_nominal_width": 100,
+        "crown_min_y": 520,
+        "allowance_x": [
+          1280,
+          1417
+        ],
+        "allowance_note": "cell +/- 6 px (gutter midpoint)",
+        "cell_bottom_y": 726
+      }
+    },
+    {
+      "zone": "silhouettes",
+      "slot": "front",
+      "asset": "asset-library/koala/koala_silhouette_front.png",
+      "status": "READY WITH CROP/MATTING",
+      "source": "explicit",
+      "fit_box": [
+        36,
+        824,
+        72,
+        182
+      ],
+      "fit_scale": 0.336,
+      "bbox": {
+        "x": 36,
+        "y": 922,
+        "w": 72,
+        "h": 84
+      },
+      "baseline_y": 1006,
+      "note": "fit scale is for recognition only; not a cast-size authority"
+    },
+    {
+      "zone": "silhouettes",
+      "slot": "threeQuarter",
+      "asset": "asset-library/koala/koala_silhouette_34.png",
+      "status": "READY WITH CROP/MATTING",
+      "source": "explicit",
+      "fit_box": [
+        116,
+        824,
+        72,
+        182
+      ],
+      "fit_scale": 0.421,
+      "bbox": {
+        "x": 116,
+        "y": 898,
+        "w": 72,
+        "h": 108
+      },
+      "baseline_y": 1006,
+      "note": "fit scale is for recognition only; not a cast-size authority"
+    },
+    {
+      "zone": "silhouettes",
+      "slot": "side",
+      "asset": "asset-library/koala/koala_silhouette_side.png",
+      "status": "READY WITH CROP/MATTING",
+      "source": "explicit",
+      "fit_box": [
+        196,
+        824,
+        72,
+        182
+      ],
+      "fit_scale": 0.471,
+      "bbox": {
+        "x": 196,
+        "y": 886,
+        "w": 72,
+        "h": 120
+      },
+      "baseline_y": 1006,
+      "note": "fit scale is for recognition only; not a cast-size authority"
+    },
+    {
+      "zone": "silhouettes",
+      "slot": "back",
+      "asset": "asset-library/koala/koala_silhouette_back.png",
+      "status": "READY WITH CROP/MATTING",
+      "source": "explicit",
+      "fit_box": [
+        276,
+        824,
+        72,
+        182
+      ],
+      "fit_scale": 0.344,
+      "bbox": {
+        "x": 276,
+        "y": 920,
+        "w": 72,
+        "h": 86
+      },
+      "baseline_y": 1006,
+      "note": "fit scale is for recognition only; not a cast-size authority"
+    },
+    {
+      "zone": "silhouettes",
+      "slot": "action",
+      "asset": "asset-library/koala/koala_silhouette_reading.png",
+      "status": "READY WITH CROP/MATTING",
+      "source": "explicit",
+      "fit_box": [
+        356,
+        824,
+        108,
+        182
+      ],
+      "fit_scale": 0.543,
+      "bbox": {
+        "x": 356,
+        "y": 882,
+        "w": 108,
+        "h": 124
+      },
+      "baseline_y": 1006,
+      "note": "fit scale is for recognition only; not a cast-size authority"
+    },
+    {
+      "zone": "details",
+      "slot": "detail1",
+      "asset": "asset-library/koala/koala_detail_scholar_hat.png",
+      "status": "READY WITH CROP/MATTING",
+      "fit_scale": 0.776,
+      "bbox": {
+        "x": 511,
+        "y": 832,
+        "w": 119,
+        "h": 66
+      }
+    },
+    {
+      "zone": "details",
+      "slot": "detail2",
+      "asset": "asset-library/koala/koala_detail_glasses.png",
+      "status": "OWNER-ACCEPTED MINOR",
+      "fit_scale": 0.746,
+      "bbox": {
+        "x": 658,
+        "y": 841,
+        "w": 126,
+        "h": 47
+      }
+    },
+    {
+      "zone": "details",
+      "slot": "detail3",
+      "asset": "asset-library/koala/koala_detail_scholar_book.png",
+      "status": "READY WITH CROP/MATTING",
+      "fit_scale": 0.493,
+      "bbox": {
+        "x": 542,
+        "y": 946,
+        "w": 58,
+        "h": 66
+      }
+    },
+    {
+      "zone": "details",
+      "slot": "detail4",
+      "asset": "asset-library/koala/koala_detail_scholar_jacket.png",
+      "status": "READY WITH CROP/MATTING",
+      "fit_scale": 0.677,
+      "bbox": {
+        "x": 658,
+        "y": 947,
+        "w": 126,
+        "h": 64
+      }
+    },
+    {
+      "zone": "proportion",
+      "slot": "front_reference",
+      "asset": "asset-library/koala/koala_turnaround_front.png",
+      "status": "READY WITH CROP/MATTING",
+      "scale_px_per_source_px": 0.491,
+      "R_px": 168,
+      "k": 0.76,
+      "image_origin": [
+        1250,
+        880
+      ],
+      "matted_bbox": {
+        "x": 1250.964,
+        "y": 880.775,
+        "w": 106.073,
+        "h": 125.225
+      },
+      "box": [
+        1196,
+        824,
+        216,
+        196
+      ],
+      "overflow": false
+    }
+  ],
+  "provisional": [
+    {
+      "zone": "palette",
+      "slot": "slot1",
+      "path": "#9B85B9"
+    },
+    {
+      "zone": "palette",
+      "slot": "slot2",
+      "path": "#E7CCF2"
+    },
+    {
+      "zone": "palette",
+      "slot": "slot3",
+      "path": "#FAAB97"
+    },
+    {
+      "zone": "palette",
+      "slot": "slot4",
+      "path": "#241511"
+    },
+    {
+      "zone": "palette",
+      "slot": "slot5",
+      "path": "#0B0604"
+    },
+    {
+      "zone": "palette",
+      "slot": "slot6",
+      "path": "#5F341F"
+    }
+  ],
+  "template_defects": [],
+  "text_adjustments": [],
+  "warnings": [],
+  "assets": [
+    {
+      "path": "logo/BidaZoo_World_Expedition_logo_master.png",
+      "sha256": "944915d0f0522c2714b47a9eab4840bf0790d4900709a8c5d13d0a57f4e0f21c",
+      "bytes": 1089662,
+      "size_px": [
+        1467,
+        633
+      ]
+    },
+    {
+      "path": "asset-library/koala/koala_turnaround_front.png",
+      "sha256": "d18d2277964590c28abf2c2332fe78b2505ed74a79aded8eee400065cb03e216",
+      "bytes": 101116,
+      "size_px": [
+        220,
+        260
+      ]
+    },
+    {
+      "path": "asset-library/koala/koala_turnaround_34.png",
+      "sha256": "02331884ac62e4fb3cd1cfc09f78058f8a5207d5a53514078617fb67213be361",
+      "bytes": 90164,
+      "size_px": [
+        180,
+        267
+      ]
+    },
+    {
+      "path": "asset-library/koala/koala_turnaround_side.png",
+      "sha256": "855dac579ea760022a4f8d62cb92df86be4bc58f36d8a11a45d3c8b165e51962",
+      "bytes": 80903,
+      "size_px": [
+        174,
+        261
+      ]
+    },
+    {
+      "path": "asset-library/koala/koala_turnaround_back.png",
+      "sha256": "542c11f503177c253788c7ea9fc3c91dc20a85bf2c54fc11d0c1ae08679a343b",
+      "bytes": 97890,
+      "size_px": [
+        218,
+        262
+      ]
+    },
+    {
+      "path": "asset-library/koala/koala_hero_reading.png",
+      "sha256": "5989e248c681e780179c539d2dd56d746d03eb5d35dd8f9d6ffa86960762c3f8",
+      "bytes": 100920,
+      "size_px": [
+        206,
+        241
+      ]
+    },
+    {
+      "path": "asset-library/koala/koala_head.png",
+      "sha256": "0bc633dbd38d55a5df2236082be0cd2a507782712641c06e0f4eca45e23c5995",
+      "bytes": 139666,
+      "size_px": [
+        321,
+        258
+      ]
+    },
+    {
+      "path": "expression-batch/koala/koala_idle.png",
+      "sha256": "27842bcae6be4779cb8230165fbb24e0c6db5561cc936621978ae9a7929630fc",
+      "bytes": 53173,
+      "size_px": [
+        160,
+        152
+      ]
+    },
+    {
+      "path": "expression-batch/koala/koala_happy.png",
+      "sha256": "b7a16e546a222c8f777ce952c97d863ae9eee00d4790da5fd9b86f8e463f4f8a",
+      "bytes": 55483,
+      "size_px": [
+        152,
+        153
+      ]
+    },
+    {
+      "path": "expression-batch/koala/koala_thinking_analytical.png",
+      "sha256": "ff7cb37351ce1d65dc5ffae019c39aec4143920ef8412c692630734f658a30d5",
+      "bytes": 56407,
+      "size_px": [
+        157,
+        155
+      ]
+    },
+    {
+      "path": "expression-batch/koala/koala_cheer.png",
+      "sha256": "8ffe64fb3711484ecc886001151062ab4d23e6bc60fdf848be529cb13e8632ee",
+      "bytes": 61893,
+      "size_px": [
+        225,
+        155
+      ]
+    },
+    {
+      "path": "expression-batch/koala/koala_discover.png",
+      "sha256": "78e0ace506c50590e59e06af3a2e257431e2ffc2309a96ea1279f559d37567a7",
+      "bytes": 56062,
+      "size_px": [
+        155,
+        155
+      ]
+    },
+    {
+      "path": "expression-batch/koala/koala_tryAgain.png",
+      "sha256": "ec391d124a6bbd48b0698cb7ed227bbc7ab94cc37dd63782afbc04af40058777",
+      "bytes": 59651,
+      "size_px": [
+        195,
+        154
+      ]
+    },
+    {
+      "path": "asset-library/koala/koala_silhouette_front.png",
+      "sha256": "70163dc26b07cfdf47036c9cf2e50430ab3827fc576149cca8e5c8de21bdc2d0",
+      "bytes": 9988,
+      "size_px": [
+        214,
+        250
+      ]
+    },
+    {
+      "path": "asset-library/koala/koala_silhouette_34.png",
+      "sha256": "49a3cd8f8e21416fcf60592625685a7b0d755dd3423b382a033333e19c739698",
+      "bytes": 9641,
+      "size_px": [
+        172,
+        256
+      ]
+    },
+    {
+      "path": "asset-library/koala/koala_silhouette_side.png",
+      "sha256": "1c9a766b4cad7e758dd4e94410d31281859e968107c13e09d5f9b497924e4245",
+      "bytes": 9409,
+      "size_px": [
+        153,
+        254
+      ]
+    },
+    {
+      "path": "asset-library/koala/koala_silhouette_back.png",
+      "sha256": "f4aedc2294c8ef2318417c8853e4d9e7bc54a8dca296d91ec436ec8eded8047f",
+      "bytes": 10057,
+      "size_px": [
+        209,
+        251
+      ]
+    },
+    {
+      "path": "asset-library/koala/koala_silhouette_reading.png",
+      "sha256": "b7e3c5378fab0f2219ef055bf19195d39e4edb57855d5efec854e4ea0a95fd4f",
+      "bytes": 10001,
+      "size_px": [
+        199,
+        229
+      ]
+    },
+    {
+      "path": "asset-library/koala/koala_detail_scholar_hat.png",
+      "sha256": "86fc973d098bc8cd266f8be08592dc4d9e5faa8ed3bc94de55f12dd4d0776fea",
+      "bytes": 27744,
+      "size_px": [
+        159,
+        87
+      ]
+    },
+    {
+      "path": "asset-library/koala/koala_detail_glasses.png",
+      "sha256": "9e7d5a6475338f6f7a8ab681a9b3ae2f7bf508b8c586560d8883fe11f0547bc5",
+      "bytes": 18410,
+      "size_px": [
+        175,
+        67
+      ]
+    },
+    {
+      "path": "asset-library/koala/koala_detail_scholar_book.png",
+      "sha256": "86d9e8c80b15646f649ca4e286c64904097c5dccbe2e6978dbe7b41241106d5d",
+      "bytes": 36621,
+      "size_px": [
+        121,
+        138
+      ]
+    },
+    {
+      "path": "asset-library/koala/koala_detail_scholar_jacket.png",
+      "sha256": "af9c53c70e05e1b2606670e471d1748ec982511ee209b8f5516c917cb9165931",
+      "bytes": 34759,
+      "size_px": [
+        186,
+        94
+      ]
+    }
+  ],
+  "expression_widest_core": {
+    "slot": "tryAgain",
+    "width_px": 108.99,
+    "safe_width": 109
+  },
+  "expression_fit_down": {
+    "idle": 1.0,
+    "happy": 1.0,
+    "thinking": 1.0,
+    "cheer": 1.0,
+    "discover": 1.0,
+    "tryAgain": 1.0
+  },
+  "proportion_comparison": {
+    "tag": "TAR",
+    "k": 0.57,
+    "tick_y": 910.24
+  },
+  "proportion_marker": {
+    "k": 0.76,
+    "marker_y": 878.32,
+    "reference_tick_y": 838,
+    "baseline_y": 1006,
+    "R_px": 168
+  },
+  "character": {
+    "id": "koala",
+    "name": "Koala",
+    "k": 0.76
+  },
+  "canvas": [
+    1448,
+    1086
+  ],
+  "fonts": {
+    "family": "Nunito Sans",
+    "files": {
+      "400": "NunitoSans-Regular.ttf",
+      "600": "NunitoSans-SemiBold.ttf",
+      "700": "NunitoSans-Bold.ttf",
+      "800": "NunitoSans-ExtraBold.ttf"
+    },
+    "sha256": {
+      "400": "a4591b8197c3606b891dbc0fa6b1075e5abef0d7614c62a5ab3b1aef523d3fd6",
+      "600": "585931b02451771fbfbb0c7121257ad96dc3ac5801b8bddb558c3ffbb69ff8bf",
+      "700": "9a09d236cb3aa42fdd03cdce5b17dfc5adbbaf61686f74c1a6a28048c87cc16c",
+      "800": "79d61a64c7b33c0d92fd2ca876453713ca71ca446bf2b566fad36f6addbbe12e"
+    },
+    "license": "SIL OFL 1.1 (fonts/OFL.txt)"
+  },
+  "manifest_sheet_status_line": "M4 BUILD - LOGO_ASSET logo/BidaZoo_World_Expedition_logo_master.png (READY WITH CROP/MATTING); palette 63ec00673ac0 PROVISIONAL (docs); cast scale PROVISIONAL",
+  "computed_sheet_status": "LAYOUT PROOF - NOT FINAL: 6 provisional slot(s)",
+  "counts": {
+    "placeholders": 0,
+    "overflows": 0,
+    "provisional": 6,
+    "template_defects": 0
+  },
+  "output": {
+    "file": "koala_sheet_v2.png",
+    "sha256": "e53cecbeef1d10b6a190db59c8ee575c626f02f4145ecf1dc0cdd1e8e2198016",
+    "size_px": [
+      1448,
+      1086
+    ]
+  },
+  "manifest_file": "koala.json"
+}

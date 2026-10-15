@@ -1,0 +1,990 @@
+{
+  "renderer_version": "1.0.0",
+  "placeholders": [],
+  "overflows": [],
+  "placements": [
+    {
+      "zone": "header",
+      "slot": "LOGO_ASSET",
+      "asset": "logo/BidaZoo_World_Expedition_logo_master.png",
+      "bbox": {
+        "x": 79,
+        "y": 36,
+        "w": 226,
+        "h": 96
+      }
+    },
+    {
+      "zone": "turnaround",
+      "slot": "front",
+      "asset": "asset-library/eagle/eagle_turnaround_front.png",
+      "status": "READY WITH CROP/MATTING",
+      "scale_px_per_source_px": 0.65,
+      "cast": {
+        "s0": 0.184,
+        "k": 1.0,
+        "units_per_source_px": 3.534
+      },
+      "image_origin": [
+        115,
+        214
+      ],
+      "matted_bbox": {
+        "x": 116.376,
+        "y": 216.0,
+        "w": 174.247,
+        "h": 184.0
+      },
+      "baseline_y": 400,
+      "cell_center_x": 203.5,
+      "height_above_baseline_px": 184.0,
+      "limits": {
+        "max_height": 184,
+        "max_width": 335
+      },
+      "overflow": false
+    },
+    {
+      "zone": "turnaround",
+      "slot": "threeQuarter",
+      "asset": "asset-library/eagle/eagle_turnaround_34.png",
+      "status": "READY WITH CROP/MATTING",
+      "scale_px_per_source_px": 0.65,
+      "cast": {
+        "s0": 0.184,
+        "k": 1.0,
+        "units_per_source_px": 3.534
+      },
+      "image_origin": [
+        478,
+        215
+      ],
+      "matted_bbox": {
+        "x": 479.631,
+        "y": 216.65,
+        "w": 141.739,
+        "h": 183.35
+      },
+      "baseline_y": 400,
+      "cell_center_x": 550.5,
+      "height_above_baseline_px": 183.35,
+      "limits": {
+        "max_height": 184,
+        "max_width": 335
+      },
+      "overflow": false
+    },
+    {
+      "zone": "turnaround",
+      "slot": "side",
+      "asset": "asset-library/eagle/eagle_turnaround_side.png",
+      "status": "READY WITH CROP/MATTING",
+      "scale_px_per_source_px": 0.65,
+      "cast": {
+        "s0": 0.184,
+        "k": 1.0,
+        "units_per_source_px": 3.534
+      },
+      "image_origin": [
+        827,
+        214
+      ],
+      "matted_bbox": {
+        "x": 828.906,
+        "y": 216.0,
+        "w": 137.187,
+        "h": 184.0
+      },
+      "baseline_y": 400,
+      "cell_center_x": 897.5,
+      "height_above_baseline_px": 184.0,
+      "limits": {
+        "max_height": 184,
+        "max_width": 335
+      },
+      "overflow": false
+    },
+    {
+      "zone": "turnaround",
+      "slot": "back",
+      "asset": "asset-library/eagle/eagle_turnaround_back.png",
+      "status": "READY WITH CROP/MATTING",
+      "scale_px_per_source_px": 0.65,
+      "cast": {
+        "s0": 0.184,
+        "k": 1.0,
+        "units_per_source_px": 3.534
+      },
+      "image_origin": [
+        1162,
+        217
+      ],
+      "matted_bbox": {
+        "x": 1164.203,
+        "y": 218.601,
+        "w": 160.594,
+        "h": 181.399
+      },
+      "baseline_y": 400,
+      "cell_center_x": 1244.5,
+      "height_above_baseline_px": 181.399,
+      "limits": {
+        "max_height": 184,
+        "max_width": 335
+      },
+      "overflow": false
+    },
+    {
+      "zone": "hero",
+      "slot": "hero",
+      "asset": "asset-library/eagle/eagle_hero.png",
+      "status": "OWNER-ACCEPTED MINOR",
+      "mode": "fit",
+      "scale_px_per_source_px": 0.589,
+      "image_origin": [
+        57,
+        537
+      ],
+      "matted_bbox": {
+        "x": 58.0,
+        "y": 537.85,
+        "w": 252.0,
+        "h": 194.299
+      },
+      "clearance_px": 24.0,
+      "overflow": false
+    },
+    {
+      "zone": "head",
+      "slot": "head",
+      "asset": "asset-library/eagle/eagle_head.png",
+      "status": "READY WITH CROP/MATTING",
+      "scale_px_per_source_px": 0.779,
+      "image_origin": [
+        369,
+        589
+      ],
+      "matted_bbox": {
+        "x": 370.212,
+        "y": 590.903,
+        "w": 183.788,
+        "h": 165.097
+      },
+      "head_width_px": 176.0,
+      "eye_line_y": 668.0,
+      "cropped_by_box": false,
+      "bleed_shift_px": 0.0,
+      "bottom_y": 756.0,
+      "bottom_gap_to_box_px": 0.0,
+      "note": "crop-to-fill is allowed in the head close-up"
+    },
+    {
+      "zone": "expressions",
+      "slot": "idle",
+      "asset": "expression-batch/eagle/eagle_idle.png",
+      "status": "READY WITH CROP/MATTING",
+      "scale_px_per_source_px": 0.653,
+      "head_scale": 0.6535,
+      "units_per_source_px": 1.0,
+      "fit_down_factor": 1.0,
+      "effective_head_scale": 0.653,
+      "width_excess_before_fit_px": 0.0,
+      "width_tolerance_px": 1.0,
+      "image_origin": [
+        607,
+        633
+      ],
+      "anchor": "bottom",
+      "crop_kind": "head_only",
+      "core_source": "core_box",
+      "core_box_src": [
+        12.0,
+        2.0,
+        161.0,
+        104.0
+      ],
+      "core_px": {
+        "x": 614.814,
+        "y": 633.817,
+        "w": 97.371,
+        "h": 66.657
+      },
+      "matted_bbox": {
+        "x": 608.279,
+        "y": 633.817,
+        "w": 103.906,
+        "h": 90.183
+      },
+      "eye_line_y": 676.948,
+      "bottom_y": 724.0,
+      "allowance_shift_dx": 0.0,
+      "overflow": false,
+      "limits": {
+        "core_safe_width": 109,
+        "core_nominal_width": 100,
+        "crown_min_y": 520,
+        "allowance_x": [
+          595,
+          732
+        ],
+        "allowance_note": "cell +/- 6 px (gutter midpoint)",
+        "cell_bottom_y": 726
+      }
+    },
+    {
+      "zone": "expressions",
+      "slot": "happy",
+      "asset": "expression-batch/eagle/eagle_happy.png",
+      "status": "READY WITH CROP/MATTING",
+      "scale_px_per_source_px": 0.653,
+      "head_scale": 0.6535,
+      "units_per_source_px": 1.0,
+      "fit_down_factor": 1.0,
+      "effective_head_scale": 0.653,
+      "width_excess_before_fit_px": 0.0,
+      "width_tolerance_px": 1.0,
+      "image_origin": [
+        748,
+        557
+      ],
+      "anchor": "eye_line",
+      "crop_kind": "bust",
+      "core_source": "core_box",
+      "core_box_src": [
+        3.0,
+        3.0,
+        159.0,
+        163.0
+      ],
+      "core_px": {
+        "x": 749.527,
+        "y": 559.443,
+        "w": 101.946,
+        "h": 104.56
+      },
+      "matted_bbox": {
+        "x": 748.874,
+        "y": 559.443,
+        "w": 102.599,
+        "h": 105.213
+      },
+      "eye_line_y": 598.0,
+      "bottom_y": 664.657,
+      "allowance_shift_dx": 0.0,
+      "overflow": false,
+      "limits": {
+        "core_safe_width": 109,
+        "core_nominal_width": 100,
+        "crown_min_y": 520,
+        "allowance_x": [
+          732,
+          869
+        ],
+        "allowance_note": "cell +/- 6 px (gutter midpoint)",
+        "cell_bottom_y": 726
+      }
+    },
+    {
+      "zone": "expressions",
+      "slot": "thinking",
+      "asset": "expression-batch/eagle/eagle_thinking.png",
+      "status": "OWNER-ACCEPTED MINOR",
+      "scale_px_per_source_px": 0.653,
+      "head_scale": 0.6535,
+      "units_per_source_px": 1.0,
+      "fit_down_factor": 1.0,
+      "effective_head_scale": 0.653,
+      "width_excess_before_fit_px": 0.0,
+      "width_tolerance_px": 1.0,
+      "image_origin": [
+        886,
+        554
+      ],
+      "anchor": "eye_line",
+      "crop_kind": "bust",
+      "core_source": "core_box",
+      "core_box_src": [
+        3.0,
+        7.0,
+        155.0,
+        164.0
+      ],
+      "core_px": {
+        "x": 887.834,
+        "y": 558.136,
+        "w": 99.332,
+        "h": 102.599
+      },
+      "matted_bbox": {
+        "x": 887.181,
+        "y": 556.83,
+        "w": 101.293,
+        "h": 104.56
+      },
+      "eye_line_y": 598.0,
+      "bottom_y": 661.389,
+      "allowance_shift_dx": 0.0,
+      "overflow": false,
+      "limits": {
+        "core_safe_width": 109,
+        "core_nominal_width": 100,
+        "crown_min_y": 520,
+        "allowance_x": [
+          869,
+          1006
+        ],
+        "allowance_note": "cell +/- 6 px (gutter midpoint)",
+        "cell_bottom_y": 726
+      }
+    },
+    {
+      "zone": "expressions",
+      "slot": "cheer",
+      "asset": "expression-batch/eagle/eagle_cheer.png",
+      "status": "READY WITH CROP/MATTING",
+      "scale_px_per_source_px": 0.653,
+      "head_scale": 0.6535,
+      "units_per_source_px": 1.0,
+      "fit_down_factor": 1.0,
+      "effective_head_scale": 0.653,
+      "width_excess_before_fit_px": 0.0,
+      "width_tolerance_px": 1.0,
+      "image_origin": [
+        1022,
+        556
+      ],
+      "anchor": "eye_line",
+      "crop_kind": "bust",
+      "core_source": "core_box",
+      "core_box_src": [
+        3.0,
+        4.0,
+        158.0,
+        163.0
+      ],
+      "core_px": {
+        "x": 1023.854,
+        "y": 558.137,
+        "w": 101.292,
+        "h": 103.906
+      },
+      "matted_bbox": {
+        "x": 1023.2,
+        "y": 558.137,
+        "w": 119.59,
+        "h": 104.56
+      },
+      "eye_line_y": 598.0,
+      "bottom_y": 662.697,
+      "allowance_shift_dx": 0.0,
+      "overflow": false,
+      "limits": {
+        "core_safe_width": 109,
+        "core_nominal_width": 100,
+        "crown_min_y": 520,
+        "allowance_x": [
+          1006,
+          1143
+        ],
+        "allowance_note": "cell +/- 6 px (gutter midpoint)",
+        "cell_bottom_y": 726
+      }
+    },
+    {
+      "zone": "expressions",
+      "slot": "discover",
+      "asset": "expression-batch/eagle/eagle_discover.png",
+      "status": "READY WITH CROP/MATTING",
+      "scale_px_per_source_px": 0.653,
+      "head_scale": 0.6535,
+      "units_per_source_px": 1.0,
+      "fit_down_factor": 1.0,
+      "effective_head_scale": 0.653,
+      "width_excess_before_fit_px": 0.0,
+      "width_tolerance_px": 1.0,
+      "image_origin": [
+        1158,
+        551
+      ],
+      "anchor": "eye_line",
+      "crop_kind": "bust",
+      "core_source": "core_box",
+      "core_box_src": [
+        11.0,
+        3.0,
+        152.0,
+        110.0
+      ],
+      "core_px": {
+        "x": 1165.428,
+        "y": 552.909,
+        "w": 92.143,
+        "h": 69.924
+      },
+      "matted_bbox": {
+        "x": 1160.854,
+        "y": 552.909,
+        "w": 116.323,
+        "h": 105.213
+      },
+      "eye_line_y": 598.0,
+      "bottom_y": 658.122,
+      "allowance_shift_dx": 0.0,
+      "overflow": false,
+      "limits": {
+        "core_safe_width": 109,
+        "core_nominal_width": 100,
+        "crown_min_y": 520,
+        "allowance_x": [
+          1143,
+          1280
+        ],
+        "allowance_note": "cell +/- 6 px (gutter midpoint)",
+        "cell_bottom_y": 726
+      }
+    },
+    {
+      "zone": "expressions",
+      "slot": "tryAgain",
+      "asset": "expression-batch/eagle/eagle_tryAgain.png",
+      "status": "OWNER-ACCEPTED MINOR",
+      "scale_px_per_source_px": 0.653,
+      "head_scale": 0.6535,
+      "units_per_source_px": 1.0,
+      "fit_down_factor": 1.0,
+      "effective_head_scale": 0.653,
+      "width_excess_before_fit_px": 0.0,
+      "width_tolerance_px": 1.0,
+      "image_origin": [
+        1296,
+        555
+      ],
+      "anchor": "eye_line",
+      "crop_kind": "bust",
+      "core_source": "core_box",
+      "core_box_src": [
+        3.0,
+        3.0,
+        157.0,
+        164.0
+      ],
+      "core_px": {
+        "x": 1298.18,
+        "y": 556.83,
+        "w": 100.639,
+        "h": 105.213
+      },
+      "matted_bbox": {
+        "x": 1297.527,
+        "y": 556.83,
+        "w": 104.56,
+        "h": 105.867
+      },
+      "eye_line_y": 598.0,
+      "bottom_y": 662.697,
+      "allowance_shift_dx": 0.0,
+      "overflow": false,
+      "limits": {
+        "core_safe_width": 109,
+        "core_nominal_width": 100,
+        "crown_min_y": 520,
+        "allowance_x": [
+          1280,
+          1417
+        ],
+        "allowance_note": "cell +/- 6 px (gutter midpoint)",
+        "cell_bottom_y": 726
+      }
+    },
+    {
+      "zone": "silhouettes",
+      "slot": "front",
+      "asset": "asset-library/eagle/eagle_silhouette_front.png",
+      "status": "READY WITH CROP/MATTING",
+      "source": "explicit",
+      "fit_box": [
+        36,
+        824,
+        72,
+        182
+      ],
+      "fit_scale": 0.273,
+      "bbox": {
+        "x": 36,
+        "y": 929,
+        "w": 72,
+        "h": 77
+      },
+      "baseline_y": 1006,
+      "note": "fit scale is for recognition only; not a cast-size authority"
+    },
+    {
+      "zone": "silhouettes",
+      "slot": "threeQuarter",
+      "asset": "asset-library/eagle/eagle_silhouette_34.png",
+      "status": "READY WITH CROP/MATTING",
+      "source": "explicit",
+      "fit_box": [
+        116,
+        824,
+        72,
+        182
+      ],
+      "fit_scale": 0.338,
+      "bbox": {
+        "x": 116,
+        "y": 912,
+        "w": 72,
+        "h": 94
+      },
+      "baseline_y": 1006,
+      "note": "fit scale is for recognition only; not a cast-size authority"
+    },
+    {
+      "zone": "silhouettes",
+      "slot": "side",
+      "asset": "asset-library/eagle/eagle_silhouette_side.png",
+      "status": "READY WITH CROP/MATTING",
+      "source": "explicit",
+      "fit_box": [
+        196,
+        824,
+        72,
+        182
+      ],
+      "fit_scale": 0.348,
+      "bbox": {
+        "x": 196,
+        "y": 909,
+        "w": 72,
+        "h": 97
+      },
+      "baseline_y": 1006,
+      "note": "fit scale is for recognition only; not a cast-size authority"
+    },
+    {
+      "zone": "silhouettes",
+      "slot": "back",
+      "asset": "asset-library/eagle/eagle_silhouette_back.png",
+      "status": "READY WITH CROP/MATTING",
+      "source": "explicit",
+      "fit_box": [
+        276,
+        824,
+        72,
+        182
+      ],
+      "fit_scale": 0.295,
+      "bbox": {
+        "x": 276,
+        "y": 925,
+        "w": 72,
+        "h": 81
+      },
+      "baseline_y": 1006,
+      "note": "fit scale is for recognition only; not a cast-size authority"
+    },
+    {
+      "zone": "silhouettes",
+      "slot": "action",
+      "asset": "asset-library/eagle/eagle_silhouette_action.png",
+      "status": "READY WITH CROP/MATTING",
+      "source": "explicit",
+      "fit_box": [
+        356,
+        824,
+        108,
+        182
+      ],
+      "fit_scale": 0.252,
+      "bbox": {
+        "x": 356,
+        "y": 923,
+        "w": 108,
+        "h": 83
+      },
+      "baseline_y": 1006,
+      "note": "fit scale is for recognition only; not a cast-size authority"
+    },
+    {
+      "zone": "details",
+      "slot": "detail1",
+      "asset": "asset-library/eagle/eagle_detail_academy_a_patch.png",
+      "status": "READY WITH CROP/MATTING",
+      "fit_scale": 0.667,
+      "bbox": {
+        "x": 508,
+        "y": 837,
+        "w": 126,
+        "h": 56
+      }
+    },
+    {
+      "zone": "details",
+      "slot": "detail2",
+      "asset": "asset-library/eagle/eagle_detail_varsity_collar.png",
+      "status": "READY WITH CROP/MATTING",
+      "fit_scale": 0.835,
+      "bbox": {
+        "x": 667,
+        "y": 832,
+        "w": 107,
+        "h": 66
+      }
+    },
+    {
+      "zone": "details",
+      "slot": "detail3",
+      "asset": "asset-library/eagle/eagle_detail_mountain_emblem.png",
+      "status": "READY WITH CROP/MATTING",
+      "fit_scale": 0.696,
+      "bbox": {
+        "x": 508,
+        "y": 950,
+        "w": 126,
+        "h": 58
+      }
+    },
+    {
+      "zone": "details",
+      "slot": "detail4",
+      "asset": "asset-library/eagle/eagle_detail_wing_feather_treatment.png",
+      "status": "READY WITH CROP/MATTING",
+      "fit_scale": 0.437,
+      "bbox": {
+        "x": 703,
+        "y": 946,
+        "w": 35,
+        "h": 66
+      }
+    },
+    {
+      "zone": "proportion",
+      "slot": "front_reference",
+      "asset": "asset-library/eagle/eagle_turnaround_front.png",
+      "status": "READY WITH CROP/MATTING",
+      "scale_px_per_source_px": 0.594,
+      "R_px": 168,
+      "k": 1.0,
+      "image_origin": [
+        1223,
+        836
+      ],
+      "matted_bbox": {
+        "x": 1224.452,
+        "y": 838.0,
+        "w": 159.095,
+        "h": 168.0
+      },
+      "box": [
+        1196,
+        824,
+        216,
+        196
+      ],
+      "overflow": false
+    }
+  ],
+  "provisional": [
+    {
+      "zone": "palette",
+      "slot": "slot1",
+      "path": "#FDF6ED"
+    },
+    {
+      "zone": "palette",
+      "slot": "slot2",
+      "path": "#602F1D"
+    },
+    {
+      "zone": "palette",
+      "slot": "slot3",
+      "path": "#FCBF15"
+    },
+    {
+      "zone": "palette",
+      "slot": "slot4",
+      "path": "#0E472B"
+    },
+    {
+      "zone": "palette",
+      "slot": "slot5",
+      "path": "#F68905"
+    },
+    {
+      "zone": "palette",
+      "slot": "slot6",
+      "path": "#058AC4"
+    }
+  ],
+  "template_defects": [],
+  "text_adjustments": [],
+  "warnings": [],
+  "assets": [
+    {
+      "path": "logo/BidaZoo_World_Expedition_logo_master.png",
+      "sha256": "944915d0f0522c2714b47a9eab4840bf0790d4900709a8c5d13d0a57f4e0f21c",
+      "bytes": 1089662,
+      "size_px": [
+        1467,
+        633
+      ]
+    },
+    {
+      "path": "asset-library/eagle/eagle_turnaround_front.png",
+      "sha256": "fc6d1eba682bf91648435e8e2aef9eaee89d00640f21f0bcc682a6acce28dadc",
+      "bytes": 140551,
+      "size_px": [
+        273,
+        289
+      ]
+    },
+    {
+      "path": "asset-library/eagle/eagle_turnaround_34.png",
+      "sha256": "778e67970b21fd20e377f0c9fe0f0329c0d88e274341bda3293caccba572dc49",
+      "bytes": 120578,
+      "size_px": [
+        223,
+        288
+      ]
+    },
+    {
+      "path": "asset-library/eagle/eagle_turnaround_side.png",
+      "sha256": "1842de278e305a589eeddf673a9c634fe76a423d5e331787ddb92bfc22dcc097",
+      "bytes": 106912,
+      "size_px": [
+        217,
+        289
+      ]
+    },
+    {
+      "path": "asset-library/eagle/eagle_turnaround_back.png",
+      "sha256": "6cb0caac67837be89650c1dd333c6411e34a82dae611c26df61420701bf4d295",
+      "bytes": 117303,
+      "size_px": [
+        253,
+        285
+      ]
+    },
+    {
+      "path": "asset-library/eagle/eagle_hero.png",
+      "sha256": "9659bf14fe08d8129ac64b20569c2c1f4ae8beacfcdffd04167d7091f092c0ae",
+      "bytes": 199698,
+      "size_px": [
+        432,
+        335
+      ]
+    },
+    {
+      "path": "asset-library/eagle/eagle_head.png",
+      "sha256": "bfb5843e7e2c4ad84cf121f3090be9f027522e1d7758e601f64419dfec66bc4b",
+      "bytes": 91057,
+      "size_px": [
+        241,
+        215
+      ]
+    },
+    {
+      "path": "expression-batch/eagle/eagle_idle.png",
+      "sha256": "2a35baf058d0f3ad7b5f0f4918fbbc2ebc08b5e521e758ee7049a7f2d6a1a78a",
+      "bytes": 53241,
+      "size_px": [
+        163,
+        141
+      ]
+    },
+    {
+      "path": "expression-batch/eagle/eagle_happy.png",
+      "sha256": "c84c8b04b4d6e136cc3c1680a05657be0b1ecada0fcb30755445c39019ed8af5",
+      "bytes": 58869,
+      "size_px": [
+        163,
+        168
+      ]
+    },
+    {
+      "path": "expression-batch/eagle/eagle_thinking.png",
+      "sha256": "1f5e337c6df287d95a1e8e839327664904b3b3a84b2dd8b0fdb037bcfe60571d",
+      "bytes": 57881,
+      "size_px": [
+        163,
+        168
+      ]
+    },
+    {
+      "path": "expression-batch/eagle/eagle_cheer.png",
+      "sha256": "21110400bf55802b723cbc0e88283f14fb350c86dcfdf6c5a52512886e0393b0",
+      "bytes": 61152,
+      "size_px": [
+        193,
+        168
+      ]
+    },
+    {
+      "path": "expression-batch/eagle/eagle_discover.png",
+      "sha256": "91ad39e3507ada55a1bb7535474127830a413d8022543791bebb47fb9ebc587e",
+      "bytes": 62556,
+      "size_px": [
+        185,
+        168
+      ]
+    },
+    {
+      "path": "expression-batch/eagle/eagle_tryAgain.png",
+      "sha256": "bb4473f5c262f6f2421c313832a3735a413483af893a2412e0dc4b709f12986e",
+      "bytes": 59845,
+      "size_px": [
+        163,
+        168
+      ]
+    },
+    {
+      "path": "asset-library/eagle/eagle_silhouette_front.png",
+      "sha256": "e41d20eeed0ad63542771e5d2fe5f4d592e3e43afd447d85d523d6ff1052b4f2",
+      "bytes": 11836,
+      "size_px": [
+        264,
+        281
+      ]
+    },
+    {
+      "path": "asset-library/eagle/eagle_silhouette_34.png",
+      "sha256": "ce98a743ab0e976970d83e444c6121d71690cddbf8b6366e17575bdcfe26e1f7",
+      "bytes": 11137,
+      "size_px": [
+        213,
+        278
+      ]
+    },
+    {
+      "path": "asset-library/eagle/eagle_silhouette_side.png",
+      "sha256": "fbd11c68bbc5de59266d644e3800d18648521d372badf97da744732855254bfe",
+      "bytes": 10936,
+      "size_px": [
+        207,
+        278
+      ]
+    },
+    {
+      "path": "asset-library/eagle/eagle_silhouette_back.png",
+      "sha256": "1edc0abf89a3ae647855718b4876446b5b37f054352c21349d90dec86c022c32",
+      "bytes": 11681,
+      "size_px": [
+        244,
+        273
+      ]
+    },
+    {
+      "path": "asset-library/eagle/eagle_silhouette_action.png",
+      "sha256": "9c37152d8a686578271b7661c0a4dec8744c9424baa4b094695cae6aa61a517c",
+      "bytes": 14829,
+      "size_px": [
+        428,
+        329
+      ]
+    },
+    {
+      "path": "asset-library/eagle/eagle_detail_academy_a_patch.png",
+      "sha256": "1d1b347bbc1dc0dc325d3010d5491d3365df47cfc196672304c844b926df744b",
+      "bytes": 41022,
+      "size_px": [
+        195,
+        90
+      ]
+    },
+    {
+      "path": "asset-library/eagle/eagle_detail_varsity_collar.png",
+      "sha256": "9dd7581dba7483c2f00f552627ebcf35d95d950e2cc5efeb24743704023558ab",
+      "bytes": 31253,
+      "size_px": [
+        134,
+        85
+      ]
+    },
+    {
+      "path": "asset-library/eagle/eagle_detail_mountain_emblem.png",
+      "sha256": "b20b7010e659d16bbcc9cf6f87c1f69e8b66de2cb2017260430717c43c7b342d",
+      "bytes": 38303,
+      "size_px": [
+        187,
+        89
+      ]
+    },
+    {
+      "path": "asset-library/eagle/eagle_detail_wing_feather_treatment.png",
+      "sha256": "4d3bb26b6ea180bae36f09bdb509751c787b09024acf7e61d6fae029b1086c99",
+      "bytes": 29300,
+      "size_px": [
+        81,
+        151
+      ]
+    }
+  ],
+  "expression_widest_core": {
+    "slot": "happy",
+    "width_px": 101.946,
+    "safe_width": 109
+  },
+  "expression_fit_down": {
+    "idle": 1.0,
+    "happy": 1.0,
+    "thinking": 1.0,
+    "cheer": 1.0,
+    "discover": 1.0,
+    "tryAgain": 1.0
+  },
+  "proportion_comparison": {
+    "tag": "TAR",
+    "k": 0.57,
+    "tick_y": 910.24
+  },
+  "proportion_marker": {
+    "k": 1.0,
+    "marker_y": 838.0,
+    "reference_tick_y": 838,
+    "baseline_y": 1006,
+    "R_px": 168
+  },
+  "character": {
+    "id": "eagle",
+    "name": "Eagle",
+    "k": 1.0
+  },
+  "canvas": [
+    1448,
+    1086
+  ],
+  "fonts": {
+    "family": "Nunito Sans",
+    "files": {
+      "400": "NunitoSans-Regular.ttf",
+      "600": "NunitoSans-SemiBold.ttf",
+      "700": "NunitoSans-Bold.ttf",
+      "800": "NunitoSans-ExtraBold.ttf"
+    },
+    "sha256": {
+      "400": "a4591b8197c3606b891dbc0fa6b1075e5abef0d7614c62a5ab3b1aef523d3fd6",
+      "600": "585931b02451771fbfbb0c7121257ad96dc3ac5801b8bddb558c3ffbb69ff8bf",
+      "700": "9a09d236cb3aa42fdd03cdce5b17dfc5adbbaf61686f74c1a6a28048c87cc16c",
+      "800": "79d61a64c7b33c0d92fd2ca876453713ca71ca446bf2b566fad36f6addbbe12e"
+    },
+    "license": "SIL OFL 1.1 (fonts/OFL.txt)"
+  },
+  "manifest_sheet_status_line": "M4 BUILD - LOGO_ASSET logo/BidaZoo_World_Expedition_logo_master.png (READY WITH CROP/MATTING); palette 63ec00673ac0 PROVISIONAL (docs); cast scale PROVISIONAL",
+  "computed_sheet_status": "LAYOUT PROOF - NOT FINAL: 6 provisional slot(s)",
+  "counts": {
+    "placeholders": 0,
+    "overflows": 0,
+    "provisional": 6,
+    "template_defects": 0
+  },
+  "output": {
+    "file": "eagle_sheet_v2.png",
+    "sha256": "b80961e600f85bc32d8ee41ef1d48337f5b936e49f5486ab33cd5c6dfa148273",
+    "size_px": [
+      1448,
+      1086
+    ]
+  },
+  "manifest_file": "eagle.json"
+}

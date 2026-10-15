@@ -1,0 +1,134 @@
+{
+  "schemaVersion": 1,
+  "purpose": "Provenance for the curated runtime Dino expression PNGs (Checkpoint F3). Machine-readable authority; verified by tests/integration/character-runtime-assets.test.ts.",
+  "character": "dino",
+  "runtimeDirectory": "games/zoo-sprint/assets/world-expedition/characters/dino",
+  "canonicalLibrary": "docs/reference-art/world-expedition/production-v1.1",
+  "canonicalManifest": "docs/reference-art/world-expedition/production-v1.1/renderer/final-manifests/dino.json",
+  "storage": "normal Git blobs (no Git LFS rule matches the runtime directory)",
+  "derivation": "byte-for-byte copy of the canonical M4 file: no re-encode, no crop, no resize, no recolor, no metadata edit",
+  "headScale": 0.7843,
+  "expressions": {
+    "idle": {
+      "runtimeFile": "dino_idle.png",
+      "runtimeSha256": "95aa9a23772dbf312408f4c4e0d4e0097dd512a46bd7c9bd2762b9817e217f76",
+      "runtimeBytes": 31618,
+      "width": 133,
+      "height": 106,
+      "canonicalSourcePath": "docs/reference-art/world-expedition/production-v1.1/expression-batch/dino/dino_idle.png",
+      "canonicalSha256": "95aa9a23772dbf312408f4c4e0d4e0097dd512a46bd7c9bd2762b9817e217f76",
+      "derivation": "byte-for-byte copy",
+      "anchor": {
+        "eyeLineSrcY": 56,
+        "coreBox": [
+          0,
+          0,
+          126,
+          87
+        ],
+        "cropKind": "head_only"
+      }
+    },
+    "happy": {
+      "runtimeFile": "dino_happy.png",
+      "runtimeSha256": "e7ad95e3f7e3dc200d1e50207161be2de8237ceb988b396da3dcf5553de3efde",
+      "runtimeBytes": 51075,
+      "width": 146,
+      "height": 165,
+      "canonicalSourcePath": "docs/reference-art/world-expedition/production-v1.1/expression-batch/dino/dino_happy.png",
+      "canonicalSha256": "e7ad95e3f7e3dc200d1e50207161be2de8237ceb988b396da3dcf5553de3efde",
+      "derivation": "byte-for-byte copy",
+      "anchor": {
+        "eyeLineSrcY": 52,
+        "coreBox": [
+          6,
+          2,
+          132,
+          80
+        ],
+        "cropKind": "bust"
+      }
+    },
+    "thinking": {
+      "runtimeFile": "dino_thinking.png",
+      "runtimeSha256": "a41c83c46450d906c6e89f92555c1b2637bda1b6d48ae4f19b09b364f6d362dd",
+      "runtimeBytes": 52396,
+      "width": 153,
+      "height": 164,
+      "canonicalSourcePath": "docs/reference-art/world-expedition/production-v1.1/expression-batch/dino/dino_thinking.png",
+      "canonicalSha256": "a41c83c46450d906c6e89f92555c1b2637bda1b6d48ae4f19b09b364f6d362dd",
+      "derivation": "byte-for-byte copy",
+      "anchor": {
+        "eyeLineSrcY": 64,
+        "coreBox": [
+          4,
+          3,
+          133,
+          98
+        ],
+        "cropKind": "bust"
+      }
+    },
+    "cheer": {
+      "runtimeFile": "dino_cheer.png",
+      "runtimeSha256": "86ae9ae4e976fdcd0ac8481e9c6e2ea192912167d30c0b8f7f940a01aa2130f4",
+      "runtimeBytes": 55695,
+      "width": 183,
+      "height": 163,
+      "canonicalSourcePath": "docs/reference-art/world-expedition/production-v1.1/expression-batch/dino/dino_cheer.png",
+      "canonicalSha256": "86ae9ae4e976fdcd0ac8481e9c6e2ea192912167d30c0b8f7f940a01aa2130f4",
+      "derivation": "byte-for-byte copy",
+      "anchor": {
+        "eyeLineSrcY": 56,
+        "coreBox": [
+          32,
+          3,
+          154,
+          85
+        ],
+        "cropKind": "bust"
+      }
+    },
+    "discover": {
+      "runtimeFile": "dino_discover.png",
+      "runtimeSha256": "3c6eec7e16baa8ecda90fe0021519b1dff85e6dcfb17d5042d3204c39083b229",
+      "runtimeBytes": 49365,
+      "width": 166,
+      "height": 164,
+      "canonicalSourcePath": "docs/reference-art/world-expedition/production-v1.1/expression-batch/dino/dino_discover.png",
+      "canonicalSha256": "3c6eec7e16baa8ecda90fe0021519b1dff85e6dcfb17d5042d3204c39083b229",
+      "derivation": "byte-for-byte copy",
+      "anchor": {
+        "eyeLineSrcY": 67,
+        "coreBox": [
+          4,
+          3,
+          135,
+          102
+        ],
+        "cropKind": "bust"
+      }
+    },
+    "tryAgain": {
+      "runtimeFile": "dino_tryAgain.png",
+      "runtimeSha256": "055a5f4d827fae878ff68056e406c595b232a5e6af155d35d9e624bf94d602ba",
+      "runtimeBytes": 55366,
+      "width": 176,
+      "height": 161,
+      "canonicalSourcePath": "docs/reference-art/world-expedition/production-v1.1/expression-batch/dino/dino_tryAgain.png",
+      "canonicalSha256": "055a5f4d827fae878ff68056e406c595b232a5e6af155d35d9e624bf94d602ba",
+      "derivation": "byte-for-byte copy",
+      "anchor": {
+        "eyeLineSrcY": 68,
+        "coreBox": [
+          22,
+          3,
+          158,
+          104
+        ],
+        "cropKind": "bust"
+      }
+    }
+  },
+  "totalRuntimeBytes": 295515
+}

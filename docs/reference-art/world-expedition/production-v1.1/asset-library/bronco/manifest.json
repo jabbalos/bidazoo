@@ -1,0 +1,1782 @@
+{
+  "schema": "m4-release-library-manifest/1",
+  "generated": "2026-10-13",
+  "character": "bronco",
+  "source_sheet": "bronco.png = production-v1.1 06_Bronco_Character_Sheet, maroon bandana (read-only)",
+  "excluded": "six expression states",
+  "role_vocabulary": {
+    "canonical": "fills one doc 15/16 slot",
+    "supplemental": "real art, not a canonical slot; must not be used as canonical",
+    "historical": "old flat-sheet silhouettes, QA comparison only",
+    "superseded": "earlier versions, audit only"
+  },
+  "status_vocabulary": [
+    "READY WITH CROP/MATTING",
+    "NEEDS CONTROLLED EDIT",
+    "MISSING / TO AUTHOR",
+    "PROVISIONAL",
+    "HISTORICAL / QA-COMPARISON ONLY"
+  ],
+  "owner_accepted_minor_renders_as": "READY WITH CROP/MATTING",
+  "canonical_slots": {
+    "F detail 2": "bronco_detail_bandana.png",
+    "F detail 1": "bronco_detail_cowboy_hat.png",
+    "F detail 3": "bronco_detail_saddle_pack.png",
+    "F detail 4": "bronco_detail_star_treatment.png",
+    "C head": "bronco_head.png",
+    "B hero": "bronco_hero.png",
+    "A turnaround 34": "bronco_turnaround_34.png",
+    "A turnaround back": "bronco_turnaround_back.png",
+    "A turnaround front": "bronco_turnaround_front.png",
+    "A turnaround side": "bronco_turnaround_side.png",
+    "E silhouette front": "bronco_silhouette_front.png",
+    "E silhouette 34": "bronco_silhouette_34.png",
+    "E silhouette side": "bronco_silhouette_side.png",
+    "E silhouette back": "bronco_silhouette_back.png",
+    "E silhouette action": "bronco_silhouette_action.png"
+  },
+  "counts": {
+    "canonical": 15,
+    "supplemental": 1,
+    "historical_silhouettes": 6,
+    "superseded": 2,
+    "status_by_role": {
+      "canonical": {
+        "READY WITH CROP/MATTING": 13,
+        "OWNER-ACCEPTED MINOR": 2
+      },
+      "supplemental": {
+        "READY WITH CROP/MATTING": 1
+      }
+    }
+  },
+  "assets": [
+    {
+      "file": "bronco_detail_bandana.png",
+      "asset": "detail_bandana",
+      "role": "canonical",
+      "slot": "F detail 2",
+      "status": "READY WITH CROP/MATTING",
+      "sha256": "359ad0623191a81d2536a46a4c84ffc0f3eeb2807c57e4dad0460514ab22f422",
+      "png_size": [
+        97,
+        89
+      ],
+      "mode": "RGBA",
+      "preview_4bg": "bronco_detail_bandana_4bg.png",
+      "source_provenance": {
+        "source_sheet": "bronco.png = production-v1.1 06_Bronco_Character_Sheet, maroon bandana (read-only)",
+        "source_panel_box": [
+          645,
+          926,
+          746,
+          1021
+        ],
+        "trim_origin_xy": [
+          647,
+          930
+        ],
+        "derived_from": null,
+        "derived_rect_in_source_asset": null,
+        "method": "parchment_matte",
+        "auto_metrics": {
+          "clipping": false,
+          "clip_edges": {
+            "clip_left": 0.0,
+            "clip_right": 0.0,
+            "clip_top": 0.0,
+            "clip_bottom": 0.0
+          },
+          "halo_fraction": 0.0,
+          "extra_components": [],
+          "outline_missing_px": 0,
+          "auto_pass": true,
+          "flags": []
+        },
+        "pass": true,
+        "pass_basis": "auto",
+        "needs_attention": false,
+        "drawn_height_px": 89,
+        "png_size": [
+          97,
+          89
+        ],
+        "recommended_eye_line_src_y": null,
+        "eye_line_sheet_y": null,
+        "eye_line_basis": null,
+        "notes": ""
+      },
+      "recommended_eye_line_src_y": null,
+      "eye_line_basis": null
+    },
+    {
+      "file": "bronco_detail_cowboy_hat.png",
+      "asset": "detail_cowboy_hat",
+      "role": "canonical",
+      "slot": "F detail 1",
+      "status": "READY WITH CROP/MATTING",
+      "sha256": "e0ea81c6632503947dc9544d869859b0f780a8ee3d9b91589edbf40e4f877c03",
+      "png_size": [
+        163,
+        89
+      ],
+      "mode": "RGBA",
+      "preview_4bg": "bronco_detail_cowboy_hat_4bg.png",
+      "source_provenance": {
+        "source_sheet": "bronco.png = production-v1.1 06_Bronco_Character_Sheet, maroon bandana (read-only)",
+        "source_panel_box": [
+          622,
+          834,
+          790,
+          929
+        ],
+        "trim_origin_xy": [
+          626,
+          838
+        ],
+        "derived_from": null,
+        "derived_rect_in_source_asset": null,
+        "method": "parchment_matte",
+        "auto_metrics": {
+          "clipping": false,
+          "clip_edges": {
+            "clip_left": 0.0,
+            "clip_right": 0.0,
+            "clip_top": 0.0,
+            "clip_bottom": 0.0
+          },
+          "halo_fraction": 0.0,
+          "extra_components": [],
+          "outline_missing_px": 0,
+          "auto_pass": true,
+          "flags": []
+        },
+        "pass": true,
+        "pass_basis": "auto",
+        "needs_attention": false,
+        "drawn_height_px": 89,
+        "png_size": [
+          163,
+          89
+        ],
+        "recommended_eye_line_src_y": null,
+        "eye_line_sheet_y": null,
+        "eye_line_basis": null,
+        "notes": ""
+      },
+      "recommended_eye_line_src_y": null,
+      "eye_line_basis": null
+    },
+    {
+      "file": "bronco_detail_saddle_pack.png",
+      "asset": "detail_saddle_pack",
+      "role": "canonical",
+      "slot": "F detail 3",
+      "status": "READY WITH CROP/MATTING",
+      "sha256": "02d645c0b74fe2bf669a128bd2275df77a48a24ff96d637d2b53c643eed6cd81",
+      "png_size": [
+        157,
+        117
+      ],
+      "mode": "RGBA",
+      "preview_4bg": "bronco_detail_saddle_pack_4bg.png",
+      "source_provenance": {
+        "source_sheet": "bronco.png = production-v1.1 06_Bronco_Character_Sheet, maroon bandana (read-only)",
+        "source_panel_box": [
+          738,
+          908,
+          905,
+          1029
+        ],
+        "trim_origin_xy": [
+          742,
+          912
+        ],
+        "derived_from": null,
+        "derived_rect_in_source_asset": null,
+        "method": "parchment_matte",
+        "auto_metrics": {
+          "clipping": false,
+          "clip_edges": {
+            "clip_left": 0.0,
+            "clip_right": 0.0,
+            "clip_top": 0.0,
+            "clip_bottom": 0.032
+          },
+          "halo_fraction": 0.0022,
+          "extra_components": [],
+          "outline_missing_px": 0,
+          "auto_pass": true,
+          "flags": []
+        },
+        "pass": true,
+        "pass_basis": "auto",
+        "needs_attention": false,
+        "drawn_height_px": 117,
+        "png_size": [
+          157,
+          117
+        ],
+        "recommended_eye_line_src_y": null,
+        "eye_line_sheet_y": null,
+        "eye_line_basis": null,
+        "notes": ""
+      },
+      "recommended_eye_line_src_y": null,
+      "eye_line_basis": null
+    },
+    {
+      "file": "bronco_detail_star_treatment.png",
+      "asset": "detail_star_treatment",
+      "role": "canonical",
+      "slot": "F detail 4",
+      "status": "READY WITH CROP/MATTING",
+      "sha256": "c8a2577621ae62c8d6de9506b0db0602a5cfc6357c1530fe71204faf44eaae8f",
+      "png_size": [
+        69,
+        61
+      ],
+      "mode": "RGBA",
+      "preview_4bg": "bronco_detail_star_treatment_4bg.png",
+      "source_provenance": {
+        "source_sheet": "bronco.png = production-v1.1 06_Bronco_Character_Sheet, maroon bandana (read-only)",
+        "source_panel_box": null,
+        "trim_origin_xy": null,
+        "derived_from": "bronco_detail_saddle_pack",
+        "derived_rect_in_source_asset": [
+          34,
+          32,
+          103,
+          93
+        ],
+        "method": "derived_crop",
+        "auto_metrics": {
+          "clipping": false,
+          "clip_edges": {
+            "clip_left": 0,
+            "clip_right": 0,
+            "clip_top": 0,
+            "clip_bottom": 0
+          },
+          "halo_fraction": 0.0022,
+          "extra_components": [],
+          "outline_missing_px": 0,
+          "auto_pass": true,
+          "flags": []
+        },
+        "pass": true,
+        "pass_basis": "auto",
+        "needs_attention": false,
+        "drawn_height_px": 61,
+        "png_size": [
+          69,
+          61
+        ],
+        "recommended_eye_line_src_y": null,
+        "eye_line_sheet_y": null,
+        "eye_line_basis": null,
+        "notes": "derived crop (red star plate) from matted saddle & pack plate; red stays red"
+      },
+      "recommended_eye_line_src_y": null,
+      "eye_line_basis": null
+    },
+    {
+      "file": "bronco_head.png",
+      "asset": "head",
+      "role": "canonical",
+      "slot": "C head",
+      "status": "OWNER-ACCEPTED MINOR",
+      "sha256": "373e2b83a860d9c7b3624414a80b747cac6b0ca8f79a27a1445cb278025e30ab",
+      "png_size": [
+        255,
+        297
+      ],
+      "mode": "RGBA",
+      "preview_4bg": "bronco_head_4bg.png",
+      "source_provenance": {
+        "source_sheet": "bronco.png = production-v1.1 06_Bronco_Character_Sheet, maroon bandana (read-only)",
+        "source_panel_box": [
+          978,
+          272,
+          1238,
+          582
+        ],
+        "trim_origin_xy": [
+          972,
+          272
+        ],
+        "derived_from": null,
+        "derived_rect_in_source_asset": null,
+        "method": "parchment_matte",
+        "auto_metrics": {
+          "clipping": true,
+          "clip_edges": {
+            "clip_left": 0.319,
+            "clip_right": 0.0,
+            "clip_top": 0.0,
+            "clip_bottom": 0.378
+          },
+          "halo_fraction": 0.0086,
+          "extra_components": [],
+          "outline_missing_px": 0,
+          "auto_pass": false,
+          "flags": [
+            "clipping"
+          ]
+        },
+        "pass": true,
+        "pass_basis": "W1 repair pass, visually reviewed on 4 backgrounds",
+        "needs_attention": true,
+        "drawn_height_px": 297,
+        "png_size": [
+          255,
+          297
+        ],
+        "recommended_eye_line_src_y": null,
+        "eye_line_sheet_y": 394,
+        "eye_line_basis": null,
+        "notes": "W1: dangling chin item removed, ragged bottom-right fur flecks cleaned, bottom card-edge line faded. Left/bottom edges are the source card boundary of a bust crop (no extra art created). | prev: ART/TEMPLATE REVIEW REQUIRED: mane touches left source panel edge and portrait is cut by the panel bottom (edges feathered 5-6 px, not hard lines). Re-extracted: panel flourish/leaf/rim removed (neigh",
+        "w1_repaired": true
+      },
+      "renders_as": "READY WITH CROP/MATTING",
+      "recommended_eye_line_src_y": null,
+      "eye_line_basis": null
+    },
+    {
+      "file": "bronco_hero.png",
+      "asset": "hero",
+      "role": "canonical",
+      "slot": "B hero",
+      "status": "OWNER-ACCEPTED MINOR",
+      "sha256": "1c7a4463267b07140303e0615eb54c1eb853cf7e27082292b75ddae25b20faff",
+      "png_size": [
+        249,
+        212
+      ],
+      "mode": "RGBA",
+      "preview_4bg": "bronco_hero_4bg.png",
+      "source_provenance": {
+        "source_sheet": "bronco.png = production-v1.1 06_Bronco_Character_Sheet, maroon bandana (read-only)",
+        "source_panel_box": [
+          1143,
+          832,
+          1440,
+          1072
+        ],
+        "trim_origin_xy": [
+          1143,
+          832
+        ],
+        "derived_from": null,
+        "derived_rect_in_source_asset": null,
+        "method": "scenic",
+        "auto_metrics": {
+          "clipping": true,
+          "clip_edges": {
+            "clip_left": 0.01,
+            "clip_right": 0.0,
+            "clip_top": 0.027,
+            "clip_bottom": 0.0
+          },
+          "halo_fraction": 0.0,
+          "extra_components": [],
+          "outline_missing_px": 9,
+          "auto_pass": false,
+          "flags": [
+            "clipping"
+          ]
+        },
+        "pass": true,
+        "pass_basis": "W1 repair pass, visually reviewed on 4 backgrounds",
+        "needs_attention": true,
+        "drawn_height_px": 212,
+        "png_size": [
+          249,
+          212
+        ],
+        "recommended_eye_line_src_y": 62,
+        "eye_line_sheet_y": 894,
+        "eye_line_basis": "visual estimate (png px from top)",
+        "notes": "W1: sky/cloud scraps removed (hat band blue + star protected); small residual straight cut near left hoof tip and a few mane-edge fur flecks, not visible at display size. | prev: ART/TEMPLATE REVIEW REQUIRED: tail tip touches the source panel left edge (source crop); scenic matte (polygon-assisted GrabCut + sky clean); a few pale sky scraps remain near hat brim and neck; terra",
+        "w1_repaired": true
+      },
+      "renders_as": "READY WITH CROP/MATTING",
+      "recommended_eye_line_src_y": 62,
+      "eye_line_basis": "visual estimate (png px from top)"
+    },
+    {
+      "file": "bronco_turnaround_34.png",
+      "asset": "turnaround_34",
+      "role": "canonical",
+      "slot": "A turnaround 34",
+      "status": "READY WITH CROP/MATTING",
+      "sha256": "612c2468a8d2ad533bb41516c7c02939dd69c570631016b7c1a16a51e4890a74",
+      "png_size": [
+        230,
+        278
+      ],
+      "mode": "RGBA",
+      "preview_4bg": "bronco_turnaround_34_4bg.png",
+      "source_provenance": {
+        "source_sheet": "bronco.png = production-v1.1 06_Bronco_Character_Sheet, maroon bandana (read-only)",
+        "source_panel_box": [
+          162,
+          258,
+          410,
+          545
+        ],
+        "trim_origin_xy": [
+          170,
+          264
+        ],
+        "derived_from": null,
+        "derived_rect_in_source_asset": null,
+        "method": "turnaround_watershed",
+        "auto_metrics": {
+          "clipping": false,
+          "clip_edges": {
+            "clip_left": 0.0,
+            "clip_right": 0.0,
+            "clip_top": 0.0,
+            "clip_bottom": 0.0
+          },
+          "halo_fraction": 0.0459,
+          "extra_components": [],
+          "outline_missing_px": 0,
+          "auto_pass": true,
+          "flags": []
+        },
+        "pass": true,
+        "pass_basis": "auto",
+        "needs_attention": false,
+        "drawn_height_px": 278,
+        "png_size": [
+          230,
+          278
+        ],
+        "recommended_eye_line_src_y": 68,
+        "eye_line_sheet_y": 332,
+        "eye_line_basis": "visual estimate (png px from top)",
+        "notes": "parchment matte with local-background field + touching-neighbor watershed split + floor-shadow removal; floor contact shadow removed"
+      },
+      "recommended_eye_line_src_y": 68,
+      "eye_line_basis": "visual estimate (png px from top)"
+    },
+    {
+      "file": "bronco_turnaround_34back_SUPPLEMENTAL.png",
+      "asset": "turnaround_34back_SUPPLEMENTAL",
+      "role": "supplemental",
+      "slot": null,
+      "status": "READY WITH CROP/MATTING",
+      "sha256": "e52e95fb0b0a95b20636872cb24bd2a1063df2a66c2fe1c7275eaa0f46bff863",
+      "png_size": [
+        215,
+        275
+      ],
+      "mode": "RGBA",
+      "preview_4bg": "bronco_turnaround_34back_SUPPLEMENTAL_4bg.png",
+      "source_provenance": {
+        "source_sheet": "bronco.png = production-v1.1 06_Bronco_Character_Sheet, maroon bandana (read-only)",
+        "source_panel_box": [
+          737,
+          258,
+          960,
+          545
+        ],
+        "trim_origin_xy": [
+          737,
+          266
+        ],
+        "derived_from": null,
+        "derived_rect_in_source_asset": null,
+        "method": "turnaround_watershed",
+        "auto_metrics": {
+          "clipping": false,
+          "clip_edges": {
+            "clip_left": 0.006,
+            "clip_right": 0.0,
+            "clip_top": 0.0,
+            "clip_bottom": 0.0
+          },
+          "halo_fraction": 0.035,
+          "extra_components": [],
+          "outline_missing_px": 0,
+          "auto_pass": true,
+          "flags": []
+        },
+        "pass": true,
+        "pass_basis": "auto",
+        "needs_attention": false,
+        "drawn_height_px": 275,
+        "png_size": [
+          215,
+          275
+        ],
+        "recommended_eye_line_src_y": null,
+        "eye_line_sheet_y": null,
+        "eye_line_basis": null,
+        "notes": "NOT canonical (doc 16 section 5.3): goes to a supplemental sheet; parchment matte with local-background field + touching-neighbor watershed split + floor-shadow removal; floor contact shadow removed"
+      },
+      "role_reason": "SUPPLEMENTAL: fifth 3/4-BACK view; doc 16 puts it on a supplemental sheet, not in the four-view turnaround.",
+      "canonical_slot_references": [],
+      "recommended_eye_line_src_y": null,
+      "eye_line_basis": null
+    },
+    {
+      "file": "bronco_turnaround_back.png",
+      "asset": "turnaround_back",
+      "role": "canonical",
+      "slot": "A turnaround back",
+      "status": "READY WITH CROP/MATTING",
+      "sha256": "06a82c6ae519bfad836ab09ec78d596f1d434b206c924ffc81be2f649c2189c7",
+      "png_size": [
+        164,
+        277
+      ],
+      "mode": "RGBA",
+      "preview_4bg": "bronco_turnaround_back_4bg.png",
+      "source_provenance": {
+        "source_sheet": "bronco.png = production-v1.1 06_Bronco_Character_Sheet, maroon bandana (read-only)",
+        "source_panel_box": [
+          600,
+          258,
+          770,
+          545
+        ],
+        "trim_origin_xy": [
+          600,
+          266
+        ],
+        "derived_from": null,
+        "derived_rect_in_source_asset": null,
+        "method": "turnaround_watershed",
+        "auto_metrics": {
+          "clipping": false,
+          "clip_edges": {
+            "clip_left": 0.0,
+            "clip_right": 0.0,
+            "clip_top": 0.0,
+            "clip_bottom": 0.0
+          },
+          "halo_fraction": 0.0326,
+          "extra_components": [],
+          "outline_missing_px": 0,
+          "auto_pass": true,
+          "flags": []
+        },
+        "pass": true,
+        "pass_basis": "auto",
+        "needs_attention": false,
+        "drawn_height_px": 277,
+        "png_size": [
+          164,
+          277
+        ],
+        "recommended_eye_line_src_y": null,
+        "eye_line_sheet_y": null,
+        "eye_line_basis": null,
+        "notes": "parchment matte with local-background field + touching-neighbor watershed split + floor-shadow removal; floor contact shadow removed"
+      },
+      "recommended_eye_line_src_y": null,
+      "eye_line_basis": null
+    },
+    {
+      "file": "bronco_turnaround_front.png",
+      "asset": "turnaround_front",
+      "role": "canonical",
+      "slot": "A turnaround front",
+      "status": "READY WITH CROP/MATTING",
+      "sha256": "cadae7bede1076f2c4413eb2b2f5e5b2d606f8fe6911894043ff00a33f606c69",
+      "png_size": [
+        184,
+        278
+      ],
+      "mode": "RGBA",
+      "preview_4bg": "bronco_turnaround_front_4bg.png",
+      "source_provenance": {
+        "source_sheet": "bronco.png = production-v1.1 06_Bronco_Character_Sheet, maroon bandana (read-only)",
+        "source_panel_box": [
+          10,
+          258,
+          210,
+          545
+        ],
+        "trim_origin_xy": [
+          12,
+          264
+        ],
+        "derived_from": null,
+        "derived_rect_in_source_asset": null,
+        "method": "turnaround_watershed",
+        "auto_metrics": {
+          "clipping": false,
+          "clip_edges": {
+            "clip_left": 0.0,
+            "clip_right": 0.0,
+            "clip_top": 0.0,
+            "clip_bottom": 0.0
+          },
+          "halo_fraction": 0.0424,
+          "extra_components": [],
+          "outline_missing_px": 0,
+          "auto_pass": true,
+          "flags": []
+        },
+        "pass": true,
+        "pass_basis": "auto",
+        "needs_attention": false,
+        "drawn_height_px": 278,
+        "png_size": [
+          184,
+          278
+        ],
+        "recommended_eye_line_src_y": 72,
+        "eye_line_sheet_y": 336,
+        "eye_line_basis": "visual estimate (png px from top)",
+        "notes": "parchment matte with local-background field + touching-neighbor watershed split + floor-shadow removal; floor contact shadow removed"
+      },
+      "recommended_eye_line_src_y": 72,
+      "eye_line_basis": "visual estimate (png px from top)"
+    },
+    {
+      "file": "bronco_turnaround_side.png",
+      "asset": "turnaround_side",
+      "role": "canonical",
+      "slot": "A turnaround side",
+      "status": "READY WITH CROP/MATTING",
+      "sha256": "68e5d0fdc765eca9e05d329995d08dea0c29f57aed7f92356759b0f175e3b045",
+      "png_size": [
+        269,
+        279
+      ],
+      "mode": "RGBA",
+      "preview_4bg": "bronco_turnaround_side_4bg.png",
+      "source_provenance": {
+        "source_sheet": "bronco.png = production-v1.1 06_Bronco_Character_Sheet, maroon bandana (read-only)",
+        "source_panel_box": [
+          352,
+          258,
+          630,
+          545
+        ],
+        "trim_origin_xy": [
+          352,
+          265
+        ],
+        "derived_from": null,
+        "derived_rect_in_source_asset": null,
+        "method": "turnaround_watershed",
+        "auto_metrics": {
+          "clipping": false,
+          "clip_edges": {
+            "clip_left": 0.01,
+            "clip_right": 0.0,
+            "clip_top": 0.0,
+            "clip_bottom": 0.0
+          },
+          "halo_fraction": 0.0339,
+          "extra_components": [],
+          "outline_missing_px": 0,
+          "auto_pass": true,
+          "flags": []
+        },
+        "pass": true,
+        "pass_basis": "auto",
+        "needs_attention": false,
+        "drawn_height_px": 279,
+        "png_size": [
+          269,
+          279
+        ],
+        "recommended_eye_line_src_y": 66,
+        "eye_line_sheet_y": 331,
+        "eye_line_basis": "visual estimate (png px from top)",
+        "notes": "parchment matte with local-background field + touching-neighbor watershed split + floor-shadow removal; floor contact shadow removed"
+      },
+      "recommended_eye_line_src_y": 66,
+      "eye_line_basis": "visual estimate (png px from top)"
+    },
+    {
+      "file": "bronco_silhouette_front.png",
+      "asset": "silhouette_front",
+      "role": "canonical",
+      "slot": "E silhouette front",
+      "status": "READY WITH CROP/MATTING",
+      "sha256": "105d21bd1b62ab4be9e524d6262b3a954b76f20ec2e3ffe158b7bd0e0e481c8e",
+      "png_size": [
+        175,
+        269
+      ],
+      "mode": "RGBA",
+      "preview_4bg": "bronco_silhouette_front_4bg.png",
+      "fill": "#1E3A5F (doc 15 section 9 silhouette fill, flat navy)",
+      "derived_from": {
+        "asset": "bronco_turnaround_front.png",
+        "sha256": "cadae7bede1076f2c4413eb2b2f5e5b2d606f8fe6911894043ff00a33f606c69",
+        "source_library_path": "library/bronco/bronco_turnaround_front.png"
+      },
+      "derivation": {
+        "tool": "library-tools/derive_silhouettes.py + library-tools/sil_config.py (deterministic)",
+        "source_size": [
+          184,
+          278
+        ],
+        "bbox_in_source_xywh": [
+          4,
+          4,
+          175,
+          269
+        ],
+        "source_opaque_px": 32193,
+        "removed_px": 1354,
+        "final_mask_px": 31182,
+        "detached_specks_dropped_px": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          3,
+          2,
+          3,
+          2,
+          2,
+          1,
+          2,
+          1,
+          1,
+          1,
+          1,
+          1,
+          2,
+          1,
+          1,
+          1,
+          5,
+          1,
+          1,
+          1,
+          1,
+          2,
+          1
+        ],
+        "holes": [
+          {
+            "area_px": 4,
+            "centroid_xy": [
+              125.5,
+              6.0
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 1,
+            "centroid_xy": [
+              96.0,
+              14.0
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 2,
+            "centroid_xy": [
+              170.5,
+              58.5
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 1,
+            "centroid_xy": [
+              166.0,
+              68.0
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 1,
+            "centroid_xy": [
+              27.0,
+              89.0
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 1,
+            "centroid_xy": [
+              156.0,
+              110.0
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 2,
+            "centroid_xy": [
+              45.5,
+              123.5
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 1,
+            "centroid_xy": [
+              149.0,
+              152.0
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 3,
+            "centroid_xy": [
+              149.0,
+              157.0
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 28,
+            "centroid_xy": [
+              61.8,
+              264.7
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 1,
+            "centroid_xy": [
+              127.0,
+              262.0
+            ],
+            "action": "filled (artifact)"
+          }
+        ],
+        "cleanup": {
+          "strip": 16,
+          "peel": [
+            0,
+            190
+          ],
+          "hull": [
+            [
+              44,
+              230,
+              84,
+              256
+            ]
+          ],
+          "fill": [
+            [
+              50,
+              258,
+              72,
+              272
+            ]
+          ]
+        },
+        "alpha": "gaussian(0.8) antialias of the cleaned binary mask, 50% contour = mask edge"
+      },
+      "caveat": "inherits any silhouette-affecting matte defects of the source alpha beyond the listed cleanups; see library-qa/silhouette_comparison_bronco.png",
+      "recommended_eye_line_src_y": null,
+      "eye_line_basis": null
+    },
+    {
+      "file": "bronco_silhouette_34.png",
+      "asset": "silhouette_34",
+      "role": "canonical",
+      "slot": "E silhouette 34",
+      "status": "READY WITH CROP/MATTING",
+      "sha256": "a8a68d20a203f59662de30f891798087987822f067ff9bb2eb3b947e04395843",
+      "png_size": [
+        221,
+        265
+      ],
+      "mode": "RGBA",
+      "preview_4bg": "bronco_silhouette_34_4bg.png",
+      "fill": "#1E3A5F (doc 15 section 9 silhouette fill, flat navy)",
+      "derived_from": {
+        "asset": "bronco_turnaround_34.png",
+        "sha256": "612c2468a8d2ad533bb41516c7c02939dd69c570631016b7c1a16a51e4890a74",
+        "source_library_path": "library/bronco/bronco_turnaround_34.png"
+      },
+      "derivation": {
+        "tool": "library-tools/derive_silhouettes.py + library-tools/sil_config.py (deterministic)",
+        "source_size": [
+          230,
+          278
+        ],
+        "bbox_in_source_xywh": [
+          4,
+          6,
+          221,
+          265
+        ],
+        "source_opaque_px": 37975,
+        "removed_px": 1711,
+        "final_mask_px": 36212,
+        "detached_specks_dropped_px": [
+          3,
+          2,
+          3,
+          2,
+          2,
+          7,
+          3,
+          3,
+          1,
+          4,
+          1,
+          3,
+          6,
+          1,
+          1,
+          1,
+          2,
+          1,
+          1,
+          2,
+          1,
+          7,
+          2,
+          7,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          2,
+          1,
+          2,
+          2,
+          10,
+          2,
+          5,
+          1,
+          1,
+          1,
+          2,
+          1
+        ],
+        "holes": [
+          {
+            "area_px": 1,
+            "centroid_xy": [
+              137.0,
+              18.0
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 1,
+            "centroid_xy": [
+              124.0,
+              27.0
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 2,
+            "centroid_xy": [
+              222.0,
+              39.5
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 8,
+            "centroid_xy": [
+              219.9,
+              54.1
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 1,
+            "centroid_xy": [
+              90.0,
+              53.0
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 1,
+            "centroid_xy": [
+              209.0,
+              63.0
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 3,
+            "centroid_xy": [
+              195.0,
+              72.7
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 1,
+            "centroid_xy": [
+              190.0,
+              79.0
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 2,
+            "centroid_xy": [
+              202.0,
+              80.5
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 4,
+            "centroid_xy": [
+              186.8,
+              106.8
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 1,
+            "centroid_xy": [
+              180.0,
+              117.0
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 1,
+            "centroid_xy": [
+              181.0,
+              180.0
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 1,
+            "centroid_xy": [
+              108.0,
+              262.0
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 19,
+            "centroid_xy": [
+              139.2,
+              263.9
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 5,
+            "centroid_xy": [
+              201.8,
+              262.6
+            ],
+            "action": "filled (artifact)"
+          }
+        ],
+        "cleanup": {
+          "strip": 16,
+          "peel": [
+            0,
+            190
+          ]
+        },
+        "alpha": "gaussian(0.8) antialias of the cleaned binary mask, 50% contour = mask edge"
+      },
+      "caveat": "inherits any silhouette-affecting matte defects of the source alpha beyond the listed cleanups; see library-qa/silhouette_comparison_bronco.png",
+      "recommended_eye_line_src_y": null,
+      "eye_line_basis": null
+    },
+    {
+      "file": "bronco_silhouette_side.png",
+      "asset": "silhouette_side",
+      "role": "canonical",
+      "slot": "E silhouette side",
+      "status": "READY WITH CROP/MATTING",
+      "sha256": "553957bd31fae817bc4c841abd49131d661928d875acfe4ac9aab257be010e06",
+      "png_size": [
+        260,
+        267
+      ],
+      "mode": "RGBA",
+      "preview_4bg": "bronco_silhouette_side_4bg.png",
+      "fill": "#1E3A5F (doc 15 section 9 silhouette fill, flat navy)",
+      "derived_from": {
+        "asset": "bronco_turnaround_side.png",
+        "sha256": "68e5d0fdc765eca9e05d329995d08dea0c29f57aed7f92356759b0f175e3b045",
+        "source_library_path": "library/bronco/bronco_turnaround_side.png"
+      },
+      "derivation": {
+        "tool": "library-tools/derive_silhouettes.py + library-tools/sil_config.py (deterministic)",
+        "source_size": [
+          269,
+          279
+        ],
+        "bbox_in_source_xywh": [
+          4,
+          4,
+          260,
+          267
+        ],
+        "source_opaque_px": 42362,
+        "removed_px": 1940,
+        "final_mask_px": 40389,
+        "detached_specks_dropped_px": [
+          6,
+          2,
+          4,
+          3,
+          1,
+          2,
+          6,
+          1,
+          1,
+          1,
+          3,
+          1,
+          3,
+          7,
+          13,
+          1,
+          1,
+          3,
+          4,
+          1,
+          1,
+          2,
+          1,
+          3,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          2,
+          1,
+          1,
+          2,
+          6,
+          1,
+          1,
+          2,
+          1,
+          2,
+          1,
+          1,
+          1,
+          2,
+          8
+        ],
+        "holes": [
+          {
+            "area_px": 8,
+            "centroid_xy": [
+              167.5,
+              29.6
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 16,
+            "centroid_xy": [
+              157.4,
+              35.4
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 1,
+            "centroid_xy": [
+              135.0,
+              37.0
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 1,
+            "centroid_xy": [
+              260.0,
+              40.0
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 1,
+            "centroid_xy": [
+              261.0,
+              42.0
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 3,
+            "centroid_xy": [
+              262.0,
+              45.0
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 2,
+            "centroid_xy": [
+              115.5,
+              58.5
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 1,
+            "centroid_xy": [
+              113.0,
+              68.0
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 2,
+            "centroid_xy": [
+              240.0,
+              74.5
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 3,
+            "centroid_xy": [
+              100.0,
+              77.0
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 1,
+            "centroid_xy": [
+              235.0,
+              82.0
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 2,
+            "centroid_xy": [
+              98.5,
+              87.5
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 1,
+            "centroid_xy": [
+              109.0,
+              103.0
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 1,
+            "centroid_xy": [
+              34.0,
+              111.0
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 1,
+            "centroid_xy": [
+              31.0,
+              117.0
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 1,
+            "centroid_xy": [
+              208.0,
+              119.0
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 2,
+            "centroid_xy": [
+              112.5,
+              129.0
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 2,
+            "centroid_xy": [
+              101.5,
+              134.0
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 9,
+            "centroid_xy": [
+              18.7,
+              147.1
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 2,
+            "centroid_xy": [
+              223.0,
+              170.5
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 1185,
+            "centroid_xy": [
+              143.2,
+              225.7
+            ],
+            "action": "kept (real negative space)"
+          },
+          {
+            "area_px": 1,
+            "centroid_xy": [
+              61.0,
+              261.0
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 4,
+            "centroid_xy": [
+              162.5,
+              261.5
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 11,
+            "centroid_xy": [
+              186.0,
+              263.0
+            ],
+            "action": "filled (artifact)"
+          }
+        ],
+        "cleanup": {
+          "strip": 18,
+          "peel": [
+            0,
+            190
+          ]
+        },
+        "alpha": "gaussian(0.8) antialias of the cleaned binary mask, 50% contour = mask edge"
+      },
+      "caveat": "inherits any silhouette-affecting matte defects of the source alpha beyond the listed cleanups; see library-qa/silhouette_comparison_bronco.png",
+      "recommended_eye_line_src_y": null,
+      "eye_line_basis": null
+    },
+    {
+      "file": "bronco_silhouette_back.png",
+      "asset": "silhouette_back",
+      "role": "canonical",
+      "slot": "E silhouette back",
+      "status": "READY WITH CROP/MATTING",
+      "sha256": "501080c60fdcfbf820830ed3f122620c841db3d01ffcf49830951eebbe83007c",
+      "png_size": [
+        157,
+        262
+      ],
+      "mode": "RGBA",
+      "preview_4bg": "bronco_silhouette_back_4bg.png",
+      "fill": "#1E3A5F (doc 15 section 9 silhouette fill, flat navy)",
+      "derived_from": {
+        "asset": "bronco_turnaround_back.png",
+        "sha256": "06a82c6ae519bfad836ab09ec78d596f1d434b206c924ffc81be2f649c2189c7",
+        "source_library_path": "library/bronco/bronco_turnaround_back.png"
+      },
+      "derivation": {
+        "tool": "library-tools/derive_silhouettes.py + library-tools/sil_config.py (deterministic)",
+        "source_size": [
+          164,
+          277
+        ],
+        "bbox_in_source_xywh": [
+          3,
+          6,
+          157,
+          262
+        ],
+        "source_opaque_px": 27428,
+        "removed_px": 1363,
+        "final_mask_px": 26088,
+        "detached_specks_dropped_px": [
+          3,
+          1,
+          1,
+          4,
+          1,
+          1,
+          2,
+          1,
+          3,
+          3,
+          2,
+          2,
+          5,
+          1,
+          1,
+          1,
+          2,
+          2,
+          4,
+          5,
+          2,
+          1,
+          2,
+          1,
+          1,
+          3,
+          2,
+          1,
+          1,
+          1
+        ],
+        "holes": [
+          {
+            "area_px": 1,
+            "centroid_xy": [
+              119.0,
+              19.0
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 3,
+            "centroid_xy": [
+              120.0,
+              23.0
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 2,
+            "centroid_xy": [
+              43.5,
+              38.0
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 4,
+            "centroid_xy": [
+              59.0,
+              39.0
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 3,
+            "centroid_xy": [
+              39.0,
+              51.0
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 1,
+            "centroid_xy": [
+              59.0,
+              110.0
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 4,
+            "centroid_xy": [
+              64.8,
+              119.2
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 2,
+            "centroid_xy": [
+              23.0,
+              147.5
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 2,
+            "centroid_xy": [
+              141.0,
+              164.5
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 1,
+            "centroid_xy": [
+              18.0,
+              185.0
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 9,
+            "centroid_xy": [
+              38.7,
+              259.3
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 5,
+            "centroid_xy": [
+              47.4,
+              259.2
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 6,
+            "centroid_xy": [
+              52.5,
+              259.3
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 2,
+            "centroid_xy": [
+              59.5,
+              259.0
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 7,
+            "centroid_xy": [
+              109.6,
+              259.6
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 10,
+            "centroid_xy": [
+              114.5,
+              259.8
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 3,
+            "centroid_xy": [
+              121.3,
+              259.3
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 18,
+            "centroid_xy": [
+              131.8,
+              262.0
+            ],
+            "action": "filled (artifact)"
+          }
+        ],
+        "cleanup": {
+          "strip": 18,
+          "peel": [
+            0,
+            190
+          ]
+        },
+        "alpha": "gaussian(0.8) antialias of the cleaned binary mask, 50% contour = mask edge"
+      },
+      "caveat": "inherits any silhouette-affecting matte defects of the source alpha beyond the listed cleanups; see library-qa/silhouette_comparison_bronco.png",
+      "recommended_eye_line_src_y": null,
+      "eye_line_basis": null
+    },
+    {
+      "file": "bronco_silhouette_action.png",
+      "asset": "silhouette_action",
+      "role": "canonical",
+      "slot": "E silhouette action",
+      "status": "READY WITH CROP/MATTING",
+      "sha256": "64b06cf4d783c075362a22133f6cc61f068432f10e6d6d37e16fec84625de012",
+      "png_size": [
+        244,
+        207
+      ],
+      "mode": "RGBA",
+      "preview_4bg": "bronco_silhouette_action_4bg.png",
+      "fill": "#1E3A5F (doc 15 section 9 silhouette fill, flat navy)",
+      "derived_from": {
+        "asset": "bronco_hero.png",
+        "sha256": "1c7a4463267b07140303e0615eb54c1eb853cf7e27082292b75ddae25b20faff",
+        "source_library_path": "library/bronco/bronco_hero.png"
+      },
+      "derivation": {
+        "tool": "library-tools/derive_silhouettes.py + library-tools/sil_config.py (deterministic)",
+        "source_size": [
+          249,
+          212
+        ],
+        "bbox_in_source_xywh": [
+          2,
+          2,
+          244,
+          207
+        ],
+        "source_opaque_px": 28367,
+        "removed_px": 0,
+        "final_mask_px": 28371,
+        "detached_specks_dropped_px": [],
+        "holes": [
+          {
+            "area_px": 3,
+            "centroid_xy": [
+              10.7,
+              96.7
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 1,
+            "centroid_xy": [
+              86.0,
+              112.0
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 81,
+            "centroid_xy": [
+              191.4,
+              162.4
+            ],
+            "action": "kept (real negative space)"
+          }
+        ],
+        "cleanup": {},
+        "alpha": "gaussian(0.8) antialias of the cleaned binary mask, 50% contour = mask edge"
+      },
+      "caveat": "inherits any silhouette-affecting matte defects of the source alpha beyond the listed cleanups; see library-qa/silhouette_comparison_bronco.png",
+      "recommended_eye_line_src_y": null,
+      "eye_line_basis": null
+    }
+  ],
+  "historical_silhouettes": [
+    {
+      "file": "_historical-silhouettes/bronco_silhouette_34.png",
+      "role": "historical",
+      "status": "HISTORICAL / QA-COMPARISON ONLY",
+      "pre_m4_status": "READY WITH CROP/MATTING",
+      "sha256": "abc257ad427cf5ffb23b793e32fa19e49b966a73b2353720e01f0ea122b7167e",
+      "png_size": [
+        110,
+        135
+      ],
+      "mode": "RGBA",
+      "reason": "flat-sheet silhouette artwork, not derived from matted alpha; never a canonical slot"
+    },
+    {
+      "file": "_historical-silhouettes/bronco_silhouette_34back_SUPPLEMENTAL.png",
+      "role": "historical",
+      "status": "HISTORICAL / QA-COMPARISON ONLY",
+      "pre_m4_status": "READY WITH CROP/MATTING",
+      "sha256": "6423906c5f712bd38babba315c3219f546a22e9102792d1b8967720ff0d36672",
+      "png_size": [
+        100,
+        138
+      ],
+      "mode": "RGBA",
+      "reason": "flat-sheet silhouette artwork, not derived from matted alpha; never a canonical slot",
+      "flag": "Bronco 3/4-BACK silhouette: SUPPLEMENTAL as well as historical (no canonical slot)",
+      "role_also": "supplemental"
+    },
+    {
+      "file": "_historical-silhouettes/bronco_silhouette_action.png",
+      "role": "historical",
+      "status": "HISTORICAL / QA-COMPARISON ONLY",
+      "pre_m4_status": "READY WITH CROP/MATTING",
+      "sha256": "6aa9a8f01ea325188eb70cfc47538399706bf1cc145d4623077ba87348d4767d",
+      "png_size": [
+        140,
+        148
+      ],
+      "mode": "RGBA",
+      "reason": "flat-sheet silhouette artwork, not derived from matted alpha; never a canonical slot"
+    },
+    {
+      "file": "_historical-silhouettes/bronco_silhouette_back.png",
+      "role": "historical",
+      "status": "HISTORICAL / QA-COMPARISON ONLY",
+      "pre_m4_status": "READY WITH CROP/MATTING",
+      "sha256": "4903ffa4f710ee8179285cb514e82cf5924f5d0bb1ff4fa53fce7b3b249b37cb",
+      "png_size": [
+        75,
+        140
+      ],
+      "mode": "RGBA",
+      "reason": "flat-sheet silhouette artwork, not derived from matted alpha; never a canonical slot"
+    },
+    {
+      "file": "_historical-silhouettes/bronco_silhouette_front.png",
+      "role": "historical",
+      "status": "HISTORICAL / QA-COMPARISON ONLY",
+      "pre_m4_status": "READY WITH CROP/MATTING",
+      "sha256": "acf5fea0af1b647ecdc495d85ddf52bec1f666d3e0f7e94717105aa51b8afff8",
+      "png_size": [
+        93,
+        140
+      ],
+      "mode": "RGBA",
+      "reason": "flat-sheet silhouette artwork, not derived from matted alpha; never a canonical slot"
+    },
+    {
+      "file": "_historical-silhouettes/bronco_silhouette_side.png",
+      "role": "historical",
+      "status": "HISTORICAL / QA-COMPARISON ONLY",
+      "pre_m4_status": "READY WITH CROP/MATTING",
+      "sha256": "3ccd6e4e8cab0f2bdb51ada55daa9c3805fecdd4eec2a47d76384ecb0bcdddaf",
+      "png_size": [
+        118,
+        139
+      ],
+      "mode": "RGBA",
+      "reason": "flat-sheet silhouette artwork, not derived from matted alpha; never a canonical slot"
+    }
+  ],
+  "superseded": [
+    {
+      "file": "_superseded/bronco_head.png",
+      "role": "superseded",
+      "sha256": "2bd9c6ca8f5640788caa1057e7be06f34fd71afe38d8c0b0485c104be736fb9d",
+      "png_size": [
+        255,
+        297
+      ],
+      "mode": "RGBA"
+    },
+    {
+      "file": "_superseded/bronco_hero.png",
+      "role": "superseded",
+      "sha256": "7eef980380bcc5ab9f0055c1fe231d7d6423e58819ec6de5ef70d154b2924724",
+      "png_size": [
+        249,
+        212
+      ],
+      "mode": "RGBA"
+    }
+  ]
+}

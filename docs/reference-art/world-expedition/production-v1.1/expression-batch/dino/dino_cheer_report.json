@@ -1,0 +1,54 @@
+{
+ "name": "dino_cheer",
+ "box": [
+  8,
+  602,
+  194,
+  766
+ ],
+ "mode": "parchment",
+ "bg_rgb": [
+  253,
+  241,
+  221
+ ],
+ "clip_left": 0.0,
+ "clip_right": 0.0,
+ "clip_top": 0.0,
+ "clip_bottom": 0.2025089605734767,
+ "clipping": false,
+ "extra_components": [
+  231,
+  139
+ ],
+ "contamination": true,
+ "halo_fraction": 0.0007173601147776184,
+ "halo": false,
+ "outline_missing_px": 4,
+ "outline_missing": false,
+ "pass": false,
+ "size": [
+  183,
+  163
+ ],
+ "composite_default_ring_rects": [
+  [
+   150,
+   610,
+   190,
+   660
+  ]
+ ],
+ "core_box": [
+  32,
+  3,
+  154,
+  85
+ ],
+ "core_box_note": "head + hat/spikes + backpack-top core as derived by renderer (excludes fists/arms and ! effects); unchanged by nudge",
+ "nudge": "pose nudge Oct 13 2026: left fist/arm +2 px, right fist/arm -2 px (smooth warp, integer plateau, no scale/crop); art x 3..179 -> 5..177",
+ "art_x": [
+  5,
+  177
+ ]
+}

@@ -1,0 +1,990 @@
+{
+  "renderer_version": "1.0.0",
+  "placeholders": [],
+  "overflows": [],
+  "placements": [
+    {
+      "zone": "header",
+      "slot": "LOGO_ASSET",
+      "asset": "logo/BidaZoo_World_Expedition_logo_master.png",
+      "bbox": {
+        "x": 79,
+        "y": 36,
+        "w": 226,
+        "h": 96
+      }
+    },
+    {
+      "zone": "turnaround",
+      "slot": "front",
+      "asset": "asset-library/dino/dino_turnaround_front.png",
+      "status": "READY WITH CROP/MATTING",
+      "scale_px_per_source_px": 0.569,
+      "cast": {
+        "s0": 0.184,
+        "k": 0.85,
+        "units_per_source_px": 3.636
+      },
+      "image_origin": [
+        146,
+        242
+      ],
+      "matted_bbox": {
+        "x": 148.049,
+        "y": 243.6,
+        "w": 110.902,
+        "h": 156.4
+      },
+      "baseline_y": 400,
+      "cell_center_x": 203.5,
+      "height_above_baseline_px": 156.4,
+      "limits": {
+        "max_height": 184,
+        "max_width": 335
+      },
+      "overflow": false
+    },
+    {
+      "zone": "turnaround",
+      "slot": "threeQuarter",
+      "asset": "asset-library/dino/dino_turnaround_34.png",
+      "status": "READY WITH CROP/MATTING",
+      "scale_px_per_source_px": 0.569,
+      "cast": {
+        "s0": 0.184,
+        "k": 0.85,
+        "units_per_source_px": 3.636
+      },
+      "image_origin": [
+        490,
+        244
+      ],
+      "matted_bbox": {
+        "x": 491.637,
+        "y": 245.875,
+        "w": 117.727,
+        "h": 154.125
+      },
+      "baseline_y": 400,
+      "cell_center_x": 550.5,
+      "height_above_baseline_px": 154.125,
+      "limits": {
+        "max_height": 184,
+        "max_width": 335
+      },
+      "overflow": false
+    },
+    {
+      "zone": "turnaround",
+      "slot": "side",
+      "asset": "asset-library/dino/dino_turnaround_side.png",
+      "status": "READY WITH CROP/MATTING",
+      "scale_px_per_source_px": 0.569,
+      "cast": {
+        "s0": 0.184,
+        "k": 0.85,
+        "units_per_source_px": 3.636
+      },
+      "image_origin": [
+        834,
+        244
+      ],
+      "matted_bbox": {
+        "x": 835.509,
+        "y": 245.306,
+        "w": 123.983,
+        "h": 154.694
+      },
+      "baseline_y": 400,
+      "cell_center_x": 897.5,
+      "height_above_baseline_px": 154.694,
+      "limits": {
+        "max_height": 184,
+        "max_width": 335
+      },
+      "overflow": false
+    },
+    {
+      "zone": "turnaround",
+      "slot": "back",
+      "asset": "asset-library/dino/dino_turnaround_back.png",
+      "status": "READY WITH CROP/MATTING",
+      "scale_px_per_source_px": 0.569,
+      "cast": {
+        "s0": 0.184,
+        "k": 0.85,
+        "units_per_source_px": 3.636
+      },
+      "image_origin": [
+        1196,
+        243
+      ],
+      "matted_bbox": {
+        "x": 1197.011,
+        "y": 244.737,
+        "w": 94.977,
+        "h": 155.263
+      },
+      "baseline_y": 400,
+      "cell_center_x": 1244.5,
+      "height_above_baseline_px": 155.263,
+      "limits": {
+        "max_height": 184,
+        "max_width": 335
+      },
+      "overflow": false
+    },
+    {
+      "zone": "hero",
+      "slot": "hero",
+      "asset": "asset-library/dino/dino_hero.png",
+      "status": "READY WITH CROP/MATTING",
+      "mode": "fit",
+      "scale_px_per_source_px": 0.697,
+      "image_origin": [
+        103,
+        534
+      ],
+      "matted_bbox": {
+        "x": 105.567,
+        "y": 536.0,
+        "w": 156.866,
+        "h": 198.0
+      },
+      "clearance_px": 24.0,
+      "overflow": false
+    },
+    {
+      "zone": "head",
+      "slot": "head",
+      "asset": "asset-library/dino/dino_head.png",
+      "status": "OWNER-ACCEPTED MINOR",
+      "scale_px_per_source_px": 0.834,
+      "image_origin": [
+        374,
+        502
+      ],
+      "matted_bbox": {
+        "x": 375.498,
+        "y": 504.095,
+        "w": 195.185,
+        "h": 251.905
+      },
+      "head_width_px": 176.0,
+      "eye_line_y": 596.682,
+      "cropped_by_box": true,
+      "bleed_shift_px": 0.0,
+      "bottom_y": 756.0,
+      "bottom_gap_to_box_px": 0.0,
+      "note": "crop-to-fill is allowed in the head close-up"
+    },
+    {
+      "zone": "expressions",
+      "slot": "idle",
+      "asset": "expression-batch/dino/dino_idle.png",
+      "status": "READY WITH CROP/MATTING",
+      "scale_px_per_source_px": 0.784,
+      "head_scale": 0.7843,
+      "units_per_source_px": 1.0,
+      "fit_down_factor": 1.0,
+      "effective_head_scale": 0.784,
+      "width_excess_before_fit_px": 0.0,
+      "width_tolerance_px": 1.0,
+      "image_origin": [
+        614,
+        642
+      ],
+      "anchor": "bottom",
+      "crop_kind": "head_only",
+      "core_source": "core_box",
+      "core_box_src": [
+        0.0,
+        0.0,
+        126.0,
+        87.0
+      ],
+      "core_px": {
+        "x": 614.089,
+        "y": 641.649,
+        "w": 98.822,
+        "h": 68.234
+      },
+      "matted_bbox": {
+        "x": 614.089,
+        "y": 641.649,
+        "w": 101.959,
+        "h": 82.352
+      },
+      "eye_line_y": 685.569,
+      "bottom_y": 724.0,
+      "allowance_shift_dx": 0.0,
+      "overflow": false,
+      "limits": {
+        "core_safe_width": 109,
+        "core_nominal_width": 100,
+        "crown_min_y": 520,
+        "allowance_x": [
+          595,
+          732
+        ],
+        "allowance_note": "cell +/- 6 px (gutter midpoint)",
+        "cell_bottom_y": 726
+      }
+    },
+    {
+      "zone": "expressions",
+      "slot": "happy",
+      "asset": "expression-batch/dino/dino_happy.png",
+      "status": "READY WITH CROP/MATTING",
+      "scale_px_per_source_px": 0.784,
+      "head_scale": 0.7843,
+      "units_per_source_px": 1.0,
+      "fit_down_factor": 1.0,
+      "effective_head_scale": 0.784,
+      "width_excess_before_fit_px": 0.0,
+      "width_tolerance_px": 1.0,
+      "image_origin": [
+        746,
+        557
+      ],
+      "anchor": "eye_line",
+      "crop_kind": "bust",
+      "core_source": "core_box",
+      "core_box_src": [
+        6.0,
+        2.0,
+        132.0,
+        80.0
+      ],
+      "core_px": {
+        "x": 751.089,
+        "y": 558.785,
+        "w": 98.822,
+        "h": 61.175
+      },
+      "matted_bbox": {
+        "x": 748.736,
+        "y": 558.785,
+        "w": 109.802,
+        "h": 127.057
+      },
+      "eye_line_y": 598.0,
+      "bottom_y": 685.842,
+      "allowance_shift_dx": 0.0,
+      "overflow": false,
+      "limits": {
+        "core_safe_width": 109,
+        "core_nominal_width": 100,
+        "crown_min_y": 520,
+        "allowance_x": [
+          732,
+          869
+        ],
+        "allowance_note": "cell +/- 6 px (gutter midpoint)",
+        "cell_bottom_y": 726
+      }
+    },
+    {
+      "zone": "expressions",
+      "slot": "thinking",
+      "asset": "expression-batch/dino/dino_thinking.png",
+      "status": "READY WITH CROP/MATTING",
+      "scale_px_per_source_px": 0.784,
+      "head_scale": 0.7843,
+      "units_per_source_px": 1.0,
+      "fit_down_factor": 1.0,
+      "effective_head_scale": 0.784,
+      "width_excess_before_fit_px": 0.0,
+      "width_tolerance_px": 1.0,
+      "image_origin": [
+        884,
+        548
+      ],
+      "anchor": "eye_line",
+      "crop_kind": "bust",
+      "core_source": "core_box",
+      "core_box_src": [
+        4.0,
+        3.0,
+        133.0,
+        98.0
+      ],
+      "core_px": {
+        "x": 886.913,
+        "y": 550.158,
+        "w": 101.175,
+        "h": 74.508
+      },
+      "matted_bbox": {
+        "x": 886.128,
+        "y": 550.158,
+        "w": 115.292,
+        "h": 125.488
+      },
+      "eye_line_y": 598.0,
+      "bottom_y": 675.646,
+      "allowance_shift_dx": 0.0,
+      "overflow": false,
+      "limits": {
+        "core_safe_width": 109,
+        "core_nominal_width": 100,
+        "crown_min_y": 520,
+        "allowance_x": [
+          869,
+          1006
+        ],
+        "allowance_note": "cell +/- 6 px (gutter midpoint)",
+        "cell_bottom_y": 726
+      }
+    },
+    {
+      "zone": "expressions",
+      "slot": "cheer",
+      "asset": "expression-batch/dino/dino_cheer.png",
+      "status": "READY WITH CROP/MATTING",
+      "scale_px_per_source_px": 0.784,
+      "head_scale": 0.7843,
+      "units_per_source_px": 1.0,
+      "fit_down_factor": 1.0,
+      "effective_head_scale": 0.784,
+      "width_excess_before_fit_px": 0.0,
+      "width_tolerance_px": 1.0,
+      "image_origin": [
+        1002,
+        554
+      ],
+      "anchor": "eye_line",
+      "crop_kind": "bust",
+      "core_source": "core_box",
+      "core_box_src": [
+        32.0,
+        3.0,
+        154.0,
+        85.0
+      ],
+      "core_px": {
+        "x": 1027.176,
+        "y": 556.432,
+        "w": 95.685,
+        "h": 64.313
+      },
+      "matted_bbox": {
+        "x": 1006.0,
+        "y": 556.432,
+        "w": 135.684,
+        "h": 124.704
+      },
+      "eye_line_y": 598.0,
+      "bottom_y": 681.136,
+      "allowance_shift_dx": 0.518,
+      "overflow": false,
+      "limits": {
+        "core_safe_width": 109,
+        "core_nominal_width": 100,
+        "crown_min_y": 520,
+        "allowance_x": [
+          1006,
+          1143
+        ],
+        "allowance_note": "cell +/- 6 px (gutter midpoint)",
+        "cell_bottom_y": 726
+      }
+    },
+    {
+      "zone": "expressions",
+      "slot": "discover",
+      "asset": "expression-batch/dino/dino_discover.png",
+      "status": "READY WITH CROP/MATTING",
+      "scale_px_per_source_px": 0.784,
+      "head_scale": 0.7843,
+      "units_per_source_px": 1.0,
+      "fit_down_factor": 1.0,
+      "effective_head_scale": 0.784,
+      "width_excess_before_fit_px": 0.0,
+      "width_tolerance_px": 1.0,
+      "image_origin": [
+        1155,
+        545
+      ],
+      "anchor": "eye_line",
+      "crop_kind": "bust",
+      "core_source": "core_box",
+      "core_box_src": [
+        4.0,
+        3.0,
+        135.0,
+        102.0
+      ],
+      "core_px": {
+        "x": 1157.649,
+        "y": 547.805,
+        "w": 102.743,
+        "h": 77.646
+      },
+      "matted_bbox": {
+        "x": 1156.865,
+        "y": 547.805,
+        "w": 123.135,
+        "h": 125.488
+      },
+      "eye_line_y": 598.0,
+      "bottom_y": 673.293,
+      "allowance_shift_dx": -2.479,
+      "overflow": false,
+      "limits": {
+        "core_safe_width": 109,
+        "core_nominal_width": 100,
+        "crown_min_y": 520,
+        "allowance_x": [
+          1143,
+          1280
+        ],
+        "allowance_note": "cell +/- 6 px (gutter midpoint)",
+        "cell_bottom_y": 726
+      }
+    },
+    {
+      "zone": "expressions",
+      "slot": "tryAgain",
+      "asset": "expression-batch/dino/dino_tryAgain.png",
+      "status": "READY WITH CROP/MATTING",
+      "scale_px_per_source_px": 0.784,
+      "head_scale": 0.7843,
+      "units_per_source_px": 1.0,
+      "fit_down_factor": 1.0,
+      "effective_head_scale": 0.784,
+      "width_excess_before_fit_px": 0.0,
+      "width_tolerance_px": 1.0,
+      "image_origin": [
+        1278,
+        545
+      ],
+      "anchor": "eye_line",
+      "crop_kind": "bust",
+      "core_source": "core_box",
+      "core_box_src": [
+        22.0,
+        3.0,
+        158.0,
+        104.0
+      ],
+      "core_px": {
+        "x": 1295.168,
+        "y": 547.02,
+        "w": 106.665,
+        "h": 79.214
+      },
+      "matted_bbox": {
+        "x": 1280.266,
+        "y": 547.02,
+        "w": 133.331,
+        "h": 123.135
+      },
+      "eye_line_y": 598.0,
+      "bottom_y": 670.156,
+      "allowance_shift_dx": 0.0,
+      "overflow": false,
+      "limits": {
+        "core_safe_width": 109,
+        "core_nominal_width": 100,
+        "crown_min_y": 520,
+        "allowance_x": [
+          1280,
+          1417
+        ],
+        "allowance_note": "cell +/- 6 px (gutter midpoint)",
+        "cell_bottom_y": 726
+      }
+    },
+    {
+      "zone": "silhouettes",
+      "slot": "front",
+      "asset": "asset-library/dino/dino_silhouette_front.png",
+      "status": "READY WITH CROP/MATTING",
+      "source": "explicit",
+      "fit_box": [
+        36,
+        824,
+        72,
+        182
+      ],
+      "fit_scale": 0.393,
+      "bbox": {
+        "x": 36,
+        "y": 900,
+        "w": 72,
+        "h": 106
+      },
+      "baseline_y": 1006,
+      "note": "fit scale is for recognition only; not a cast-size authority"
+    },
+    {
+      "zone": "silhouettes",
+      "slot": "threeQuarter",
+      "asset": "asset-library/dino/dino_silhouette_34.png",
+      "status": "READY WITH CROP/MATTING",
+      "source": "explicit",
+      "fit_box": [
+        116,
+        824,
+        72,
+        182
+      ],
+      "fit_scale": 0.353,
+      "bbox": {
+        "x": 116,
+        "y": 912,
+        "w": 72,
+        "h": 94
+      },
+      "baseline_y": 1006,
+      "note": "fit scale is for recognition only; not a cast-size authority"
+    },
+    {
+      "zone": "silhouettes",
+      "slot": "side",
+      "asset": "asset-library/dino/dino_silhouette_side.png",
+      "status": "READY WITH CROP/MATTING",
+      "source": "explicit",
+      "fit_box": [
+        196,
+        824,
+        72,
+        182
+      ],
+      "fit_scale": 0.338,
+      "bbox": {
+        "x": 196,
+        "y": 915,
+        "w": 72,
+        "h": 91
+      },
+      "baseline_y": 1006,
+      "note": "fit scale is for recognition only; not a cast-size authority"
+    },
+    {
+      "zone": "silhouettes",
+      "slot": "back",
+      "asset": "asset-library/dino/dino_silhouette_back.png",
+      "status": "READY WITH CROP/MATTING",
+      "source": "explicit",
+      "fit_box": [
+        276,
+        824,
+        72,
+        182
+      ],
+      "fit_scale": 0.468,
+      "bbox": {
+        "x": 276,
+        "y": 883,
+        "w": 72,
+        "h": 123
+      },
+      "baseline_y": 1006,
+      "note": "fit scale is for recognition only; not a cast-size authority"
+    },
+    {
+      "zone": "silhouettes",
+      "slot": "action",
+      "asset": "asset-library/dino/dino_silhouette_action.png",
+      "status": "READY WITH CROP/MATTING",
+      "source": "explicit",
+      "fit_box": [
+        356,
+        824,
+        108,
+        182
+      ],
+      "fit_scale": 0.48,
+      "bbox": {
+        "x": 356,
+        "y": 870,
+        "w": 108,
+        "h": 136
+      },
+      "baseline_y": 1006,
+      "note": "fit scale is for recognition only; not a cast-size authority"
+    },
+    {
+      "zone": "details",
+      "slot": "detail1",
+      "asset": "asset-library/dino/dino_detail_backpack_front.png",
+      "status": "READY WITH CROP/MATTING",
+      "fit_scale": 0.429,
+      "bbox": {
+        "x": 538,
+        "y": 832,
+        "w": 66,
+        "h": 66
+      }
+    },
+    {
+      "zone": "details",
+      "slot": "detail2",
+      "asset": "asset-library/dino/dino_detail_buckle.png",
+      "status": "READY WITH CROP/MATTING",
+      "fit_scale": 1.404,
+      "bbox": {
+        "x": 670,
+        "y": 832,
+        "w": 101,
+        "h": 66
+      }
+    },
+    {
+      "zone": "details",
+      "slot": "detail3",
+      "asset": "asset-library/dino/dino_detail_paw_badge.png",
+      "status": "READY WITH CROP/MATTING",
+      "fit_scale": 1.119,
+      "bbox": {
+        "x": 530,
+        "y": 946,
+        "w": 81,
+        "h": 66
+      }
+    },
+    {
+      "zone": "details",
+      "slot": "detail4",
+      "asset": "asset-library/dino/dino_detail_dorsal_spikes.png",
+      "status": "READY WITH CROP/MATTING",
+      "fit_scale": 0.532,
+      "bbox": {
+        "x": 688,
+        "y": 946,
+        "w": 65,
+        "h": 66
+      }
+    },
+    {
+      "zone": "proportion",
+      "slot": "front_reference",
+      "asset": "asset-library/dino/dino_turnaround_front.png",
+      "status": "READY WITH CROP/MATTING",
+      "scale_px_per_source_px": 0.519,
+      "R_px": 168,
+      "k": 0.85,
+      "image_origin": [
+        1252,
+        862
+      ],
+      "matted_bbox": {
+        "x": 1253.371,
+        "y": 863.2,
+        "w": 101.258,
+        "h": 142.8
+      },
+      "box": [
+        1196,
+        824,
+        216,
+        196
+      ],
+      "overflow": false
+    }
+  ],
+  "provisional": [
+    {
+      "zone": "palette",
+      "slot": "slot1",
+      "path": "#03BDB2"
+    },
+    {
+      "zone": "palette",
+      "slot": "slot2",
+      "path": "#FDEC9A"
+    },
+    {
+      "zone": "palette",
+      "slot": "slot3",
+      "path": "#F54A05"
+    },
+    {
+      "zone": "palette",
+      "slot": "slot4",
+      "path": "#763B13"
+    },
+    {
+      "zone": "palette",
+      "slot": "slot5",
+      "path": "#01857B"
+    },
+    {
+      "zone": "palette",
+      "slot": "slot6",
+      "path": "#1D4331"
+    }
+  ],
+  "template_defects": [],
+  "text_adjustments": [],
+  "warnings": [],
+  "assets": [
+    {
+      "path": "logo/BidaZoo_World_Expedition_logo_master.png",
+      "sha256": "944915d0f0522c2714b47a9eab4840bf0790d4900709a8c5d13d0a57f4e0f21c",
+      "bytes": 1089662,
+      "size_px": [
+        1467,
+        633
+      ]
+    },
+    {
+      "path": "asset-library/dino/dino_turnaround_front.png",
+      "sha256": "05725520e310c88e2e2f3ee7a33b19344587c8f5796187e865e8c510fe98fa0b",
+      "bytes": 102164,
+      "size_px": [
+        201,
+        277
+      ]
+    },
+    {
+      "path": "asset-library/dino/dino_turnaround_34.png",
+      "sha256": "5f7b9065db2906c63700cffbb585d7eabfe4fef782a415b5fba7a651e8738d65",
+      "bytes": 105970,
+      "size_px": [
+        212,
+        277
+      ]
+    },
+    {
+      "path": "asset-library/dino/dino_turnaround_side.png",
+      "sha256": "6c4ea533a75544b43bf53e54a491707ff11e1294c5f6bb629c2c72652483a209",
+      "bytes": 104801,
+      "size_px": [
+        224,
+        277
+      ]
+    },
+    {
+      "path": "asset-library/dino/dino_turnaround_back.png",
+      "sha256": "94448c690a4b14cf987efdf59a469b00419e4ce547f87d0085ca7cd35c1043f6",
+      "bytes": 86914,
+      "size_px": [
+        171,
+        277
+      ]
+    },
+    {
+      "path": "asset-library/dino/dino_hero.png",
+      "sha256": "e752cd86233753e9d409be543a0551b851e31d7d596e6728821fbd6ad4d8c254",
+      "bytes": 110527,
+      "size_px": [
+        231,
+        290
+      ]
+    },
+    {
+      "path": "asset-library/dino/dino_head.png",
+      "sha256": "59d8be2419908ac0e3e36f35b5f9e7dd8edfccb4a43e9915d47a1e625cfff6ae",
+      "bytes": 119427,
+      "size_px": [
+        238,
+        304
+      ]
+    },
+    {
+      "path": "expression-batch/dino/dino_idle.png",
+      "sha256": "95aa9a23772dbf312408f4c4e0d4e0097dd512a46bd7c9bd2762b9817e217f76",
+      "bytes": 31618,
+      "size_px": [
+        133,
+        106
+      ]
+    },
+    {
+      "path": "expression-batch/dino/dino_happy.png",
+      "sha256": "e7ad95e3f7e3dc200d1e50207161be2de8237ceb988b396da3dcf5553de3efde",
+      "bytes": 51075,
+      "size_px": [
+        146,
+        165
+      ]
+    },
+    {
+      "path": "expression-batch/dino/dino_thinking.png",
+      "sha256": "a41c83c46450d906c6e89f92555c1b2637bda1b6d48ae4f19b09b364f6d362dd",
+      "bytes": 52396,
+      "size_px": [
+        153,
+        164
+      ]
+    },
+    {
+      "path": "expression-batch/dino/dino_cheer.png",
+      "sha256": "86ae9ae4e976fdcd0ac8481e9c6e2ea192912167d30c0b8f7f940a01aa2130f4",
+      "bytes": 55695,
+      "size_px": [
+        183,
+        163
+      ]
+    },
+    {
+      "path": "expression-batch/dino/dino_discover.png",
+      "sha256": "3c6eec7e16baa8ecda90fe0021519b1dff85e6dcfb17d5042d3204c39083b229",
+      "bytes": 49365,
+      "size_px": [
+        166,
+        164
+      ]
+    },
+    {
+      "path": "expression-batch/dino/dino_tryAgain.png",
+      "sha256": "055a5f4d827fae878ff68056e406c595b232a5e6af155d35d9e624bf94d602ba",
+      "bytes": 55366,
+      "size_px": [
+        176,
+        161
+      ]
+    },
+    {
+      "path": "asset-library/dino/dino_silhouette_front.png",
+      "sha256": "ad0d0299ba1b55fa949652ae9d64339326c30c4daef8447dfd5b087c40ab8a0e",
+      "bytes": 9856,
+      "size_px": [
+        183,
+        269
+      ]
+    },
+    {
+      "path": "asset-library/dino/dino_silhouette_34.png",
+      "sha256": "e62970198c341b2e169aae9dd17e9c5c1a3ff382445ae2696876e6b141c9ddd9",
+      "bytes": 10217,
+      "size_px": [
+        204,
+        267
+      ]
+    },
+    {
+      "path": "asset-library/dino/dino_silhouette_side.png",
+      "sha256": "246f734dc753a25018dd56f980b8ded99dd4868a62c46d9586e18565c5b68243",
+      "bytes": 10181,
+      "size_px": [
+        213,
+        268
+      ]
+    },
+    {
+      "path": "asset-library/dino/dino_silhouette_back.png",
+      "sha256": "b440f20802f2461fc5fb4666b565baba7409762ed398190eaebab6fae9f426bf",
+      "bytes": 9311,
+      "size_px": [
+        154,
+        264
+      ]
+    },
+    {
+      "path": "asset-library/dino/dino_silhouette_action.png",
+      "sha256": "80fe67e4882b24368b498046a5d906ef775eeeb45cca85398f33ac5079816997",
+      "bytes": 10013,
+      "size_px": [
+        225,
+        284
+      ]
+    },
+    {
+      "path": "asset-library/dino/dino_detail_backpack_front.png",
+      "sha256": "964964bac5140056add65befdc960301e79c393f638a79d0351e99b51c2e9332",
+      "bytes": 53858,
+      "size_px": [
+        160,
+        160
+      ]
+    },
+    {
+      "path": "asset-library/dino/dino_detail_buckle.png",
+      "sha256": "dcb527274f49f1ad784681cccc9f82acf943bbfe46ab7825f47e032c86da9989",
+      "bytes": 14784,
+      "size_px": [
+        72,
+        47
+      ]
+    },
+    {
+      "path": "asset-library/dino/dino_detail_paw_badge.png",
+      "sha256": "b4ad367988439cdc88107b9ee918ce1a99560d322a6a73168800e71334b1eeaf",
+      "bytes": 17378,
+      "size_px": [
+        72,
+        59
+      ]
+    },
+    {
+      "path": "asset-library/dino/dino_detail_dorsal_spikes.png",
+      "sha256": "ce8df08a5c8a10a7e659e1066fe6803a2ef129652a1afd6407d0fea5b81084a0",
+      "bytes": 33145,
+      "size_px": [
+        123,
+        127
+      ]
+    }
+  ],
+  "expression_widest_core": {
+    "slot": "tryAgain",
+    "width_px": 106.665,
+    "safe_width": 109
+  },
+  "expression_fit_down": {
+    "idle": 1.0,
+    "happy": 1.0,
+    "thinking": 1.0,
+    "cheer": 1.0,
+    "discover": 1.0,
+    "tryAgain": 1.0
+  },
+  "proportion_comparison": {
+    "tag": "TAR",
+    "k": 0.57,
+    "tick_y": 910.24
+  },
+  "proportion_marker": {
+    "k": 0.85,
+    "marker_y": 863.2,
+    "reference_tick_y": 838,
+    "baseline_y": 1006,
+    "R_px": 168
+  },
+  "character": {
+    "id": "dino",
+    "name": "Dino",
+    "k": 0.85
+  },
+  "canvas": [
+    1448,
+    1086
+  ],
+  "fonts": {
+    "family": "Nunito Sans",
+    "files": {
+      "400": "NunitoSans-Regular.ttf",
+      "600": "NunitoSans-SemiBold.ttf",
+      "700": "NunitoSans-Bold.ttf",
+      "800": "NunitoSans-ExtraBold.ttf"
+    },
+    "sha256": {
+      "400": "a4591b8197c3606b891dbc0fa6b1075e5abef0d7614c62a5ab3b1aef523d3fd6",
+      "600": "585931b02451771fbfbb0c7121257ad96dc3ac5801b8bddb558c3ffbb69ff8bf",
+      "700": "9a09d236cb3aa42fdd03cdce5b17dfc5adbbaf61686f74c1a6a28048c87cc16c",
+      "800": "79d61a64c7b33c0d92fd2ca876453713ca71ca446bf2b566fad36f6addbbe12e"
+    },
+    "license": "SIL OFL 1.1 (fonts/OFL.txt)"
+  },
+  "manifest_sheet_status_line": "M4 BUILD - LOGO_ASSET logo/BidaZoo_World_Expedition_logo_master.png (READY WITH CROP/MATTING); palette 63ec00673ac0 PROVISIONAL (docs); cast scale PROVISIONAL",
+  "computed_sheet_status": "LAYOUT PROOF - NOT FINAL: 6 provisional slot(s)",
+  "counts": {
+    "placeholders": 0,
+    "overflows": 0,
+    "provisional": 6,
+    "template_defects": 0
+  },
+  "output": {
+    "file": "dino_sheet_v2.png",
+    "sha256": "2afbf5e91b53dab7c58549b90e1c1f048b5f5cd2e1306b78ea2f0ac9521e9e15",
+    "size_px": [
+      1448,
+      1086
+    ]
+  },
+  "manifest_file": "dino.json"
+}

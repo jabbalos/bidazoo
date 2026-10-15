@@ -1,0 +1,45 @@
+{
+ "name": "eagle_discover",
+ "box": [
+  1047,
+  584,
+  1236,
+  754
+ ],
+ "mode": "scenic-custom",
+ "bg_rgb": [
+  247,
+  242,
+  227
+ ],
+ "clip_left": 0.0,
+ "clip_right": 0.0,
+ "clip_top": 0.0,
+ "clip_bottom": 0.0,
+ "clipping": false,
+ "extra_components": 0,
+ "contamination": false,
+ "halo_fraction": 0.20813397129186603,
+ "halo": true,
+ "outline_missing_px": 34,
+ "outline_missing": false,
+ "pass": false,
+ "trim_origin_sheet": [
+  1052,
+  587
+ ],
+ "size": [
+  185,
+  168
+ ],
+ "qa_revision": "QA round 1 (A): grey shadow specks inpainted inside crest/brow zones, throat notch patch inpainted, loose specks and pale-blue fragments removed, alpha edge gently smoothed; no feathers redrawn, crest clip not repaired.",
+ "post_cleanup_v2": "alpha contour smoothed (sigma 1.1); left-cheek sparkle specks median-cleaned",
+ "qa_revision_polish": "Final polish: brow redrawn smooth (supersampled), crest speck removed, jacket right edge given consistent soft fade; vertical stripe artifacts by left eye inpainted",
+ "core_box": [
+  4,
+  3,
+  178,
+  163
+ ],
+ "qa_revision_final": "QA pass 3: eye/brow zones re-rendered at 8x (single tapered brow + smoothed lash/lid ink, colors from adjacent pixels), alpha rebuilt from 8x supersampled mask over whole outline, crest flat runs carved to feather tips, jacket right edge via shared $S/lib/eagle_edge.py (JW=8px smoothstep on 11-row smoothed contour)."
+}

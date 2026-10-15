@@ -1,0 +1,26 @@
+{
+  "source": "reference-art/world-expedition/production-v1/02_Dino_Character_Sheet.png",
+  "analysis_box": [
+    0,
+    0,
+    520,
+    212
+  ],
+  "speck_filter_px": 100,
+  "crop_box_sheet_px": [
+    3,
+    0,
+    492,
+    211
+  ],
+  "native_crop_size": [
+    489,
+    211
+  ],
+  "scale": 3,
+  "master_size": [
+    1467,
+    633
+  ],
+  "source_sha256": "993ae547844d004b8dc14f73e9e9ce4cfa2b7a55e5391f02f4ee311ec71d5413"
+}

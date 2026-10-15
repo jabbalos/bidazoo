@@ -1,4 +1,7 @@
 import Phaser from 'phaser';
+import { computeExpressionPlacement, expressionTextureKey } from './character-assets';
+import { hasProductionArt } from './character-art';
+import type { CastId, ExpressionState } from './character-definitions';
 import type { CharacterId } from './roster';
 
 /**
@@ -11,6 +14,11 @@ import type { CharacterId } from './roster';
  * per-frame cost is one quad per character, not a pile of vector commands. Final art (portraits,
  * spritesheets, animated WebP) can replace `ensureCharacterTexture` without touching any scene,
  * the API, or the learning systems. Nothing here knows about questions, grading, XP, or coins.
+ *
+ * F3/F4: a character with curated production art (the whole cast since F4; see character-assets.ts) is drawn from
+ * its six production expressions instead, placed by the M4 eye-line anchor. If any of its six
+ * textures is missing, the code-drawn art below is used, so the fallback is always there. The
+ * public API (constructor, setBustSize, celebrate, wobble) is unchanged.
  *
  * Locked anchors honored below (see the bible): Dino has exactly ONE backpack; Koala has glasses
  * and a book and NO backpack; Tarsier is small with huge eyes and goggles; Eagle has a white head,
@@ -479,36 +487,120 @@ export function ensureCharacterTexture(scene: Phaser.Scene, id: CharacterId, moo
   return key;
 }
 
+const BLANK_TEXTURE_KEY = 'bz-character-blank';
+
+/** A 1 x 1 transparent texture: what a cast member without code-drawn art shows if its production art is missing. */
+function ensureBlankTexture(scene: Phaser.Scene): string {
+  if (!scene.textures.exists(BLANK_TEXTURE_KEY)) {
+    const g = scene.make.graphics({ x: 0, y: 0 }, false);
+    g.generateTexture(BLANK_TEXTURE_KEY, 1, 1);
+    g.destroy();
+  }
+  return BLANK_TEXTURE_KEY;
+}
+
+/** The code-drawn art only has three moods; richer states borrow the closest one. */
+function fallbackMood(state: ExpressionState): Mood {
+  if (state === 'tryAgain') return 'tryAgain';
+  if (state === 'happy' || state === 'cheer' || state === 'discover') return 'happy';
+  return 'idle';
+}
+
+/** What a character is showing right now. Read-only, for tests and the developer lab. */
+export interface CharacterLook {
+  readonly id: CastId;
+  readonly expression: ExpressionState;
+  readonly production: boolean;
+  readonly textureKey: string;
+  readonly displayWidth: number;
+  readonly displayHeight: number;
+  /** The eye anchor, in the character's own coordinates. */
+  readonly anchorX: number;
+  readonly anchorY: number;
+}
+
 /**
  * A starter on screen. `size` is the width and height of the whole bust in pixels.
  * idle is the resting pose; celebrate() and wobble() are brief reactions that return to idle.
+ * setExpression() shows any of the six canonical expressions; it changes the picture and nothing else.
  */
 export class Character extends Phaser.GameObjects.Container {
   private readonly image: Phaser.GameObjects.Image;
+  private readonly production: boolean;
+  private expression: ExpressionState = 'idle';
   private size = 0;
 
-  constructor(scene: Phaser.Scene, x: number, y: number, readonly id: CharacterId, size: number) {
+  constructor(scene: Phaser.Scene, x: number, y: number, readonly id: CastId, size: number) {
     super(scene, x, y);
-    this.image = scene.add.image(0, 0, ensureCharacterTexture(scene, id, 'idle'));
+    this.production = hasProductionArt(scene, id);
+    this.image = scene.add.image(0, 0, this.textureFor('idle'));
     this.add(this.image);
     scene.add.existing(this);
     this.setBustSize(size);
   }
 
+  /** Whether this instance is drawn from production art (false means the code-drawn fallback). */
+  get usesProductionArt(): boolean {
+    return this.production;
+  }
+
   setBustSize(size: number): this {
     this.size = size;
-    this.image.setDisplaySize(size, size);
+    this.applyLook();
     return this;
   }
 
-  private setMood(mood: Mood): void {
-    if (!this.active) return;
-    this.image.setTexture(ensureCharacterTexture(this.scene, this.id, mood));
+  /** Shows one of the six canonical expressions. Pure presentation: no scene, score or state changes. */
+  setExpression(state: ExpressionState): this {
+    if (!this.active) return this;
+    this.expression = state;
+    this.applyLook();
+    return this;
   }
 
-  /** A happy hop. */
-  celebrate(): void {
-    this.setMood('happy');
+  /** A read-only snapshot of what is on screen. */
+  inspect(): CharacterLook {
+    return {
+      id: this.id,
+      expression: this.expression,
+      production: this.production,
+      textureKey: this.image.texture.key,
+      displayWidth: this.image.displayWidth,
+      displayHeight: this.image.displayHeight,
+      anchorX: this.image.x,
+      anchorY: this.image.y,
+    };
+  }
+
+  private textureFor(state: ExpressionState): string {
+    if (this.production) return expressionTextureKey(this.id, state);
+    // Click (the host and guide) has no code-drawn art: if his production art is missing he is simply
+    // not drawn, rather than being drawn as a different character. The five starters fall back to
+    // their code-drawn busts as before.
+    return this.id === 'click' ? ensureBlankTexture(this.scene) : ensureCharacterTexture(this.scene, this.id, fallbackMood(state));
+  }
+
+  private applyLook(): void {
+    const image = this.image;
+    image.setTexture(this.textureFor(this.expression));
+    const placement = this.production ? computeExpressionPlacement(this.id, this.expression, this.size) : undefined;
+    if (placement) {
+      image.setDisplaySize(placement.displayWidth, placement.displayHeight);
+      image.setOrigin(placement.originX, placement.originY);
+      image.setPosition(placement.x, placement.y);
+    } else {
+      image.setDisplaySize(this.size, this.size);
+      image.setOrigin(0.5, 0.5);
+      image.setPosition(0, 0);
+    }
+  }
+
+  /**
+   * A happy hop. By default it shows `happy` and returns to `idle`. A screen that wants a different
+   * picture (a bigger celebration) or wants to keep it afterwards passes them; the hop is the same.
+   */
+  celebrate(show: ExpressionState = 'happy', settleTo: ExpressionState = 'idle'): void {
+    this.setExpression(show);
     this.scene.tweens.add({
       targets: this,
       y: this.y - this.size * 0.28,
@@ -517,13 +609,13 @@ export class Character extends Phaser.GameObjects.Container {
       duration: 160,
       yoyo: true,
       ease: 'Quad.easeOut',
-      onComplete: () => this.setMood('idle'),
+      onComplete: () => this.settle(show, settleTo),
     });
   }
 
   /** A gentle head shake. Deliberately mild: a miss is not a punishment. */
-  wobble(): void {
-    this.setMood('tryAgain');
+  wobble(settleTo: ExpressionState = 'idle'): void {
+    this.setExpression('tryAgain');
     this.scene.tweens.add({
       targets: this,
       angle: { from: -9, to: 9 },
@@ -533,8 +625,13 @@ export class Character extends Phaser.GameObjects.Container {
       onComplete: () => {
         if (!this.active) return;
         this.setAngle(0);
-        this.setMood('idle');
+        this.settle('tryAgain', settleTo);
       },
     });
+  }
+
+  /** Ends a reaction, unless something else has changed the expression in the meantime. */
+  private settle(shown: ExpressionState, settleTo: ExpressionState): void {
+    if (this.expression === shown) this.setExpression(settleTo);
   }
 }

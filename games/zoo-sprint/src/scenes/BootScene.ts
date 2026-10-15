@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import { loadProductionCharacterArt, loadedProductionTextureCount } from '../character-art';
 import { getContext } from '../context';
 import { COLORS, CSS, FONT } from '../theme';
 import { publishSurface } from '../ui';
@@ -44,8 +45,14 @@ export class BootScene extends Phaser.Scene {
 
   private async connect(): Promise<void> {
     const ctx = getContext(this);
+    // Production character art loads while the splash shows, in parallel with the guest check.
+    // It can never fail the boot: if it is late or broken, characters use their code-drawn art.
+    const art = loadProductionCharacterArt(this).catch(() => undefined);
     try {
       const guest = await ctx.platform.ensureGuest();
+      await art;
+      // Lets automated tests see how many production textures are ready ("0" means fallback art).
+      ctx.parent.setAttribute('data-production-art', String(loadedProductionTextureCount(this)));
       ctx.totals = guest.totals;
       ctx.activeSessionId = guest.activeSessionId;
       this.scene.start('MenuScene');

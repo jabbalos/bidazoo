@@ -1,0 +1,32 @@
+{
+ "name": "bronco_happy",
+ "box": [
+  372,
+  612,
+  545,
+  765
+ ],
+ "mode": "parchment",
+ "bg_rgb": [
+  253,
+  244,
+  227
+ ],
+ "clip_left": 0.0,
+ "clip_right": 0.0,
+ "clip_top": 0.0,
+ "clip_bottom": 0.0,
+ "clipping": false,
+ "extra_components": [],
+ "contamination": false,
+ "halo_fraction": 0.0007288629737609329,
+ "halo": false,
+ "outline_missing_px": 3,
+ "outline_missing": false,
+ "pass": true,
+ "size": [
+  162,
+  153
+ ],
+ "pockets_removed": 0
+}

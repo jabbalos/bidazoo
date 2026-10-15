@@ -1,0 +1,34 @@
+{
+ "name": "bronco_discover",
+ "box": [
+  716,
+  606,
+  892,
+  765
+ ],
+ "mode": "parchment",
+ "bg_rgb": [
+  253,
+  244,
+  228
+ ],
+ "clip_left": 0.0,
+ "clip_right": 0.0,
+ "clip_top": 0.0,
+ "clip_bottom": 0.0,
+ "clipping": false,
+ "extra_components": [],
+ "contamination": false,
+ "halo_fraction": 0.0,
+ "halo": false,
+ "outline_missing_px": 6,
+ "outline_missing": false,
+ "pass": true,
+ "size": [
+  168,
+  154
+ ],
+ "pockets_removed": 2,
+ "qa_revision": "QA round 1 (C): trapped light specks at right hair pocket removed (alpha only).",
+ "post_cleanup_v2": "alpha contour smoothed (sigma 0.9); see-through pinholes in hair inpainted from neighbor hair pixels; detached specks removed"
+}

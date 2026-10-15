@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 import type { PlaySession } from '@bidazoo/game-sdk';
 import { Character } from '../characters';
+import { expressionForResults } from '../character-expression';
 import { getContext } from '../context';
 import { COLORS, CSS, clamp } from '../theme';
 import { BUTTON_STYLES, TapButton, publishSurface, text, type HitTarget } from '../ui';
@@ -9,6 +10,9 @@ import { BUTTON_STYLES, TapButton, publishSurface, text, type HitTarget } from '
 export class ResultsScene extends Phaser.Scene {
   private layer!: Phaser.GameObjects.Container;
   private session!: PlaySession;
+  private hero: Character | null = null;
+  /** True once the celebration has started, so a resize keeps it instead of resetting to idle. */
+  private celebrating = false;
 
   constructor() {
     super('ResultsScene');
@@ -19,10 +23,28 @@ export class ResultsScene extends Phaser.Scene {
   }
 
   create(): void {
+    this.celebrating = false;
+    this.hero = null;
     this.layer = this.add.container(0, 0);
     this.render();
     this.scale.on(Phaser.Scale.Events.RESIZE, this.render, this);
-    this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => this.scale.off(Phaser.Scale.Events.RESIZE, this.render, this));
+    this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
+      this.scale.off(Phaser.Scale.Events.RESIZE, this.render, this);
+      // Leave no expression behind for the next screen to inherit.
+      getContext(this).parent.removeAttribute('data-expression');
+    });
+    // Scheduled once (not per render), so a resize can never double the celebration.
+    this.time.delayedCall(250, () => this.celebrate());
+  }
+
+  /** The celebration: a finished run cheers, and a run that mastered something new discovers. */
+  private celebrate(): void {
+    const ctx = getContext(this);
+    const celebration = expressionForResults(this.session.results);
+    this.celebrating = true;
+    if (!this.hero?.active) return;
+    this.hero.celebrate(celebration, celebration);
+    ctx.parent.setAttribute('data-expression', celebration);
   }
 
   private render(): void {
@@ -45,9 +67,12 @@ export class ResultsScene extends Phaser.Scene {
     title.setPosition(w / 2, pad + h * 0.045);
     this.layer.add(title);
 
+    // The starter rests at idle, then celebrates what the server already decided: a finished run is a
+    // cheer, and a run that mastered something new is a discovery. Reads the results; changes nothing.
     const hero = new Character(this, w / 2, title.y + h * 0.15, ctx.character, clamp(h * 0.21, 84, 190));
+    this.hero = hero;
+    if (this.celebrating) hero.setExpression(expressionForResults(results));
     this.layer.add(hero);
-    this.time.delayedCall(250, () => hero.active && hero.celebrate());
 
     const lineSize = clamp(h * 0.036, 16, 28);
     const lines: Array<{ value: string; color: string; bold?: boolean }> = [];
@@ -84,6 +109,7 @@ export class ResultsScene extends Phaser.Scene {
 
     publishSurface(ctx.parent, 'results', targets, {
       character: hero.id, // the starter actually drawn on this screen
+      expression: hero.inspect().expression, // client-only page state, for tests and debugging
       correct: String(results?.correct ?? 0),
       'xp-earned': String(results?.xpEarned ?? 0),
     });

@@ -1,0 +1,177 @@
+{
+  "schema_version": 1,
+  "character": {
+    "id": "eagle",
+    "name": "Eagle",
+    "role": "White-headed varsity eagle",
+    "tagline": null,
+    "kind": "starter"
+  },
+  "sheet": {
+    "status_line": "LAYOUT PROOF - placeholders only; LOGO_ASSET and most art MISSING / TO AUTHOR",
+    "logo": {
+      "path": null,
+      "status": "MISSING / TO AUTHOR"
+    }
+  },
+  "cast": {
+    "k": 1.0,
+    "k_status": "PROVISIONAL",
+    "s0": 0.184
+  },
+  "palette": {
+    "status": "PROVISIONAL",
+    "mapping_note": "Names/hex from doc 09 s3 (code/ref values, not authority). Role mapping is a PROPOSAL pending production-plan step 9.",
+    "slots": [
+      {
+        "label": "PRIMARY",
+        "name": "White head",
+        "hex": "#FBFAF4",
+        "status": "PROVISIONAL"
+      },
+      {
+        "label": "SECONDARY",
+        "name": "Brown wings",
+        "hex": "#7B4A25",
+        "status": "PROVISIONAL"
+      },
+      {
+        "status": "OPEN"
+      },
+      {
+        "label": "GEAR",
+        "name": "Green varsity jacket",
+        "hex": "#1F7D49",
+        "status": "PROVISIONAL"
+      },
+      {
+        "label": "DETAIL",
+        "name": "Yellow beak",
+        "hex": "#F7C52B",
+        "status": "PROVISIONAL"
+      },
+      {
+        "status": "OPEN"
+      }
+    ]
+  },
+  "turnaround": {
+    "front": {
+      "path": null,
+      "status": "MISSING / TO AUTHOR",
+      "plan_status": "NEEDS CONTROLLED EDIT",
+      "transform_hint": "when authored: transform.ref_height_src_px (or units_per_source_px), optional ground_y_src"
+    },
+    "threeQuarter": {
+      "path": null,
+      "status": "MISSING / TO AUTHOR",
+      "plan_status": "NEEDS CONTROLLED EDIT",
+      "transform_hint": "when authored: transform.ref_height_src_px (or units_per_source_px), optional ground_y_src"
+    },
+    "side": {
+      "path": null,
+      "status": "MISSING / TO AUTHOR",
+      "plan_status": "NEEDS CONTROLLED EDIT",
+      "transform_hint": "when authored: transform.ref_height_src_px (or units_per_source_px), optional ground_y_src"
+    },
+    "back": {
+      "path": null,
+      "status": "MISSING / TO AUTHOR",
+      "plan_status": "NEEDS CONTROLLED EDIT",
+      "transform_hint": "when authored: transform.ref_height_src_px (or units_per_source_px), optional ground_y_src"
+    }
+  },
+  "hero": {
+    "path": null,
+    "status": "MISSING / TO AUTHOR",
+    "plan_status": "NEEDS CONTROLLED EDIT"
+  },
+  "head": {
+    "path": null,
+    "status": "MISSING / TO AUTHOR",
+    "plan_status": "NEEDS CONTROLLED EDIT"
+  },
+  "expressions": {
+    "head_scale": 0.6289,
+    "head_scale_basis": "PROVISIONAL: matted bbox width of the first wired expression asset = nominal 100 px; replace once real matted heads exist",
+    "idle": {
+      "path": "idle-review-3/eagle_idle3_repaired.png",
+      "sha256": "2a35baf058d0f3ad7b5f0f4918fbbc2ebc08b5e521e758ee7049a7f2d6a1a78a",
+      "status": "PROVISIONAL",
+      "plan_status": "MISSING / TO AUTHOR",
+      "transform": {
+        "units_per_source_px": 1.0,
+        "eye_line_src_y": 63
+      },
+      "notes": "Existing transparent PNG wired for layout proof. No sign-off recorded, so it stays PROVISIONAL (doc 16 s2). eye_line_src_y is a manual visual estimate (+-3 src px)."
+    },
+    "happy": {
+      "path": null,
+      "status": "MISSING / TO AUTHOR",
+      "plan_status": "NEEDS CONTROLLED EDIT"
+    },
+    "thinking": {
+      "path": null,
+      "status": "MISSING / TO AUTHOR",
+      "plan_status": "MISSING / TO AUTHOR"
+    },
+    "cheer": {
+      "path": null,
+      "status": "MISSING / TO AUTHOR",
+      "plan_status": "NEEDS CONTROLLED EDIT"
+    },
+    "discover": {
+      "path": null,
+      "status": "MISSING / TO AUTHOR",
+      "plan_status": "NEEDS CONTROLLED EDIT"
+    },
+    "tryAgain": {
+      "path": "try-again-review/eagle_tryagain.png",
+      "sha256": "d23018700905bbd803c50d05e791e510fd3552b747e5ffaa7f64feeff7ec7597",
+      "status": "PROVISIONAL",
+      "plan_status": "NEEDS CONTROLLED EDIT",
+      "transform": {
+        "units_per_source_px": 1.0,
+        "eye_line_src_y": 47
+      },
+      "notes": "Existing transparent PNG wired for layout proof. No sign-off recorded, so it stays PROVISIONAL (doc 16 s2). eye_line_src_y is a manual visual estimate (+-3 src px). Doc 15 s5 / doc 16 s6: Eagle TRY AGAIN currently scowls and is a controlled-edit target; owner may set status to NEEDS CONTROLLED EDIT to hide it."
+    }
+  },
+  "details": [
+    {
+      "path": null,
+      "status": "MISSING / TO AUTHOR",
+      "plan_status": "READY WITH CROP/MATTING",
+      "caption": "Academy A patch"
+    },
+    {
+      "path": null,
+      "status": "MISSING / TO AUTHOR",
+      "plan_status": "READY WITH CROP/MATTING",
+      "caption": "Varsity collar & stripes"
+    },
+    {
+      "path": null,
+      "status": "MISSING / TO AUTHOR",
+      "plan_status": "READY WITH CROP/MATTING",
+      "caption": "Mountain emblem"
+    },
+    {
+      "path": null,
+      "status": "MISSING / TO AUTHOR",
+      "plan_status": "READY WITH CROP/MATTING",
+      "caption": "Wing-feather treatment"
+    }
+  ],
+  "silhouettes": {
+    "derive": true,
+    "items": {}
+  },
+  "proportion": {
+    "front_reference": "turnaround.front",
+    "comparison": {
+      "tag": "TAR",
+      "k": 0.57
+    }
+  }
+}

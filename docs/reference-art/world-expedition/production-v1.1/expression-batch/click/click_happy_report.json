@@ -1,0 +1,32 @@
+{
+ "name": "click_happy",
+ "box": [
+  14,
+  652,
+  178,
+  805
+ ],
+ "mode": "parchment",
+ "bg_rgb": [
+  244,
+  230,
+  206
+ ],
+ "clip_left": 0.0,
+ "clip_right": 0.0,
+ "clip_top": 0.0,
+ "clip_bottom": 0.22560975609756098,
+ "clipping": false,
+ "extra_components": [],
+ "contamination": false,
+ "halo_fraction": 0.0016420361247947454,
+ "halo": false,
+ "outline_missing_px": 25,
+ "outline_missing": false,
+ "pass": true,
+ "size": [
+  155,
+  150
+ ],
+ "post_cleanup": "ear-tip band (top 28 rows): removed semi-transparent dark (lum<150, alpha 0.02-0.9) fringe pixels"
+}

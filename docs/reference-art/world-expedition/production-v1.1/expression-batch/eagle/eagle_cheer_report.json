@@ -1,0 +1,23 @@
+{
+ "name": "eagle_cheer",
+ "box": null,
+ "mode": "re-authored-from-happy",
+ "size": [
+  193,
+  168
+ ],
+ "clip_left": 0.0,
+ "clip_right": 0.0,
+ "clip_top": 0.0,
+ "clip_bottom": 0.0,
+ "extra_components": 3,
+ "contamination": false,
+ "qa_revision": "Final polish: closed joy arcs both eyes, brows redrawn as smooth vector strokes (left+right), eye sockets shaded/textured to match fur, far cheek completed, remnants/speck removed, jacket right edge soft fade; bursts accents consistent with click/bronco cheer.",
+ "core_box": [
+  3,
+  4,
+  158,
+  163
+ ],
+ "qa_revision_final": "QA pass 3: eye/brow zones re-rendered at 8x (single tapered brow + smoothed lash/lid ink, colors from adjacent pixels), alpha rebuilt from 8x supersampled mask over whole outline, crest flat runs carved to feather tips, jacket right edge via shared $S/lib/eagle_edge.py (JW=8px smoothstep on 11-row smoothed contour)."
+}

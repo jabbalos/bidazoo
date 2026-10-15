@@ -1,5 +1,6 @@
 import { defineConfig } from '@playwright/test';
 import { ID_API_PORT, ID_PLAY_PORT, identityEnv } from './identity-env';
+import { LAB_PORT } from './lab-env';
 
 const PLAY_PORT = 4173;
 const API_PORT = 3001;
@@ -57,13 +58,30 @@ export default defineConfig({
       command: 'npm run build -w @bidazoo/api && node apps/api/dist/server.js',
       url: `http://127.0.0.1:${API_PORT}/ready`,
       cwd: '../..',
-      env: { API_PORT: String(API_PORT), DATABASE_URL: process.env['DATABASE_URL'] ?? '' },
+      env: {
+        API_PORT: String(API_PORT),
+        DATABASE_URL: process.env['DATABASE_URL'] ?? '',
+        // Every test page load creates one guest, and the whole suite runs from one address inside a
+        // single tumbling hour. The default allowance (150 new guests per IP per hour) is for a
+        // classroom, and the suite outgrew it (F5 measured about 180 guests in one full run). Only
+        // this throwaway test API is loosened; product defaults are unchanged and rate-limit.test.ts
+        // still proves them. The identity stack below does the same for its own limits.
+        RATE_GUEST_CREATE_HOURLY_MAX: '1000',
+      },
       reuseExistingServer: !process.env['CI'],
       timeout: 120_000,
     },
     {
       command: `npm run build -w @bidazoo/play && npm run preview -w @bidazoo/play -- --port ${PLAY_PORT} --strictPort`,
       url: `http://127.0.0.1:${PLAY_PORT}`,
+      cwd: '../..',
+      reuseExistingServer: !process.env['CI'],
+      timeout: 120_000,
+    },
+    // Developer character lab: a separate build (`--mode character-lab`) of the same client, same CSP.
+    {
+      command: `npm run build:character-lab -w @bidazoo/play && npm run preview:character-lab -w @bidazoo/play -- --port ${LAB_PORT} --strictPort`,
+      url: `http://127.0.0.1:${LAB_PORT}`,
       cwd: '../..',
       reuseExistingServer: !process.env['CI'],
       timeout: 120_000,

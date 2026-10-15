@@ -1,0 +1,64 @@
+{
+ "frame_samples": {
+  "library/koala_turnaround_front.png": {
+   "n": 316,
+   "median_rgb": [
+    7.0,
+    3.0,
+    6.0
+   ]
+  },
+  "library/koala_head.png": {
+   "n": 600,
+   "median_rgb": [
+    12.0,
+    6.0,
+    6.0
+   ]
+  },
+  "production-v1/03 head close-up": {
+   "n": 479,
+   "median_rgb": [
+    8.0,
+    5.0,
+    5.0
+   ]
+  }
+ },
+ "canonical_frame_rgb": [
+  9.0,
+  5.0,
+  6.0
+ ],
+ "alpha_identical": true,
+ "size": [
+  175,
+  67
+ ],
+ "body_pixels": 3343,
+ "body_mean_rgb_before": [
+  27.3,
+  12.4,
+  6.3
+ ],
+ "body_mean_rgb_after": [
+  17.1,
+  13.1,
+  14.0
+ ],
+ "body_median_rgb_after": [
+  17.0,
+  13.0,
+  14.0
+ ],
+ "body_max_channel_spread_after": 4.073885731379001,
+ "luminance_corr_old_new": 0.9896494355782395,
+ "highlight_p99_L_before_after": [
+  126.7058,
+  95.78395999999998
+ ],
+ "brown_pixels_before(sat>0.5,L>8)": 2309,
+ "brown_pixels_after(sat>0.5,L>8)": 1,
+ "sha256_after": "955f156b0263fe4dc367ffed6f8c2bf1b04e31057faf1700bc3a2e7bc7463610",
+ "sha256_before": "6bfcf2e9719e5eabbdac917dd4dbf3a8a9543b2b2dbaf4af5edbfa49eb9b8d4d"
+}

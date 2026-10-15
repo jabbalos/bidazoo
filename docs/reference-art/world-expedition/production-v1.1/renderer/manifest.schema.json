@@ -1,0 +1,528 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "bidazoo-character-sheet-manifest-v1",
+  "title": "BidaZoo canonical character-sheet manifest (schema_version 1)",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "character",
+    "cast",
+    "palette",
+    "turnaround",
+    "hero",
+    "head",
+    "expressions",
+    "details",
+    "silhouettes",
+    "proportion"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "character": {
+      "type": "object",
+      "required": [
+        "id",
+        "name",
+        "role",
+        "kind"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_-]*$"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "description": "display name, used exactly in the title"
+        },
+        "role": {
+          "type": "string",
+          "minLength": 1,
+          "description": "one-line header subtitle"
+        },
+        "tagline": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "metadata only; doc 15 has no tagline zone, never rendered"
+        },
+        "kind": {
+          "enum": [
+            "starter",
+            "host"
+          ],
+          "description": "selects the LOCKED role-tag string and treatment"
+        }
+      }
+    },
+    "sheet": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "status_line": {
+          "type": "string",
+          "description": "sheet status line; lives in the manifest/report, never on the artwork"
+        },
+        "logo": {
+          "$ref": "#/$defs/asset"
+        }
+      }
+    },
+    "cast": {
+      "type": "object",
+      "required": [
+        "k"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "k": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "description": "cast-relative scale factor (1.0 = cast reference height)"
+        },
+        "k_status": {
+          "enum": [
+            "PROVISIONAL",
+            "APPROVED"
+          ]
+        },
+        "s0": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "default": 0.184,
+          "description": "cast constant S0 in px per source unit (1 unit = 1/1000 of the cast reference height); MUST be identical in all six manifests"
+        }
+      }
+    },
+    "palette": {
+      "type": "object",
+      "required": [
+        "slots"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "status": {
+          "enum": [
+            "PROVISIONAL",
+            "APPROVED"
+          ]
+        },
+        "mapping_note": {
+          "type": "string"
+        },
+        "slots": {
+          "type": "array",
+          "minItems": 6,
+          "maxItems": 6,
+          "description": "order: PRIMARY, SECONDARY, ACCENT, GEAR, DETAIL, CHARACTER-SPECIFIC",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "label": {
+                "type": "string",
+                "description": "overrides the default role label"
+              },
+              "name": {
+                "type": "string"
+              },
+              "hex": {
+                "type": "string",
+                "pattern": "^#[0-9A-Fa-f]{6}$"
+              },
+              "status": {
+                "enum": [
+                  "PROVISIONAL",
+                  "OPEN"
+                ],
+                "description": "OPEN (or no name and no hex) => empty-pattern slot"
+              }
+            }
+          }
+        }
+      }
+    },
+    "turnaround": {
+      "type": "object",
+      "required": [
+        "front",
+        "threeQuarter",
+        "side",
+        "back"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "front": {
+          "$ref": "#/$defs/turnaroundAsset"
+        },
+        "threeQuarter": {
+          "$ref": "#/$defs/turnaroundAsset"
+        },
+        "side": {
+          "$ref": "#/$defs/turnaroundAsset"
+        },
+        "back": {
+          "$ref": "#/$defs/turnaroundAsset"
+        }
+      }
+    },
+    "hero": {
+      "$ref": "#/$defs/heroAsset"
+    },
+    "head": {
+      "$ref": "#/$defs/headAsset"
+    },
+    "expressions": {
+      "type": "object",
+      "required": [
+        "idle",
+        "happy",
+        "thinking",
+        "cheer",
+        "discover",
+        "tryAgain"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "head_scale": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "description": "px per unit; ONE value for all six cells of this character; required if any expression art is drawable"
+        },
+        "head_scale_basis": {
+          "type": "string"
+        },
+        "idle": {
+          "$ref": "#/$defs/expressionAsset"
+        },
+        "happy": {
+          "$ref": "#/$defs/expressionAsset"
+        },
+        "thinking": {
+          "$ref": "#/$defs/expressionAsset"
+        },
+        "cheer": {
+          "$ref": "#/$defs/expressionAsset"
+        },
+        "discover": {
+          "$ref": "#/$defs/expressionAsset"
+        },
+        "tryAgain": {
+          "$ref": "#/$defs/expressionAsset"
+        },
+        "vertical_anchor": {
+          "enum": [
+            "eye_line",
+            "bottom"
+          ],
+          "default": "eye_line"
+        }
+      }
+    },
+    "details": {
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 4,
+      "items": {
+        "$ref": "#/$defs/detailAsset"
+      }
+    },
+    "silhouettes": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "derive": {
+          "type": "boolean",
+          "default": true,
+          "description": "derive from turnaround.* (front, threeQuarter, side, back) and hero (action) alpha when no explicit item is given"
+        },
+        "items": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "front": {
+              "$ref": "#/$defs/asset"
+            },
+            "threeQuarter": {
+              "$ref": "#/$defs/asset"
+            },
+            "side": {
+              "$ref": "#/$defs/asset"
+            },
+            "back": {
+              "$ref": "#/$defs/asset"
+            },
+            "action": {
+              "$ref": "#/$defs/asset"
+            }
+          }
+        }
+      }
+    },
+    "proportion": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "front_reference": {
+          "description": "'turnaround.front' (default) or an asset with a turnaround-style transform",
+          "oneOf": [
+            {
+              "const": "turnaround.front"
+            },
+            {
+              "$ref": "#/$defs/turnaroundAsset"
+            }
+          ]
+        },
+        "comparison": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "required": [
+            "tag",
+            "k"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "tag": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 3
+            },
+            "k": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            }
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "status": {
+      "enum": [
+        "READY WITH CROP/MATTING",
+        "NEEDS CONTROLLED EDIT",
+        "MISSING / TO AUTHOR",
+        "PROVISIONAL",
+        "OPEN",
+        "OWNER-ACCEPTED MINOR"
+      ]
+    },
+    "asset": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "path": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "transparent/matted PNG; relative to --assets-root or absolute"
+        },
+        "status": {
+          "$ref": "#/$defs/status"
+        },
+        "plan_status": {
+          "enum": [
+            "READY WITH CROP/MATTING",
+            "NEEDS CONTROLLED EDIT",
+            "MISSING / TO AUTHOR",
+            "PROVISIONAL",
+            "OWNER-ACCEPTED MINOR",
+            null
+          ],
+          "description": "doc 16 matrix status for the backlog; informational"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-fA-F]{64}$"
+        },
+        "notes": {
+          "type": "string"
+        },
+        "transform": {
+          "type": "object"
+        }
+      }
+    },
+    "turnaroundAsset": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/asset"
+        }
+      ],
+      "properties": {
+        "transform": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "ref_height_src_px": {
+              "type": "number",
+              "exclusiveMinimum": 0,
+              "description": "source px that span the cast reference height of this character in THIS asset (units_per_source_px = 1000 / this)"
+            },
+            "units_per_source_px": {
+              "type": "number",
+              "exclusiveMinimum": 0,
+              "description": "alternative to ref_height_src_px"
+            },
+            "ground_y_src": {
+              "type": "number",
+              "description": "source y (px) of the lowest ground-contact point; default = matted bbox bottom"
+            }
+          }
+        }
+      }
+    },
+    "heroAsset": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/asset"
+        }
+      ],
+      "properties": {
+        "transform": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "mode": {
+              "enum": [
+                "fit",
+                "fixed"
+              ],
+              "default": "fit"
+            },
+            "px_per_source_px": {
+              "type": "number",
+              "exclusiveMinimum": 0,
+              "description": "required for mode fixed"
+            },
+            "clearance_px": {
+              "type": "number",
+              "minimum": 8,
+              "maximum": 24,
+              "default": 24,
+              "description": "8 only where the pose intentionally extends (wing tip)"
+            }
+          }
+        }
+      }
+    },
+    "headAsset": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/asset"
+        }
+      ],
+      "properties": {
+        "transform": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "eye_line_src_y"
+          ],
+          "properties": {
+            "eye_line_src_y": {
+              "type": "number"
+            },
+            "head_width_src_px": {
+              "type": "number",
+              "exclusiveMinimum": 0,
+              "description": "head bounding-box width in source px; default matted bbox width"
+            },
+            "head_center_src_x": {
+              "type": "number"
+            },
+            "core_box": {
+              "type": "array",
+              "items": {
+                "type": "number"
+              },
+              "minItems": 4,
+              "maxItems": 4,
+              "description": "core box x0,y0,x1,y1 in source px (head+hat/ears); see template-rules-v2.md"
+            },
+            "anchor": {
+              "enum": [
+                "eye_line",
+                "eye_line_bleed",
+                "bottom"
+              ]
+            },
+            "bleed_max_px": {
+              "type": "number"
+            }
+          }
+        }
+      }
+    },
+    "expressionAsset": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/asset"
+        }
+      ],
+      "properties": {
+        "transform": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "eye_line_src_y"
+          ],
+          "properties": {
+            "units_per_source_px": {
+              "type": "number",
+              "exclusiveMinimum": 0,
+              "default": 1.0,
+              "description": "asset-specific normalization into the character's head-scale units"
+            },
+            "eye_line_src_y": {
+              "type": "number",
+              "description": "source y (px) of the eye line"
+            },
+            "core_box": {
+              "type": "array",
+              "items": {
+                "type": "number"
+              },
+              "minItems": 4,
+              "maxItems": 4,
+              "description": "core box x0,y0,x1,y1 in source px (head+hat/ears); see template-rules-v2.md"
+            },
+            "core_source": {
+              "type": "string"
+            },
+            "crop_kind": {
+              "enum": [
+                "bust",
+                "head_only"
+              ],
+              "default": "bust",
+              "description": "head_only: hard bottom crop edge; bottom-anchored on the cell bottom (template-rules-v2.md s6); bust: eye-line locked"
+            }
+          }
+        }
+      }
+    },
+    "detailAsset": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/asset"
+        }
+      ],
+      "properties": {
+        "caption": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
