@@ -53,6 +53,22 @@ export const CAST_SCALE_FACTORS: Readonly<Record<CastId, number>> = Object.freez
   tarsier: 0.57,
 });
 
+/**
+ * How strongly the approved cast-relative scale shows up when characters are drawn BIG (hero stage,
+ * medallions, the gameplay buddy, the results podium). The factors above are turnaround and
+ * proportion references: applied 1:1 to a hero (Tarsier = 0.57) they would shrink one starter to a
+ * speck, which is the exact failure this presentation pass fixes. So scenes use
+ * `castPresence(id) = factor ^ PRESENCE_EXPONENT`: it keeps the ORDER and the relationships
+ * (Eagle largest, then Click and Bronco, Dino, Koala, Tarsier smallest) while never dropping a
+ * starter below ~0.8 of the largest. 0 would ignore the factors; 1 would apply them literally.
+ * OWNER DECISION: tune or retire this constant (see docs/visual/18-world-expedition-visual-recovery.md).
+ */
+export const PRESENCE_EXPONENT = 0.4;
+
+export function castPresence(id: CastId): number {
+  return CAST_SCALE_FACTORS[id] ** PRESENCE_EXPONENT;
+}
+
 interface DefinitionBase {
   /** The child-facing name. */
   readonly displayName: string;

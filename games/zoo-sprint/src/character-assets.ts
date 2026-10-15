@@ -293,3 +293,92 @@ export function computeExpressionPlacement(id: CastId, state: ExpressionState, s
     y: EYE_LINE_Y_FRACTION * size,
   });
 }
+
+// ---------------------------------------------------------------------------
+// Hero fit (visual recovery pass): size a character to the SPACE it is given.
+// ---------------------------------------------------------------------------
+
+/** The space a character may occupy, in pixels. */
+export interface HeroBox {
+  readonly width: number;
+  readonly height: number;
+}
+
+export interface HeroFitOptions {
+  /** Largest display pixels per source pixel. The art is small (about 130 to 290 px wide), so this bounds softness. */
+  readonly maxScale?: number;
+  /** The widest head core may use this fraction of the box width (default 0.78). */
+  readonly fillWidth?: number;
+  /** The art that is ALWAYS drawn (above the earliest flat crop) may use this fraction of the box height (default 1). */
+  readonly fillHeight?: number;
+  /** Multiplier applied after fitting: castPresence(id) for hero scenes, 1 to ignore the cast scale. */
+  readonly presence?: number;
+  /** How far (px) the art continues below the box bottom, so the foreground element that hides the flat crop overlaps it. */
+  readonly overlap?: number;
+}
+
+export interface HeroFit {
+  /** Display pixels per source pixel. One value for all six expressions, so no expression resizes the head. */
+  readonly scale: number;
+  /** The bust size that makes computeExpressionPlacement() produce this scale. */
+  readonly size: number;
+  /** Where the eye-line anchor sits inside the box (pixels from the box top-left). */
+  readonly anchorX: number;
+  readonly anchorY: number;
+  /** Top of the highest art in any expression, in box pixels (may be negative if the art overflows upward). */
+  readonly topY: number;
+  /**
+   * The row (box pixels) where the EARLIEST flat crop of any expression ends. Everything above it is
+   * drawn in all six expressions; whatever sits in front of the art must cover this row and below.
+   */
+  readonly cutY: number;
+  /** Upscale factor over the source PNG (same as `scale`; named for the report). */
+  readonly upscale: number;
+}
+
+const DEFAULT_MAX_SCALE = 2.6;
+
+/**
+ * Fits a character into `box`. The production expressions are head-and-bust crops whose bottom edge
+ * is a hard, flat cut (see the M4 manifests: cropKind), so the rule is:
+ *  - every expression is drawn at ONE scale and anchored on the same eye line and head-core column
+ *    (the F3 placement rule, unchanged), so the head never changes size or position;
+ *  - the scale is the largest that keeps the widest head core inside `fillWidth` of the box and the
+ *    always-drawn art (top of the tallest crop down to the EARLIEST crop edge) inside the box height;
+ *  - the art ends `overlap` pixels below the box, under a foreground element (plaque, ledge, card)
+ *    that the scene draws on top, so no flat crop is ever visible.
+ * Returns undefined for a character without runtime art.
+ */
+export function computeHeroFit(id: CastId, box: HeroBox, options: HeroFitOptions = {}): HeroFit | undefined {
+  const art = RUNTIME_ART[id];
+  if (!art || box.width <= 0 || box.height <= 0) return undefined;
+  const fillWidth = options.fillWidth ?? 0.78;
+  const fillHeight = options.fillHeight ?? 1;
+  const presence = options.presence ?? 1;
+  const maxScale = options.maxScale ?? DEFAULT_MAX_SCALE;
+  const overlap = options.overlap ?? 6;
+
+  let maxCoreWidth = 0;
+  let maxEyeAbove = 0; // source px from the eye line up to the highest top edge
+  let minBelowEye = Number.POSITIVE_INFINITY; // source px from the eye line down to the earliest crop edge
+  for (const expression of Object.values(art.expressions)) {
+    const [x0, , x1] = expression.coreBox;
+    maxCoreWidth = Math.max(maxCoreWidth, x1 - x0);
+    maxEyeAbove = Math.max(maxEyeAbove, expression.eyeLineY);
+    minBelowEye = Math.min(minBelowEye, expression.height - expression.eyeLineY);
+  }
+
+  const byWidth = (fillWidth * box.width) / maxCoreWidth;
+  const byHeight = (fillHeight * (box.height + overlap)) / (maxEyeAbove + minBelowEye);
+  const scale = Math.min(maxScale, Math.min(byWidth, byHeight) * presence);
+  const anchorY = box.height + overlap - minBelowEye * scale;
+  return Object.freeze({
+    scale,
+    size: (scale * HEAD_UNITS) / (art.headScale * HEAD_FILL),
+    anchorX: box.width / 2,
+    anchorY,
+    topY: anchorY - maxEyeAbove * scale,
+    cutY: box.height + overlap,
+    upscale: scale,
+  });
+}

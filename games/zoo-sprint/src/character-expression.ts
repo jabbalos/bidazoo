@@ -51,12 +51,34 @@ export function expressionForResults(results: RunOutcome | null | undefined): Ex
   return results && results.newlyMastered.length > 0 ? 'discover' : 'cheer';
 }
 
+/** Presentation-only context for the run screen: which question is open and the current right-answer streak. */
+export interface RunMoment {
+  /** 1-based number of the open question (the server's `sequence`). */
+  readonly sequence?: number;
+  /** Consecutive right answers shown so far, counted by the screen from graded results. */
+  readonly streak?: number;
+}
+
+/** A streak this long earns the high-energy cheer instead of the plain happy. */
+export const CHEER_STREAK = 3;
+
 /**
  * The expression for the run screen right now, derived entirely from what it is already showing.
  * Because it is derived, rebuilding the screen (a resize, the next question) can never lose or
  * invent an expression.
+ *
+ *   loading / error               -> idle        (waiting)
+ *   the first question opens      -> discover    (a new expedition begins)
+ *   a question is open            -> thinking    (presenting the question)
+ *   submitting                    -> thinking
+ *   right answer                  -> happy, or cheer on a streak of CHEER_STREAK or more
+ *   wrong answer                  -> tryAgain
  */
-export function expressionForRun(phase: RunPhaseName, answer: AnswerOutcome | null): ExpressionState {
-  if (phase === 'feedback' && answer) return expressionForAnswer(answer);
+export function expressionForRun(phase: RunPhaseName, answer: AnswerOutcome | null, moment: RunMoment = {}): ExpressionState {
+  if (phase === 'feedback' && answer) {
+    if (answer.correct && (moment.streak ?? 0) >= CHEER_STREAK) return 'cheer';
+    return expressionForAnswer(answer);
+  }
+  if (phase === 'question') return moment.sequence === 1 ? 'discover' : 'thinking';
   return expressionForPhase(phase);
 }

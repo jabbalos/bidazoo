@@ -4,6 +4,7 @@ import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
 import * as expressionModule from '../../games/zoo-sprint/src/character-expression';
 import {
+  CHEER_STREAK,
   STABLE_EXPRESSION,
   expressionForAnswer,
   expressionForPhase,
@@ -97,11 +98,23 @@ describe('character expressions: the gameplay mapping (pure)', () => {
   });
 
   it('temporary expressions return cleanly: a graded answer shows only while the feedback shows', () => {
-    // The next question, an error, and loading all return to idle even if an answer is still held.
-    for (const phase of PHASES.filter((p) => p !== 'feedback' && p !== 'submitting')) {
+    // An error and loading return to idle even if an answer is still held.
+    for (const phase of PHASES.filter((p) => p === 'loading' || p === 'error')) {
       expect(expressionForRun(phase, { correct: true }), `${phase} after a correct answer`).toBe('idle');
       expect(expressionForRun(phase, { correct: false }), `${phase} after a wrong answer`).toBe('idle');
     }
+  });
+
+  it('a newly opened question presents itself (thinking; discover for the first), never inheriting the last answer', () => {
+    expect(expressionForRun('question', { correct: true }, { sequence: 4 })).toBe('thinking');
+    expect(expressionForRun('question', { correct: false }, { sequence: 4 })).toBe('thinking');
+    expect(expressionForRun('question', null, { sequence: 1 })).toBe('discover');
+  });
+
+  it('a streak of right answers cheers; a wrong answer is always tryAgain whatever the streak', () => {
+    expect(expressionForRun('feedback', { correct: true }, { streak: CHEER_STREAK - 1 })).toBe('happy');
+    expect(expressionForRun('feedback', { correct: true }, { streak: CHEER_STREAK })).toBe('cheer');
+    expect(expressionForRun('feedback', { correct: false }, { streak: 9 })).toBe('tryAgain');
   });
 
   it('only ever names one of the six canonical expressions, and all six are reachable', () => {
@@ -196,7 +209,7 @@ describe('character expressions: presentation only (wiring)', () => {
 
   it('exports exactly the mapping API and nothing about scoring, XP, coins or mastery', () => {
     expect(Object.keys(expressionModule).sort()).toEqual(
-      ['STABLE_EXPRESSION', 'expressionForAnswer', 'expressionForPhase', 'expressionForResults', 'expressionForRun'].sort(),
+      ['CHEER_STREAK', 'STABLE_EXPRESSION', 'expressionForAnswer', 'expressionForPhase', 'expressionForResults', 'expressionForRun'].sort(),
     );
   });
 
@@ -268,7 +281,7 @@ describe('character expressions: presentation only (wiring)', () => {
     expect(results.match(/delayedCall\(/g)).toHaveLength(1);
     // The run screen derives its expression from its own state when it draws, instead of storing a second copy.
     const run = sceneCode('RunScene.ts');
-    expect(run).toMatch(/setExpression\(expressionForRun\(this\.phase, this\.feedback \? this\.feedback\.result : null\)\)/);
+    expect(run).toMatch(/expressionForRun\(this\.phase, this\.feedback \? this\.feedback\.result : null, \{ sequence: this\.question\?\.sequence, streak: this\.streak \}\)/);
   });
 
   it('the menu keeps its selection hop exactly as before (celebrate() with no arguments)', () => {

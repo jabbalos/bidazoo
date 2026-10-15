@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import { computeExpressionPlacement, expressionTextureKey } from './character-assets';
+import { EYE_LINE_Y_FRACTION, computeExpressionPlacement, computeHeroFit, expressionTextureKey, type HeroFit, type HeroFitOptions } from './character-assets';
 import { hasProductionArt } from './character-art';
 import type { CastId, ExpressionState } from './character-definitions';
 import type { CharacterId } from './roster';
@@ -523,18 +523,30 @@ export interface CharacterLook {
  * A starter on screen. `size` is the width and height of the whole bust in pixels.
  * idle is the resting pose; celebrate() and wobble() are brief reactions that return to idle.
  * setExpression() shows any of the six canonical expressions; it changes the picture and nothing else.
+ *
+ * Two ways to size one:
+ *  - `size` (constructor / setBustSize): the original square bust box, kept for the lab and small chips;
+ *  - placeInBox(): sizes the character to the SPACE a scene gives it (computeHeroFit), which is how
+ *    every large presentation (hero stage, gameplay buddy, results podium) places it.
  */
 export class Character extends Phaser.GameObjects.Container {
+  /** Holds the picture so the idle loop can breathe without fighting the hop and wobble on this container. */
+  private readonly bob: Phaser.GameObjects.Container;
   private readonly image: Phaser.GameObjects.Image;
   private readonly production: boolean;
   private expression: ExpressionState = 'idle';
   private size = 0;
+  private hopPx: number | null = null;
+  private hopScale = 1.12;
+  private fit: HeroFit | null = null;
+  private idleTween: Phaser.Tweens.Tween | null = null;
 
   constructor(scene: Phaser.Scene, x: number, y: number, readonly id: CastId, size: number) {
     super(scene, x, y);
     this.production = hasProductionArt(scene, id);
     this.image = scene.add.image(0, 0, this.textureFor('idle'));
-    this.add(this.image);
+    this.bob = scene.add.container(0, 0, [this.image]);
+    this.add(this.bob);
     scene.add.existing(this);
     this.setBustSize(size);
   }
@@ -548,6 +560,53 @@ export class Character extends Phaser.GameObjects.Container {
     this.size = size;
     this.applyLook();
     return this;
+  }
+
+  /**
+   * Sizes and positions the character for a rectangle of the screen (top-left x, y, width, height).
+   * The art fills the box width-and-height-wise as far as the source resolution allows, anchored on
+   * its eye line; it continues a few pixels below the box so a foreground element can hide the flat
+   * crop. Without production art the code-drawn bust is centered in the box instead.
+   */
+  placeInBox(x: number, y: number, width: number, height: number, options: HeroFitOptions = {}): HeroFit | null {
+    const fit = this.production ? computeHeroFit(this.id, { width, height }, options) : undefined;
+    if (!fit) {
+      this.fit = null;
+      this.setBustSize(Math.min(width, height));
+      this.setPosition(x + width / 2, y + height / 2);
+      this.hopPx = height * 0.05;
+      return null;
+    }
+    this.fit = fit;
+    this.setBustSize(fit.size);
+    this.setPosition(x + fit.anchorX, y + fit.anchorY - EYE_LINE_Y_FRACTION * fit.size);
+    this.hopPx = Math.max(6, height * 0.04);
+    this.hopScale = 1.05;
+    return fit;
+  }
+
+  /** A slow breathing loop for a resting hero. Static when the player prefers reduced motion. */
+  startIdleLoop(reducedMotion: boolean): this {
+    this.idleTween?.remove();
+    this.idleTween = null;
+    if (reducedMotion) return this;
+    this.idleTween = this.scene.tweens.add({
+      targets: this.bob,
+      scaleY: 1.014,
+      scaleX: 0.994,
+      y: -2,
+      duration: 1500,
+      yoyo: true,
+      repeat: -1,
+      ease: 'Sine.easeInOut',
+    });
+    return this;
+  }
+
+  override destroy(fromScene?: boolean): void {
+    this.idleTween?.remove();
+    this.idleTween = null;
+    super.destroy(fromScene);
   }
 
   /** Shows one of the six canonical expressions. Pure presentation: no scene, score or state changes. */
@@ -570,6 +629,19 @@ export class Character extends Phaser.GameObjects.Container {
       anchorX: this.image.x,
       anchorY: this.image.y,
     };
+  }
+
+  /** The on-screen rectangle of the current picture in scene coordinates (for QA hooks and overflow checks). */
+  worldRect(): { x: number; y: number; w: number; h: number; scale: number } {
+    const image = this.image;
+    const left = this.x + image.x - image.originX * image.displayWidth;
+    const top = this.y + image.y - image.originY * image.displayHeight;
+    return { x: left, y: top, w: image.displayWidth, h: image.displayHeight, scale: this.fit?.scale ?? image.scaleX };
+  }
+
+  /** What the hero fit decided for this character, or null when it was sized with a plain bust box. */
+  get heroFit(): HeroFit | null {
+    return this.fit;
   }
 
   private textureFor(state: ExpressionState): string {
@@ -603,9 +675,9 @@ export class Character extends Phaser.GameObjects.Container {
     this.setExpression(show);
     this.scene.tweens.add({
       targets: this,
-      y: this.y - this.size * 0.28,
-      scaleX: 1.12,
-      scaleY: 1.12,
+      y: this.y - (this.hopPx ?? this.size * 0.28),
+      scaleX: this.hopScale,
+      scaleY: this.hopScale,
       duration: 160,
       yoyo: true,
       ease: 'Quad.easeOut',
