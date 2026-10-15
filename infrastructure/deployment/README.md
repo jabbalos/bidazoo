@@ -15,5 +15,7 @@ record, including the backup validation).
 - BidaZoo does not touch Hop Quest, Fact Crew, jonabalos.com Accounts, the Clickaroo Games Hub, the
   existing Caddy, existing Cloudflare tunnels, or any unrelated domain or service. The closed beta
   uses only new, BidaZoo-named components.
-- Release-rehearsal tooling for the identity release is on the branch `release/identity-beta`. It is
-  not merged into `main` and is labeled untested by its own README.
+- Release-rehearsal tooling is under `identity-release/` on the release-candidate branch
+  `release/founding-family-beta` (it originated on `release/identity-beta`). It takes the release candidate
+  as an explicit SHA input, keeps `1a106bc` as the only rollback target, and is labeled untested on the Studio
+  PC by its own README. It is not merged into `main`.

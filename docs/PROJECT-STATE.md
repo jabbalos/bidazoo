@@ -11,6 +11,14 @@ World Expedition runtime work lives on the branch `feature/world-expedition-runt
 validation; "deployed" means running in the live closed beta; "enabled" means switched on in
 production. They are different words and are kept apart below.
 
+**Release-candidate branch.** This copy of the file is on `release/founding-family-beta`, the final
+combined release candidate: `main` (`856d012`) + the post-F6 documentation reconciliation + the F1-F6
+runtime (`f3b5483`) + the release rehearsal tooling, merged with their histories preserved and no conflicts.
+It is **not merged into `main`**, not deployed, and not tagged. The exact candidate SHA is **deliberately not
+recorded in the repository** (a commit cannot contain its own SHA); it is stated in the integration report
+and is supplied to the validator and the rehearsal scripts as immutable input. Any new commit on that
+branch is a new candidate and needs fresh validation.
+
 ## Status
 
 | Item | State |
@@ -24,7 +32,7 @@ production. They are different words and are kept apart below.
 | Checkpoint F6 (final integrated runtime / release-candidate QA) | **CLOSED: PASS WITH MINOR ITEMS.** F6 made zero repository changes. Runtime ready for final release-candidate integration: **YES**. |
 | Production character art | **COMPLETE.** All six cast members have six production expressions. Integrated on the runtime branch; `main` still carries the code-drawn transitional art until release-candidate integration. |
 | Closed-beta deployment (`play.bidazoo.com`) | **LIVE, guest-only** (Studio PC; commit `1a106bc`; see "Closed-beta deployment and backups"). A closed-beta architecture, not necessarily the final production architecture. |
-| Release work (release-candidate integration through founding-family beta) | **OPEN.** See "Remaining work". |
+| Release work (release-candidate integration through founding-family beta) | **IN PROGRESS.** Step 1 (integration) is done on `release/founding-family-beta`; official Studio validation of that exact SHA is next and is **not yet done**. See "Remaining work". |
 | World / Explore / Basecamp | Future product phase. **Not authorized**, and **not** part of the current runtime closure. |
 
 ## Baselines and commits
@@ -36,8 +44,14 @@ production. They are different words and are kept apart below.
   `f3b5483c2b253f0ccb0ee9b62060379b7575fb08` ("test(play): make expression wiring scan CRLF-safe").
   As of October 15, 2026 it is 12 commits ahead of `main` and 0 behind (`main` is its merge base).
 - **Release-rehearsal branch:** `release/identity-beta` at `d90f572`, 4 commits ahead of `main` and 0
-  behind. It adds only `infrastructure/deployment/identity-release/` (see "Remaining work"). Not
-  merged.
+  behind. It adds only `infrastructure/deployment/identity-release/` (see "Remaining work"). Its tip is
+  contained in the release-candidate branch below; the branch itself is unchanged.
+- **Release-candidate branch:** `release/founding-family-beta`, created from `main`, then merged (in this
+  order) with `docs/reconcile-project-state-after-f6` (`bb8e14d`), the runtime branch (`f3b5483`) and
+  `release/identity-beta` (`d90f572`). Three narrow release-only commits follow the merges: the rehearsal
+  tooling retarget, the Studio validator hardening, and this documentation update. Application code is byte-identical to the
+  Studio-validated runtime (`f3b5483`); only documentation, deployment tooling and the validator differ.
+  Not merged into `main`.
 - **Deployed in the live closed beta:** commit `1a106bc` (Checkpoint D), per
   [DEPLOYMENT-CLOSED-BETA.md](DEPLOYMENT-CLOSED-BETA.md) section 9.
 - **Accepted application baseline:** `01b7d41` (Checkpoint B).
@@ -365,11 +379,14 @@ Unfinished **release** work is different from unfinished **game** work.
 The remaining release path:
 
 1. Final release-candidate integration (bringing the closed runtime branch and the release tooling
-   into one candidate). Needs explicit owner authorization.
-2. Exact-SHA validation of that candidate on the Studio PC with the pinned Chromium.
-3. Release rehearsal (non-production).
+   into one candidate). **DONE on `release/founding-family-beta`** (not merged into `main`).
+2. Exact-SHA validation of that candidate on the Studio PC with the pinned Chromium (**next**; the
+   validator now requires `-CandidateSha` and fails on any baseline deviation, see
+   [STUDIO-VALIDATION.md](STUDIO-VALIDATION.md)).
+3. Release rehearsal (non-production; starts only after step 2 passes).
 4. Backup and rollback verification.
-5. Production application deployment (with the M6 header check confirmed first).
+5. Production application deployment (with the M6 header gate confirmed first: `09-m6-release-headers.ps1`
+   in rehearsal and `tools/m6-headers.mjs` against the origin and the public URL in the window).
 6. SMTP provider and DNS setup (the `notify.bidazoo.com` sending domain with SPF, DKIM and DMARC).
 7. Production identity enablement (`IDENTITY_SECRET`, production mail). Identity stays OFF until then
    ([IDENTITY-OPERATIONS.md](IDENTITY-OPERATIONS.md) section 10).
@@ -382,19 +399,22 @@ proof through the public path, observing the first unattended nightly backup, an
 destination, and re-checking that the unrelated sites still work. Still not built: CAPTCHA, a shared
 (multi-process) limiter store, and distributed-attack defense.
 
-**Rehearsal tooling.** The branch `release/identity-beta` (`d90f572`, not merged) carries rehearsal
-scripts and checklists under `infrastructure/deployment/identity-release/` (scratch-cluster backup
-verification, restore and migration checks, rollback proof, and maintenance-window, rollback and
-enablement checklists). Its own README labels it **untested tooling** and records that none of the
-checklists has been executed. It names `a283c24` as its release candidate, so its references will
-need re-pointing to the final candidate SHA.
+**Rehearsal tooling.** `infrastructure/deployment/identity-release/` (scratch-cluster backup
+verification, restore and migration checks, rollback proof, the M6 header gate, and maintenance-window,
+rollback and enablement checklists) is part of the release-candidate branch. It was **retargeted on
+October 15, 2026**: the candidate is now immutable input (`-CandidateSha`, never a constant in a script),
+refused unless it is a full SHA with the expected ancestry and differs from the validated runtime only in
+documentation, tooling and the validator. `1a106bc` (the live beta) remains the only rollback target;
+`a283c24` and `856d012` are kept only as lineage references. Production identity stays OFF by default. It is
+**still untested on the Studio PC**: no checklist has been executed (scripts were parsed and their pure
+helpers exercised in a Linux sandbox only; see its README).
 
 ## Rules for future sessions
 
 1. Orient first: read this file, then README, ARCHITECTURE, SECURITY, and CHANGELOG, then inspect
    `git status` and recent history.
-2. Do not start any further checkpoint or phase (release-candidate integration, deployment,
-   SMTP or DNS work, identity enablement, privacy work, World / Explore / Basecamp, and so on) until
+2. Do not start any further checkpoint or phase (Studio validation of the candidate, release rehearsal,
+   deployment, SMTP or DNS work, identity enablement, privacy work, World / Explore / Basecamp, and so on) until
    the project owner explicitly authorizes it. Do not reopen closed checkpoints.
 3. Keep BidaZoo isolated from production systems (Hop Quest, Fact Crew, jonabalos.com Accounts, the
    Clickaroo Games Hub, the existing Caddy, existing Cloudflare tunnels and DNS). The closed beta uses

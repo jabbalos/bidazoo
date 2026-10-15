@@ -2,6 +2,30 @@
 
 All notable changes, by checkpoint. Dates use US format.
 
+## Final release-candidate integration (October 15, 2026; branch `release/founding-family-beta`, not merged)
+
+Created from `main` (`856d012`) and merged, with histories preserved and no conflicts, in this order:
+`docs/reconcile-project-state-after-f6` (`bb8e14d`), `feature/world-expedition-runtime-integration`
+(`f3b5483`, F1-F6), `release/identity-beta` (`d90f572`). Application code is identical to the Studio-validated
+runtime; the release-only commits after the merges change documentation, deployment tooling and the Studio
+validator only.
+
+- **Rehearsal tooling retargeted** (`infrastructure/deployment/identity-release/`): the old identity-only
+  candidate `a283c24` is no longer a constant in any script. The candidate is immutable input (`-CandidateSha`
+  or `BZ_CANDIDATE_SHA`), refused if empty, abbreviated, a ref name or a historical commit, and its ancestry is
+  checked (`1a106bc`, `a283c24`, `856d012`, `bb8e14d`, `f3b5483`, `d90f572` must all be ancestors; only docs,
+  deployment tooling and the validator may differ from `f3b5483`). `1a106bc` stays the only rollback target.
+  Identity stays OFF by default. Safety guards are unchanged.
+- **M6 release gate added** (F6 follow-up): `tools/m6-headers.mjs`, rehearsal step `09-m6-release-headers.ps1`
+  and window step W8.2b verify hashed `/assets/*` immutable caching, no-cache HTML, `nosniff`, frame protection,
+  `Permissions-Policy`, the effective client CSP and the API's own policy, against the origin and the public URL.
+- **Studio validator hardened** (validator only): exact baseline counts (51 / 649 + 3 todo / 256 in 4 projects),
+  exact Chromium 156.0.8078.4 / Playwright 1.64.0 / PostgreSQL 16.15, required `-CandidateSha`, clean-tree
+  requirement, and baseline deviations are failures instead of warnings. New read-only
+  `scripts/validate-studio-selftest.ps1`. Details: [STUDIO-VALIDATION.md](STUDIO-VALIDATION.md).
+- **Not done:** official Studio validation of the candidate, release rehearsal, deployment, SMTP or DNS work,
+  identity enablement, and World / Explore / Basecamp.
+
 ## Documentation reconciliation after Checkpoint F6 (October 15, 2026; documentation only)
 
 Documentation only: no runtime, API, database, learning-core, game-sdk, identity, infrastructure,

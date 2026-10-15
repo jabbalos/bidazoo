@@ -10,6 +10,46 @@ Checkpoint C game implementation is `7042f8f`; the Checkpoint D exact validated 
 then Checkpoint D, then Checkpoint C, then Checkpoint B. The earlier records are historical and are
 kept as written, including their own counts.
 
+**Final release candidate (October 15, 2026).** The combined candidate on `release/founding-family-beta`
+(main + post-F6 documentation + the F1-F6 runtime + the release rehearsal tooling) needs its own
+official Studio validation on its exact SHA. That result is **not recorded yet**; see
+[Final release candidate validation](#final-release-candidate-validation-required-pending) below.
+
+## Final release candidate validation (required, pending)
+
+Run on the Studio PC, as a normal user, from a clean checkout of the exact candidate SHA (the owner supplies the
+40-character SHA; it is never stored in the repository):
+
+```text
+git fetch origin
+git checkout --detach <CANDIDATE_SHA>
+scripts\validate-studio.bat -PortablePostgres -CandidateSha <CANDIDATE_SHA>
+```
+
+What the release-candidate validator enforces (changed on October 15, 2026; validator only, no application behavior):
+
+| Check | Before | Now |
+| --- | --- | --- |
+| Unit / integration / todo counts | warning only | **FAIL** unless exactly 51 / 649 / 3 (700 passed in total, so a hidden extra test file also fails) |
+| Playwright count and projects | warning only | **FAIL** unless exactly 256 tests, all passed, in 4 projects |
+| Skipped or flaky Playwright test | warning | **FAIL** |
+| Playwright JSON report missing or unreadable | warning | **FAIL** (counts cannot be verified) |
+| Skipped database-backed Vitest tests | warning | **FAIL** |
+| Chromium version | printed only | **FAIL** unless exactly `156.0.8078.4`; Playwright exactly `1.64.0` |
+| PostgreSQL version | printed only | precondition failure (exit 2) unless exactly `16.15` |
+| Candidate identity | not checked | `-CandidateSha` (full 40 lowercase hex) is required; HEAD must equal it and contain the F1-F6 runtime `f3b5483`; otherwise exit 2 before anything runs |
+| Dirty working tree | warning | precondition failure (exit 2) |
+| Heading | `BIDAZOO STUDIO VALIDATION` | `BIDAZOO STUDIO VALIDATION - FINAL RELEASE CANDIDATE`, with the candidate SHA and the approved baseline printed in the summary |
+
+`scripts\validate-studio-selftest.ps1` (read-only, no database or browser) checks every one of those boundaries
+against the real constants and functions in the validator. A sandbox run with a different Chromium (for example 141)
+is **supplementary** and, by design, now fails this validator: only the pinned official build counts.
+
+Required result for the candidate, all on the same exact SHA: typecheck, 51 unit, 649 integration + 3 todo, 256/256
+Playwright (0 failed, 0 flaky, 0 skipped), build PASS, bundle scan CLEAN, API playthrough PASS, Chromium 156.0.8078.4,
+PostgreSQL 16.15. Rehearsal and rollback proof (`infrastructure/deployment/identity-release`) do not start until this
+passes.
+
 ## Runtime baseline: Checkpoint F5 validation record (official run, passed)
 
 This is the **current runtime validation baseline**. It was reported by the project owner as the
@@ -36,7 +76,8 @@ playthrough totals were not supplied, so they are not recorded here.
 - **Validator counts.** The validator on the runtime branch expects 51 unit, 649 integration, 3 todo
   and 256 Playwright. The validator on `main` still expects the Checkpoint E counts (51, 375, 3, 120)
   and would print count warnings (warnings only, not failures) until the runtime branch is
-  integrated. No validator change is made by this documentation update.
+  integrated. **Update (October 15, 2026):** on the release-candidate branch the validator expects the
+  counts above and turns every baseline violation into a failure (see the section above).
 - **Known follow-ups** (the F6 minor items, including validator cleanup M9) are listed in
   [PROJECT-STATE.md](PROJECT-STATE.md).
 
@@ -204,9 +245,10 @@ Accounts, Caddy, Cloudflare, or any production database.
 ## RECOMMENDED: one command, no PostgreSQL install
 
 ```text
-scripts\validate-studio.bat -PortablePostgres
+scripts\validate-studio.bat -PortablePostgres -CandidateSha <40-hex candidate SHA>
 ```
 
+(On the final release-candidate branch `-CandidateSha` is required; see the section near the top.)
 This avoids installing PostgreSQL globally. The runner uses a **portable PostgreSQL 16** that lives
 in its own folder (`%USERPROFILE%\BidaZoo-pg`), runs as your normal user, creates no Windows
 service, changes no PATH or system setting, and listens on `127.0.0.1` only (port `54329`). It
@@ -312,17 +354,19 @@ screen (and the portable server is stopped after the databases are handled).
 
 What it does, in order:
 
-1. Confirms it is in the BidaZoo repository, prints the Git commit, and warns if the working tree
-   is dirty or `01b7d41` is not in the checkout's history.
+1. Confirms it is in the BidaZoo repository, prints the Git commit, **refuses a dirty working tree**, requires
+   `-CandidateSha` to equal HEAD exactly and the checkout to contain the F1-F6 runtime `f3b5483` (exit `2`),
+   and warns if `01b7d41` is not in the checkout's history.
 2. Confirms ports 3001 and 4173 are free (and refuses to continue if not; it never kills anything).
 3. Clears `PW_CHROMIUM_EXECUTABLE` and other overriding variables **for this process only**, and sets `CI=1`.
 4. `npm ci`, then `npx playwright install chromium` (the official build).
 4a. With `-PortablePostgres`: finds or extracts the portable binaries, initializes the throwaway
    cluster if needed, starts it, and waits until it accepts connections (exit `2` on any failure).
 5. Creates `bidazoo_test` and `bidazoo_e2e` and migrates both. It never touches any other database.
-6. `npm test` against `bidazoo_test` (51 unit, 115 integration, 3 todo are *reported* for comparison).
+6. `npm test` against `bidazoo_test` (the final candidate must show exactly 51 unit, 649 integration, 3 todo;
+   anything else fails the run).
 7. `npm run test:e2e -w @bidazoo/tests -- --reporter=list,json` against `bidazoo_e2e`
-   (56 tests, 4 viewports; this is the same command as `npm run test:e2e` plus a JSON reporter so
+   (256 tests, 4 viewports, all required to pass with none flaky or skipped; this is the same command as `npm run test:e2e` plus a JSON reporter so
    retries and skips can be counted).
 8. If everything so far passed: `npm run build` (log `12-build.log`), then `npm run scan:client`
    (`13-scan-client.log`; non-zero exit or no `CLEAN:` line fails the run). With the build and migrations
@@ -334,10 +378,12 @@ What it does, in order:
 9. Prints a summary (commit, Vitest, Playwright, retries, build, bundle scan, playthrough, Playwright and
    Chromium versions, database, overall) and lists any traces, screenshots, or videos with their full paths.
 
-**Exit codes are authoritative**: the runner exits 0 only if every command exited 0. The expected
-counts only produce warnings. Tests that pass only after a retry are reported as warnings
-(`PASS (with warnings)`), because they indicate flakiness. Exit codes: `0` passed, `1` validation
-failed, `2` a precondition failed and nothing ran.
+**Exit codes are authoritative**: the runner exits 0 only if every command exited 0 **and** the approved
+baseline is met exactly (counts, projects, no flaky or skipped test, Chromium, Playwright, PostgreSQL).
+On the final release-candidate branch a baseline violation is a failure, not a warning (older records
+below describe the earlier warning-only behavior). Exit codes: `0` passed, `1` validation failed,
+`2` a precondition failed and nothing ran (including a wrong PostgreSQL version, a dirty tree, or a missing or
+mismatched `-CandidateSha`).
 
 ### Elevation
 

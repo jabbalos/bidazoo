@@ -16,7 +16,8 @@ An educational-game platform for kids. Games are fun; **learning progress is dec
 > Checkpoints F1 to F6 (World Expedition production character art and runtime integration) are CLOSED
 > (F6: PASS WITH MINOR ITEMS) on the branch `feature/world-expedition-runtime-integration`
 > (`f3b5483`), **not yet merged into `main`**; `main` still has the code-drawn starter art. The
-> runtime is ready for release-candidate integration.
+> runtime has been integrated into the release-candidate branch `release/founding-family-beta` (also not
+> merged into `main`), which awaits official Studio validation of its exact SHA.
 > A guest-only closed beta is live at `play.bidazoo.com` on the Studio PC (commit `1a106bc`); see
 > [docs/DEPLOYMENT-CLOSED-BETA.md](docs/DEPLOYMENT-CLOSED-BETA.md). That is a closed-beta
 > architecture, not necessarily the final production architecture.
