@@ -9,6 +9,8 @@
     "build": "vite build",
     "preview": "vite preview",
     "typecheck": "tsc -p tsconfig.json",
+    "build:world-spike": "vite build --mode world-hub-spike --outDir dist-world-spike",
+    "preview:world-spike": "vite preview --outDir dist-world-spike --port 4174",
     "build:character-lab": "vite build --mode character-lab --outDir dist-character-lab",
     "preview:character-lab": "vite preview --outDir dist-character-lab"
   },

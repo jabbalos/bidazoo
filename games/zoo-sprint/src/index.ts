@@ -2,7 +2,7 @@ import Phaser from 'phaser';
 import type { BidaZooGame, MountOptions, MountedGame } from '@bidazoo/game-sdk';
 import { A11yMirror } from './a11y';
 import type { GameContext } from './context';
-import { loadCharacter } from './roster';
+import { isCharacterId, loadCharacter } from './roster';
 import { COLORS, hex } from './theme';
 import { BootScene } from './scenes/BootScene';
 import { MenuScene } from './scenes/MenuScene';
@@ -16,6 +16,14 @@ import { RunScene } from './scenes/RunScene';
  */
 declare const __BIDAZOO_CHARACTER_LAB__: boolean | undefined;
 const CHARACTER_LAB = typeof __BIDAZOO_CHARACTER_LAB__ !== 'undefined' && __BIDAZOO_CHARACTER_LAB__;
+
+/**
+ * Build-time switch for the exploration feasibility spike, set by apps/play/vite.config.ts ONLY for
+ * `--mode world-hub-spike`. In every normal build it is the constant `false`, so the spike scene is
+ * removed from the bundle entirely, exactly like the character lab above.
+ */
+declare const __BIDAZOO_WORLD_SPIKE__: boolean | undefined;
+const WORLD_SPIKE = typeof __BIDAZOO_WORLD_SPIKE__ !== 'undefined' && __BIDAZOO_WORLD_SPIKE__;
 
 function createGame(
   parent: HTMLElement,
@@ -70,6 +78,24 @@ function mount({ parent, platform }: MountOptions): MountedGame {
         destroyed = true;
         context.a11y.destroy();
         lab?.destroy(true);
+      },
+    };
+  }
+
+  if (WORLD_SPIKE && new URLSearchParams(window.location.search).has('explore')) {
+    // Exploration spike (see scenes/ExploreScene.ts): presentation only, no platform calls.
+    const wanted = new URLSearchParams(window.location.search).get('buddy');
+    if (isCharacterId(wanted)) context.character = wanted;
+    let spike: Phaser.Game | null = null;
+    let destroyed = false;
+    void import('./scenes/ExploreScene').then(({ ExploreScene }) => {
+      if (!destroyed) spike = createGame(parent, context, [ExploreScene]);
+    });
+    return {
+      destroy() {
+        destroyed = true;
+        context.a11y.destroy();
+        spike?.destroy(true);
       },
     };
   }

@@ -17,7 +17,7 @@ import { EXP, mix } from '../theme';
  */
 export type EnvVariant = 'basecamp' | 'trail' | 'summit';
 
-interface Recipe {
+export interface Recipe {
   skyTop: number;
   skyMid: number;
   skyLow: number;
@@ -33,7 +33,7 @@ interface Recipe {
   seed: number;
 }
 
-const RECIPES: Readonly<Record<EnvVariant, Recipe>> = {
+export const RECIPES: Readonly<Record<EnvVariant, Recipe>> = {
   basecamp: { skyTop: EXP.skyTop, skyMid: EXP.skyMid, skyLow: EXP.skyLow, horizon: 0.52, sunX: 0.8, sunY: 0.2, sunGlow: EXP.sun, lanterns: true, foliage: true, warmth: 0.18, seed: 11 },
   trail: { skyTop: 0x6bbde8, skyMid: 0xb4e1f4, skyLow: 0xeaf6e0, horizon: 0.42, sunX: 0.18, sunY: 0.16, sunGlow: 0xfff6c8, lanterns: false, foliage: true, warmth: 0.1, seed: 23 },
   summit: { skyTop: 0xf3a45e, skyMid: 0xffcf8c, skyLow: 0xfff0c8, horizon: 0.56, sunX: 0.5, sunY: 0.3, sunGlow: 0xffe9a8, lanterns: true, foliage: true, warmth: 0.3, seed: 37 },
@@ -42,7 +42,7 @@ const RECIPES: Readonly<Record<EnvVariant, Recipe>> = {
 type G = Phaser.GameObjects.Graphics;
 
 /** Small deterministic generator, so a given size always paints the same scene. */
-function rng(seed: number): () => number {
+export function rng(seed: number): () => number {
   let a = seed >>> 0;
   return () => {
     a = (a + 0x6d2b79f5) >>> 0;
@@ -53,13 +53,13 @@ function rng(seed: number): () => number {
   };
 }
 
-function polygon(g: G, pts: number[]): void {
+export function polygon(g: G, pts: number[]): void {
   const points: Phaser.Types.Math.Vector2Like[] = [];
   for (let i = 0; i < pts.length; i += 2) points.push({ x: pts[i] as number, y: pts[i + 1] as number });
   g.fillPoints(points, true);
 }
 
-function paintSky(g: G, w: number, h: number, r: Recipe): void {
+export function paintSky(g: G, w: number, h: number, r: Recipe): void {
   const horizonY = h * r.horizon;
   const strips = Math.max(24, Math.ceil(horizonY / 6));
   for (let i = 0; i < strips; i++) {
@@ -84,7 +84,7 @@ function paintSky(g: G, w: number, h: number, r: Recipe): void {
   g.fillCircle(sx, sy, base * 0.1);
 }
 
-function paintClouds(g: G, w: number, h: number, rand: () => number): void {
+export function paintClouds(g: G, w: number, h: number, rand: () => number): void {
   const count = Math.max(2, Math.round(w / 220));
   for (let i = 0; i < count; i++) {
     const cx = (w * (i + 0.3 + rand() * 0.5)) / count;
@@ -169,7 +169,7 @@ function clampBands(n: number): number {
   return Math.min(14, Math.max(5, n));
 }
 
-function paintMist(g: G, w: number, h: number, r: Recipe): void {
+export function paintMist(g: G, w: number, h: number, r: Recipe): void {
   const y = h * r.horizon;
   for (let i = 0; i < 3; i++) {
     g.fillStyle(0xffffff, 0.2);
@@ -180,7 +180,7 @@ function paintMist(g: G, w: number, h: number, r: Recipe): void {
 }
 
 /** A palm-like frond: tapered curved leaf as a polygon from a root point. */
-function frond(g: G, x: number, y: number, len: number, angle: number, width: number, color: number): void {
+export function frond(g: G, x: number, y: number, len: number, angle: number, width: number, color: number): void {
   const steps = 8;
   const left: number[] = [];
   const right: number[] = [];

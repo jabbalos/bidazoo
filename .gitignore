@@ -39,3 +39,4 @@ Thumbs.db
 
 # BidaZoo portable PostgreSQL (Studio validation); binaries must never be committed
 BidaZoo-pg/
+dist-world-spike/
