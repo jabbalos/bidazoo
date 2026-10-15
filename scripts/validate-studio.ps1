@@ -1,7 +1,9 @@
 <#
 .SYNOPSIS
-  One-click Studio PC validation for BidaZoo (Checkpoint B baseline 01b7d41 and later;
-  expected counts are for Checkpoint F5: 51 unit, 649 integration, 3 todo, 256 Playwright).
+  One-click Studio PC validation for BidaZoo: the FINAL RELEASE CANDIDATE validator (Checkpoint B baseline
+  01b7d41 and later). It validates ONE exact, immutable commit, supplied with -CandidateSha, against the approved
+  baseline: 51 unit, 649 integration + 3 todo, 256 Playwright in 4 projects, Chromium 156.0.8078.4,
+  Playwright 1.64.0, PostgreSQL 16.15. Any deviation from that baseline is a FAILURE, not a warning.
 
 .DESCRIPTION
   Runs, in order: environment checks, npm ci, the OFFICIAL Playwright Chromium install, creation of
@@ -10,7 +12,10 @@
   (npm run build), the client bundle leak scan (npm run scan:client; must report CLEAN), and the
   live API playthrough (npm run playthrough) against a fresh API instance this run starts on port
   3001 with bidazoo_e2e and stops again, even if the step fails. Process exit codes are
-  authoritative. Expected counts are reported but never used to decide pass/fail.
+  authoritative, AND the approved baseline is enforced: a different unit/integration/todo/Playwright count,
+  a different number of viewport projects, any skipped or flaky Playwright test, an unreadable Playwright
+  report, a different Chromium / Playwright / PostgreSQL version, a dirty tree, or a HEAD that is not exactly
+  -CandidateSha fails the run (precondition problems exit 2 before anything runs; the rest exit 1).
 
   Safety: it only ever creates, migrates, and (when you ask) drops databases named exactly
   bidazoo_test and bidazoo_e2e. It never touches any other database, never changes configuration
@@ -32,6 +37,10 @@
   Exit codes: 0 = validation passed, 1 = validation failed, 2 = a precondition failed (nothing ran).
   Any failure to find, initialize, or start the portable PostgreSQL is a precondition failure (2).
 
+.PARAMETER CandidateSha
+                       REQUIRED. The full 40-character lowercase SHA of the release candidate. The script refuses to
+                       run unless HEAD is exactly this commit, the working tree is clean, and the commit contains the
+                       F1-F6 runtime (f3b5483). A different commit is a different candidate and needs its own run.
 .PARAMETER PgHost      PostgreSQL host. Default: localhost.
 .PARAMETER PgPort      PostgreSQL port. Default: 5432.
 .PARAMETER PgUser      PostgreSQL superuser (must be able to CREATE DATABASE). Default: postgres.
@@ -48,14 +57,13 @@
                        Folder for the portable binaries and cluster. Default: %USERPROFILE%\BidaZoo-pg.
 
 .EXAMPLE
-  .\scripts\validate-studio.ps1
+  .\scripts\validate-studio.ps1 -CandidateSha <40-hex> -PortablePostgres
 .EXAMPLE
-  .\scripts\validate-studio.ps1 -Cleanup
-.EXAMPLE
-  .\scripts\validate-studio.ps1 -PortablePostgres
+  .\scripts\validate-studio.ps1 -CandidateSha <40-hex> -PortablePostgres -Recreate -Cleanup
 #>
 [CmdletBinding()]
 param(
+  [string]$CandidateSha = '',
   [string]$PgHost = 'localhost',
   [int]$PgPort = 5432,
   [string]$PgUser = 'postgres',
@@ -85,6 +93,10 @@ $ExpectedIntegration = 649
 $ExpectedTodo = 3
 $ExpectedPlaywright = 256
 $ExpectedProjects = 4
+$ExpectedChromium = '156.0.8078.4'
+$ExpectedPlaywrightVersion = '1.64.0'
+$ExpectedPostgres = '16.15'
+$RuntimeCommit = 'f3b5483c2b253f0ccb0ee9b62060379b7575fb08'   # F1-F6 runtime; every candidate must contain it
 
 $script:Warnings = New-Object System.Collections.Generic.List[string]
 $script:Failures = New-Object System.Collections.Generic.List[string]
@@ -103,6 +115,40 @@ function Write-Step([string]$Text) { Write-Host ''; Write-Host ('>> ' + $Text) -
 function Write-Ok([string]$Text) { Write-Host ('   OK    ' + $Text) -ForegroundColor Green }
 function Write-Warn([string]$Text) { Write-Host ('   WARN  ' + $Text) -ForegroundColor Yellow; $script:Warnings.Add($Text) }
 function Write-Bad([string]$Text) { Write-Host ('   FAIL  ' + $Text) -ForegroundColor Red }
+
+# ---- Approved-baseline checks (pure functions; scripts/validate-studio-selftest.ps1 exercises them). ----
+# Each returns the list of violations; an empty list means the baseline is met EXACTLY.
+function Test-FullSha([string]$Sha) { return ($Sha -cmatch '^[0-9a-f]{40}$') }
+function Get-VitestBaselineProblems([int[]]$PassedNumbers, [int]$TotalTodo) {
+  $problems = New-Object System.Collections.Generic.List[string]
+  $sum = 0
+  foreach ($n in $PassedNumbers) { $sum += $n }
+  if (($PassedNumbers -notcontains $ExpectedUnit) -or ($PassedNumbers -notcontains $ExpectedIntegration) -or ($sum -ne ($ExpectedUnit + $ExpectedIntegration))) {
+    $problems.Add(("Vitest passed-counts [{0}] differ from the approved baseline ({1} unit, {2} integration; {3} passed in total)." -f ($PassedNumbers -join ', '), $ExpectedUnit, $ExpectedIntegration, ($ExpectedUnit + $ExpectedIntegration)))
+  }
+  if ($TotalTodo -ne $ExpectedTodo) { $problems.Add(("Vitest todo count is {0}; the approved baseline has {1}." -f $TotalTodo, $ExpectedTodo)) }
+  return @($problems)
+}
+function Get-PlaywrightBaselineProblems([int]$Total, [int]$Passed, [int]$Failed, [int]$Flaky, [int]$Skipped, [int]$ProjectCount) {
+  $problems = New-Object System.Collections.Generic.List[string]
+  if ($Total -ne $ExpectedPlaywright) { $problems.Add(("Playwright ran {0} tests; the approved baseline has {1}." -f $Total, $ExpectedPlaywright)) }
+  if ($Passed -ne $ExpectedPlaywright) { $problems.Add(("Playwright passed {0} tests; the approved baseline is {1} passed." -f $Passed, $ExpectedPlaywright)) }
+  if ($Failed -ne 0) { $problems.Add(("{0} Playwright test(s) failed; the approved baseline has 0." -f $Failed)) }
+  if ($Flaky -ne 0) { $problems.Add(("{0} Playwright test(s) passed only after retry (flaky); the approved baseline has 0." -f $Flaky)) }
+  if ($Skipped -ne 0) { $problems.Add(("{0} Playwright test(s) were skipped; the approved baseline has 0." -f $Skipped)) }
+  if ($ProjectCount -ne $ExpectedProjects) { $problems.Add(("Playwright used {0} viewport project(s); the approved baseline has {1}." -f $ProjectCount, $ExpectedProjects)) }
+  return @($problems)
+}
+function Get-BrowserVersionProblems([string]$Chromium, [string]$PlaywrightVersion) {
+  $problems = New-Object System.Collections.Generic.List[string]
+  if ($Chromium -cne $ExpectedChromium) { $problems.Add(("Chromium is '{0}'; the approved baseline is exactly {1} (the official build installed by Playwright {2})." -f $Chromium, $ExpectedChromium, $ExpectedPlaywrightVersion)) }
+  if ($PlaywrightVersion -cne $ExpectedPlaywrightVersion) { $problems.Add(("Playwright is '{0}'; the approved baseline is exactly {1}." -f $PlaywrightVersion, $ExpectedPlaywrightVersion)) }
+  return @($problems)
+}
+function Get-PostgresVersionProblems([string]$Version) {
+  if ($Version -cne $ExpectedPostgres) { return @(("PostgreSQL is '{0}'; the approved baseline is exactly {1} (portable PostgreSQL 16.15, see docs/STUDIO-VALIDATION.md)." -f $Version, $ExpectedPostgres)) }
+  return @()
+}
 
 function Stop-Precondition([string]$Text) {
   Write-Bad $Text
@@ -511,7 +557,7 @@ function Stop-ApiServer {
 # ---------------------------------------------------------------------------------------------
 # 1-3. Repository, commit, working tree
 # ---------------------------------------------------------------------------------------------
-Write-Banner 'BIDAZOO STUDIO VALIDATION'
+Write-Banner 'BIDAZOO STUDIO VALIDATION - FINAL RELEASE CANDIDATE'
 if ($PortablePostgres) {
   $script:Portable.Enabled = $true
   if ($PSBoundParameters.ContainsKey('PgHost') -and $PgHost -ne '127.0.0.1') { Stop-Precondition "-PortablePostgres always uses 127.0.0.1; -PgHost '$PgHost' conflicts with it. Drop -PgHost, or drop -PortablePostgres to use a server you installed." }
@@ -589,12 +635,21 @@ else { Write-Warn "baseline commit $BaselineCommit is not an ancestor of HEAD (o
 
 $dirty = @(& git -C $RepoRoot status --porcelain 2>$null)
 if ($dirty.Count -gt 0) {
-  Write-Warn ("working tree is DIRTY ({0} changed/untracked path(s)). Results may not describe the committed baseline." -f $dirty.Count)
   $dirty | Select-Object -First 15 | ForEach-Object { Write-Host ('         ' + $_) -ForegroundColor Yellow }
   if ($dirty.Count -gt 15) { Write-Host '         ...' -ForegroundColor Yellow }
+  Stop-Precondition ("working tree is DIRTY ({0} changed/untracked path(s)). A release candidate is validated exactly as committed: commit, stash or remove the changes, then run again." -f $dirty.Count)
 } else {
   Write-Ok 'working tree is clean'
 }
+
+Write-Step 'Release candidate identity'
+if (-not $CandidateSha) { Stop-Precondition '-CandidateSha <40 lowercase hex> is required. This is the FINAL RELEASE CANDIDATE validator: it validates one exact, immutable commit.' }
+if (-not (Test-FullSha $CandidateSha)) { Stop-Precondition ("-CandidateSha must be the full 40-character lowercase hex commit id (a branch name, tag, HEAD, abbreviation or upper case is refused). Got: '{0}'" -f $CandidateSha) }
+if ($Commit -cne $CandidateSha) { Stop-Precondition ("HEAD is {0}, not the release candidate {1}. Check out the exact candidate (git checkout --detach {1}) and run again." -f $Commit, $CandidateSha) }
+Write-Ok ('HEAD is exactly the release candidate ' + $CandidateSha)
+& git -C $RepoRoot merge-base --is-ancestor $RuntimeCommit HEAD 2>$null
+if ($LASTEXITCODE -ne 0) { Stop-Precondition ("the candidate does not contain the F1-F6 runtime {0}. This is not the final release candidate." -f $RuntimeCommit) }
+Write-Ok ('the candidate contains the F1-F6 runtime ' + $RuntimeCommit.Substring(0, 7))
 
 # ---------------------------------------------------------------------------------------------
 # Tools
@@ -709,6 +764,9 @@ $ver = Invoke-Psql 'postgres' 'SELECT version()'
 if ($ver.Code -ne 0) { Stop-Precondition ("Could not connect to PostgreSQL: " + (Hide-Password $ver.Out)) }
 Write-Ok ($ver.Out.Split(',')[0])
 $script:PgVersionText = $(if ($ver.Out -match 'PostgreSQL (\d+(\.\d+)?)') { $Matches[1] } else { $ver.Out.Split(',')[0] })
+$pgProblems = @(Get-PostgresVersionProblems $script:PgVersionText)
+if ($pgProblems.Count -gt 0) { Stop-Precondition $pgProblems[0] }
+Write-Ok ('PostgreSQL ' + $script:PgVersionText + ' matches the approved baseline')
 $canCreate = Invoke-Psql 'postgres' 'SELECT (rolcreatedb OR rolsuper) FROM pg_roles WHERE rolname = current_user'
 if ($canCreate.Out -ne 't') { Stop-Precondition "Role '$PgUser' is not allowed to create databases." }
 
@@ -813,16 +871,14 @@ if ($Failures.Count -eq 0) {
   $env:TEST_DATABASE_URL = $null
   $vitestText = Get-Content -LiteralPath $vitestLog -Raw
   $vitestLines = @([regex]::Matches($vitestText, '(?m)^\s*Tests\s+.*$') | ForEach-Object { $_.Value.Trim() })
-  if ($vitestText -match 'database-backed tests are SKIPPED') { Write-Warn 'Vitest reported that database-backed tests were SKIPPED (TEST_DATABASE_URL not picked up).' }
+  if ($vitestText -match 'database-backed tests are SKIPPED') { Fail-Step 'Vitest' 'Vitest reported that database-backed tests were SKIPPED (TEST_DATABASE_URL not picked up); the integration baseline cannot be met.' }
   if ($code -eq 0) { $Result.Vitest = 'ok'; Write-Ok 'Vitest exited 0' } else { Fail-Step 'Vitest' "Vitest failed (exit $code)" }
-  # Informational comparison only; exit codes decide pass/fail.
+  # The approved baseline is enforced exactly (in addition to the exit code).
   $passedNumbers = @($vitestLines | ForEach-Object { if ($_ -match '(\d+)\s+passed') { [int]$Matches[1] } })
   $todoNumbers = @($vitestLines | ForEach-Object { if ($_ -match '(\d+)\s+todo') { [int]$Matches[1] } })
   $totalTodo = ($todoNumbers | Measure-Object -Sum).Sum
-  if (($passedNumbers -notcontains $ExpectedUnit) -or ($passedNumbers -notcontains $ExpectedIntegration)) {
-    Write-Warn ("Vitest passed-counts [{0}] differ from the approved baseline ({1} unit, {2} integration)." -f ($passedNumbers -join ', '), $ExpectedUnit, $ExpectedIntegration)
-  }
-  if ($totalTodo -ne $ExpectedTodo) { Write-Warn ("Vitest todo count is {0}; the approved baseline has {1}." -f $totalTodo, $ExpectedTodo) }
+  foreach ($problem in @(Get-VitestBaselineProblems $passedNumbers ([int]$totalTodo))) { Fail-Step 'Vitest' $problem }
+  if (@(Get-VitestBaselineProblems $passedNumbers ([int]$totalTodo)).Count -eq 0) { Write-Ok ("Vitest matches the approved baseline exactly ({0} unit, {1} integration, {2} todo)" -f $ExpectedUnit, $ExpectedIntegration, $ExpectedTodo) }
 }
 
 # --- versions (Playwright + official Chromium) ---------------------------------------------
@@ -846,6 +902,9 @@ if ($Result.Install -eq 'ok') {
     Write-Warn 'the Chromium binary path does not look like a Playwright-managed install; confirm this is the official build.'
   }
   if ($chromiumVersion -eq 'unknown') { Write-Warn 'could not determine the Chromium version.' }
+  # Exact pin: a different Chromium or Playwright is NOT the approved official validation environment.
+  foreach ($problem in @(Get-BrowserVersionProblems $chromiumVersion $playwrightVersion)) { Fail-Step 'Versions' $problem }
+  if (@(Get-BrowserVersionProblems $chromiumVersion $playwrightVersion).Count -eq 0) { Write-Ok ("Chromium {0} and Playwright {1} match the approved baseline exactly" -f $chromiumVersion, $playwrightVersion) }
 }
 
 # --- Playwright ---------------------------------------------------------------------------
@@ -891,16 +950,17 @@ if ($Failures.Count -eq 0) {
       Write-Host ('   projects: ' + ($projects -join ', '))
       if ($failedN -gt 0 -and $Result.Playwright -eq 'ok') { Fail-Step 'Playwright' "$failedN Playwright test(s) failed according to the JSON report." }
       if ($failedN -gt 0) { $tests | Where-Object { $_.Status -eq 'unexpected' } | ForEach-Object { Write-Bad ("[{0}] {1}" -f $_.Project, $_.Title) } }
-      if ($skippedN -gt 0) { Write-Warn "$skippedN Playwright test(s) were SKIPPED."; $tests | Where-Object { $_.Status -eq 'skipped' } | ForEach-Object { Write-Host ("         skipped: [{0}] {1}" -f $_.Project, $_.Title) -ForegroundColor Yellow } }
-      if ($flaky.Count -gt 0) { Write-Warn "$($flaky.Count) test(s) PASSED ONLY AFTER RETRY (flaky):"; $flaky | ForEach-Object { Write-Host ("         flaky: [{0}] {1} ({2} attempts)" -f $_.Project, $_.Title, $_.Attempts) -ForegroundColor Yellow } }
-      if ($total -ne $ExpectedPlaywright) { Write-Warn ("Playwright ran {0} tests; the approved baseline has {1}." -f $total, $ExpectedPlaywright) }
-      if ($projects.Count -ne $ExpectedProjects) { Write-Warn ("Playwright used {0} viewport project(s); the approved baseline has {1}." -f $projects.Count, $ExpectedProjects) }
+      if ($skippedN -gt 0) { $tests | Where-Object { $_.Status -eq 'skipped' } | ForEach-Object { Write-Host ("         skipped: [{0}] {1}" -f $_.Project, $_.Title) -ForegroundColor Yellow } }
+      if ($flaky.Count -gt 0) { Write-Bad "$($flaky.Count) test(s) PASSED ONLY AFTER RETRY (flaky):"; $flaky | ForEach-Object { Write-Host ("         flaky: [{0}] {1} ({2} attempts)" -f $_.Project, $_.Title, $_.Attempts) -ForegroundColor Yellow } }
+      $pwProblems = @(Get-PlaywrightBaselineProblems $total $passedN $failedN $flaky.Count $skippedN $projects.Count)
+      foreach ($problem in $pwProblems) { if ($failedN -eq 0 -or $problem -notmatch 'failed;') { Fail-Step 'Playwright' $problem } }
+      if ($pwProblems.Count -eq 0) { Write-Ok ("Playwright matches the approved baseline exactly ({0} tests, {1} projects, 0 failed, 0 flaky, 0 skipped)" -f $ExpectedPlaywright, $ExpectedProjects) }
     } catch {
-      Write-Warn ("could not parse the Playwright JSON report: " + $_.Exception.Message)
+      Fail-Step 'Playwright' ("could not parse the Playwright JSON report, so the approved test counts cannot be verified: " + $_.Exception.Message)
       $pwSummary = 'ran (JSON report unreadable; see 05-playwright.log)'
     }
   } else {
-    Write-Warn 'Playwright did not write a JSON report; see 05-playwright.log.'
+    Fail-Step 'Playwright' 'Playwright did not write a JSON report, so the approved test counts cannot be verified; see 05-playwright.log.'
     $pwSummary = 'ran (no JSON report; see 05-playwright.log)'
   }
 
@@ -1026,9 +1086,11 @@ $playwrightText = if ($Result.Playwright -eq 'ok') { 'exit 0 | ' + $pwSummary } 
 
 $summary = New-Object System.Collections.Generic.List[string]
 $summary.Add('================================')
-$summary.Add('BIDAZOO STUDIO VALIDATION')
+$summary.Add('BIDAZOO STUDIO VALIDATION - FINAL RELEASE CANDIDATE')
 $summary.Add('================================')
 $summary.Add('')
+$summary.Add('Release candidate: ' + $CandidateSha + '  (HEAD verified exact; working tree clean)')
+$summary.Add('Approved baseline: unit ' + $ExpectedUnit + ' | integration ' + $ExpectedIntegration + ' + ' + $ExpectedTodo + ' todo | Playwright ' + $ExpectedPlaywright + ' in ' + $ExpectedProjects + ' projects | Chromium ' + $ExpectedChromium + ' | Playwright ' + $ExpectedPlaywrightVersion + ' | PostgreSQL ' + $ExpectedPostgres + '  (any deviation FAILS)')
 $summary.Add('Git commit:  ' + $Commit + '  ' + $CommitSubject + $(if ($dirty.Count -gt 0) { '   [WORKING TREE DIRTY]' } else { '' }))
 $summary.Add('Vitest:      ' + $vitestText2)
 $summary.Add('Playwright:  ' + $playwrightText)
