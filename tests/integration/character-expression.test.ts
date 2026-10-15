@@ -19,10 +19,22 @@ const REPO_ROOT = fileURLToPath(new URL('../../', import.meta.url));
 
 const PHASES: readonly RunPhaseName[] = ['loading', 'question', 'submitting', 'feedback', 'error'];
 
-/** A source file's code with comments removed, so prose in a comment never trips a code check. */
+/**
+ * Source text with every line ending turned into LF. A Windows checkout may hold CRLF, and the
+ * structural patterns below (which match across lines) must behave the same on Linux and Windows.
+ */
+function normalizeLineEndings(text: string): string {
+  return text.replace(/\r\n?/g, '\n');
+}
+
+/** Source code with comments removed, so prose in a comment never trips a code check. */
+function stripComments(text: string): string {
+  return normalizeLineEndings(text).replace(/\/\*[\s\S]*?\*\//g, '').replace(/^\s*\/\/.*$/gm, '');
+}
+
+/** A source file's code (LF-normalized, comments removed). Every scan in this file reads through here. */
 function codeOfPath(relative: string): string {
-  const text = readFileSync(join(REPO_ROOT, relative), 'utf8');
-  return text.replace(/\/\*[\s\S]*?\*\//g, '').replace(/^\s*\/\/.*$/gm, '');
+  return stripComments(readFileSync(join(REPO_ROOT, relative), 'utf8'));
 }
 
 function sceneCode(file: string): string {
@@ -216,7 +228,7 @@ describe('character expressions: presentation only (wiring)', () => {
       const files = full.endsWith('.ts') ? [full] : typeScriptFilesUnder(root);
       for (const file of files) {
         scanned += 1;
-        const code = readFileSync(file, 'utf8').replace(/\/\*[\s\S]*?\*\//g, '').replace(/^\s*\/\/.*$/gm, '');
+        const code = stripComments(readFileSync(file, 'utf8'));
         expect(code, file).not.toMatch(/\b(expressionState|expression|emotion|mood|tryAgain|celebrate|wobble)\b/i);
       }
     }
