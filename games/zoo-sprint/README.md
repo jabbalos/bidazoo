@@ -9,6 +9,10 @@ transitional art, one cached texture per character and mood, plus `Character` wi
 and wobble) -> scenes. Click, the future host, is deliberately not here. To swap in portraits or
 spritesheets later, replace `ensureCharacterTexture`; scenes do not change.
 
+This README describes `main`. On the runtime branch (`feature/world-expedition-runtime-integration`,
+Checkpoints F1 to F6, closed) the characters use the production art with six expressions each, and
+Click is integrated as the non-selectable host; that reaches `main` at release-candidate integration.
+
 It talks to the platform **only** through `@bidazoo/game-sdk` (`BidaZooPlatform`). It never sees
 cookies, tokens, SQL, or answer keys, and it never computes correctness, timing, XP, coins, or
 mastery: it displays what the server returns. See [docs/GAME-SDK.md](../../docs/GAME-SDK.md).

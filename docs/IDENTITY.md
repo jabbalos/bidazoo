@@ -1,10 +1,12 @@
 # Family identity (Checkpoint E)
 
-Last updated: October 12, 2026.
+Last updated: October 15, 2026 (status line reconciled; the behavior described below is unchanged
+since October 12, 2026).
 
 **Status: Checkpoint E is COMPLETE. IMPLEMENTED, STUDIO-VALIDATED (exact commit
-`a283c2470fe5abcb47f49d3f5753dea1bd881e78`), NOT DEPLOYED. Branch `checkpoint-e-identity`.** See [PROJECT-STATE.md](PROJECT-STATE.md) for the status
-table and the difference between those three words. Operator procedures live in
+`a283c2470fe5abcb47f49d3f5753dea1bd881e78`), ON `main` (`856d012`), NOT DEPLOYED, and NOT ENABLED in
+production.** It was developed on the branch `checkpoint-e-identity`, which `main` now contains. See
+[PROJECT-STATE.md](PROJECT-STATE.md) for the status table and the difference between those words. Operator procedures live in
 [IDENTITY-OPERATIONS.md](IDENTITY-OPERATIONS.md). The design record and the options that were
 weighed are in [IDENTITY-MIGRATION-ASSESSMENT.md](IDENTITY-MIGRATION-ASSESSMENT.md). If this file and
 the code disagree, the code wins and this file is wrong: fix it.

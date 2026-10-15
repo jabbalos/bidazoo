@@ -266,9 +266,10 @@ The development server (`vite dev`) does not send the CSP: its hot-reload client
 runtime and would only produce noise. Always judge CSP behavior on the built client (`vite preview`,
 which Playwright uses).
 
-## Family identity (Checkpoint E: COMPLETE and Studio-validated, NOT deployed)
+## Family identity (Checkpoint E: COMPLETE, Studio-validated, on `main`; NOT deployed or enabled)
 
-The live beta does not run this code. Full behavior: [IDENTITY.md](IDENTITY.md). Operations and secret
+This code is on `main`, but the live beta does not run it and identity is not enabled in production.
+Full behavior: [IDENTITY.md](IDENTITY.md). Operations and secret
 rotation: [IDENTITY-OPERATIONS.md](IDENTITY-OPERATIONS.md).
 
 - **Guardian sign-in** is a single-use emailed link in a URL fragment, redeemed by `POST`. The public
@@ -318,7 +319,11 @@ privacy certification or compliance is claimed.
   answer.
 - **Database tests skip without `TEST_DATABASE_URL`.** They skip loudly, but a machine that never
   sets it never runs them.
-- **No backup/restore automation or data-retention jobs.** Old guests accumulate. Identity audit logging exists in Checkpoint E (not yet deployed); there is no audit viewer.
+- **Backups are limited, and there are no data-retention jobs.** The closed beta has a nightly
+  `pg_dump` (14 copies, kept on the same PC) and one validated restore
+  ([DEPLOYMENT-CLOSED-BETA.md](DEPLOYMENT-CLOSED-BETA.md) section 9). Not yet proven or done: an
+  unattended nightly run, and an off-PC copy. Old guests accumulate; nothing purges them. Identity
+  audit logging exists in Checkpoint E (on `main`, not yet deployed); there is no audit viewer.
 - **The client CSP depends on the host sending it or on the embedded `<meta>`.** The meta fallback
   cannot carry `frame-ancestors`; clickjacking protection (`X-Frame-Options`, `frame-ancestors`) needs
   the proxy to send headers. HSTS is off until configured.
