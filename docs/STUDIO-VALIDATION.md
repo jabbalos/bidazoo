@@ -1,11 +1,44 @@
 # Studio PC validation (official Playwright run)
 
 Status: **COMPLETE. Official validation passed on the Studio PC on October 12, 2026, for
-Checkpoints B, C, D, and E.** The accepted Checkpoint B application baseline is commit `01b7d41`; the
+Checkpoints B, C, D, and E, and later for the runtime baseline at Checkpoint F5 (`f3b5483`).** The
+accepted Checkpoint B application baseline is commit `01b7d41`; the
 Checkpoint C game implementation is `7042f8f`; the Checkpoint D exact validated commit is
 `52547a356bdde6397c4b576381c30efff05e1d6e`; the Checkpoint E exact validated commit is
-`a283c2470fe5abcb47f49d3f5753dea1bd881e78`. The Checkpoint E record comes first below, then
-Checkpoint D, then Checkpoint C, then Checkpoint B.
+`a283c2470fe5abcb47f49d3f5753dea1bd881e78`; the runtime (F5) exact validated commit is
+`f3b5483c2b253f0ccb0ee9b62060379b7575fb08`. The runtime record comes first below, then Checkpoint E,
+then Checkpoint D, then Checkpoint C, then Checkpoint B. The earlier records are historical and are
+kept as written, including their own counts.
+
+## Runtime baseline: Checkpoint F5 validation record (official run, passed)
+
+This is the **current runtime validation baseline**. It was reported by the project owner as the
+official Studio-PC result for the exact SHA below. The run date, run folder and the bundle-scan and
+playthrough totals were not supplied, so they are not recorded here.
+
+| Item | Result |
+| --- | --- |
+| Git commit tested (exact validated commit) | `f3b5483c2b253f0ccb0ee9b62060379b7575fb08` ("test(play): make expression wiring scan CRLF-safe"), branch `feature/world-expedition-runtime-integration` |
+| Vitest (unit) | 51 passed (51) |
+| Vitest (integration, real PostgreSQL) | 649 passed + 3 todo |
+| Playwright | 256 passed of 256, 0 failed, 0 flaky, 0 skipped; 4 projects |
+| Chromium | 156.0.8078.4 (Playwright's pinned build) |
+| PostgreSQL | 16.15 |
+| Production build | PASS |
+| Client bundle scan (`npm run scan:client`) | **CLEAN** |
+| Live API playthrough (`npm run playthrough`) | **ALL CHECKS PASSED** |
+| Working tree | Clean |
+| Overall | **PASS** |
+
+- **Checkpoint F6** (final integrated runtime / release-candidate QA) made **zero repository
+  changes**, so this validation applies to the F6 SHA. F6's own audit ran in a development sandbox
+  on a non-pinned Chromium 141 (same counts passed) and is **supplementary, not official**.
+- **Validator counts.** The validator on the runtime branch expects 51 unit, 649 integration, 3 todo
+  and 256 Playwright. The validator on `main` still expects the Checkpoint E counts (51, 375, 3, 120)
+  and would print count warnings (warnings only, not failures) until the runtime branch is
+  integrated. No validator change is made by this documentation update.
+- **Known follow-ups** (the F6 minor items, including validator cleanup M9) are listed in
+  [PROJECT-STATE.md](PROJECT-STATE.md).
 
 ## Checkpoint E validation record (official run, passed)
 
@@ -450,6 +483,9 @@ Remove-Item Env:DATABASE_URL, Env:TEST_DATABASE_URL, Env:CI -ErrorAction Silentl
 
 ## Carried-forward limitations (accepted, not reasons to reject Checkpoint B)
 
+Historical list from the Checkpoint B era, kept as written. Several items have since been resolved
+(rate limiting, CSP); the current limitations are in [PROJECT-STATE.md](PROJECT-STATE.md).
+
 No rate limiting; guest creation is unbounded; clearing the guest cookie loses guest progress;
 mastery day boundaries use UTC; network latency counts toward authoritative response time; no
 Content-Security-Policy header; character art is code-drawn transitional art, not final; Click (the
@@ -462,8 +498,10 @@ host) is not implemented; real-device performance is unmeasured.
 3. Content-Security-Policy and the remaining browser security headers: **done in Checkpoint D; Studio
    validated October 12, 2026.**
 4. Official Playwright validation on the Studio PC: **done October 12, 2026** (see the validation record above).
-5. Real-device performance checks (not authorized yet).
-6. A deliberate guest-account recovery and claim strategy (not authorized yet).
+5. Real-device performance checks: **not done.** F6 judged the eager image preload acceptable from
+   emulated measurements in a sandbox only (see [PROJECT-STATE.md](PROJECT-STATE.md)).
+6. A deliberate guest-account recovery and claim strategy: **done in Checkpoint E** (Studio validated
+   October 12, 2026; on `main`; not deployed).
 
 ## Checkpoint D: what the Studio run established (criteria; result is in the record above)
 
@@ -493,3 +531,7 @@ The transitional code-drawn visuals may later be replaced by the final BidaZoo c
 That replacement must preserve the current API and gameplay contracts and must not change the
 accepted architecture (session ownership, served-question model, attempt idempotency, reward
 ledgers, server-authoritative mastery, guest-session trust boundary).
+
+**Update (October 15, 2026):** the final character art has been integrated on the runtime branch
+(Checkpoints F1 to F6, closed; see [PROJECT-STATE.md](PROJECT-STATE.md)) without changing those
+contracts. `main` still has the code-drawn visuals until release-candidate integration.

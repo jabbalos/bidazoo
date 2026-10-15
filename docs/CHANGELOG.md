@@ -2,7 +2,41 @@
 
 All notable changes, by checkpoint. Dates use US format.
 
+## Documentation reconciliation after Checkpoint F6 (October 15, 2026; documentation only)
+
+Documentation only: no runtime, API, database, learning-core, game-sdk, identity, infrastructure,
+test, validator or art change. It brings the project-state documents in line with the repository:
+Checkpoint E is on `main` (`856d012`) but not deployed or enabled; Checkpoints F1 to F6 are closed
+on the runtime branch (not yet merged); the guest-only closed beta at `play.bidazoo.com` and its
+backup record are no longer described as "nothing deployed" or "no backups"; and the remaining work
+is split into release work and game work. Historical records below (validation counts, closure
+statements) are kept as written. See [PROJECT-STATE.md](PROJECT-STATE.md).
+
+## Checkpoint F: World Expedition runtime integration (F1 to F6 CLOSED; on the runtime branch, not yet on `main`)
+
+Entry added October 15, 2026; the work is on `feature/world-expedition-runtime-integration`, which is
+**not merged into `main`** and **not deployed**. F1, F2, F3, F4, F5 and F6 are CLOSED by the project
+owner; F6 outcome **PASS WITH MINOR ITEMS**, with zero repository changes. Runtime SHA
+`f3b5483c2b253f0ccb0ee9b62060379b7575fb08` ("test(play): make expression wiring scan CRLF-safe").
+Official Studio-PC validation at that SHA: unit 51/51; integration 649 passed + 3 todo; Playwright
+256/256 across 4 projects (0 failed, 0 flaky, 0 skipped); build PASS; client bundle scan CLEAN;
+API playthrough ALL CHECKS PASSED; Chromium 156.0.8078.4; PostgreSQL 16.15.
+
+- **Delivered:** the production character art is integrated: six cast members (Dino, Koala, Tarsier,
+  Eagle, Bronco, Click) with six production expressions each (idle, happy, thinking, cheer, discover,
+  tryAgain). Five selectable starters; Click is the host/guide and is not selectable. Expressions
+  follow gameplay events and are presentation-only: no effect on question selection, grading,
+  mastery, XP, coins, attempts, persistence, identity or server authority.
+- **F6 minor items** (finite follow-ups, M1 to M10 and S1) and the M6 production header check are
+  listed in [PROJECT-STATE.md](PROJECT-STATE.md).
+- **Not done:** release-candidate integration, deployment, identity enablement and World / Explore /
+  Basecamp.
+
 ## Checkpoint E: family identity and migration (October 12, 2026; COMPLETE, Studio-PC validated, NOT deployed)
+
+> **Update (October 15, 2026):** `main` now contains Checkpoint E (`main` is `856d012`). The
+> statement below that `main` stays at `cf02ba5` was true at closure time and is kept as history.
+> Checkpoint E is still not deployed and identity is not enabled in production.
 
 Documentation only for this entry. Checkpoint E is **COMPLETE**: IMPLEMENTED yes, STUDIO-VALIDATED yes,
 DEPLOYED **no**. The exact validated commit is `a283c2470fe5abcb47f49d3f5753dea1bd881e78` ("tooling: update Studio validator for

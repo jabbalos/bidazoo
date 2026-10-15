@@ -1,9 +1,10 @@
 # Architecture
 
-Status: Checkpoint B (first playable server-authoritative vertical slice), October 11, 2026;
-complete and Studio-PC validated October 12, 2026 (see [PROJECT-STATE.md](PROJECT-STATE.md)).
-Checkpoint A (foundation) is recorded in [CHANGELOG.md](CHANGELOG.md); sections that changed
-since then say so.
+Status: this file describes `main` as of October 15, 2026. The base is Checkpoint B (first playable
+server-authoritative vertical slice), October 11, 2026, complete and Studio-PC validated October 12,
+2026; Checkpoints C, D and E are also complete and Studio-PC validated and are on `main` (see
+[PROJECT-STATE.md](PROJECT-STATE.md)). Checkpoint A (foundation) is recorded in
+[CHANGELOG.md](CHANGELOG.md); sections that changed since then say so.
 
 BidaZoo is a **modular monolith**: one deployable API process with internal modules, one
 PostgreSQL database, and browser clients that only present state. There are no microservices.
@@ -21,9 +22,15 @@ A guest opens the page, picks a starter character (presentation only), and plays
 multiplication run. Every question, grade, mastery change, and reward is decided and stored by
 the server. Nothing else is built on `main` (no store, multiplayer, dashboards, and so on).
 
-> **Checkpoint E (family identity) is complete and Studio-validated on branch `checkpoint-e-identity` but
-> not deployed and not on `main`.** Where this file says "no parent accounts", that describes the
-> deployed baseline. Checkpoint E is described in [IDENTITY.md](IDENTITY.md) and summarized below.
+> **Checkpoint E (family identity) is complete, Studio-validated and on `main` (`856d012`), but not
+> deployed to the live beta and not enabled in production.** Where this file says "no parent
+> accounts", that describes the deployed baseline (the live guest-only closed beta). Checkpoint E is
+> described in [IDENTITY.md](IDENTITY.md) and summarized below.
+>
+> The World Expedition production character art and runtime integration (Checkpoints F1 to F6,
+> closed) live on the branch `feature/world-expedition-runtime-integration` and are **not yet merged
+> into `main`**. This file describes `main`, which still has the code-drawn character art. See
+> [PROJECT-STATE.md](PROJECT-STATE.md).
 
 ## 2. Repository structure
 
@@ -142,7 +149,8 @@ triggers that Drizzle cannot express. Applied and verified on a real PostgreSQL 
 
 ### Identity tables (Checkpoint E, migrations `0003` and `0004`)
 
-Implemented and Studio-validated on the feature branch; not deployed. Learning tables above are not changed:
+Implemented, Studio-validated and on `main`; not deployed to the live beta and not enabled in
+production. Learning tables above are not changed:
 learning rows stay keyed by `player_id`. Full behavior is in [IDENTITY.md](IDENTITY.md).
 
 | Table | Purpose |
@@ -320,10 +328,18 @@ record is in [STUDIO-VALIDATION.md](STUDIO-VALIDATION.md).
 
 ## 12. Deployment direction
 
-Not decided and not implemented. The intent is a single Node process (the bundled API) plus
-PostgreSQL, with the Vite build served as static files, same-origin with the API. Nothing in this
-repository touches Hop Quest, Fact Crew, jonabalos.com Accounts, the Clickaroo Games Hub, Caddy,
-Cloudflare, or any production service.
+The intent is a single Node process (the bundled API) plus PostgreSQL, with the Vite build served
+as static files, same-origin with the API.
+
+**Closed beta (decided and built, October 12, 2026).** That intent was carried out for a guest-only
+closed beta at `https://play.bidazoo.com` on the Studio PC: the bundled Fastify API and a
+BidaZoo-only PostgreSQL 16 cluster on loopback, a separate BidaZoo Caddy serving the Vite build
+same-origin with the API, and a dedicated Cloudflare tunnel. The plan and the as-built record are in
+[DEPLOYMENT-CLOSED-BETA.md](DEPLOYMENT-CLOSED-BETA.md). This is a closed-beta architecture, not
+necessarily the permanent production architecture: **the final production architecture is not
+decided.** The code in this repository does not touch Hop Quest, Fact Crew, jonabalos.com Accounts,
+the Clickaroo Games Hub, the existing Caddy, existing Cloudflare tunnels or any other production
+service; the closed beta uses only new, BidaZoo-named components.
 
 ## 13. Decisions intentionally postponed
 
@@ -337,7 +353,9 @@ Cloudflare, or any production service.
 - **CSRF beyond the same-origin check**, and a CORS story for a cross-origin deployment.
 - **Spendable currency flows** (store, inventory, refunds). The ledger can hold negative amounts;
   nothing spends.
-- **Hosting, domains, CI, backups, and data retention and deletion**, including purging old guests.
+- **Final production hosting, CI, and data retention and deletion**, including purging old guests.
+  The closed beta's hosting, domain and nightly backup are decided and built (section 12); an
+  off-PC backup copy, CI, retention and the final production architecture remain open.
 - **The mastery calendar day.** It is the UTC day; a per-player time zone is undecided.
 - **Content authoring**, how `content-math` is structured, and other operations and skills.
 - **Linting and formatting**, and **WebKit/Firefox** browser coverage.

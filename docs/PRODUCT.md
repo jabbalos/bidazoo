@@ -17,7 +17,8 @@ and weaknesses are corrected instead of copied.
 **Zoo Sprint.** First playable slice (Checkpoint B): choose a starter (Dino, Koala, Tarsier, Eagle, or Bronco;
 presentation only), then answer 10 multiplication questions. The server generates and grades every
 question, updates mastery, and issues XP and coins; the game animates the result. Code-drawn
-transitional character art.
+transitional character art on `main`. The production character art is complete and integrated on the
+runtime branch (Checkpoints F1 to F6, closed) and arrives at release-candidate integration.
 
 ## Principles
 
@@ -33,7 +34,9 @@ transitional character art.
 
 Multiplayer, QR controllers, classrooms, teacher dashboards, parent dashboards, AI-generated
 lessons, subscriptions, purchases, stores, chat, friends, user-generated content, real-time 3D,
-elaborate world maps, production account migration, and production deployment.
+elaborate world maps (World / Explore / Basecamp is a future product phase), production account
+migration, and the final production deployment (only a guest-only closed beta is live; see
+[DEPLOYMENT-CLOSED-BETA.md](DEPLOYMENT-CLOSED-BETA.md)).
 
 ## Open product questions
 
