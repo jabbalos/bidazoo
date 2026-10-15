@@ -105,6 +105,48 @@ export const ART_LOAD_TIMEOUT_MS = 6000;
  * files included, and never rejects: a missing picture must never stop a child from playing.
  * Textures already in the cache are not requested again.
  */
+/**
+ * Visible bounds: a polygon (fractions of the source PNG, 0..1) that is HIDDEN when the texture is
+ * prepared. The approved PNGs on disk are never edited and nothing is redrawn: this only keeps a few
+ * stray backpack pixels, which sit just above the lower edge of one crop, from peeking out above a
+ * card or ledge. Dino's tryAgain crop shows the top corner of his backpack at the lower left.
+ */
+const HIDDEN_REGIONS: ReadonlyArray<{ id: CastId; state: ExpressionState; polygon: ReadonlyArray<readonly [number, number]> }> = [
+  { id: 'dino', state: 'tryAgain', polygon: [[0, 0.6], [0.215, 0.6], [0.235, 0.66], [0.27, 0.69], [0.3, 0.7], [0.3, 1], [0, 1]] },
+];
+
+const boundedKeys = new WeakMap<Phaser.Textures.TextureManager, Set<string>>();
+
+/** Applies HIDDEN_REGIONS once per texture; safe to call again. Never throws: unmasked art is still correct art. */
+export function applyVisibleBounds(scene: Phaser.Scene): void {
+  for (const { id, state, polygon } of HIDDEN_REGIONS) {
+    try {
+      const key = expressionTextureKey(id, state);
+      if (!scene.textures.exists(key)) continue;
+      const done = boundedKeys.get(scene.textures) ?? new Set<string>();
+      boundedKeys.set(scene.textures, done);
+      if (done.has(key)) continue;
+      const texture = scene.textures.get(key);
+      const source = texture.getSourceImage() as CanvasImageSource & { width: number; height: number };
+      const { width, height } = source;
+      const canvas = scene.textures.createCanvas(`${key}:bounded`, width, height);
+      if (!canvas) continue;
+      const g = canvas.getContext();
+      g.drawImage(source, 0, 0);
+      g.globalCompositeOperation = 'destination-out';
+      g.beginPath();
+      polygon.forEach(([x, y], i) => (i === 0 ? g.moveTo(x * width, y * height) : g.lineTo(x * width, y * height)));
+      g.closePath();
+      g.fill();
+      canvas.refresh();
+      scene.textures.remove(key);
+      if (scene.textures.renameTexture(`${key}:bounded`, key)) done.add(key);
+    } catch {
+      // keep the original texture
+    }
+  }
+}
+
 export function loadProductionCharacterArt(scene: Phaser.Scene): Promise<void> {
   const loader = scene.load;
   let queued = 0;
@@ -118,7 +160,10 @@ export function loadProductionCharacterArt(scene: Phaser.Scene): Promise<void> {
       }
     }
   }
-  if (queued === 0) return Promise.resolve();
+  if (queued === 0) {
+    applyVisibleBounds(scene);
+    return Promise.resolve();
+  }
 
   return new Promise<void>((resolve) => {
     let done = false;
@@ -127,6 +172,7 @@ export function loadProductionCharacterArt(scene: Phaser.Scene): Promise<void> {
       done = true;
       clearTimeout(timer);
       loader.off(Phaser.Loader.Events.COMPLETE, finish);
+      applyVisibleBounds(scene);
       resolve();
     };
     const timer = setTimeout(finish, ART_LOAD_TIMEOUT_MS);

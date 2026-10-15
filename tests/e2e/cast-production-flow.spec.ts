@@ -309,7 +309,7 @@ test.describe('Cast production art in the real game', () => {
       await tap(page, `character-${id}`);
       await expect(page.locator('#game')).toHaveAttribute('data-character', id);
       await tap(page, 'start-run');
-      await expect.poll(() => scene(page)).toBe('run');
+      await expect.poll(() => scene(page), { timeout: 60_000 }).toBe('run'); // the 1 s celebration is slow under software GL
       await expect(page.locator('#game[data-phase="question"]')).toBeAttached({ timeout: 60_000 });
       expect(await page.locator('#game').getAttribute('data-production-art')).toBe('36');
       const status = (await page.locator('#bz-a11y [role="status"]').textContent()) ?? '';
@@ -330,7 +330,7 @@ test.describe('Cast production art in the real game', () => {
     await tap(page, 'character-dino');
     await expect(page.locator('#game')).toHaveAttribute('data-character', 'dino');
     await tap(page, 'start-run');
-    await expect.poll(() => scene(page)).toBe('run');
+    await expect.poll(() => scene(page), { timeout: 60_000 }).toBe('run'); // the 1 s celebration is slow under software GL
     await page.waitForTimeout(500);
     expect(await productionOrangePixels(page), 'Dino on the run screen is production art').toBeGreaterThan(20);
     await shot(page, 'run');

@@ -3,7 +3,6 @@ import type { PlaySession } from '@bidazoo/game-sdk';
 import { Character } from '../characters';
 import { expressionForResults } from '../character-expression';
 import { getContext } from '../context';
-import { castPresence, type CastId } from '../character-definitions';
 import { bakeEnvironment } from '../presentation/environment';
 import { clipBelow, maskRounded, spotlight } from '../presentation/hero-stage';
 import { clampNumber, resultsLayout } from '../presentation/layout';
@@ -11,6 +10,37 @@ import { prefersReducedMotion } from '../presentation/motion';
 import { grassLedge, parchmentPanel, ribbon, softShadow } from '../presentation/surfaces';
 import { EXP, EXP_CSS } from '../theme';
 import { BUTTON_STYLES, TapButton, publishSurface, text, type HitTarget } from '../ui';
+
+/** Deterministic confetti colors: the game palette, so the burst belongs to the same world. */
+const CONFETTI = [EXP.orange, EXP.amber, 0xffffff, 0x3fbf7f, 0x38b6c8];
+
+/** Soft sun rays and scattered confetti around (cx, cy). Static, cheap, and the same on every run. */
+function celebrationBurst(g: Phaser.GameObjects.Graphics, cx: number, cy: number, r: number, area: { x: number; y: number; w: number; h: number }): void {
+  const rays = 14;
+  for (let i = 0; i < rays; i++) {
+    const a0 = (i / rays) * Math.PI * 2;
+    const a1 = a0 + (Math.PI * 2) / rays / 2;
+    g.fillStyle(0xffffff, 0.14);
+    g.beginPath();
+    g.moveTo(cx, cy);
+    g.lineTo(cx + Math.cos(a0) * r * 2, cy + Math.sin(a0) * r * 2);
+    g.lineTo(cx + Math.cos(a1) * r * 2, cy + Math.sin(a1) * r * 2);
+    g.closePath();
+    g.fillPath();
+  }
+  const pieces = 26;
+  for (let i = 0; i < pieces; i++) {
+    // A fixed low-discrepancy spread: no randomness, so screenshots and tests are repeatable.
+    const t = (i * 0.618033988) % 1;
+    const u = (i * 0.754877666) % 1;
+    const x = area.x + area.w * (0.06 + 0.88 * t);
+    const y = area.y + area.h * (0.04 + 0.5 * u);
+    const size = Math.max(5, Math.min(area.w, area.h) * (0.018 + 0.012 * ((i * 7) % 3)));
+    g.fillStyle(CONFETTI[i % CONFETTI.length]!, 0.95);
+    if (i % 3 === 0) g.fillCircle(x, y, size * 0.55);
+    else g.fillRoundedRect(x - size / 2, y - size / 4, size, size / 2, 2);
+  }
+}
 
 /** Shows what the server already committed for the finished run. Nothing here is computed locally. */
 export class ResultsScene extends Phaser.Scene {
@@ -88,13 +118,20 @@ export class ResultsScene extends Phaser.Scene {
       maskRounded(this, inner, L.scene, radius);
     }
 
+    // --- a still celebration burst behind the buddy: soft sun rays and confetti, in the palette ---
+    const burst = this.add.graphics();
+    celebrationBurst(burst, L.scene.x + L.scene.w / 2, L.scene.y + L.scene.h * (split ? 0.42 : 0.4), Math.min(L.scene.w * 0.62, L.scene.h * 0.55), L.scene);
+    const burstLayer = this.add.container(0, 0, [burst]);
+    if (split) maskRounded(this, burstLayer, L.scene, Math.min(30, L.scene.w * 0.07));
+    this.layer.add(burstLayer);
+
     // --- the buddy on the summit ledge. It rests at idle, then celebrates what the server already
     // decided: a finished run is a cheer, a run that mastered something new is a discovery. ---
     const hero = new Character(this, 0, 0, ctx.character, 100);
     hero.placeInBox(L.buddyBox.x, L.buddyBox.y, L.buddyBox.w, L.buddyBox.h, {
-      presence: castPresence(ctx.character as CastId),
-      fillWidth: split ? 0.8 : 0.62,
-      maxScale: 3.4,
+      visibleHeight: L.buddyBox.h * (split ? 0.8 : 0.82),
+      fillWidth: split ? 0.94 : 0.9,
+      maxScale: 3.6,
       overlap: Math.max(10, (L.scene.y + L.scene.h - (L.buddyBox.y + L.buddyBox.h)) * 0.6),
     });
     this.hero = hero;

@@ -200,20 +200,32 @@ function selectSplit(frame: Frame): SelectLayout {
   const rw = x0 + cw - rx;
   const gap = clampNumber(Math.round(h * 0.022), 6, 16);
 
-  const titleSize = clampNumber(Math.round(Math.min(rw * 0.1, h * 0.1)), 26, 56);
+  const roomy = frame.form !== 'phone'; // desktop and landscape tablets get a deliberate, centered column
+  const titleSize = clampNumber(Math.round(Math.min(rw * 0.1, h * 0.1)), 26, roomy ? 60 : 56);
   const guideD = clampNumber(Math.round(Math.min(rw * 0.14, h * 0.16)), 44, 84);
-  const ctaH = clampNumber(Math.round(h * 0.13), 56, 84);
+  const ctaH = roomy ? clampNumber(Math.round(h * 0.09), 56, 68) : clampNumber(Math.round(h * 0.13), 56, 84);
   const medGap = clampNumber(Math.round(rw * 0.025), 6, 16);
-  const medD = clampNumber(Math.floor((rw - 4 * medGap) / 5), 52, 100);
-  const medRowH = medD + 14;
+  const medD = clampNumber(Math.floor((rw - 4 * medGap) / 5), 52, roomy ? 116 : 100);
+  const medRowH = medD + (roomy ? 22 : 14);
 
   const title: Rect = { x: rx, y: pad, w: rw, h: Math.round(titleSize * 1.2) };
-  const guide: Rect = { x: rx, y: bottomOf(title) + gap, w: rw, h: guideD };
-  const cta: Rect = { x: rx, y: h - pad - ctaH, w: rw, h: ctaH };
+  let guide: Rect = { x: rx, y: bottomOf(title) + gap, w: rw, h: guideD };
+  let cta: Rect = { x: rx, y: h - pad - ctaH, w: rw, h: ctaH };
   // The medallions sit in the free band between the guide and the CTA, centered vertically.
   const bandTop = bottomOf(guide) + gap;
   const bandBottom = cta.y - gap;
-  const medallionRow: Rect = { x: rx, y: bandTop + Math.max(0, (bandBottom - bandTop - medRowH) / 2), w: rw, h: medRowH };
+  let medallionRow: Rect = { x: rx, y: bandTop + Math.max(0, (bandBottom - bandTop - medRowH) / 2), w: rw, h: medRowH };
+  if (roomy) {
+    // One column with one rhythm: title, guide, medallions and CTA share the same gap and the whole
+    // group is centered against the hero card, so the right side reads as a menu beside the card.
+    const rhythm = clampNumber(Math.round(h * 0.04), 16, 36);
+    const groupH = title.h + guide.h + medRowH + ctaH + rhythm * 3;
+    const top = stage.y + Math.max(0, Math.round((stage.h - groupH) * 0.45));
+    title.y = top;
+    guide = { ...guide, y: bottomOf(title) + rhythm * 0.6 };
+    medallionRow = { x: rx, y: bottomOf(guide) + rhythm * 1.4, w: rw, h: medRowH };
+    cta = { x: rx, y: bottomOf(medallionRow) + rhythm, w: rw, h: ctaH };
+  }
 
   const { plaque, nameSize, roleSize, chipH, chipSize } = plaqueFor(stage);
   const charTop = stage.y + 6;
@@ -368,7 +380,7 @@ function resultsStack(frame: Frame): ResultsLayout {
   const bodyTop = bottomOf(banner) + gap;
   const bodyH = cta.y - gap - bodyTop;
   // The panel needs room for the summary; the buddy gets the rest of the column.
-  const panelH = clampNumber(Math.round(bodyH * 0.5), 190, 330);
+  const panelH = clampNumber(Math.round(bodyH * 0.44), 180, 300);
   const panel: Rect = { x: x0, y: cta.y - gap - panelH, w: cw, h: panelH };
   const scene: Rect = { x: x0, y: bodyTop, w: cw, h: Math.max(100, panel.y - gap - bodyTop) };
   const ledge = clampNumber(Math.round(scene.h * 0.12), 24, 56);
@@ -381,17 +393,23 @@ function resultsSplit(frame: Frame): ResultsLayout {
   const cw = splitWidth(frame);
   const x0 = (w - cw) / 2;
   const colGap = Math.round(pad * 1.6);
-  const leftW = clampNumber(Math.round(cw * 0.42), 240, 560);
+  const leftW = clampNumber(Math.round(cw * 0.47), 240, 620);
   const scene: Rect = { x: x0, y: pad, w: leftW, h: h - pad * 2 };
   const rx = rightOf(scene) + colGap;
   const rw = x0 + cw - rx;
-  const gap = clampNumber(Math.round(h * 0.02), 6, 16);
+  const gap = clampNumber(Math.round(h * 0.025), 8, 20);
   const bannerSize = clampNumber(Math.round(Math.min(rw * 0.09, h * 0.1)), 24, 50);
-  const banner: Rect = { x: rx, y: pad, w: rw, h: Math.round(bannerSize * 1.5) };
-  const ctaH = clampNumber(Math.round(h * 0.13), 56, 84);
-  const cta: Rect = { x: rx, y: h - pad - ctaH, w: rw, h: ctaH };
-  const panelTop = bottomOf(banner) + gap;
-  const panel: Rect = { x: rx, y: panelTop, w: rw, h: Math.max(120, cta.y - gap - panelTop) };
+  const bannerH = Math.round(bannerSize * 1.5);
+  const ctaH = clampNumber(Math.round(h * 0.09), 56, 72);
+  // The summary panel is as tall as its content needs, not as tall as the screen; the banner, panel
+  // and Play Again button form one group centered against the summit scene.
+  const avail = h - pad * 2 - bannerH - ctaH - gap * 2;
+  const panelH = Math.max(120, Math.min(avail, clampNumber(Math.round(h * 0.56), 200, 430)));
+  const groupH = bannerH + gap + panelH + gap + ctaH;
+  const top = pad + Math.max(0, Math.round((h - pad * 2 - groupH) * 0.5));
+  const banner: Rect = { x: rx, y: top, w: rw, h: bannerH };
+  const panel: Rect = { x: rx, y: bottomOf(banner) + gap, w: rw, h: panelH };
+  const cta: Rect = { x: rx, y: bottomOf(panel) + gap, w: rw, h: ctaH };
   const ledge = clampNumber(Math.round(scene.h * 0.14), 30, 80);
   const buddyBox: Rect = { x: scene.x, y: scene.y + 8, w: scene.w, h: scene.h - ledge - 8 };
   return { frame, banner, bannerSize, scene, buddyBox, panel, cta };

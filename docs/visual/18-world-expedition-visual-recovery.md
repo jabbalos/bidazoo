@@ -42,3 +42,10 @@ technical beta baseline.
 - Gameplay: buddy reduced about 7.5%; HUD, scenery gap, question card and answer buttons unchanged; answer hit targets are identical in question, submitting and feedback states (no layout jump).
 - Image sharpness audit: the 36 runtime expression PNGs are 106-294 px wide byte-copies of production-v1.1 crops cut from 1448x1086 sheets. No higher-resolution approved source (PSD/TIFF/SVG/larger PNG) exists in the library, so no art was regenerated. A real sharpness fix needs an owner-approved higher-resolution re-render. Upscale on phones is about 1.1x to 2.5x CSS px, doubled again in device px at DPR 2.
 - E2E specs updated to the new presentation (one medallion row, "Choose {Name}" label, Discover on the first question, Thinking on later ones, Cheer on a streak of three, longer waits for the 1 s celebration under software GL). Playwright runs on the cloud Chromium are supplementary; official validation is the studio PC.
+
+## Step 3 adjustment pass
+
+- Desktop Character Select: title, guide, medallions and CTA now form one centered column with a single vertical rhythm; CTA is shorter, medallions larger. Phone layouts unchanged.
+- Results: the buddy is sized by visible height and is much larger; summit scene is wider on desktop; the summary panel fits its content and is grouped with the banner and Play Again; a static sunburst and confetti add payoff. All result data is unchanged.
+- Dino tryAgain: a small hidden-bounds polygon (character-art.ts) keeps stray backpack pixels from showing above the card. The approved PNG on disk is not edited.
+- Sharpness: unchanged by design (separate asset-quality decision).
