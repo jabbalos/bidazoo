@@ -1,11 +1,14 @@
 # STEP 0.7-0.10 - restore the REHEARSAL dump into scratch, apply migrations 0003/0004 to a copy, verify.
 #   rehearsal_pre      = pure restore (the pre-migration reference, also used by the rollback proof)
-#   rehearsal_migrated  = restore + `npm run db:migrate` from the exact a283c24 tree
+#   rehearsal_migrated  = restore + `npm run db:migrate` from the exact release-candidate tree
+#   run.bat 04-restore-migrate.ps1 -CandidateSha <40 lowercase hex> [-Dump <path>]
 # Touches only the scratch cluster (54341). The live database is not read here at all.
-param([string]$Dump = '')
+param([string]$Dump = '', [string]$CandidateSha = '')
 $ErrorActionPreference = 'Stop'
 . "$PSScriptRoot\lib.ps1"
+$ShaCandidate = Resolve-Candidate $CandidateSha
 Initialize-Release '04-restore-migrate'
+Note "release candidate (immutable input): $ShaCandidate"
 
 if ($Dump -eq '') {
     $latest = Get-ChildItem "$ReleaseRoot\rehearsal-backups\rehearsal-*.dump" -ErrorAction SilentlyContinue | Sort-Object LastWriteTime -Descending | Select-Object -First 1
@@ -17,7 +20,7 @@ Note ("dump sha256: " + (Get-FileHash -LiteralPath $Dump -Algorithm SHA256).Hash
 $tree = "$ReleaseRoot\trees\stage"
 if (-not (Test-Path "$tree\database\migrations")) { throw 'Build the stage tree first: 01-build-tree.ps1 -Name stage' }
 $h = (Run-Native 'git' @('-C', $tree, 'rev-parse', 'HEAD')).Out[0]
-Rec 'stage tree is exactly a283c24' ($h -eq $ShaStage) $h
+Rec 'stage tree is exactly the release candidate' ($h -ceq $ShaCandidate) $h
 
 Start-ScratchCluster
 foreach ($db in 'rehearsal_pre', 'rehearsal_migrated') {
@@ -35,7 +38,7 @@ Rec 'the two restores are identical before migrating' ((($fpPre.Keys | ForEach-O
 $mBefore = [int]@(& $migQ 'select count(*) from drizzle.__drizzle_migrations')[0]
 Note "drizzle migration rows before: $mBefore"
 
-Write-Host "`n--- apply migrations to rehearsal_migrated (exact a283c24 tree) ---"
+Write-Host "`n--- apply migrations to rehearsal_migrated (exact release-candidate tree) ---"
 $pw = Read-Secret "$ReleaseRoot\secrets\pg-scratch.pw"
 $url = "postgres://bidazoo_app:$pw@127.0.0.1:$ScratchPort/rehearsal_migrated"   # same non-superuser role production uses
 if ($url -notmatch ":$ScratchPort/rehearsal_migrated$") { throw 'refusing: DATABASE_URL is not the scratch database' }

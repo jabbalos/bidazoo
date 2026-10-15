@@ -80,6 +80,6 @@ If it fails, the category (`connection`, `auth`, `tls`, `rejected`, `temporary`,
 
 ## E6. Record and close
 
-- [ ] Evidence: E3 header results, E5 results, log check, time of enablement, `LEGACY_MATCH_PEPPER` state (unset or enabled), the commit still a283c24.
+- [ ] Evidence: E3 header results, E5 results, log check, time of enablement, `LEGACY_MATCH_PEPPER` state (unset or enabled), the live commit is still the release candidate `$CAND` (enabling identity changes `api.env` only, never the code).
 - [ ] Monitor the safe log line for mail failures (IDENTITY-OPERATIONS section 7): parents see "check your email" even when delivery fails.
 - [ ] Rollback if needed: ROLLBACK-CHECKLIST level 1 (comment out `IDENTITY_SECRET`, restart only the API).

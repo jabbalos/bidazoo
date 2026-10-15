@@ -1,16 +1,20 @@
-# STEP 0.13 (rehearsal part) - the exact a283c24 build, on scratch, proving:
+# STEP 0.13 (rehearsal part) - the exact release-candidate build, on scratch, proving:
+#   run.bat 06-runtime-and-layerB.ps1 -CandidateSha <40 lowercase hex>
 #  1. identity stays OFF unless IDENTITY_SECRET is set (nothing turns on by deploying the runtime)
 #  2. production + IDENTITY_SECRET without SMTP refuses to start (cannot half-enable identity)
 #  3. LAYER B: real identity throttling behind a rehearsal Caddy that mirrors Caddyfile.beta
 # Ports: API 3103 / 3104 / 3105, Caddy 8482. Scratch DB rehearsal_migrated only.
+param([string]$CandidateSha = '')
 $ErrorActionPreference = 'Stop'
 . "$PSScriptRoot\lib.ps1"
+$ShaCandidate = Resolve-Candidate $CandidateSha
 Initialize-Release '06-runtime-and-layerB'
+Note "release candidate (immutable input): $ShaCandidate"
 
 $tree = "$ReleaseRoot\trees\stage"
 if (-not (Test-Path "$tree\apps\api\dist\server.js")) { throw 'Build the stage tree first: 01-build-tree.ps1 -Name stage' }
 $h = (Run-Native 'git' @('-C', $tree, 'rev-parse', 'HEAD')).Out[0]
-Rec 'stage tree is exactly a283c24' ($h -eq $ShaStage) $h
+Rec 'stage tree is exactly the release candidate' ($h -ceq $ShaCandidate) $h
 Start-ScratchCluster
 $migCount = [int]@(Scr-Q 'rehearsal_migrated' 'select count(*) from pg_class where relname = $$guardians$$')[0]
 Rec 'rehearsal_migrated has the identity schema (run 04 first)' ($migCount -ge 1)
@@ -22,12 +26,12 @@ Write-Host "`n=== 1. production-style settings, identity OFF (the state right af
 $p = Start-RehearsalApi -Name 'stage-api-off' -Tree $tree -Port 3103 -Db 'rehearsal_migrated'
 try {
     $up = Wait-Http 'http://127.0.0.1:3103/health' 40
-    Rec 'a283c24 API (identity unset) starts' $up
+    Rec 'candidate API (identity unset) starts' $up
     if (-not $up) { Get-Content "$ReleaseRoot\logs\stage-api-off.err.log" -Tail 15 -ErrorAction SilentlyContinue | ForEach-Object { Write-Host "      $_" }; Finish-Release }
     Rec '/ready is 200' ((Get-Status 'http://127.0.0.1:3103/ready') -eq 200)
     Rec 'guardian sign-in route does NOT exist (404): identity is off' ((Get-Status 'http://127.0.0.1:3103/api/v1/guardian/email-links' 'POST' @{ Origin = 'http://127.0.0.1:3103' } '{"email":"a@example.test"}') -eq 404)
     $pt = Invoke-Playthrough -Tree $tree -Port 3103 -Db 'rehearsal_migrated' -LogName 'stage-playthrough-off'
-    Rec-Playthrough $pt 'a283c24 guest-only'
+    Rec-Playthrough $pt 'candidate guest-only'
 } finally { Stop-Tracked 'stage-api-off' }
 
 Write-Host "`n=== 1b. mail settings present but IDENTITY_SECRET unset: identity must still be OFF ==="

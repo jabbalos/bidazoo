@@ -1,14 +1,17 @@
-# Maintenance window: application release of a283c24 with identity DISABLED
+# Maintenance window: application release of the founding-family-beta candidate with identity DISABLED
 
 **NOT EXECUTED. Requires explicit approval from the project owner for this window.** Identity stays off for the whole
 window. Application release and identity enablement are separate cutovers.
 
-All commands: `C:\Users\jonat\Documents\BidaZoo-Identity-Release\infrastructure\deployment\identity-release` is `$REL`.
+All commands: `C:\Users\jonat\Documents\BidaZoo-Identity-Release\infrastructure\deployment\identity-release` is `$REL` (a worktree checked out DETACHED at the candidate and clean; `00-verify-git.ps1` checks this).
+
+**The release candidate `$CAND` is immutable input.** It is the 40-character lowercase SHA the owner approved after the final integration report and the official Studio validation of that exact SHA. It is never stored in this repository (a commit cannot contain its own SHA). Set it once per shell, `$CAND = '<40 lowercase hex>'`, and pass `-CandidateSha $CAND` to `00`, `01 -Name stage`, `04`, `06`, `09` and `live-verify-migration` (or set `BZ_CANDIDATE_SHA`). The scripts refuse an empty value, a branch name, a short SHA, and any SHA that is not a descendant of 1a106bc, a283c24, 856d012, bb8e14d, f3b5483 and d90f572. Any new commit is a NEW candidate and restarts validation and rehearsal.
 Elevated PowerShell only where marked **[ADMIN]**. Record every result. Stop at the first FAIL.
 
 ## Preconditions (all must be true)
 
-- [ ] Phase 0 evidence is PASS: 00, 01 (stage and rollback), 03 Rehearsal, 04, 05, 06, 07. Evidence files are saved off the PC.
+- [ ] Official Studio validation (`validate-studio`) PASSED on exactly `$CAND`: the report shows that SHA, a clean tree, Chromium 156.0.8078.4, Playwright 1.64.0, 51 unit, 649 integration + 3 todo, 256 Playwright, build, bundle scan CLEAN, API playthrough PASS.
+- [ ] Phase 0 evidence is PASS for `$CAND`: 00, 01 (stage and rollback), 03 Rehearsal, 04, 05, 06, 07 and **09 (M6 headers, rehearsal)**. Evidence files are saved off the PC.
 - [ ] Rollback kit exists: `C:\BidaZoo-release\rollback-kit\{run-api.rollback.cmd, Caddyfile.beta.rollback}` and the `.current-copy` files.
 - [ ] Off-PC backup destination chosen and writable: `<OFFPC>`
 - [ ] Layer A tools present (`tools\observe.mjs`, `tools\layerA-check.mjs`); the Studio PC's public IP is known: `<STUDIO-IP>`; a phone on mobile data is at hand.
@@ -57,8 +60,8 @@ Caddy is stopped, so `apps\play\dist` can be rebuilt safely.
 ```powershell
 cd C:\BidaZoo-beta\app
 git fetch origin
-git checkout --detach a283c2470fe5abcb47f49d3f5753dea1bd881e78
-git rev-parse HEAD            # must print exactly a283c2470fe5abcb47f49d3f5753dea1bd881e78
+git checkout --detach $CAND
+git rev-parse HEAD            # must print exactly $CAND
 git status --short            # must print nothing
 npm ci
 npm run build
@@ -78,10 +81,10 @@ Remove-Item Env:DATABASE_URL
 ```
 
 ```bat
-run.bat live-verify-migration.ps1 -BaselineDb <FINALDB>
+run.bat live-verify-migration.ps1 -BaselineDb <FINALDB> -CandidateSha <the 40-hex candidate>
 ```
 
-- [ ] `live-verify-migration` PASS: live checkout is a283c24; 12 tables, 19 foreign keys, indexes, triggers, guard functions present; every pre-E table identical to the pre-migration backup; exactly two migrations applied; identity tables empty.
+- [ ] `live-verify-migration` PASS: live checkout is exactly `$CAND`; 12 tables, 19 foreign keys, indexes, triggers, guard functions present; every pre-E table identical to the pre-migration backup; exactly two migrations applied; identity tables empty.
 - [ ] Do not delete `<FINALDB>` yet.
 - If the migration fails midway: stop. The migration is additive and runs per drizzle's own tracking; report the exact output and decide with the owner. Do not drop tables by hand.
 
@@ -129,13 +132,19 @@ node ...\tools\layerB-live.mjs
 
 1. `window-guard.ps1 -Expect Running` PASS.
 2. Headers (from the deployment record step 11.4): `curl.exe -s -D - -o NUL http://127.0.0.1:3101/api/v1/me` and `https://play.bidazoo.com/api/v1/me` show the same API headers (CSP `default-src 'none'`, `Cache-Control: no-store`, ...); `curl.exe -s -I https://play.bidazoo.com/` shows the client CSP and `Cache-Control: no-cache`.
+2b. **M6 RELEASE GATE (cache and security headers of THIS build through the real path).** Both commands must print `M6 RESULT: PASS`:
+   ```powershell
+   node $REL\tools\m6-headers.mjs --base http://127.0.0.1:8480 --host play.bidazoo.com --cf-https   # origin: Caddy rules on the live build
+   node $REL\tools\m6-headers.mjs --base https://play.bidazoo.com                                    # public: through Cloudflare and the tunnel
+   ```
+   It proves: the HTML shell is `no-cache` (never long-term cached, never an edge HIT); hashed `/assets/*` JS, CSS and the 36 character PNGs are `max-age>=31536000, immutable`; `nosniff`; frame protection; `Permissions-Policy`; a strict client CSP (no `unsafe-inline`/`unsafe-eval`, `script-src 'self'`, `frame-ancestors 'none'`); the API keeps its own CSP and `no-store`. If the origin run passes and the public run fails, Cloudflare (Browser Cache TTL, Cache Rules) is rewriting headers: record the exact failing lines, change nothing at Cloudflare or Caddy without the owner's explicit approval, and do not announce the release; ROLLBACK-CHECKLIST level 2 if the owner decides. A FAIL here is a release-gate failure, not a data risk.
 3. Phone on mobile data: open the site, see the five starters, play a full 10-question run, reload mid-run (same question returns).
 4. Existing sites still work: `jonabalos.com`, `hopquest.jonabalos.com`, `djwikka.com` (look only).
 5. The next nightly backup (3:10 AM) is untouched. Optionally check `C:\BidaZoo-beta\logs\backup.log` the next morning.
 
 ## W9. Close the window
 
-- [ ] Application release complete, identity DISABLED, live beta on a283c24.
+- [ ] Application release complete, identity DISABLED, live beta on exactly `$CAND`, M6 gate PASS (origin and public).
 - [ ] Keep: the Final dump and its off-PC copy, `<FINALDB>` until the owner signs off (then `08-cleanup-rehearsal.ps1 -DropDb <FINALDB>`), the rollback tree, the rollback kit, all evidence files.
 - [ ] Observe the beta for guest-only health before scheduling the identity enablement.
 

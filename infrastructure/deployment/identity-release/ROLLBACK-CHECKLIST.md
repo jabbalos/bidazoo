@@ -12,7 +12,7 @@ tunnels, DNS, zone SSL/HSTS. The dedicated `BidaZoo Tunnel` and `BidaZoo Postgre
 | Symptom | Level |
 | --- | --- |
 | Identity enabled and misbehaving (mail, sign-in, PIN, claim, revoke), guest play fine | 1. Fast identity disable |
-| New build will not start, serves errors, `npm ci`/build failed in the window, Layer A/B failed | 2. Application rollback |
+| New build will not start, serves errors, `npm ci`/build failed in the window, Layer A/B failed, or the M6 header gate (W8) failed and the owner decides not to keep the release | 2. Application rollback |
 | Data damage or a failed migration that cannot be moved forward | 3. Database restore (last resort, owner approval) |
 
 ## Level 1: fast identity disable (restart only the BidaZoo API)

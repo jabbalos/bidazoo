@@ -68,6 +68,24 @@ try {
     Check 'FK structure parsed (columns, referenced table, ON DELETE set null = n)' (($fk[0].Cols -eq 'used_by_device_session_id') -and ($fk[0].RefTable -eq 'device_sessions') -and ($fk[0].Del -eq 'n') -and ($fk[0].Upd -eq 'a') -and ($fk[1].Cols -eq 'x,y') -and ($fk[1].Del -eq 'c'))
 } catch { Check 'FK parser / identifier truncation' $false $_.Exception.Message }
 
+# Release-candidate input model: the candidate is explicit, exact, and never a moving ref or a historical commit.
+$savedEnv = $env:BZ_CANDIDATE_SHA
+try {
+    $env:BZ_CANDIDATE_SHA = ''
+    $good = ('0123456789abcdef' * 3).Substring(0, 40)
+    foreach ($bad in @('', 'HEAD', 'release/founding-family-beta', 'main', '9781f7a', $good.ToUpper(), ($good + '0'), $ShaRollback, $ShaIdentity, $ShaMain, $ShaDocs, $ShaRuntime, $ShaTooling)) {
+        $threw = $false
+        try { $null = Resolve-Candidate $bad } catch { $threw = $true }
+        Check ("Resolve-Candidate refuses '{0}'" -f $(if ($bad.Length -gt 12) { $bad.Substring(0, 12) + '...' } else { $bad })) $threw
+    }
+    Check 'Resolve-Candidate accepts a full lowercase 40-hex SHA that is not a reference commit' ((Resolve-Candidate $good) -ceq $good)
+    $env:BZ_CANDIDATE_SHA = $good
+    Check 'Resolve-Candidate falls back to BZ_CANDIDATE_SHA' ((Resolve-Candidate '') -ceq $good)
+} catch { Check 'Resolve-Candidate' $false $_.Exception.Message }
+finally { $env:BZ_CANDIDATE_SHA = $savedEnv }
+Check 'Test-ReleaseOnlyPath: docs, tooling, validator and markdown are release-only' ((Test-ReleaseOnlyPath 'docs/PROJECT-STATE.md') -and (Test-ReleaseOnlyPath 'infrastructure/deployment/identity-release/lib.ps1') -and (Test-ReleaseOnlyPath 'scripts/validate-studio.ps1') -and (Test-ReleaseOnlyPath 'games/zoo-sprint/README.md') -and (Test-ReleaseOnlyPath 'README.md'))
+Check 'Test-ReleaseOnlyPath: application, API, database, tests, art and path tricks are NOT release-only' (-not ((Test-ReleaseOnlyPath 'apps/api/src/server.ts') -or (Test-ReleaseOnlyPath 'database/migrations/0005_x.sql') -or (Test-ReleaseOnlyPath 'games/zoo-sprint/assets/world-expedition/characters/dino/dino_idle.png') -or (Test-ReleaseOnlyPath 'tests/integration/a.test.ts') -or (Test-ReleaseOnlyPath 'scripts/other.ps1') -or (Test-ReleaseOnlyPath 'docs/../apps/api/x.ts') -or (Test-ReleaseOnlyPath 'package-lock.json')))
+
 Check 'call depth stays small' ((Get-PSCallStack).Count -lt 10) ("depth=$((Get-PSCallStack).Count)")
 
 if ($fails -eq 0) { Write-Host "SELF-TEST PASS" ; exit 0 } else { Write-Host "SELF-TEST FAIL ($fails)"; exit 1 }

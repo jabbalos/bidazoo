@@ -1,14 +1,16 @@
 # STEP 0.2-0.5 and 0.11 - build an exact commit in its OWN folder under C:\BidaZoo-release\trees.
-#   -Name stage     builds a283c24 (the release candidate)
-#   -Name rollback  builds 1a106bc (the independent rollback tree)
+#   -Name stage     builds the RELEASE CANDIDATE, supplied as -CandidateSha <40 lowercase hex> (or BZ_CANDIDATE_SHA)
+#   -Name rollback  builds 1a106bc (the live beta: the independent rollback tree). Needs no candidate.
 # Runs as the normal user. Never touches C:\BidaZoo-beta. Refuses to overwrite an existing tree.
-param([ValidateSet('stage', 'rollback')][string]$Name = 'stage')
+param([ValidateSet('stage', 'rollback')][string]$Name = 'stage', [string]$CandidateSha = '')
 $ErrorActionPreference = 'Stop'
 . "$PSScriptRoot\lib.ps1"
-Initialize-Release "01-build-$Name"
 
-$sha = $ShaStage
-if ($Name -eq 'rollback') { $sha = $ShaRollback }
+$sha = $ShaRollback
+if ($Name -eq 'stage') { $sha = Resolve-Candidate $CandidateSha }
+Initialize-Release "01-build-$Name"
+if ($Name -eq 'stage') { Note "release candidate (immutable input): $sha" } else { Note "rollback tree = the live beta commit $sha" }
+
 $dest = "$ReleaseRoot\trees\$Name"
 if (Test-Path -LiteralPath $dest) { throw "$dest already exists. Nothing here deletes it; remove it yourself for a fresh build." }
 
@@ -21,10 +23,12 @@ $c = Run-Native 'git' @('clone', '--quiet', '--no-checkout', $MainRepo, $dest) -
 Rec 'local clone created' ($c.Code -eq 0) $dest
 $c = Run-Native 'git' @('-C', $dest, 'checkout', '--quiet', '--detach', $sha)
 Rec "checked out $($sha.Substring(0,7))" ($c.Code -eq 0)
+if ($c.Code -ne 0) { Note "If the commit is unknown here, run 'git fetch origin' in $MainRepo first (the build clone is made from that repository)." }
 $h = (Run-Native 'git' @('-C', $dest, 'rev-parse', 'HEAD')).Out[0]
 Rec 'HEAD equals the exact full SHA' ($h -eq $sha) $h
 $st = Run-Native 'git' @('-C', $dest, 'status', '--porcelain')
 Rec 'working tree is clean' (@($st.Out | Where-Object { $_ -ne '' }).Count -eq 0)
+if ($Name -eq 'stage') { Write-Host "`n--- candidate lineage (inside the build clone) ---"; Test-CandidateLineage -Dir $dest -Sha $sha }
 Note ("package-lock.json SHA-256: " + (Get-FileHash -LiteralPath "$dest\package-lock.json" -Algorithm SHA256).Hash)
 
 Push-Location $dest

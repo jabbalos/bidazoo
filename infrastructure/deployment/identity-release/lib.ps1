@@ -1,5 +1,13 @@
-# Shared helpers for the Checkpoint E identity-release REHEARSAL tooling. ASCII only.
+# Shared helpers for the founding-family-beta release-candidate REHEARSAL tooling. ASCII only.
+# (Originally written for the Checkpoint E identity-only candidate; retargeted October 15, 2026.)
 # Dot-source from the numbered scripts:  . "$PSScriptRoot\lib.ps1"
+#
+# CANDIDATE INPUT MODEL (no self-referential SHA)
+#  - The release candidate is NEVER stored in this tooling. A script commit cannot contain its own SHA.
+#  - Scripts that build or test the candidate take it as immutable input: -CandidateSha <40 lowercase hex>
+#    (or the environment variable BZ_CANDIDATE_SHA). Resolve-Candidate refuses empty input, branch names,
+#    tags, abbreviations and upper case. Test-CandidateLineage then refuses unexpected ancestry.
+#  - The constants below are HISTORICAL / ROLLBACK / LINEAGE references only. None of them is the candidate.
 #
 # SAFETY MODEL
 #  - The live beta database is opened SELECT-only (Invoke-Psql refuses anything else on port 54340).
@@ -14,13 +22,19 @@ $Beta        = 'C:\BidaZoo-beta'
 $ReleaseRoot           = 'C:\BidaZoo-release'
 if ($env:BZ_RELEASE_ROOT) { $ReleaseRoot = $env:BZ_RELEASE_ROOT }   # test hook only; unset on Studio
 $Repo        = 'C:\Users\jonat\Documents\BidaZoo-Identity-Release'
+if ($env:BZ_REPO_DIR) { $Repo = $env:BZ_REPO_DIR }   # test hook only; unset on Studio
 $MainRepo    = 'C:\Users\jonat\Documents\BidaZoo'
 $PgBin       = "$Beta\pg\pgsql\bin"
 $LivePort    = 54340
 $ScratchPort = 54341
-$ShaStage    = 'a283c2470fe5abcb47f49d3f5753dea1bd881e78'
-$ShaDocs     = '856d012d3139735d7f13ffeebabb723222fba2e1'
-$ShaRollback = '1a106bc328ed0d544d4c49b61f3a1c2071ae65b7'
+# --- Immutable reference commits. Class A (historical / rollback / lineage). NONE of these is the release candidate. ---
+$ShaRollback = '1a106bc328ed0d544d4c49b61f3a1c2071ae65b7'   # the live beta today: the ONLY rollback target
+$ShaIdentity = 'a283c2470fe5abcb47f49d3f5753dea1bd881e78'   # Checkpoint E identity milestone (old identity-only candidate); lineage only
+$ShaMain     = '856d012d3139735d7f13ffeebabb723222fba2e1'   # main when the candidate was integrated
+$ShaDocs     = 'bb8e14d668324d3dfdd77d07dda84dd47cb04ee5'   # post-F6 documentation reconciliation (docs only)
+$ShaRuntime  = 'f3b5483c2b253f0ccb0ee9b62060379b7575fb08'   # F1-F6 runtime tip, officially Studio-validated
+$ShaTooling  = 'd90f572c8de1804314c2edf520cc9199446aded7'   # release/identity-beta tip (this tooling's original branch)
+$ReleaseBranch = 'release/founding-family-beta'
 $ReleaseDir  = $PSScriptRoot
 $Tools       = Join-Path $ReleaseDir 'tools'
 $NodeExe     = $null   # resolved below, once Resolve-External exists
@@ -108,6 +122,61 @@ function Run-Native {
 }
 
 function Show-Tail { param($Result, [int]$Lines = 12) $Result.Out | Select-Object -Last $Lines | ForEach-Object { Write-Host "      $_" } }
+
+# ---------------------------------------------------------------- release candidate input
+# Runs git against an explicit directory. Deliberately NOT named Git (a function with that name shadows git.exe).
+function Invoke-GitIn { param([string]$Dir, [string[]]$GitArgs) return (Run-Native 'git' (@('-C', $Dir) + $GitArgs)) }
+
+# Returns the release-candidate SHA, or throws. The value is immutable INPUT, never derived from a moving ref.
+function Resolve-Candidate {
+    param([string]$Sha = '')
+    if ([string]::IsNullOrWhiteSpace($Sha)) { $Sha = $env:BZ_CANDIDATE_SHA }
+    if ([string]::IsNullOrWhiteSpace($Sha)) { throw 'The release-candidate SHA is required: pass -CandidateSha <40 lowercase hex> (or set BZ_CANDIDATE_SHA). Nothing is guessed from a branch.' }
+    $Sha = $Sha.Trim()
+    if ($Sha -cnotmatch '^[0-9a-f]{40}$') { throw "The release-candidate SHA must be the full 40-character lowercase hex commit id (a branch name, tag, HEAD or abbreviation is refused). Got: '$Sha'" }
+    foreach ($ref in $ShaRollback, $ShaIdentity, $ShaMain, $ShaDocs, $ShaRuntime, $ShaTooling) {
+        if ($Sha -ceq $ref) { throw "Refusing: $($Sha.Substring(0, 7)) is a historical reference commit, not the combined release candidate." }
+    }
+    return $Sha
+}
+
+# True for paths that cannot change application behavior: documentation, deployment tooling, the Studio validator.
+function Test-ReleaseOnlyPath {
+    param([string]$Path)
+    if ($Path.Contains('..')) { return $false }
+    if ($Path -ceq 'README.md') { return $true }
+    if ($Path.StartsWith('docs/', [StringComparison]::Ordinal)) { return $true }
+    if ($Path.StartsWith('infrastructure/deployment/', [StringComparison]::Ordinal)) { return $true }
+    if (@('scripts/validate-studio.ps1', 'scripts/validate-studio.bat', 'scripts/validate-studio-selftest.ps1') -ccontains $Path) { return $true }
+    if ($Path.EndsWith('.md', [StringComparison]::Ordinal)) { return $true }
+    return $false
+}
+
+# Refuses unexpected ancestry. Every check is DERIVED from the supplied candidate and the reference constants above.
+function Test-CandidateLineage {
+    param([string]$Dir, [string]$Sha)
+    $c = Invoke-GitIn $Dir @('rev-parse', '--verify', '--quiet', "$Sha^{commit}")
+    $isCommit = ($c.Code -eq 0) -and ($c.Out.Count -gt 0) -and ($c.Out[0] -ceq $Sha)
+    Rec 'candidate exists as a COMMIT and resolves to exactly itself' $isCommit $Sha
+    if (-not $isCommit) { return }
+    $refs = @(
+        @('1a106bc (live beta; rollback target)', $ShaRollback),
+        @('a283c24 (Checkpoint E identity milestone)', $ShaIdentity),
+        @('856d012 (main at integration)', $ShaMain),
+        @('bb8e14d (post-F6 documentation reconciliation)', $ShaDocs),
+        @('f3b5483 (F1-F6 runtime, Studio-validated)', $ShaRuntime),
+        @('d90f572 (release/identity-beta tooling tip)', $ShaTooling)
+    )
+    foreach ($r in $refs) {
+        $a = Invoke-GitIn $Dir @('merge-base', '--is-ancestor', $r[1], $Sha)
+        Rec "$($r[0]) is an ancestor of the candidate" ($a.Code -eq 0)
+    }
+    $d = Invoke-GitIn $Dir @('diff', '--name-only', $ShaRuntime, $Sha)
+    $changed = @($d.Out | Where-Object { $_ -ne '' })
+    $appTouched = @($changed | Where-Object { -not (Test-ReleaseOnlyPath $_) })
+    Rec 'candidate differs from the Studio-validated runtime (f3b5483) ONLY in docs, deployment tooling and the validator' (($d.Code -eq 0) -and ($appTouched.Count -eq 0)) ("application paths changed: " + (($appTouched | Select-Object -First 10) -join ', '))
+    Note "files differing from f3b5483: $($changed.Count) (all release-only when the line above passes)"
+}
 
 # ---------------------------------------------------------------- PostgreSQL
 function Invoke-Psql {
