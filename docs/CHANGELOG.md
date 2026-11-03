@@ -2,7 +2,23 @@
 
 All notable changes, by checkpoint. Dates use US format.
 
-## Final release-candidate integration (October 15, 2026; branch `release/founding-family-beta`, not merged)
+## Release candidate merged into `main` + product direction (November 3, 2026)
+
+- `main` fast-forwarded (no conflicts) to `release/founding-family-beta` (`46fe5eb`) and then the World
+  Expedition visual recovery (`6cedf93`: Choose Your Buddy, gameplay and results rebuilt on a shared
+  presentation layer; presentation only). `spike/world-hub-exploration` is not merged (unfinished).
+- Studio validator: expected counts follow the merged code (51 unit, 685 integration + 3 todo, 244
+  Playwright; were 649 and 256 on the release branch). Validation of the exact `main` SHA is still pending.
+- Rehearsal tooling (`infrastructure/deployment/identity-release/`): the release branch is now `main`, and the
+  application baseline the candidate is compared against is `6cedf93` (was `f3b5483`), because the visual
+  recovery changes game code. `f3b5483` stays a required ancestor.
+- Sandbox check of the merged code (supplementary, not Studio validation): typecheck, unit 51, integration 685
+  + 3 todo, build, client scan CLEAN (46 files), Playwright 244 on Chromium 153.
+- Product direction recorded in PRODUCT.md and PROJECT-STATE.md: BidaZoo is the platform, BidaZoo sign-in is
+  the master account, Hop Quest's features are rebuilt inside BidaZoo (math first), the Hop Quest site becomes
+  a trial into BidaZoo. Roadmap checkpoints G-J.
+
+## Final release-candidate integration (October 15, 2026; branch `release/founding-family-beta`; merged into `main` November 3, 2026)
 
 Created from `main` (`856d012`) and merged, with histories preserved and no conflicts, in this order:
 `docs/reconcile-project-state-after-f6` (`bb8e14d`), `feature/world-expedition-runtime-integration`

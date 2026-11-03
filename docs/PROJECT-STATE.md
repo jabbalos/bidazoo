@@ -1,23 +1,25 @@
 # Project State
 
-Last updated: October 15, 2026 (post-F6 source-of-truth reconciliation). This is the short,
-authoritative entry point for any session (human or AI). The repository and the files in `docs/` are
-the source of truth, not chat history. If this file and another doc disagree about status, fix the
-other doc.
+Last updated: November 3, 2026 (release candidate and visual recovery merged into `main`; product
+direction set). This is the short, authoritative entry point for any session (human or AI). The repository
+and the files in `docs/` are the source of truth, not chat history. If this file and another doc disagree
+about status, fix the other doc.
 
-**How to read this file.** Statements say where they are true. **`main`** is at `856d012`. The
-World Expedition runtime work lives on the branch `feature/world-expedition-runtime-integration`
-(`f3b5483`) and is **not yet merged into `main`**. "Complete" and "closed" describe development and
-validation; "deployed" means running in the live closed beta; "enabled" means switched on in
-production. They are different words and are kept apart below.
+**How to read this file.** Statements say where they are true. "Complete" and "closed" describe development
+and validation; "deployed" means running in the live closed beta; "enabled" means switched on in production.
 
-**Release-candidate branch.** This copy of the file is on `release/founding-family-beta`, the final
-combined release candidate: `main` (`856d012`) + the post-F6 documentation reconciliation + the F1-F6
-runtime (`f3b5483`) + the release rehearsal tooling, merged with their histories preserved and no conflicts.
-It is **not merged into `main`**, not deployed, and not tagged. The exact candidate SHA is **deliberately not
-recorded in the repository** (a commit cannot contain its own SHA); it is stated in the integration report
-and is supplied to the validator and the rehearsal scripts as immutable input. Any new commit on that
-branch is a new candidate and needs fresh validation.
+**`main` is the release candidate (November 3, 2026).** On the owner's instruction, `main` now contains,
+fast-forward with no conflicts: the Checkpoint E identity work, the post-F6 documentation reconciliation, the
+F1-F6 runtime (`f3b5483`), the release rehearsal tooling (`release/founding-family-beta`, `46fe5eb`), and the
+World Expedition visual recovery (`feature/world-expedition-visual-recovery`, `6cedf93`), plus validator and
+rehearsal-tooling updates for that combination. The candidate SHA is the `main` commit the owner validates;
+any later commit on `main` is a new candidate. **Not yet Studio-validated, not deployed.** The exploration
+spike (`spike/world-hub-exploration`) is NOT merged: it is unfinished and not authorized.
+
+**Product direction (owner, November 3, 2026):** BidaZoo is the platform and main product; BidaZoo sign-in
+is the master account; Hop Quest's features are rebuilt inside BidaZoo on its server-authoritative model; the
+Hop Quest site becomes a trial that leads into BidaZoo; first release is math only. Details:
+[PRODUCT.md](PRODUCT.md) and "Roadmap" below.
 
 ## Status
 
@@ -32,7 +34,8 @@ branch is a new candidate and needs fresh validation.
 | Checkpoint F6 (final integrated runtime / release-candidate QA) | **CLOSED: PASS WITH MINOR ITEMS.** F6 made zero repository changes. Runtime ready for final release-candidate integration: **YES**. |
 | Production character art | **COMPLETE.** All six cast members have six production expressions. Integrated on the runtime branch; `main` still carries the code-drawn transitional art until release-candidate integration. |
 | Closed-beta deployment (`play.bidazoo.com`) | **LIVE, guest-only** (Studio PC; commit `1a106bc`; see "Closed-beta deployment and backups"). A closed-beta architecture, not necessarily the final production architecture. |
-| Release work (release-candidate integration through founding-family beta) | **IN PROGRESS.** Step 1 (integration) is done on `release/founding-family-beta`; official Studio validation of that exact SHA is next and is **not yet done**. See "Remaining work". |
+| Release work (release-candidate integration through founding-family beta) | **IN PROGRESS.** Step 1 (integration) is done and **merged into `main`** (November 3, 2026, with the visual recovery). Official Studio validation of the exact `main` SHA is next and is **not yet done**. See "Remaining work". |
+| World Expedition visual recovery (Choose Your Buddy, gameplay and results rebuilt on a shared presentation layer) | **On `main`** (`6cedf93`). Presentation only. Sandbox: unit 51, integration 685 + 3 todo, build, client scan CLEAN. Owner decisions still open: trait copy, `PRESENCE_EXPONENT`, higher-resolution art. See [visual/18](visual/18-world-expedition-visual-recovery.md). |
 | World / Explore / Basecamp | Future product phase. **Not authorized**, and **not** part of the current runtime closure. |
 
 ## Baselines and commits
@@ -374,12 +377,27 @@ Unfinished **release** work is different from unfinished **game** work.
 - **World / Explore / Basecamp** is a future product phase. It is not authorized and is not part of
   the current runtime closure.
 
+### Roadmap (owner direction, November 3, 2026; each checkpoint still needs the owner's go)
+
+- **G. Content engine.** Generalize `learning-core` and the session flow from multiplication facts to
+  Hop Quest's item format (mc, ms, numeric with number-line and grid input, sort, order; drawn figures),
+  server grading and answer secrecy; import the Hop Quest math bank (1,869 items) with its school-year
+  pacing and variant families; server-side placement test.
+- **H. BidaZoo app screens (math).** Kid home (buddy, daily quest), question player, results, skill map,
+  placement test; parent dashboard on Checkpoint E identity. Phone first, BidaZoo art. Phaser stays for
+  game moments (Zoo Sprint, the future world).
+- **I. Rewards and shop on the server** (coins, buddy accessories), replacing Hop Quest's browser-trusted economy.
+- **J. Hop Quest trial and migration.** The Hop Quest site becomes a trial that leads into a BidaZoo family
+  account; existing Hop Quest families claim their accounts (Checkpoint E legacy claim); Boss Hop moves to
+  BidaZoo's APIs.
+- Then reading (content and screens), and later World / Explore / Basecamp.
+
 ### Release work (all OPEN; none of it has been done)
 
 The remaining release path:
 
 1. Final release-candidate integration (bringing the closed runtime branch and the release tooling
-   into one candidate). **DONE on `release/founding-family-beta`** (not merged into `main`).
+   into one candidate). **DONE and merged into `main`** (November 3, 2026), together with the visual recovery.
 2. Exact-SHA validation of that candidate on the Studio PC with the pinned Chromium (**next**; the
    validator now requires `-CandidateSha` and fails on any baseline deviation, see
    [STUDIO-VALIDATION.md](STUDIO-VALIDATION.md)).
@@ -416,9 +434,11 @@ helpers exercised in a Linux sandbox only; see its README).
 2. Do not start any further checkpoint or phase (Studio validation of the candidate, release rehearsal,
    deployment, SMTP or DNS work, identity enablement, privacy work, World / Explore / Basecamp, and so on) until
    the project owner explicitly authorizes it. Do not reopen closed checkpoints.
-3. Keep BidaZoo isolated from production systems (Hop Quest, Fact Crew, jonabalos.com Accounts, the
+3. Keep BidaZoo's runtime isolated from production systems (Hop Quest, Fact Crew, jonabalos.com Accounts, the
    Clickaroo Games Hub, the existing Caddy, existing Cloudflare tunnels and DNS). The closed beta uses
-   its own BidaZoo Caddy and a dedicated BidaZoo tunnel.
+   its own BidaZoo Caddy and a dedicated BidaZoo tunnel. Copying content and screen ideas FROM the Hop Quest
+   repository into BidaZoo is allowed (owner direction, November 3, 2026); changing Hop Quest itself happens
+   in the Hop Quest repository under its own rules.
 4. Documentation-only changes get documentation-only commits. Do not mix them with code.
 
 ## Document map

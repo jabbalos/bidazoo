@@ -30,8 +30,8 @@ What the release-candidate validator enforces (changed on October 15, 2026; vali
 
 | Check | Before | Now |
 | --- | --- | --- |
-| Unit / integration / todo counts | warning only | **FAIL** unless exactly 51 / 649 / 3 (700 passed in total, so a hidden extra test file also fails) |
-| Playwright count and projects | warning only | **FAIL** unless exactly 256 tests, all passed, in 4 projects |
+| Unit / integration / todo counts | warning only | **FAIL** unless exactly 51 / 685 / 3 (736 passed in total, so a hidden extra test file also fails) |
+| Playwright count and projects | warning only | **FAIL** unless exactly 244 tests, all passed, in 4 projects |
 | Skipped or flaky Playwright test | warning | **FAIL** |
 | Playwright JSON report missing or unreadable | warning | **FAIL** (counts cannot be verified) |
 | Skipped database-backed Vitest tests | warning | **FAIL** |
@@ -45,7 +45,7 @@ What the release-candidate validator enforces (changed on October 15, 2026; vali
 against the real constants and functions in the validator. A sandbox run with a different Chromium (for example 141)
 is **supplementary** and, by design, now fails this validator: only the pinned official build counts.
 
-Required result for the candidate, all on the same exact SHA: typecheck, 51 unit, 649 integration + 3 todo, 256/256
+Required result for the candidate, all on the same exact SHA: typecheck, 51 unit, 685 integration + 3 todo, 244/244
 Playwright (0 failed, 0 flaky, 0 skipped), build PASS, bundle scan CLEAN, API playthrough PASS, Chromium 156.0.8078.4,
 PostgreSQL 16.15. Rehearsal and rollback proof (`infrastructure/deployment/identity-release`) do not start until this
 passes.
@@ -60,8 +60,8 @@ playthrough totals were not supplied, so they are not recorded here.
 | --- | --- |
 | Git commit tested (exact validated commit) | `f3b5483c2b253f0ccb0ee9b62060379b7575fb08` ("test(play): make expression wiring scan CRLF-safe"), branch `feature/world-expedition-runtime-integration` |
 | Vitest (unit) | 51 passed (51) |
-| Vitest (integration, real PostgreSQL) | 649 passed + 3 todo |
-| Playwright | 256 passed of 256, 0 failed, 0 flaky, 0 skipped; 4 projects |
+| Vitest (integration, real PostgreSQL) | 685 passed + 3 todo |
+| Playwright | 244 passed of 244, 0 failed, 0 flaky, 0 skipped; 4 projects |
 | Chromium | 156.0.8078.4 (Playwright's pinned build) |
 | PostgreSQL | 16.15 |
 | Production build | PASS |
@@ -73,8 +73,9 @@ playthrough totals were not supplied, so they are not recorded here.
 - **Checkpoint F6** (final integrated runtime / release-candidate QA) made **zero repository
   changes**, so this validation applies to the F6 SHA. F6's own audit ran in a development sandbox
   on a non-pinned Chromium 141 (same counts passed) and is **supplementary, not official**.
-- **Validator counts.** The validator on the runtime branch expects 51 unit, 649 integration, 3 todo
-  and 256 Playwright. The validator on `main` still expects the Checkpoint E counts (51, 375, 3, 120)
+- **Validator counts.** Since November 3, 2026 (`main` = release candidate + visual recovery) the validator expects
+  51 unit, 685 integration, 3 todo and 244 Playwright (the visual recovery added integration tests and
+  replaced some browser tests). Before that the runtime branch expected 51, 649, 3 and 256. The validator on `main` still expects the Checkpoint E counts (51, 375, 3, 120)
   and would print count warnings (warnings only, not failures) until the runtime branch is
   integrated. **Update (October 15, 2026):** on the release-candidate branch the validator expects the
   counts above and turns every baseline violation into a failure (see the section above).
@@ -363,10 +364,10 @@ What it does, in order:
 4a. With `-PortablePostgres`: finds or extracts the portable binaries, initializes the throwaway
    cluster if needed, starts it, and waits until it accepts connections (exit `2` on any failure).
 5. Creates `bidazoo_test` and `bidazoo_e2e` and migrates both. It never touches any other database.
-6. `npm test` against `bidazoo_test` (the final candidate must show exactly 51 unit, 649 integration, 3 todo;
+6. `npm test` against `bidazoo_test` (the final candidate must show exactly 51 unit, 685 integration, 3 todo;
    anything else fails the run).
 7. `npm run test:e2e -w @bidazoo/tests -- --reporter=list,json` against `bidazoo_e2e`
-   (256 tests, 4 viewports, all required to pass with none flaky or skipped; this is the same command as `npm run test:e2e` plus a JSON reporter so
+   (244 tests, 4 viewports, all required to pass with none flaky or skipped; this is the same command as `npm run test:e2e` plus a JSON reporter so
    retries and skips can be counted).
 8. If everything so far passed: `npm run build` (log `12-build.log`), then `npm run scan:client`
    (`13-scan-client.log`; non-zero exit or no `CLEAN:` line fails the run). With the build and migrations

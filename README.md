@@ -2,26 +2,12 @@
 
 An educational-game platform for kids. Games are fun; **learning progress is decided by the server**.
 
-> **Status: Checkpoint B is COMPLETE and Studio-PC validated** (accepted baseline `01b7d41`).
-> Checkpoint C (five-starter presentation, implementation `7042f8f`) is also COMPLETE and
-> Studio-PC validated. Checkpoint D (public-beta security gate: rate limits, proxy trust, CSP) is
-> also COMPLETE and Studio-PC validated (October 12, 2026; validated commit `52547a3`). Start with
-> [docs/PROJECT-STATE.md](docs/PROJECT-STATE.md).
-> Checkpoint B is a first playable slice: a guest can open the page, pick a starter, and play a
-> 10-question multiplication run. Every question, grade, mastery update, and reward is decided and
-> stored by the server in PostgreSQL; the Phaser client only presents it.
-> Checkpoint E (family identity) is COMPLETE and Studio-PC validated (validated commit `a283c24`) and
-> is **on `main`** (`856d012`), but it is NOT deployed and identity is NOT enabled in production; see
-> [docs/IDENTITY.md](docs/IDENTITY.md). Identity is off unless `IDENTITY_SECRET` is set.
-> Checkpoints F1 to F6 (World Expedition production character art and runtime integration) are CLOSED
-> (F6: PASS WITH MINOR ITEMS) on the branch `feature/world-expedition-runtime-integration`
-> (`f3b5483`), **not yet merged into `main`**; `main` still has the code-drawn starter art. The
-> runtime has been integrated into the release-candidate branch `release/founding-family-beta` (also not
-> merged into `main`), which awaits official Studio validation of its exact SHA.
-> A guest-only closed beta is live at `play.bidazoo.com` on the Studio PC (commit `1a106bc`); see
-> [docs/DEPLOYMENT-CLOSED-BETA.md](docs/DEPLOYMENT-CLOSED-BETA.md). That is a closed-beta
-> architecture, not necessarily the final production architecture.
-> Not built: store, multiplayer, dashboards (see "Out of scope").
+> **Status (November 3, 2026):** `main` is the release candidate: Checkpoints A-E, the F1-F6 production
+> character art and runtime, the release tooling and the World Expedition visual recovery. It is not yet
+> Studio-validated or deployed; the live closed beta (`play.bidazoo.com`) still runs the guest-only
+> Checkpoint D build. Identity is off unless `IDENTITY_SECRET` is set. Product direction: BidaZoo is the
+> platform, BidaZoo sign-in is the master account, and Hop Quest's features are being rebuilt inside it
+> (math first). Start with [docs/PROJECT-STATE.md](docs/PROJECT-STATE.md).
 > The repository and the files in [`docs/`](docs/) are the project memory, not chat history.
 
 ## Documentation
