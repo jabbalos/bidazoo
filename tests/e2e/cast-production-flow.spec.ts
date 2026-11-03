@@ -323,8 +323,10 @@ test.describe('Cast production art in the real game', () => {
   }
 
   test('a run with Dino reaches the results screen, with Dino on every screen', async ({ page }) => {
-    // Ten real taps through the real API, software-rendered: same allowance as the full-run test in play.spec.ts.
-    test.setTimeout(360_000);
+    // Ten real taps through the real API, software-rendered. The visual recovery's larger desktop scenes make each
+    // frame slower under software GL, and the game's feedback timer counts frames, so this test gets 10 minutes
+    // (it took 6.8 min at 1440x900 in a cloud sandbox; it passes in about 2 min on phone sizes). Assertions unchanged.
+    test.setTimeout(600_000);
     await page.goto('/');
     await expect.poll(() => scene(page)).toBe('menu');
     await tap(page, 'character-dino');
@@ -350,7 +352,7 @@ test.describe('Cast production art in the real game', () => {
       await expect(page.locator('#game')).not.toHaveAttribute('data-question-id', id, { timeout: 60_000 }).catch(() => undefined);
       if (i < 9) await expect(page.locator('#game[data-phase="question"]')).toBeAttached({ timeout: 60_000 });
     }
-    await expect.poll(() => scene(page), { timeout: 30_000 }).toBe('results');
+    await expect.poll(() => scene(page), { timeout: 120_000 }).toBe('results');
     await page.waitForTimeout(500);
     expect(await productionOrangePixels(page), 'Dino on the results screen is production art').toBeGreaterThan(20);
     await shot(page, 'results');

@@ -456,7 +456,7 @@ test('expressions: a finished run cheers, keeps cheering through a resize, and c
   await waitForSample(page, (s) => s.questionId === q10.id && s.phase === 'feedback' && s.correct === 'false' && s.expression === 'tryAgain', 'tryAgain on the last, missed question');
 
   // The results screen: a resting starter first, then the cheer.
-  await expect.poll(() => scene(page), { timeout: 20_000 }).toBe('results');
+  await expect.poll(() => scene(page), { timeout: 120_000 }).toBe('results'); // software GL at 1440x900 runs about 4 fps
   await expect(page.locator('#game')).toHaveAttribute('data-expression', 'cheer', { timeout: 60_000 });
   await expect(page.locator('#game')).toHaveAttribute('data-character', 'koala');
   await expect(page.locator('#game')).toHaveAttribute('data-correct', '9');
@@ -524,7 +524,7 @@ test('expressions: a newly mastered fact is a discovery, not a cheer, and the se
   const wrong = q10.choices.find((c) => c !== q10.a * q10.b)!;
   await tap(page, `answer-${q10.choices.indexOf(wrong)}`);
 
-  await expect.poll(() => scene(page), { timeout: 20_000 }).toBe('results');
+  await expect.poll(() => scene(page), { timeout: 120_000 }).toBe('results'); // software GL at 1440x900 runs about 4 fps
   await expect(page.locator('#game')).toHaveAttribute('data-expression', 'discover', { timeout: 60_000 });
   await expect(page.locator('#game')).toHaveAttribute('data-character', 'bronco');
   expect(await statusText(page)).toContain('Mastered 7 × 8');

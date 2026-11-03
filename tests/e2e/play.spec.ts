@@ -305,7 +305,8 @@ test('guest identity: HttpOnly cookie, no token readable by JavaScript or in loc
 test('full run: 10 real taps through the real API; server totals match; a miss teaches without punishing', async ({ page, request, context }) => {
   // Headless Chromium without a GPU renders Phaser on the CPU (measured: about 14 fps at 360x640,
   // under 5 fps at 1440x900), so a 10-question run can take minutes there. Real devices are fast.
-  test.setTimeout(360_000);
+  // The visual recovery's larger scenes made desktop slower still (about 4 fps in a cloud sandbox), so 10 minutes.
+  test.setTimeout(600_000);
   const errors = collectConsoleErrors(page);
   const apiBodies: string[] = [];
   page.on('response', async (res) => {
@@ -378,6 +379,7 @@ test('full run: 10 real taps through the real API; server totals match; a miss t
 });
 
 test('refresh mid-run restores the same question, progress, and server timer', async ({ page, context }) => {
+  test.setTimeout(240_000); // three answered questions plus a reload, software-rendered (about 4 fps at 1440x900)
   await bootToMenu(page);
   await recordFeedback(page);
   await tap(page, 'start-run');
