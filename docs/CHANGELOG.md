@@ -13,7 +13,11 @@ All notable changes, by checkpoint. Dates use US format.
   application baseline the candidate is compared against is `6cedf93` (was `f3b5483`), because the visual
   recovery changes game code. `f3b5483` stays a required ancestor.
 - Sandbox check of the merged code (supplementary, not Studio validation): typecheck, unit 51, integration 685
-  + 3 todo, build, client scan CLEAN (46 files), Playwright 244 on Chromium 153.
+  + 3 todo, build, client scan CLEAN (47 files), live API playthrough ALL CHECKS PASSED, and all 244
+  Playwright tests passed on full Chromium 153 (run in parts after a container restart).
+- Found by that check and fixed: no favicon (desktop browsers logged a 404 for `/favicon.ico`); a BidaZoo
+  tab icon now ships. Five desktop (1440x900) browser tests needed more time under software rendering
+  (about 4 fps there; the feedback timer advances with frames); allowances raised, assertions unchanged.
 - Product direction recorded in PRODUCT.md and PROJECT-STATE.md: BidaZoo is the platform, BidaZoo sign-in is
   the master account, Hop Quest's features are rebuilt inside BidaZoo (math first), the Hop Quest site becomes
   a trial into BidaZoo. Roadmap checkpoints G-J.
