@@ -10,7 +10,7 @@ All notable changes, by checkpoint. Dates use US format.
 - Studio validator: expected counts follow the merged code (51 unit, 685 integration + 3 todo, 244
   Playwright; were 649 and 256 on the release branch). Validation of the exact `main` SHA is still pending.
 - Rehearsal tooling (`infrastructure/deployment/identity-release/`): the release branch is now `main`, and the
-  application baseline the candidate is compared against is `6cedf93` (was `f3b5483`), because the visual
+  application baseline the candidate is compared against is `0e7d563` (the visual recovery plus the tab icon and desktop test allowances; was `f3b5483`), because the visual
   recovery changes game code. `f3b5483` stays a required ancestor.
 - Sandbox check of the merged code (supplementary, not Studio validation): typecheck, unit 51, integration 685
   + 3 todo, build, client scan CLEAN (47 files), live API playthrough ALL CHECKS PASSED, and all 244
