@@ -17,7 +17,7 @@ unexpected ancestry (see "Reference commits").
 | `856d012d3139735d7f13ffeebabb723222fba2e1` | `main` when the candidate was integrated (must be an ancestor) |
 | `bb8e14d668324d3dfdd77d07dda84dd47cb04ee5` | post-F6 documentation reconciliation (must be an ancestor) |
 | `f3b5483c2b253f0ccb0ee9b62060379b7575fb08` | the F1-F6 runtime, officially Studio-validated (must be an ancestor) |
-| `6cedf930aedcc3a337c12c82c251c6c35168e5c8` | the application baseline (Nov 3, 2026): F1-F6 runtime + World Expedition visual recovery. Must be an ancestor; the candidate may differ from it ONLY in docs, deployment tooling and the validator. Its game code is validated by the candidate's own Studio validator run (step 2), which must pass before any rehearsal step. |
+| `0e7d563dd018cb1f53f4a86652fb77348b0cdc4c` | the application baseline (Nov 3, 2026): F1-F6 runtime + World Expedition visual recovery (`6cedf93`) + the tab icon and desktop test allowances. Must be an ancestor; the candidate may differ from it ONLY in docs, deployment tooling and the validator. Its game code is validated by the candidate's own Studio validator run (step 2), which must pass before any rehearsal step. |
 | `d90f572c8de1804314c2edf520cc9199446aded7` | the `release/identity-beta` tooling tip (must be an ancestor) |
 
 Live beta today: `1a106bc`, guest-only, identity not enabled. **Production identity stays OFF** in this release: the
@@ -74,7 +74,7 @@ Passwords are never printed; scratch passwords live only in files under `C:\Bida
 
 | Step | Evidence |
 | --- | --- |
-| 00 | candidate is a full exact SHA, the checkout IS the candidate and is clean; all seven reference commits are ancestors; the candidate differs from the application baseline (6cedf93) only in docs, deployment tooling and the validator; it is on `main`; migrations added since 1a106bc are exactly 0003 and 0004; package differences 1a106bc to the candidate; (historical) a283c24..856d012 is docs-only |
+| 00 | candidate is a full exact SHA, the checkout IS the candidate and is clean; all seven reference commits are ancestors; the candidate differs from the application baseline (0e7d563) only in docs, deployment tooling and the validator; it is on `main`; migrations added since 1a106bc are exactly 0003 and 0004; package differences 1a106bc to the candidate; (historical) a283c24..856d012 is docs-only |
 | 01 stage | exact SHA, lineage re-checked inside the build clone, clean tree, `npm ci`, build, `scan:client` CLEAN, dist SHA-256 manifest |
 | 03 | dump path, size, SHA-256, `pg_restore --list` entries, restore result, per-table row count and content checksum |
 | 04 | two migrations applied as the non-superuser `bidazoo_app`; 12 identity tables, 19 foreign keys, indexes, 8 triggers and 6 guard functions exist (counts are parsed from the migration files); every pre-E table identical in rows and content; new tables empty |

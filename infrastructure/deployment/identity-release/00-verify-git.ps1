@@ -20,7 +20,7 @@ foreach ($pair in @(
         @('bb8e14d (post-F6 docs reconciliation)', $ShaDocs),
         @('f3b5483 (F1-F6 runtime)', $ShaRuntime),
         @('d90f572 (release/identity-beta tooling tip)', $ShaTooling),
-        @('6cedf93 (application baseline: visual recovery)', $ShaApp),
+        @('0e7d563 (application baseline)', $ShaApp),
         @('release candidate', $ShaCandidate))) {
     $NativeResult = Invoke-GitCmd @('cat-file', '-t', $pair[1])
     Rec "commit exists locally: $($pair[0])" (($NativeResult.Code -eq 0) -and ($NativeResult.Out[0] -eq 'commit')) $pair[1]
