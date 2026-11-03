@@ -34,7 +34,8 @@ $ShaMain     = '856d012d3139735d7f13ffeebabb723222fba2e1'   # main when the cand
 $ShaDocs     = 'bb8e14d668324d3dfdd77d07dda84dd47cb04ee5'   # post-F6 documentation reconciliation (docs only)
 $ShaRuntime  = 'f3b5483c2b253f0ccb0ee9b62060379b7575fb08'   # F1-F6 runtime tip, officially Studio-validated
 $ShaTooling  = 'd90f572c8de1804314c2edf520cc9199446aded7'   # release/identity-beta tip (this tooling's original branch)
-$ReleaseBranch = 'release/founding-family-beta'
+$ShaApp      = '6cedf930aedcc3a337c12c82c251c6c35168e5c8'   # application baseline: F1-F6 runtime + World Expedition visual recovery (Nov 3, 2026). Studio-validated through the candidate's own validator run.
+$ReleaseBranch = 'main'   # since Nov 3, 2026 the release candidate is integrated on main (was release/founding-family-beta)
 $ReleaseDir  = $PSScriptRoot
 $Tools       = Join-Path $ReleaseDir 'tools'
 $NodeExe     = $null   # resolved below, once Resolve-External exists
@@ -165,17 +166,18 @@ function Test-CandidateLineage {
         @('856d012 (main at integration)', $ShaMain),
         @('bb8e14d (post-F6 documentation reconciliation)', $ShaDocs),
         @('f3b5483 (F1-F6 runtime, Studio-validated)', $ShaRuntime),
-        @('d90f572 (release/identity-beta tooling tip)', $ShaTooling)
+        @('d90f572 (release/identity-beta tooling tip)', $ShaTooling),
+        @('6cedf93 (application baseline: visual recovery)', $ShaApp)
     )
     foreach ($r in $refs) {
         $a = Invoke-GitIn $Dir @('merge-base', '--is-ancestor', $r[1], $Sha)
         Rec "$($r[0]) is an ancestor of the candidate" ($a.Code -eq 0)
     }
-    $d = Invoke-GitIn $Dir @('diff', '--name-only', $ShaRuntime, $Sha)
+    $d = Invoke-GitIn $Dir @('diff', '--name-only', $ShaApp, $Sha)
     $changed = @($d.Out | Where-Object { $_ -ne '' })
     $appTouched = @($changed | Where-Object { -not (Test-ReleaseOnlyPath $_) })
-    Rec 'candidate differs from the Studio-validated runtime (f3b5483) ONLY in docs, deployment tooling and the validator' (($d.Code -eq 0) -and ($appTouched.Count -eq 0)) ("application paths changed: " + (($appTouched | Select-Object -First 10) -join ', '))
-    Note "files differing from f3b5483: $($changed.Count) (all release-only when the line above passes)"
+    Rec 'candidate differs from the application baseline (6cedf93) ONLY in docs, deployment tooling and the validator' (($d.Code -eq 0) -and ($appTouched.Count -eq 0)) ("application paths changed: " + (($appTouched | Select-Object -First 10) -join ', '))
+    Note "files differing from 6cedf93: $($changed.Count) (all release-only when the line above passes)"
 }
 
 # ---------------------------------------------------------------- PostgreSQL
