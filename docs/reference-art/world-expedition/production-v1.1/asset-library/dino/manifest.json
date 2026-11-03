@@ -1,0 +1,1122 @@
+{
+  "schema": "m4-release-library-manifest/1",
+  "generated": "2026-10-13",
+  "character": "dino",
+  "source_sheet": "dino.png (1448x1086)",
+  "excluded": "six expression states",
+  "role_vocabulary": {
+    "canonical": "fills one doc 15/16 slot",
+    "supplemental": "real art, not a canonical slot; must not be used as canonical",
+    "historical": "old flat-sheet silhouettes, QA comparison only",
+    "superseded": "earlier versions, audit only"
+  },
+  "status_vocabulary": [
+    "READY WITH CROP/MATTING",
+    "NEEDS CONTROLLED EDIT",
+    "MISSING / TO AUTHOR",
+    "PROVISIONAL",
+    "HISTORICAL / QA-COMPARISON ONLY"
+  ],
+  "owner_accepted_minor_renders_as": "READY WITH CROP/MATTING",
+  "canonical_slots": {
+    "F detail 1": "dino_detail_backpack_front.png",
+    "F detail 2": "dino_detail_buckle.png",
+    "F detail 4": "dino_detail_dorsal_spikes.png",
+    "F detail 3": "dino_detail_paw_badge.png",
+    "C head": "dino_head.png",
+    "B hero": "dino_hero.png",
+    "A turnaround 34": "dino_turnaround_34.png",
+    "A turnaround back": "dino_turnaround_back.png",
+    "A turnaround front": "dino_turnaround_front.png",
+    "A turnaround side": "dino_turnaround_side.png",
+    "E silhouette front": "dino_silhouette_front.png",
+    "E silhouette 34": "dino_silhouette_34.png",
+    "E silhouette side": "dino_silhouette_side.png",
+    "E silhouette back": "dino_silhouette_back.png",
+    "E silhouette action": "dino_silhouette_action.png"
+  },
+  "counts": {
+    "canonical": 15,
+    "supplemental": 3,
+    "historical_silhouettes": 5,
+    "superseded": 0,
+    "status_by_role": {
+      "supplemental": {
+        "READY WITH CROP/MATTING": 3
+      },
+      "canonical": {
+        "READY WITH CROP/MATTING": 14,
+        "OWNER-ACCEPTED MINOR": 1
+      }
+    }
+  },
+  "assets": [
+    {
+      "file": "dino_detail_backpack_back.png",
+      "asset": "detail_backpack_back",
+      "role": "supplemental",
+      "slot": null,
+      "status": "READY WITH CROP/MATTING",
+      "sha256": "7955af88799ef1c76a95bb57b9e32a4a8f070ffe719819cff1c45837c39789ff",
+      "png_size": [
+        126,
+        152
+      ],
+      "mode": "RGBA",
+      "preview_4bg": "dino_detail_backpack_back_4bg.png",
+      "source_provenance": {
+        "source_sheet": "dino.png (1448x1086)",
+        "source_panel_box": [
+          284,
+          858,
+          410,
+          1024
+        ],
+        "method": "parchment",
+        "auto_metrics": {
+          "clipping": false,
+          "clip_edges": {
+            "clip_left": 0.0,
+            "clip_right": 0.014,
+            "clip_top": 0.0,
+            "clip_bottom": 0.0
+          },
+          "halo_fraction": 0.0,
+          "extra_components": [],
+          "outline_missing_px": 0,
+          "auto_pass": true
+        },
+        "pass": true,
+        "pass_basis": "auto",
+        "drawn_height_px": 146,
+        "png_size": [
+          126,
+          152
+        ],
+        "recommended_eye_line_src_y": null,
+        "eye_line_basis": null,
+        "notes": "See detail_backpack_front."
+      },
+      "role_reason": "SUPPLEMENTAL: beyond the four doc 16 section 9 detail slots.",
+      "canonical_slot_references": [],
+      "recommended_eye_line_src_y": null,
+      "eye_line_basis": null
+    },
+    {
+      "file": "dino_detail_backpack_front.png",
+      "asset": "detail_backpack_front",
+      "role": "canonical",
+      "slot": "F detail 1",
+      "status": "READY WITH CROP/MATTING",
+      "sha256": "964964bac5140056add65befdc960301e79c393f638a79d0351e99b51c2e9332",
+      "png_size": [
+        160,
+        160
+      ],
+      "mode": "RGBA",
+      "preview_4bg": "dino_detail_backpack_front_4bg.png",
+      "source_provenance": {
+        "source_sheet": "dino.png (1448x1086)",
+        "source_panel_box": [
+          22,
+          858,
+          186,
+          1024
+        ],
+        "method": "parchment",
+        "auto_metrics": {
+          "clipping": false,
+          "clip_edges": {
+            "clip_left": 0.0,
+            "clip_right": 0.0,
+            "clip_top": 0.0,
+            "clip_bottom": 0.0
+          },
+          "halo_fraction": 0.0,
+          "extra_components": [],
+          "outline_missing_px": 0,
+          "auto_pass": true
+        },
+        "pass": true,
+        "pass_basis": "auto",
+        "drawn_height_px": 154,
+        "png_size": [
+          160,
+          160
+        ],
+        "recommended_eye_line_src_y": null,
+        "eye_line_basis": null,
+        "notes": "Matted object; faint ground-shadow smear may remain under the pack (checked on navy)."
+      },
+      "recommended_eye_line_src_y": null,
+      "eye_line_basis": null
+    },
+    {
+      "file": "dino_detail_backpack_side.png",
+      "asset": "detail_backpack_side",
+      "role": "supplemental",
+      "slot": null,
+      "status": "READY WITH CROP/MATTING",
+      "sha256": "d0e952580432f449b9e570555f6eb29b0d2d59d9b77fcfb00c4e40b9931cd51e",
+      "png_size": [
+        101,
+        153
+      ],
+      "mode": "RGBA",
+      "preview_4bg": "dino_detail_backpack_side_4bg.png",
+      "source_provenance": {
+        "source_sheet": "dino.png (1448x1086)",
+        "source_panel_box": [
+          178,
+          858,
+          284,
+          1024
+        ],
+        "method": "parchment",
+        "auto_metrics": {
+          "clipping": false,
+          "clip_edges": {
+            "clip_left": 0.0,
+            "clip_right": 0.0,
+            "clip_top": 0.0,
+            "clip_bottom": 0.0
+          },
+          "halo_fraction": 0.0,
+          "extra_components": [],
+          "outline_missing_px": 0,
+          "auto_pass": true
+        },
+        "pass": true,
+        "pass_basis": "auto",
+        "drawn_height_px": 147,
+        "png_size": [
+          101,
+          153
+        ],
+        "recommended_eye_line_src_y": null,
+        "eye_line_basis": null,
+        "notes": "See detail_backpack_front."
+      },
+      "role_reason": "SUPPLEMENTAL: beyond the four doc 16 section 9 detail slots (Dino uses backpack front, buckle, paw badge, dorsal spikes).",
+      "canonical_slot_references": [],
+      "recommended_eye_line_src_y": null,
+      "eye_line_basis": null
+    },
+    {
+      "file": "dino_detail_buckle.png",
+      "asset": "detail_buckle",
+      "role": "canonical",
+      "slot": "F detail 2",
+      "status": "READY WITH CROP/MATTING",
+      "sha256": "dcb527274f49f1ad784681cccc9f82acf943bbfe46ab7825f47e032c86da9989",
+      "png_size": [
+        72,
+        47
+      ],
+      "mode": "RGBA",
+      "preview_4bg": "dino_detail_buckle_4bg.png",
+      "source_provenance": {
+        "source_sheet": "dino.png (1448x1086)",
+        "source_panel_box": [
+          418,
+          918,
+          490,
+          965
+        ],
+        "method": "rect_crop",
+        "auto_metrics": {
+          "clipping": false,
+          "clip_edges": {
+            "clip_left": 0.0,
+            "clip_right": 0.0,
+            "clip_top": 0.0,
+            "clip_bottom": 0.0
+          },
+          "halo_fraction": 0.0,
+          "extra_components": [],
+          "outline_missing_px": 0,
+          "auto_pass": true
+        },
+        "pass": true,
+        "pass_basis": "auto",
+        "drawn_height_px": 47,
+        "png_size": [
+          72,
+          47
+        ],
+        "recommended_eye_line_src_y": null,
+        "eye_line_basis": null,
+        "notes": "Rect crop with rounded corners (sheet panel), not matted. Doc 16 slot: strap and buckle."
+      },
+      "recommended_eye_line_src_y": null,
+      "eye_line_basis": null
+    },
+    {
+      "file": "dino_detail_dorsal_spikes.png",
+      "asset": "detail_dorsal_spikes",
+      "role": "canonical",
+      "slot": "F detail 4",
+      "status": "READY WITH CROP/MATTING",
+      "sha256": "ce8df08a5c8a10a7e659e1066fe6803a2ef129652a1afd6407d0fea5b81084a0",
+      "png_size": [
+        123,
+        127
+      ],
+      "mode": "RGBA",
+      "preview_4bg": "dino_detail_dorsal_spikes_4bg.png",
+      "source_provenance": {
+        "source_sheet": "dino.png (1448x1086)",
+        "source_panel_box": [
+          662,
+          244,
+          844,
+          524
+        ],
+        "method": "derived_crop",
+        "auto_metrics": {
+          "clipping": false,
+          "clip_edges": {},
+          "halo_fraction": 0.0019,
+          "extra_components": [],
+          "outline_missing_px": 0,
+          "auto_pass": true
+        },
+        "pass": true,
+        "pass_basis": "auto, visually confirmed",
+        "drawn_height_px": 124,
+        "png_size": [
+          123,
+          127
+        ],
+        "recommended_eye_line_src_y": null,
+        "eye_line_basis": null,
+        "notes": "Derived crop (doc 16 slot 4: dorsal spikes from turnaround). Hard-cut lower edge."
+      },
+      "recommended_eye_line_src_y": null,
+      "eye_line_basis": null
+    },
+    {
+      "file": "dino_detail_paw_badge.png",
+      "asset": "detail_paw_badge",
+      "role": "canonical",
+      "slot": "F detail 3",
+      "status": "READY WITH CROP/MATTING",
+      "sha256": "b4ad367988439cdc88107b9ee918ce1a99560d322a6a73168800e71334b1eeaf",
+      "png_size": [
+        72,
+        59
+      ],
+      "mode": "RGBA",
+      "preview_4bg": "dino_detail_paw_badge_4bg.png",
+      "source_provenance": {
+        "source_sheet": "dino.png (1448x1086)",
+        "source_panel_box": [
+          418,
+          850,
+          490,
+          909
+        ],
+        "method": "rect_crop",
+        "auto_metrics": {
+          "clipping": false,
+          "clip_edges": {
+            "clip_left": 0.0,
+            "clip_right": 0.0,
+            "clip_top": 0.0,
+            "clip_bottom": 0.0
+          },
+          "halo_fraction": 0.0,
+          "extra_components": [],
+          "outline_missing_px": 0,
+          "auto_pass": true
+        },
+        "pass": true,
+        "pass_basis": "auto",
+        "drawn_height_px": 59,
+        "png_size": [
+          72,
+          59
+        ],
+        "recommended_eye_line_src_y": null,
+        "eye_line_basis": null,
+        "notes": "Rect crop with rounded corners (sheet panel), not matted."
+      },
+      "recommended_eye_line_src_y": null,
+      "eye_line_basis": null
+    },
+    {
+      "file": "dino_detail_zipper_pull.png",
+      "asset": "detail_zipper_pull",
+      "role": "supplemental",
+      "slot": null,
+      "status": "READY WITH CROP/MATTING",
+      "sha256": "e6272f7b550b116264f30805cc3019e616916f4fdd3efcf30343edd99ec7c24c",
+      "png_size": [
+        72,
+        64
+      ],
+      "mode": "RGBA",
+      "preview_4bg": "dino_detail_zipper_pull_4bg.png",
+      "source_provenance": {
+        "source_sheet": "dino.png (1448x1086)",
+        "source_panel_box": [
+          418,
+          978,
+          490,
+          1042
+        ],
+        "method": "rect_crop",
+        "auto_metrics": {
+          "clipping": false,
+          "clip_edges": {
+            "clip_left": 0.0,
+            "clip_right": 0.0,
+            "clip_top": 0.0,
+            "clip_bottom": 0.0
+          },
+          "halo_fraction": 0.0,
+          "extra_components": [],
+          "outline_missing_px": 0,
+          "auto_pass": true
+        },
+        "pass": true,
+        "pass_basis": "auto",
+        "drawn_height_px": 64,
+        "png_size": [
+          72,
+          64
+        ],
+        "recommended_eye_line_src_y": null,
+        "eye_line_basis": null,
+        "notes": "Rect crop with rounded corners (sheet panel), not matted. Extra to doc 16 four-detail selection (supplemental)."
+      },
+      "role_reason": "SUPPLEMENTAL: beyond the four doc 16 section 9 detail slots.",
+      "canonical_slot_references": [],
+      "recommended_eye_line_src_y": null,
+      "eye_line_basis": null
+    },
+    {
+      "file": "dino_head.png",
+      "asset": "head",
+      "role": "canonical",
+      "slot": "C head",
+      "status": "OWNER-ACCEPTED MINOR",
+      "sha256": "59d8be2419908ac0e3e36f35b5f9e7dd8edfccb4a43e9915d47a1e625cfff6ae",
+      "png_size": [
+        238,
+        304
+      ],
+      "mode": "RGBA",
+      "preview_4bg": "dino_head_4bg.png",
+      "source_provenance": {
+        "source_sheet": "dino.png (1448x1086)",
+        "source_panel_box": [
+          868,
+          252,
+          1106,
+          556
+        ],
+        "method": "scenic",
+        "auto_metrics": {
+          "clipping": true,
+          "clip_edges": {
+            "clip_left": 0.035,
+            "clip_right": 0.027,
+            "clip_top": 0.025,
+            "clip_bottom": 0.564
+          },
+          "halo_fraction": 0.0006,
+          "extra_components": [],
+          "outline_missing_px": 219,
+          "auto_pass": false
+        },
+        "pass": true,
+        "pass_basis": "W1 review, no pixel changes",
+        "drawn_height_px": 302,
+        "png_size": [
+          238,
+          304
+        ],
+        "recommended_eye_line_src_y": 113,
+        "eye_line_basis": "visual estimate (png px from top)",
+        "notes": "W1 review: bust crop - left and bottom edges are the source card boundary. Snout tip loses ~4 source px where it overlaps the neighbor card seam, reads as a blunt rounded tip; recovering it would require neighbor-card contamination or new art, so accepted. Identity, eye, teeth, spikes intact. | prev: Scenic close-up. Source panel cuts the head at left and bottom and the snout tip meets the panel gap at right (squared tip, clipping flagged). Skull h"
+      },
+      "renders_as": "READY WITH CROP/MATTING",
+      "recommended_eye_line_src_y": 113,
+      "eye_line_basis": "visual estimate (png px from top)"
+    },
+    {
+      "file": "dino_hero.png",
+      "asset": "hero",
+      "role": "canonical",
+      "slot": "B hero",
+      "status": "READY WITH CROP/MATTING",
+      "sha256": "e752cd86233753e9d409be543a0551b851e31d7d596e6728821fbd6ad4d8c254",
+      "png_size": [
+        231,
+        290
+      ],
+      "mode": "RGBA",
+      "preview_4bg": "dino_hero_4bg.png",
+      "source_provenance": {
+        "source_sheet": "dino.png (1448x1086)",
+        "source_panel_box": [
+          1106,
+          216,
+          1436,
+          556
+        ],
+        "method": "scenic",
+        "auto_metrics": {
+          "clipping": false,
+          "clip_edges": {
+            "clip_left": 0.0,
+            "clip_right": 0.0,
+            "clip_top": 0.0,
+            "clip_bottom": 0.0
+          },
+          "halo_fraction": 0.0,
+          "extra_components": [],
+          "outline_missing_px": 28,
+          "auto_pass": true
+        },
+        "pass": true,
+        "pass_basis": "auto, visually confirmed",
+        "drawn_height_px": 284,
+        "png_size": [
+          231,
+          290
+        ],
+        "recommended_eye_line_src_y": 60,
+        "eye_line_basis": "visual estimate (png px from top)",
+        "notes": "Hand-treated scenic matte (polygon-bounded GrabCut, sky removal limited to blue hues so teal stays). Handwritten tagline excluded."
+      },
+      "recommended_eye_line_src_y": 60,
+      "eye_line_basis": "visual estimate (png px from top)"
+    },
+    {
+      "file": "dino_turnaround_34.png",
+      "asset": "turnaround_34",
+      "role": "canonical",
+      "slot": "A turnaround 34",
+      "status": "READY WITH CROP/MATTING",
+      "sha256": "5f7b9065db2906c63700cffbb585d7eabfe4fef782a415b5fba7a651e8738d65",
+      "png_size": [
+        212,
+        277
+      ],
+      "mode": "RGBA",
+      "preview_4bg": "dino_turnaround_34_4bg.png",
+      "source_provenance": {
+        "source_sheet": "dino.png (1448x1086)",
+        "source_panel_box": [
+          205,
+          244,
+          420,
+          524
+        ],
+        "method": "parchment",
+        "auto_metrics": {
+          "clipping": false,
+          "clip_edges": {
+            "clip_left": 0.0,
+            "clip_right": 0.0,
+            "clip_top": 0.0,
+            "clip_bottom": 0.0
+          },
+          "halo_fraction": 0.0,
+          "extra_components": [],
+          "outline_missing_px": 0,
+          "auto_pass": true
+        },
+        "pass": true,
+        "pass_basis": "auto",
+        "drawn_height_px": 271,
+        "png_size": [
+          212,
+          277
+        ],
+        "recommended_eye_line_src_y": 67,
+        "eye_line_basis": "visual estimate (png px from top)",
+        "notes": ""
+      },
+      "recommended_eye_line_src_y": 67,
+      "eye_line_basis": "visual estimate (png px from top)"
+    },
+    {
+      "file": "dino_turnaround_back.png",
+      "asset": "turnaround_back",
+      "role": "canonical",
+      "slot": "A turnaround back",
+      "status": "READY WITH CROP/MATTING",
+      "sha256": "94448c690a4b14cf987efdf59a469b00419e4ce547f87d0085ca7cd35c1043f6",
+      "png_size": [
+        171,
+        277
+      ],
+      "mode": "RGBA",
+      "preview_4bg": "dino_turnaround_back_4bg.png",
+      "source_provenance": {
+        "source_sheet": "dino.png (1448x1086)",
+        "source_panel_box": [
+          662,
+          244,
+          844,
+          524
+        ],
+        "method": "parchment",
+        "auto_metrics": {
+          "clipping": false,
+          "clip_edges": {
+            "clip_left": 0.0,
+            "clip_right": 0.0,
+            "clip_top": 0.0,
+            "clip_bottom": 0.0
+          },
+          "halo_fraction": 0.0019,
+          "extra_components": [],
+          "outline_missing_px": 0,
+          "auto_pass": true
+        },
+        "pass": true,
+        "pass_basis": "auto",
+        "drawn_height_px": 273,
+        "png_size": [
+          171,
+          277
+        ],
+        "recommended_eye_line_src_y": null,
+        "eye_line_basis": null,
+        "notes": ""
+      },
+      "recommended_eye_line_src_y": null,
+      "eye_line_basis": null
+    },
+    {
+      "file": "dino_turnaround_front.png",
+      "asset": "turnaround_front",
+      "role": "canonical",
+      "slot": "A turnaround front",
+      "status": "READY WITH CROP/MATTING",
+      "sha256": "05725520e310c88e2e2f3ee7a33b19344587c8f5796187e865e8c510fe98fa0b",
+      "png_size": [
+        201,
+        277
+      ],
+      "mode": "RGBA",
+      "preview_4bg": "dino_turnaround_front_4bg.png",
+      "source_provenance": {
+        "source_sheet": "dino.png (1448x1086)",
+        "source_panel_box": [
+          6,
+          244,
+          212,
+          524
+        ],
+        "method": "parchment",
+        "auto_metrics": {
+          "clipping": false,
+          "clip_edges": {
+            "clip_left": 0.0,
+            "clip_right": 0.0,
+            "clip_top": 0.0,
+            "clip_bottom": 0.044
+          },
+          "halo_fraction": 0.0037,
+          "extra_components": [],
+          "outline_missing_px": 0,
+          "auto_pass": true
+        },
+        "pass": true,
+        "pass_basis": "auto",
+        "drawn_height_px": 274,
+        "png_size": [
+          201,
+          277
+        ],
+        "recommended_eye_line_src_y": 65,
+        "eye_line_basis": "visual estimate (png px from top)",
+        "notes": ""
+      },
+      "recommended_eye_line_src_y": 65,
+      "eye_line_basis": "visual estimate (png px from top)"
+    },
+    {
+      "file": "dino_turnaround_side.png",
+      "asset": "turnaround_side",
+      "role": "canonical",
+      "slot": "A turnaround side",
+      "status": "READY WITH CROP/MATTING",
+      "sha256": "6c4ea533a75544b43bf53e54a491707ff11e1294c5f6bb629c2c72652483a209",
+      "png_size": [
+        224,
+        277
+      ],
+      "mode": "RGBA",
+      "preview_4bg": "dino_turnaround_side_4bg.png",
+      "source_provenance": {
+        "source_sheet": "dino.png (1448x1086)",
+        "source_panel_box": [
+          414,
+          244,
+          642,
+          524
+        ],
+        "method": "parchment",
+        "auto_metrics": {
+          "clipping": false,
+          "clip_edges": {
+            "clip_left": 0.0,
+            "clip_right": 0.0,
+            "clip_top": 0.0,
+            "clip_bottom": 0.0
+          },
+          "halo_fraction": 0.0008,
+          "extra_components": [],
+          "outline_missing_px": 0,
+          "auto_pass": true
+        },
+        "pass": true,
+        "pass_basis": "auto",
+        "drawn_height_px": 272,
+        "png_size": [
+          224,
+          277
+        ],
+        "recommended_eye_line_src_y": 67,
+        "eye_line_basis": "visual estimate (png px from top)",
+        "notes": ""
+      },
+      "recommended_eye_line_src_y": 67,
+      "eye_line_basis": "visual estimate (png px from top)"
+    },
+    {
+      "file": "dino_silhouette_front.png",
+      "asset": "silhouette_front",
+      "role": "canonical",
+      "slot": "E silhouette front",
+      "status": "READY WITH CROP/MATTING",
+      "sha256": "ad0d0299ba1b55fa949652ae9d64339326c30c4daef8447dfd5b087c40ab8a0e",
+      "png_size": [
+        183,
+        269
+      ],
+      "mode": "RGBA",
+      "preview_4bg": "dino_silhouette_front_4bg.png",
+      "fill": "#1E3A5F (doc 15 section 9 silhouette fill, flat navy)",
+      "derived_from": {
+        "asset": "dino_turnaround_front.png",
+        "sha256": "05725520e310c88e2e2f3ee7a33b19344587c8f5796187e865e8c510fe98fa0b",
+        "source_library_path": "library/dino/dino_turnaround_front.png"
+      },
+      "derivation": {
+        "tool": "library-tools/derive_silhouettes.py + library-tools/sil_config.py (deterministic)",
+        "source_size": [
+          201,
+          277
+        ],
+        "bbox_in_source_xywh": [
+          10,
+          4,
+          183,
+          269
+        ],
+        "source_opaque_px": 34820,
+        "removed_px": 1646,
+        "final_mask_px": 33177,
+        "detached_specks_dropped_px": [
+          9
+        ],
+        "holes": [
+          {
+            "area_px": 2,
+            "centroid_xy": [
+              152.0,
+              262.5
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 10,
+            "centroid_xy": [
+              72.0,
+              264.5
+            ],
+            "action": "filled (artifact)"
+          }
+        ],
+        "cleanup": {
+          "strip": 24,
+          "cut": [
+            [
+              86,
+              241,
+              122,
+              262
+            ]
+          ],
+          "erase": [
+            [
+              90,
+              262,
+              120,
+              269
+            ]
+          ]
+        },
+        "alpha": "gaussian(0.8) antialias of the cleaned binary mask, 50% contour = mask edge"
+      },
+      "caveat": "inherits any silhouette-affecting matte defects of the source alpha beyond the listed cleanups; see library-qa/silhouette_comparison_dino.png",
+      "recommended_eye_line_src_y": null,
+      "eye_line_basis": null
+    },
+    {
+      "file": "dino_silhouette_34.png",
+      "asset": "silhouette_34",
+      "role": "canonical",
+      "slot": "E silhouette 34",
+      "status": "READY WITH CROP/MATTING",
+      "sha256": "e62970198c341b2e169aae9dd17e9c5c1a3ff382445ae2696876e6b141c9ddd9",
+      "png_size": [
+        204,
+        267
+      ],
+      "mode": "RGBA",
+      "preview_4bg": "dino_silhouette_34_4bg.png",
+      "fill": "#1E3A5F (doc 15 section 9 silhouette fill, flat navy)",
+      "derived_from": {
+        "asset": "dino_turnaround_34.png",
+        "sha256": "5f7b9065db2906c63700cffbb585d7eabfe4fef782a415b5fba7a651e8738d65",
+        "source_library_path": "library/dino/dino_turnaround_34.png"
+      },
+      "derivation": {
+        "tool": "library-tools/derive_silhouettes.py + library-tools/sil_config.py (deterministic)",
+        "source_size": [
+          212,
+          277
+        ],
+        "bbox_in_source_xywh": [
+          4,
+          5,
+          204,
+          267
+        ],
+        "source_opaque_px": 37156,
+        "removed_px": 1093,
+        "final_mask_px": 36070,
+        "detached_specks_dropped_px": [],
+        "holes": [
+          {
+            "area_px": 531,
+            "centroid_xy": [
+              118.1,
+              255.5
+            ],
+            "action": "kept (real negative space)"
+          },
+          {
+            "area_px": 1,
+            "centroid_xy": [
+              184.0,
+              255.0
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 3,
+            "centroid_xy": [
+              171.7,
+              261.3
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 3,
+            "centroid_xy": [
+              95.0,
+              264.0
+            ],
+            "action": "filled (artifact)"
+          }
+        ],
+        "cleanup": {
+          "strip": 24,
+          "cut": [
+            [
+              98,
+              243,
+              136,
+              258
+            ]
+          ],
+          "erase": [
+            [
+              100,
+              260,
+              132,
+              266
+            ]
+          ]
+        },
+        "alpha": "gaussian(0.8) antialias of the cleaned binary mask, 50% contour = mask edge"
+      },
+      "caveat": "inherits any silhouette-affecting matte defects of the source alpha beyond the listed cleanups; see library-qa/silhouette_comparison_dino.png",
+      "recommended_eye_line_src_y": null,
+      "eye_line_basis": null
+    },
+    {
+      "file": "dino_silhouette_side.png",
+      "asset": "silhouette_side",
+      "role": "canonical",
+      "slot": "E silhouette side",
+      "status": "READY WITH CROP/MATTING",
+      "sha256": "246f734dc753a25018dd56f980b8ded99dd4868a62c46d9586e18565c5b68243",
+      "png_size": [
+        213,
+        268
+      ],
+      "mode": "RGBA",
+      "preview_4bg": "dino_silhouette_side_4bg.png",
+      "fill": "#1E3A5F (doc 15 section 9 silhouette fill, flat navy)",
+      "derived_from": {
+        "asset": "dino_turnaround_side.png",
+        "sha256": "6c4ea533a75544b43bf53e54a491707ff11e1294c5f6bb629c2c72652483a209",
+        "source_library_path": "library/dino/dino_turnaround_side.png"
+      },
+      "derivation": {
+        "tool": "library-tools/derive_silhouettes.py + library-tools/sil_config.py (deterministic)",
+        "source_size": [
+          224,
+          277
+        ],
+        "bbox_in_source_xywh": [
+          5,
+          5,
+          213,
+          268
+        ],
+        "source_opaque_px": 35243,
+        "removed_px": 948,
+        "final_mask_px": 34298,
+        "detached_specks_dropped_px": [],
+        "holes": [
+          {
+            "area_px": 3,
+            "centroid_xy": [
+              162.0,
+              256.0
+            ],
+            "action": "filled (artifact)"
+          }
+        ],
+        "cleanup": {
+          "strip": 24
+        },
+        "alpha": "gaussian(0.8) antialias of the cleaned binary mask, 50% contour = mask edge"
+      },
+      "caveat": "inherits any silhouette-affecting matte defects of the source alpha beyond the listed cleanups; see library-qa/silhouette_comparison_dino.png",
+      "recommended_eye_line_src_y": null,
+      "eye_line_basis": null
+    },
+    {
+      "file": "dino_silhouette_back.png",
+      "asset": "silhouette_back",
+      "role": "canonical",
+      "slot": "E silhouette back",
+      "status": "READY WITH CROP/MATTING",
+      "sha256": "b440f20802f2461fc5fb4666b565baba7409762ed398190eaebab6fae9f426bf",
+      "png_size": [
+        154,
+        264
+      ],
+      "mode": "RGBA",
+      "preview_4bg": "dino_silhouette_back_4bg.png",
+      "fill": "#1E3A5F (doc 15 section 9 silhouette fill, flat navy)",
+      "derived_from": {
+        "asset": "dino_turnaround_back.png",
+        "sha256": "94448c690a4b14cf987efdf59a469b00419e4ce547f87d0085ca7cd35c1043f6",
+        "source_library_path": "library/dino/dino_turnaround_back.png"
+      },
+      "derivation": {
+        "tool": "library-tools/derive_silhouettes.py + library-tools/sil_config.py (deterministic)",
+        "source_size": [
+          171,
+          277
+        ],
+        "bbox_in_source_xywh": [
+          12,
+          5,
+          154,
+          264
+        ],
+        "source_opaque_px": 28511,
+        "removed_px": 1050,
+        "final_mask_px": 27476,
+        "detached_specks_dropped_px": [
+          4
+        ],
+        "holes": [
+          {
+            "area_px": 19,
+            "centroid_xy": [
+              79.1,
+              253.7
+            ],
+            "action": "filled (artifact)"
+          }
+        ],
+        "cleanup": {
+          "strip": 24,
+          "cut": [
+            [
+              76,
+              252,
+              114,
+              266
+            ]
+          ],
+          "erase": [
+            [
+              82,
+              261,
+              112,
+              268
+            ]
+          ]
+        },
+        "alpha": "gaussian(0.8) antialias of the cleaned binary mask, 50% contour = mask edge"
+      },
+      "caveat": "inherits any silhouette-affecting matte defects of the source alpha beyond the listed cleanups; see library-qa/silhouette_comparison_dino.png",
+      "recommended_eye_line_src_y": null,
+      "eye_line_basis": null
+    },
+    {
+      "file": "dino_silhouette_action.png",
+      "asset": "silhouette_action",
+      "role": "canonical",
+      "slot": "E silhouette action",
+      "status": "READY WITH CROP/MATTING",
+      "sha256": "80fe67e4882b24368b498046a5d906ef775eeeb45cca85398f33ac5079816997",
+      "png_size": [
+        225,
+        284
+      ],
+      "mode": "RGBA",
+      "preview_4bg": "dino_silhouette_action_4bg.png",
+      "fill": "#1E3A5F (doc 15 section 9 silhouette fill, flat navy)",
+      "derived_from": {
+        "asset": "dino_hero.png",
+        "sha256": "e752cd86233753e9d409be543a0551b851e31d7d596e6728821fbd6ad4d8c254",
+        "source_library_path": "library/dino/dino_hero.png"
+      },
+      "derivation": {
+        "tool": "library-tools/derive_silhouettes.py + library-tools/sil_config.py (deterministic)",
+        "source_size": [
+          231,
+          290
+        ],
+        "bbox_in_source_xywh": [
+          3,
+          3,
+          225,
+          284
+        ],
+        "source_opaque_px": 40248,
+        "removed_px": 0,
+        "final_mask_px": 40253,
+        "detached_specks_dropped_px": [],
+        "holes": [
+          {
+            "area_px": 4,
+            "centroid_xy": [
+              98.0,
+              38.5
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 1,
+            "centroid_xy": [
+              201.0,
+              51.0
+            ],
+            "action": "filled (artifact)"
+          }
+        ],
+        "cleanup": {},
+        "alpha": "gaussian(0.8) antialias of the cleaned binary mask, 50% contour = mask edge"
+      },
+      "caveat": "inherits any silhouette-affecting matte defects of the source alpha beyond the listed cleanups; see library-qa/silhouette_comparison_dino.png",
+      "recommended_eye_line_src_y": null,
+      "eye_line_basis": null
+    }
+  ],
+  "historical_silhouettes": [
+    {
+      "file": "_historical-silhouettes/dino_silhouette_34.png",
+      "role": "historical",
+      "status": "HISTORICAL / QA-COMPARISON ONLY",
+      "pre_m4_status": "PROVISIONAL",
+      "sha256": "3d4aa38ef3f39e3c06234342583b1d36781d9981dde121ddcf7529403f71ac02",
+      "png_size": [
+        79,
+        119
+      ],
+      "mode": "RGBA",
+      "reason": "flat-sheet silhouette artwork, not derived from matted alpha; never a canonical slot"
+    },
+    {
+      "file": "_historical-silhouettes/dino_silhouette_action.png",
+      "role": "historical",
+      "status": "HISTORICAL / QA-COMPARISON ONLY",
+      "pre_m4_status": "PROVISIONAL",
+      "sha256": "e5afc9ff9cf1ec8cb9c81969e458c8488c55d8dbc756b121c07d01c84699f41d",
+      "png_size": [
+        105,
+        126
+      ],
+      "mode": "RGBA",
+      "reason": "flat-sheet silhouette artwork, not derived from matted alpha; never a canonical slot"
+    },
+    {
+      "file": "_historical-silhouettes/dino_silhouette_back.png",
+      "role": "historical",
+      "status": "HISTORICAL / QA-COMPARISON ONLY",
+      "pre_m4_status": "PROVISIONAL",
+      "sha256": "274ce5b61af09c02f61b486a54e7f4b1865ad0f1111ed15dc8931fe00970ff73",
+      "png_size": [
+        71,
+        119
+      ],
+      "mode": "RGBA",
+      "reason": "flat-sheet silhouette artwork, not derived from matted alpha; never a canonical slot"
+    },
+    {
+      "file": "_historical-silhouettes/dino_silhouette_front.png",
+      "role": "historical",
+      "status": "HISTORICAL / QA-COMPARISON ONLY",
+      "pre_m4_status": "PROVISIONAL",
+      "sha256": "b2d26c89c71c6ca8a2b2abc0766e7d57d114091193e282135b646ce33d6e3271",
+      "png_size": [
+        80,
+        125
+      ],
+      "mode": "RGBA",
+      "reason": "flat-sheet silhouette artwork, not derived from matted alpha; never a canonical slot"
+    },
+    {
+      "file": "_historical-silhouettes/dino_silhouette_side.png",
+      "role": "historical",
+      "status": "HISTORICAL / QA-COMPARISON ONLY",
+      "pre_m4_status": "PROVISIONAL",
+      "sha256": "81d22b87633949c906fb3af23aa14f535f6bedec8d58325031742a23915401ac",
+      "png_size": [
+        84,
+        117
+      ],
+      "mode": "RGBA",
+      "reason": "flat-sheet silhouette artwork, not derived from matted alpha; never a canonical slot"
+    }
+  ],
+  "superseded": []
+}

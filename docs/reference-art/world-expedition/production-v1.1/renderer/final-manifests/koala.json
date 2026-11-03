@@ -1,0 +1,319 @@
+{
+  "schema_version": 1,
+  "character": {
+    "id": "koala",
+    "name": "Koala",
+    "role": "Gray-lavender scholar",
+    "tagline": null,
+    "kind": "starter"
+  },
+  "sheet": {
+    "status_line": "M4 BUILD - LOGO_ASSET logo/BidaZoo_World_Expedition_logo_master.png (READY WITH CROP/MATTING); palette 63ec00673ac0 PROVISIONAL (docs); cast scale PROVISIONAL",
+    "logo": {
+      "path": "logo/BidaZoo_World_Expedition_logo_master.png",
+      "sha256": "944915d0f0522c2714b47a9eab4840bf0790d4900709a8c5d13d0a57f4e0f21c",
+      "status": "READY WITH CROP/MATTING"
+    }
+  },
+  "cast": {
+    "k": 0.76,
+    "k_status": "PROVISIONAL",
+    "s0": 0.184
+  },
+  "palette": {
+    "status": "PROVISIONAL",
+    "slots": [
+      {
+        "label": "PRIMARY",
+        "name": "Gray-lavender fur",
+        "hex": "#9B85B9",
+        "status": "PROVISIONAL"
+      },
+      {
+        "label": "SECONDARY",
+        "name": "Light lavender fur",
+        "hex": "#E7CCF2",
+        "status": "PROVISIONAL"
+      },
+      {
+        "label": "ACCENT",
+        "name": "Ear inner peach",
+        "hex": "#FAAB97",
+        "status": "PROVISIONAL"
+      },
+      {
+        "label": "GEAR",
+        "name": "Scholar jacket",
+        "hex": "#241511",
+        "status": "PROVISIONAL"
+      },
+      {
+        "label": "DETAIL",
+        "name": "Glasses frames charcoal",
+        "hex": "#0B0604",
+        "status": "PROVISIONAL"
+      },
+      {
+        "label": "BOOK",
+        "name": "Leather brown",
+        "hex": "#5F341F",
+        "status": "PROVISIONAL"
+      }
+    ],
+    "mapping_note": "palettes.json sha256 63ec00673ac0336a: hex sampled from final matted art, all PROVISIONAL per docs 09 / 15 (no hex locked); ACCENT/CHARACTER-SPECIFIC semantics per doc 16 s7 (Bronco: red star/gear separate from BANDANA maroon)"
+  },
+  "turnaround": {
+    "front": {
+      "path": "asset-library/koala/koala_turnaround_front.png",
+      "sha256": "d18d2277964590c28abf2c2332fe78b2505ed74a79aded8eee400065cb03e216",
+      "status": "READY WITH CROP/MATTING",
+      "plan_status": "READY WITH CROP/MATTING",
+      "transform": {
+        "ref_height_src_px": 260
+      }
+    },
+    "threeQuarter": {
+      "path": "asset-library/koala/koala_turnaround_34.png",
+      "sha256": "02331884ac62e4fb3cd1cfc09f78058f8a5207d5a53514078617fb67213be361",
+      "status": "OWNER-ACCEPTED MINOR",
+      "plan_status": "READY WITH CROP/MATTING",
+      "transform": {
+        "ref_height_src_px": 260
+      }
+    },
+    "side": {
+      "path": "asset-library/koala/koala_turnaround_side.png",
+      "sha256": "855dac579ea760022a4f8d62cb92df86be4bc58f36d8a11a45d3c8b165e51962",
+      "status": "READY WITH CROP/MATTING",
+      "plan_status": "READY WITH CROP/MATTING",
+      "transform": {
+        "ref_height_src_px": 260
+      }
+    },
+    "back": {
+      "path": "asset-library/koala/koala_turnaround_back.png",
+      "sha256": "542c11f503177c253788c7ea9fc3c91dc20a85bf2c54fc11d0c1ae08679a343b",
+      "status": "READY WITH CROP/MATTING",
+      "plan_status": "READY WITH CROP/MATTING",
+      "transform": {
+        "ref_height_src_px": 260
+      }
+    }
+  },
+  "hero": {
+    "path": "asset-library/koala/koala_hero_reading.png",
+    "sha256": "5989e248c681e780179c539d2dd56d746d03eb5d35dd8f9d6ffa86960762c3f8",
+    "status": "READY WITH CROP/MATTING",
+    "plan_status": "READY WITH CROP/MATTING",
+    "transform": {
+      "mode": "fit"
+    }
+  },
+  "head": {
+    "path": "asset-library/koala/koala_head.png",
+    "sha256": "0bc633dbd38d55a5df2236082be0cd2a507782712641c06e0f4eca45e23c5995",
+    "status": "OWNER-ACCEPTED MINOR",
+    "plan_status": "READY WITH CROP/MATTING",
+    "transform": {
+      "eye_line_src_y": 117,
+      "core_box": [
+        3,
+        3,
+        318,
+        180
+      ],
+      "anchor": "bottom"
+    }
+  },
+  "expressions": {
+    "head_scale": 0.63,
+    "head_scale_basis": "v2: min(100/median core width, 109/widest core width) after density normalization; see template-rules-v2.md",
+    "idle": {
+      "path": "expression-batch/koala/koala_idle.png",
+      "sha256": "27842bcae6be4779cb8230165fbb24e0c6db5561cc936621978ae9a7929630fc",
+      "status": "READY WITH CROP/MATTING",
+      "plan_status": "READY WITH CROP/MATTING",
+      "transform": {
+        "units_per_source_px": 1.0,
+        "eye_line_src_y": 85,
+        "core_box": [
+          3,
+          2,
+          157,
+          131
+        ],
+        "core_source": "derived",
+        "crop_kind": "bust"
+      },
+      "notes": "status from expression_status.json (doc 17 s2: M1 closed, PASS 32 / OWNER-ACCEPTED MINOR 4); historical matte-tool report pass=True"
+    },
+    "happy": {
+      "path": "expression-batch/koala/koala_happy.png",
+      "sha256": "b7a16e546a222c8f777ce952c97d863ae9eee00d4790da5fd9b86f8e463f4f8a",
+      "status": "READY WITH CROP/MATTING",
+      "plan_status": "READY WITH CROP/MATTING",
+      "transform": {
+        "units_per_source_px": 1.0,
+        "eye_line_src_y": 82,
+        "core_box": [
+          1,
+          3,
+          150,
+          125
+        ],
+        "core_source": "derived",
+        "crop_kind": "bust"
+      },
+      "notes": "status from expression_status.json (doc 17 s2: M1 closed, PASS 32 / OWNER-ACCEPTED MINOR 4); historical matte-tool report pass=True"
+    },
+    "thinking": {
+      "path": "expression-batch/koala/koala_thinking_analytical.png",
+      "sha256": "ff7cb37351ce1d65dc5ffae019c39aec4143920ef8412c692630734f658a30d5",
+      "status": "READY WITH CROP/MATTING",
+      "plan_status": "READY WITH CROP/MATTING",
+      "transform": {
+        "units_per_source_px": 1.0,
+        "eye_line_src_y": 87,
+        "core_box": [
+          1,
+          3,
+          154,
+          133
+        ],
+        "core_source": "derived",
+        "crop_kind": "bust"
+      },
+      "notes": "status from expression_status.json (doc 17 s2: M1 closed, PASS 32 / OWNER-ACCEPTED MINOR 4); historical matte-tool report pass=True"
+    },
+    "cheer": {
+      "path": "expression-batch/koala/koala_cheer.png",
+      "sha256": "8ffe64fb3711484ecc886001151062ab4d23e6bc60fdf848be529cb13e8632ee",
+      "status": "OWNER-ACCEPTED MINOR",
+      "plan_status": "OWNER-ACCEPTED MINOR",
+      "transform": {
+        "units_per_source_px": 1.0,
+        "eye_line_src_y": 85,
+        "core_box": [
+          39,
+          4,
+          186,
+          153
+        ],
+        "core_source": "report",
+        "crop_kind": "bust"
+      },
+      "notes": "status from expression_status.json (doc 17 s2: M1 closed, PASS 32 / OWNER-ACCEPTED MINOR 4); historical matte-tool report pass=None"
+    },
+    "discover": {
+      "path": "expression-batch/koala/koala_discover.png",
+      "sha256": "78e0ace506c50590e59e06af3a2e257431e2ffc2309a96ea1279f559d37567a7",
+      "status": "READY WITH CROP/MATTING",
+      "plan_status": "READY WITH CROP/MATTING",
+      "transform": {
+        "units_per_source_px": 1.0,
+        "eye_line_src_y": 84,
+        "core_box": [
+          3,
+          2,
+          152,
+          129
+        ],
+        "core_source": "derived",
+        "crop_kind": "bust"
+      },
+      "notes": "status from expression_status.json (doc 17 s2: M1 closed, PASS 32 / OWNER-ACCEPTED MINOR 4); historical matte-tool report pass=True"
+    },
+    "tryAgain": {
+      "path": "expression-batch/koala/koala_tryAgain.png",
+      "sha256": "ec391d124a6bbd48b0698cb7ed227bbc7ab94cc37dd63782afbc04af40058777",
+      "status": "READY WITH CROP/MATTING",
+      "plan_status": "READY WITH CROP/MATTING",
+      "transform": {
+        "units_per_source_px": 1.0,
+        "eye_line_src_y": 75,
+        "core_box": [
+          3,
+          4,
+          176,
+          152
+        ],
+        "core_source": "report",
+        "crop_kind": "bust"
+      },
+      "notes": "status from expression_status.json (doc 17 s2: M1 closed, PASS 32 / OWNER-ACCEPTED MINOR 4); historical matte-tool report pass=None"
+    },
+    "vertical_anchor": "eye_line"
+  },
+  "details": [
+    {
+      "path": "asset-library/koala/koala_detail_scholar_hat.png",
+      "sha256": "86fc973d098bc8cd266f8be08592dc4d9e5faa8ed3bc94de55f12dd4d0776fea",
+      "status": "READY WITH CROP/MATTING",
+      "plan_status": "READY WITH CROP/MATTING",
+      "caption": "Scholar hat"
+    },
+    {
+      "path": "asset-library/koala/koala_detail_glasses.png",
+      "sha256": "9e7d5a6475338f6f7a8ab681a9b3ae2f7bf508b8c586560d8883fe11f0547bc5",
+      "status": "OWNER-ACCEPTED MINOR",
+      "plan_status": "READY WITH CROP/MATTING",
+      "caption": "Signature glasses"
+    },
+    {
+      "path": "asset-library/koala/koala_detail_scholar_book.png",
+      "sha256": "86d9e8c80b15646f649ca4e286c64904097c5dccbe2e6978dbe7b41241106d5d",
+      "status": "READY WITH CROP/MATTING",
+      "plan_status": "READY WITH CROP/MATTING",
+      "caption": "Scholar's book"
+    },
+    {
+      "path": "asset-library/koala/koala_detail_scholar_jacket.png",
+      "sha256": "af9c53c70e05e1b2606670e471d1748ec982511ee209b8f5516c917cb9165931",
+      "status": "READY WITH CROP/MATTING",
+      "plan_status": "READY WITH CROP/MATTING",
+      "caption": "Scholar jacket"
+    }
+  ],
+  "silhouettes": {
+    "derive": true,
+    "items": {
+      "front": {
+        "path": "asset-library/koala/koala_silhouette_front.png",
+        "sha256": "70163dc26b07cfdf47036c9cf2e50430ab3827fc576149cca8e5c8de21bdc2d0",
+        "status": "READY WITH CROP/MATTING",
+        "plan_status": "READY WITH CROP/MATTING"
+      },
+      "threeQuarter": {
+        "path": "asset-library/koala/koala_silhouette_34.png",
+        "sha256": "49a3cd8f8e21416fcf60592625685a7b0d755dd3423b382a033333e19c739698",
+        "status": "READY WITH CROP/MATTING",
+        "plan_status": "READY WITH CROP/MATTING"
+      },
+      "side": {
+        "path": "asset-library/koala/koala_silhouette_side.png",
+        "sha256": "1c9a766b4cad7e758dd4e94410d31281859e968107c13e09d5f9b497924e4245",
+        "status": "READY WITH CROP/MATTING",
+        "plan_status": "READY WITH CROP/MATTING"
+      },
+      "back": {
+        "path": "asset-library/koala/koala_silhouette_back.png",
+        "sha256": "f4aedc2294c8ef2318417c8853e4d9e7bc54a8dca296d91ec436ec8eded8047f",
+        "status": "READY WITH CROP/MATTING",
+        "plan_status": "READY WITH CROP/MATTING"
+      },
+      "action": {
+        "path": "asset-library/koala/koala_silhouette_reading.png",
+        "sha256": "b7e3c5378fab0f2219ef055bf19195d39e4edb57855d5efec854e4ea0a95fd4f",
+        "status": "READY WITH CROP/MATTING",
+        "plan_status": "READY WITH CROP/MATTING"
+      }
+    }
+  },
+  "proportion": {
+    "front_reference": "turnaround.front",
+    "comparison": {
+      "tag": "TAR",
+      "k": 0.57
+    }
+  }
+}

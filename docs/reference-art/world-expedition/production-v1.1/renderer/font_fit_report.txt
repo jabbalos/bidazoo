@@ -1,0 +1,88 @@
+Fixed-string fit in Nunito Sans (renderer text_width; doc 15 s4 roles).  'avail' = box width minus insets.
+
+FAIL marker text in silhouette standing cell 72                             MISSING / / TO AUTHOR                71.2 px /   56.0 avail  DOES NOT FIT even at the 10 px minimum (widest line at 10 px = 71.2 px)
+FAIL marker text in silhouette standing cell 72                             OPEN — / TO AUTHOR                   71.2 px /   56.0 avail  DOES NOT FIT even at the 10 px minimum (widest line at 10 px = 71.2 px)
+FAIL marker text in silhouette standing cell 72                             NEEDS EDIT — / NOT APPROVED          91.4 px /   56.0 avail  DOES NOT FIT even at the 10 px minimum (widest line at 10 px = 91.4 px)
+OK   marker text in silhouette action cell 108                              MISSING / / TO AUTHOR                71.2 px /   92.0 avail  fits at 12 px
+OK   marker text in silhouette action cell 108                              OPEN — / TO AUTHOR                   71.2 px /   92.0 avail  fits at 12 px
+OK   marker text in silhouette action cell 108                              NEEDS EDIT — / NOT APPROVED          91.4 px /   92.0 avail  fits at 10 px
+OK   marker text in expression cell 125                                     MISSING / / TO AUTHOR                71.2 px /  109.0 avail  fits at 12 px
+OK   marker text in expression cell 125                                     OPEN — / TO AUTHOR                   71.2 px /  109.0 avail  fits at 12 px
+OK   marker text in expression cell 125                                     NEEDS EDIT — / NOT APPROVED          91.4 px /  109.0 avail  fits at 12 px
+OK   marker text in turnaround cell 335                                     MISSING / / TO AUTHOR                71.2 px /  319.0 avail  fits at 12 px
+OK   marker text in turnaround cell 335                                     OPEN — / TO AUTHOR                   71.2 px /  319.0 avail  fits at 12 px
+OK   marker text in turnaround cell 335                                     NEEDS EDIT — / NOT APPROVED          91.4 px /  319.0 avail  fits at 12 px
+OK   marker text in detail art 142                                          MISSING / / TO AUTHOR                71.2 px /  126.0 avail  fits at 12 px
+OK   marker text in detail art 142                                          OPEN — / TO AUTHOR                   71.2 px /  126.0 avail  fits at 12 px
+OK   marker text in detail art 142                                          NEEDS EDIT — / NOT APPROVED          91.4 px /  126.0 avail  fits at 12 px
+OK   marker text in palette swatch 88                                       MISSING / / TO AUTHOR                71.2 px /   72.0 avail  fits at 10 px
+OK   marker text in palette swatch 88                                       OPEN — / TO AUTHOR                   71.2 px /   72.0 avail  fits at 10 px
+FAIL marker text in palette swatch 88                                       NEEDS EDIT — / NOT APPROVED          91.4 px /   72.0 avail  DOES NOT FIT even at the 10 px minimum (widest line at 10 px = 91.4 px)
+OK   marker text in hero box 300                                            MISSING / / TO AUTHOR                71.2 px /  284.0 avail  fits at 12 px
+OK   marker text in hero box 300                                            OPEN — / TO AUTHOR                   71.2 px /  284.0 avail  fits at 12 px
+OK   marker text in hero box 300                                            NEEDS EDIT — / NOT APPROVED          91.4 px /  284.0 avail  fits at 12 px
+OK   marker text in head box 200                                            MISSING / / TO AUTHOR                71.2 px /  184.0 avail  fits at 12 px
+OK   marker text in head box 200                                            OPEN — / TO AUTHOR                   71.2 px /  184.0 avail  fits at 12 px
+OK   marker text in head box 200                                            NEEDS EDIT — / NOT APPROVED          91.4 px /  184.0 avail  fits at 12 px
+OK   palette role label (88 px box, no inset)                               PRIMARY                              50.6 px /   88.0 avail  
+OK   palette role label (88 px box, no inset)                               SECONDARY                            70.8 px /   88.0 avail  
+OK   palette role label (88 px box, no inset)                               ACCENT                               47.0 px /   88.0 avail  
+OK   palette role label (88 px box, no inset)                               GEAR                                 30.8 px /   88.0 avail  
+OK   palette role label (88 px box, no inset)                               DETAIL                               42.0 px /   88.0 avail  
+FAIL palette role label (88 px box, no inset)                               CHARACTER-SPECIFIC                  127.2 px /   88.0 avail  
+FAIL palette role label (88 px box, no inset)                               BANDANA — MAROON                    130.0 px /   88.0 avail  
+OK   palette role label (88 px box, no inset)                               BANDANA                              58.6 px /   88.0 avail  
+OK   palette role label (88 px box, no inset)                               C GOLD                               44.0 px /   88.0 avail  
+OK   palette role label (88 px box, no inset)                               PACK BODY                            66.8 px /   88.0 avail  
+OK   palette role label (88 px box, no inset)                               BOOK                                 33.8 px /   88.0 avail  
+OK   palette role label (88 px box, no inset)                               EYE RING                             51.2 px /   88.0 avail  
+OK   palette role label (88 px box, no inset)                               EYES                                 26.8 px /   88.0 avail  
+OK   palette role label (88 px box, no inset)                               OPEN                                 31.8 px /   88.0 avail  
+OK   palette role label (88 px box, 8 px inset - strict reading of doc 15 s1) PRIMARY                              50.6 px /   72.0 avail  
+OK   palette role label (88 px box, 8 px inset - strict reading of doc 15 s1) SECONDARY                            70.8 px /   72.0 avail  
+OK   palette role label (88 px box, 8 px inset - strict reading of doc 15 s1) ACCENT                               47.0 px /   72.0 avail  
+OK   palette role label (88 px box, 8 px inset - strict reading of doc 15 s1) GEAR                                 30.8 px /   72.0 avail  
+OK   palette role label (88 px box, 8 px inset - strict reading of doc 15 s1) DETAIL                               42.0 px /   72.0 avail  
+OK   palette role label (88 px box, 8 px inset - strict reading of doc 15 s1) BANDANA                              58.6 px /   72.0 avail  
+OK   palette role label (88 px box, 8 px inset - strict reading of doc 15 s1) C GOLD                               44.0 px /   72.0 avail  
+OK   palette role label (88 px box, 8 px inset - strict reading of doc 15 s1) PACK BODY                            66.8 px /   72.0 avail  
+OK   palette role label (88 px box, 8 px inset - strict reading of doc 15 s1) BOOK                                 33.8 px /   72.0 avail  
+OK   palette role label (88 px box, 8 px inset - strict reading of doc 15 s1) EYE RING                             51.2 px /   72.0 avail  
+OK   palette role label (88 px box, 8 px inset - strict reading of doc 15 s1) EYES                                 26.8 px /   72.0 avail  
+OK   role tag (pill 336, 12 px padding)                                     SELECTABLE STARTER                  164.8 px /  312.0 avail  
+OK   role tag (pill 336, 12 px padding)                                     HOST & GUIDE — NOT SELECTABLE       257.6 px /  312.0 avail  
+OK   panel chip (auto width; shown for width only)                          TURNAROUND                          112.0 px / 9976.0 avail  
+OK   panel chip (auto width; shown for width only)                          ACTION POSE                         109.6 px / 9976.0 avail  
+OK   panel chip (auto width; shown for width only)                          HEAD CLOSE-UP                       127.7 px / 9976.0 avail  
+OK   panel chip (auto width; shown for width only)                          EXPRESSIONS                         110.6 px / 9976.0 avail  
+OK   panel chip (auto width; shown for width only)                          SILHOUETTES                         110.6 px / 9976.0 avail  
+OK   panel chip (auto width; shown for width only)                          DETAILS                              67.4 px / 9976.0 avail  
+OK   panel chip (auto width; shown for width only)                          COLOR PALETTE                       131.7 px / 9976.0 avail  
+OK   panel chip (auto width; shown for width only)                          PROPORTION GUIDE                    159.4 px / 9976.0 avail  
+OK   turnaround label pill (max 319)                                        FRONT                                44.9 px /  319.0 avail  
+OK   turnaround label pill (max 319)                                        3/4 VIEW                             56.4 px /  319.0 avail  
+OK   turnaround label pill (max 319)                                        SIDE VIEW                            65.8 px /  319.0 avail  
+OK   turnaround label pill (max 319)                                        BACK VIEW                            71.8 px /  319.0 avail  
+OK   expression label pill (max 109)                                        IDLE                                 27.4 px /  109.0 avail  
+OK   expression label pill (max 109)                                        HAPPY                                42.9 px /  109.0 avail  
+OK   expression label pill (max 109)                                        THINKING                             62.4 px /  109.0 avail  
+OK   expression label pill (max 109)                                        CHEER                                40.9 px /  109.0 avail  
+OK   expression label pill (max 109)                                        DISCOVER                             65.4 px /  109.0 avail  
+OK   expression label pill (max 109)                                        TRY AGAIN                            69.8 px /  109.0 avail  
+OK   silhouette label (cell width)                                          FRONT                                41.8 px /   72.0 avail  
+OK   silhouette label (cell width)                                          3/4                                  17.9 px /   72.0 avail  
+OK   silhouette label (cell width)                                          SIDE                                 27.3 px /   72.0 avail  
+OK   silhouette label (cell width)                                          BACK                                 31.3 px /   72.0 avail  
+OK   silhouette label (cell width)                                          ACTION                               46.2 px /  108.0 avail  
+FAIL PROVISIONAL tag in a 72 px silhouette cell (tag + 8 px)                PROVISIONAL                          80.0 px /   72.0 avail  tag pill = text + 10 px padding; renderer omits it and logs a warning
+OK   PROVISIONAL tag in the palette chip row                                PROVISIONAL                          80.0 px /  282.0 avail  
+OK   PROVISIONAL SCALE (proportion guide)                                   PROVISIONAL SCALE                   120.6 px /  268.0 avail  
+
+NOT FITTING: 7
+  - marker text in silhouette standing cell 72 | MISSING / / TO AUTHOR | 71.2 px vs 56.0 avail
+  - marker text in silhouette standing cell 72 | OPEN — / TO AUTHOR | 71.2 px vs 56.0 avail
+  - marker text in silhouette standing cell 72 | NEEDS EDIT — / NOT APPROVED | 91.4 px vs 56.0 avail
+  - marker text in palette swatch 88 | NEEDS EDIT — / NOT APPROVED | 91.4 px vs 72.0 avail
+  - palette role label (88 px box, no inset) | CHARACTER-SPECIFIC | 127.2 px vs 88.0 avail
+  - palette role label (88 px box, no inset) | BANDANA — MAROON | 130.0 px vs 88.0 avail
+  - PROVISIONAL tag in a 72 px silhouette cell (tag + 8 px) | PROVISIONAL | 80.0 px vs 72.0 avail

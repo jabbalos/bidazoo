@@ -1,0 +1,319 @@
+{
+  "schema_version": 1,
+  "character": {
+    "id": "bronco",
+    "name": "Bronco",
+    "role": "Energetic athletic bronco",
+    "tagline": null,
+    "kind": "starter"
+  },
+  "sheet": {
+    "status_line": "M4 BUILD - LOGO_ASSET logo/BidaZoo_World_Expedition_logo_master.png (READY WITH CROP/MATTING); palette 63ec00673ac0 PROVISIONAL (docs); cast scale PROVISIONAL",
+    "logo": {
+      "path": "logo/BidaZoo_World_Expedition_logo_master.png",
+      "sha256": "944915d0f0522c2714b47a9eab4840bf0790d4900709a8c5d13d0a57f4e0f21c",
+      "status": "READY WITH CROP/MATTING"
+    }
+  },
+  "cast": {
+    "k": 0.92,
+    "k_status": "PROVISIONAL",
+    "s0": 0.184
+  },
+  "palette": {
+    "status": "PROVISIONAL",
+    "slots": [
+      {
+        "label": "PRIMARY",
+        "name": "Chestnut coat",
+        "hex": "#DF733A",
+        "status": "PROVISIONAL"
+      },
+      {
+        "label": "SECONDARY",
+        "name": "Dark mane",
+        "hex": "#2C1610",
+        "status": "PROVISIONAL"
+      },
+      {
+        "label": "ACCENT",
+        "name": "Red star / gear",
+        "hex": "#B41C2E",
+        "status": "PROVISIONAL"
+      },
+      {
+        "label": "GEAR",
+        "name": "Saddle leather",
+        "hex": "#673620",
+        "status": "PROVISIONAL"
+      },
+      {
+        "label": "DETAIL",
+        "name": "Muzzle & blaze",
+        "hex": "#FBDEC5",
+        "status": "PROVISIONAL"
+      },
+      {
+        "label": "BANDANA",
+        "name": "Maroon",
+        "hex": "#6F1228",
+        "status": "PROVISIONAL"
+      }
+    ],
+    "mapping_note": "palettes.json sha256 63ec00673ac0336a: hex sampled from final matted art, all PROVISIONAL per docs 09 / 15 (no hex locked); ACCENT/CHARACTER-SPECIFIC semantics per doc 16 s7 (Bronco: red star/gear separate from BANDANA maroon)"
+  },
+  "turnaround": {
+    "front": {
+      "path": "asset-library/bronco/bronco_turnaround_front.png",
+      "sha256": "cadae7bede1076f2c4413eb2b2f5e5b2d606f8fe6911894043ff00a33f606c69",
+      "status": "READY WITH CROP/MATTING",
+      "plan_status": "READY WITH CROP/MATTING",
+      "transform": {
+        "ref_height_src_px": 273
+      }
+    },
+    "threeQuarter": {
+      "path": "asset-library/bronco/bronco_turnaround_34.png",
+      "sha256": "612c2468a8d2ad533bb41516c7c02939dd69c570631016b7c1a16a51e4890a74",
+      "status": "READY WITH CROP/MATTING",
+      "plan_status": "READY WITH CROP/MATTING",
+      "transform": {
+        "ref_height_src_px": 273
+      }
+    },
+    "side": {
+      "path": "asset-library/bronco/bronco_turnaround_side.png",
+      "sha256": "68e5d0fdc765eca9e05d329995d08dea0c29f57aed7f92356759b0f175e3b045",
+      "status": "READY WITH CROP/MATTING",
+      "plan_status": "READY WITH CROP/MATTING",
+      "transform": {
+        "ref_height_src_px": 273
+      }
+    },
+    "back": {
+      "path": "asset-library/bronco/bronco_turnaround_back.png",
+      "sha256": "06a82c6ae519bfad836ab09ec78d596f1d434b206c924ffc81be2f649c2189c7",
+      "status": "READY WITH CROP/MATTING",
+      "plan_status": "READY WITH CROP/MATTING",
+      "transform": {
+        "ref_height_src_px": 273
+      }
+    }
+  },
+  "hero": {
+    "path": "asset-library/bronco/bronco_hero.png",
+    "sha256": "1c7a4463267b07140303e0615eb54c1eb853cf7e27082292b75ddae25b20faff",
+    "status": "OWNER-ACCEPTED MINOR",
+    "plan_status": "READY WITH CROP/MATTING",
+    "transform": {
+      "mode": "fit"
+    }
+  },
+  "head": {
+    "path": "asset-library/bronco/bronco_head.png",
+    "sha256": "373e2b83a860d9c7b3624414a80b747cac6b0ca8f79a27a1445cb278025e30ab",
+    "status": "OWNER-ACCEPTED MINOR",
+    "plan_status": "READY WITH CROP/MATTING",
+    "transform": {
+      "eye_line_src_y": 112,
+      "core_box": [
+        0,
+        0,
+        255,
+        174
+      ],
+      "anchor": "bottom"
+    }
+  },
+  "expressions": {
+    "head_scale": 0.606,
+    "head_scale_basis": "v2: min(100/median core width, 109/widest core width) after density normalization; see template-rules-v2.md",
+    "idle": {
+      "path": "expression-batch/bronco/bronco_idle.png",
+      "sha256": "950796e5799ed3d02c4a330b45aa96fddcf7d70e5bc1c7f3725c883b57a777c0",
+      "status": "READY WITH CROP/MATTING",
+      "plan_status": "READY WITH CROP/MATTING",
+      "transform": {
+        "units_per_source_px": 1.0,
+        "eye_line_src_y": 68,
+        "core_box": [
+          2,
+          0,
+          173,
+          105
+        ],
+        "core_source": "derived",
+        "crop_kind": "bust"
+      },
+      "notes": "status from expression_status.json (doc 17 s2: M1 closed, PASS 32 / OWNER-ACCEPTED MINOR 4); historical matte-tool report pass=None"
+    },
+    "happy": {
+      "path": "expression-batch/bronco/bronco_happy.png",
+      "sha256": "9bd170a3effdb145ca8e52e3fb85f1a97d5ef6e589e5af35577fb2d50c9284ac",
+      "status": "READY WITH CROP/MATTING",
+      "plan_status": "READY WITH CROP/MATTING",
+      "transform": {
+        "units_per_source_px": 1.0,
+        "eye_line_src_y": 64,
+        "core_box": [
+          7,
+          3,
+          157,
+          98
+        ],
+        "core_source": "derived",
+        "crop_kind": "bust"
+      },
+      "notes": "status from expression_status.json (doc 17 s2: M1 closed, PASS 32 / OWNER-ACCEPTED MINOR 4); historical matte-tool report pass=True"
+    },
+    "thinking": {
+      "path": "expression-batch/bronco/bronco_thinking.png",
+      "sha256": "e397a0ee8d9678181a397218c4dee32987faff74a34cf10485d3c58712ecd847",
+      "status": "READY WITH CROP/MATTING",
+      "plan_status": "READY WITH CROP/MATTING",
+      "transform": {
+        "units_per_source_px": 1.0,
+        "eye_line_src_y": 74,
+        "core_box": [
+          3,
+          8,
+          179,
+          149
+        ],
+        "core_source": "report",
+        "crop_kind": "bust"
+      },
+      "notes": "status from expression_status.json (doc 17 s2: M1 closed, PASS 32 / OWNER-ACCEPTED MINOR 4); historical matte-tool report pass=False"
+    },
+    "cheer": {
+      "path": "expression-batch/bronco/bronco_cheer.png",
+      "sha256": "4e3ca177405571345d2aebcebe11c9f3facfb532e2990fcc331b4e8544ba610b",
+      "status": "OWNER-ACCEPTED MINOR",
+      "plan_status": "OWNER-ACCEPTED MINOR",
+      "transform": {
+        "units_per_source_px": 1.0,
+        "eye_line_src_y": 77,
+        "core_box": [
+          4,
+          5,
+          167,
+          144
+        ],
+        "core_source": "report",
+        "crop_kind": "bust"
+      },
+      "notes": "status from expression_status.json (doc 17 s2: M1 closed, PASS 32 / OWNER-ACCEPTED MINOR 4); historical matte-tool report pass=True"
+    },
+    "discover": {
+      "path": "expression-batch/bronco/bronco_discover.png",
+      "sha256": "8f722008ebf761d577e430868ef69ee5f054728b5861863139864db336749a98",
+      "status": "READY WITH CROP/MATTING",
+      "plan_status": "READY WITH CROP/MATTING",
+      "transform": {
+        "units_per_source_px": 1.0,
+        "eye_line_src_y": 70,
+        "core_box": [
+          5,
+          4,
+          165,
+          106
+        ],
+        "core_source": "derived",
+        "crop_kind": "bust"
+      },
+      "notes": "status from expression_status.json (doc 17 s2: M1 closed, PASS 32 / OWNER-ACCEPTED MINOR 4); historical matte-tool report pass=True"
+    },
+    "tryAgain": {
+      "path": "expression-batch/bronco/bronco_tryAgain.png",
+      "sha256": "a72fdd816096dd5666b6e7857677bd26cbea4ec419756cace26ec195f145840d",
+      "status": "READY WITH CROP/MATTING",
+      "plan_status": "READY WITH CROP/MATTING",
+      "transform": {
+        "units_per_source_px": 1.0,
+        "eye_line_src_y": 72,
+        "core_box": [
+          0,
+          3,
+          167,
+          110
+        ],
+        "core_source": "derived",
+        "crop_kind": "bust"
+      },
+      "notes": "status from expression_status.json (doc 17 s2: M1 closed, PASS 32 / OWNER-ACCEPTED MINOR 4); historical matte-tool report pass=None"
+    },
+    "vertical_anchor": "eye_line"
+  },
+  "details": [
+    {
+      "path": "asset-library/bronco/bronco_detail_cowboy_hat.png",
+      "sha256": "e0ea81c6632503947dc9544d869859b0f780a8ee3d9b91589edbf40e4f877c03",
+      "status": "READY WITH CROP/MATTING",
+      "plan_status": "READY WITH CROP/MATTING",
+      "caption": "Cowboy hat (star badge)"
+    },
+    {
+      "path": "asset-library/bronco/bronco_detail_bandana.png",
+      "sha256": "359ad0623191a81d2536a46a4c84ffc0f3eeb2807c57e4dad0460514ab22f422",
+      "status": "READY WITH CROP/MATTING",
+      "plan_status": "READY WITH CROP/MATTING",
+      "caption": "Maroon bandana"
+    },
+    {
+      "path": "asset-library/bronco/bronco_detail_saddle_pack.png",
+      "sha256": "02d645c0b74fe2bf669a128bd2275df77a48a24ff96d637d2b53c643eed6cd81",
+      "status": "READY WITH CROP/MATTING",
+      "plan_status": "READY WITH CROP/MATTING",
+      "caption": "Saddle & pack"
+    },
+    {
+      "path": "asset-library/bronco/bronco_detail_star_treatment.png",
+      "sha256": "c8a2577621ae62c8d6de9506b0db0602a5cfc6357c1530fe71204faf44eaae8f",
+      "status": "READY WITH CROP/MATTING",
+      "plan_status": "READY WITH CROP/MATTING",
+      "caption": "Star treatment"
+    }
+  ],
+  "silhouettes": {
+    "derive": true,
+    "items": {
+      "front": {
+        "path": "asset-library/bronco/bronco_silhouette_front.png",
+        "sha256": "105d21bd1b62ab4be9e524d6262b3a954b76f20ec2e3ffe158b7bd0e0e481c8e",
+        "status": "READY WITH CROP/MATTING",
+        "plan_status": "READY WITH CROP/MATTING"
+      },
+      "threeQuarter": {
+        "path": "asset-library/bronco/bronco_silhouette_34.png",
+        "sha256": "a8a68d20a203f59662de30f891798087987822f067ff9bb2eb3b947e04395843",
+        "status": "READY WITH CROP/MATTING",
+        "plan_status": "READY WITH CROP/MATTING"
+      },
+      "side": {
+        "path": "asset-library/bronco/bronco_silhouette_side.png",
+        "sha256": "553957bd31fae817bc4c841abd49131d661928d875acfe4ac9aab257be010e06",
+        "status": "READY WITH CROP/MATTING",
+        "plan_status": "READY WITH CROP/MATTING"
+      },
+      "back": {
+        "path": "asset-library/bronco/bronco_silhouette_back.png",
+        "sha256": "501080c60fdcfbf820830ed3f122620c841db3d01ffcf49830951eebbe83007c",
+        "status": "READY WITH CROP/MATTING",
+        "plan_status": "READY WITH CROP/MATTING"
+      },
+      "action": {
+        "path": "asset-library/bronco/bronco_silhouette_action.png",
+        "sha256": "64b06cf4d783c075362a22133f6cc61f068432f10e6d6d37e16fec84625de012",
+        "status": "READY WITH CROP/MATTING",
+        "plan_status": "READY WITH CROP/MATTING"
+      }
+    }
+  },
+  "proportion": {
+    "front_reference": "turnaround.front",
+    "comparison": {
+      "tag": "TAR",
+      "k": 0.57
+    }
+  }
+}

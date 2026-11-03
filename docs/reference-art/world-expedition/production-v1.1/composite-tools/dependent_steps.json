@@ -1,0 +1,196 @@
+{
+ "note": "STEP 2 of the composite pass - items that cannot be done until the logo / palette / silhouette assets are final. Sheet = 1448x1086. Boxes are x0,y0,x1,y1 measured on the frozen v1.1 composites (+-2 px). Apply on top of the STEP 1 outputs in this folder, write each composite once.",
+ "inputs_required": {
+  "logo": "m4-release/logo/ (ONE clean transparent LOGO_ASSET master, PNG or SVG-rendered PNG; same wording/mark as the approved logo)",
+  "palette": "final six-slot palette per character (hex + names; Bronco CHARACTER-SPECIFIC = BANDANA - MAROON, ACCENT = red star/gear)",
+  "silhouettes": "m4-release/library/<char>/<char>_silhouette_front.png derived from approved matted alpha (flat navy)"
+ },
+ "logo": {
+  "rule": "Replace the baked raster logo; the paw-in-Zoo mark, 'BidaZoo' wordmark, 'WORLD EXPEDITION' board and compass are all inside the asset. Scale the asset so its board bbox matches the sign bbox below; paste with alpha; then check that no old-logo pixel remains visible outside the new alpha (leftover foliage/board fringe): measure inside the foliage bbox, require < 0.5 % mismatch, else add a 2-3 px cv2.inpaint ring around the new alpha. Do not add any separate 'BidaZoo World Expedition' header text (doc 16 s13).",
+  "00": {
+   "foliage_bbox": [
+    5,
+    0,
+    622,
+    235
+   ],
+   "sign_bbox": [
+    35,
+    30,
+    600,
+    230
+   ],
+   "z_order": "the 'Visual Production Guide' parchment banner (arc, y 214-262) sits IN FRONT of the logo bottom edge: paste the logo first, then restore banner pixels from the STEP 1 image inside the banner polygon; Click's ear tip stays behind the banner (STEP 1 already did this)"
+  },
+  "07": {
+   "foliage_bbox": [
+    45,
+    0,
+    535,
+    168
+   ],
+   "sign_bbox": [
+    65,
+    18,
+    512,
+    165
+   ]
+  },
+  "08": {
+   "foliage_bbox": [
+    55,
+    5,
+    408,
+    132
+   ],
+   "sign_bbox": [
+    63,
+    18,
+    388,
+    128
+   ]
+  }
+ },
+ "silhouettes": {
+  "rule": "Replace the six baked silhouettes (old flat-sheet art, Eagle still the brown-crested one) by flat-navy silhouettes from the approved front alpha, drawn at the same cast-relative scale as 07 panel 1 (height = H_eagle * k, ref_height from the manifest), common baseline, centered on the existing label centers. Then retype the 6 labels in Nunito Sans (00: navy-tinted per-character color text -> Nunito Sans Bold 700, 11 px; 07: white ExtraBold 800 on the existing colored pills, 10 px caps). Silhouettes are NOT a height authority (doc 15 s6).",
+  "00": {
+   "panel": [
+    917,
+    612,
+    1440,
+    790
+   ],
+   "silhouette_zone": [
+    925,
+    615,
+    1440,
+    760
+   ],
+   "baseline_y": 755,
+   "label_row": [
+    940,
+    764,
+    1435,
+    782
+   ],
+   "label_centers_x": [
+    960,
+    1035,
+    1110,
+    1197,
+    1290,
+    1387
+   ],
+   "eagle_old_bbox": [
+    1210,
+    620,
+    1290,
+    750
+   ]
+  },
+  "07": {
+   "panel": [
+    975,
+    205,
+    1435,
+    430
+   ],
+   "silhouette_zone": [
+    975,
+    262,
+    1428,
+    402
+   ],
+   "baseline_y": 398,
+   "pill_row": [
+    975,
+    405,
+    1425,
+    425
+   ],
+   "pill_centers_x": [
+    1002,
+    1066,
+    1135,
+    1212,
+    1295,
+    1386
+   ],
+   "eagle_old_bbox": [
+    1237,
+    265,
+    1345,
+    400
+   ]
+  }
+ },
+ "palette_07": {
+  "panel_chip_row": "retitle subtitle (217,468,690,490): replace 'Core colors for each character. Use these swatches to maintain consistency across all media.' by 'Core colors for each character. PROVISIONAL - values are not final palette authority.' (Nunito Sans SemiBold 600, 11 px) unless the lead marks the palette final, in which case drop the PROVISIONAL clause",
+  "cards": {
+   "click": [
+    12,
+    498,
+    248,
+    675
+   ],
+   "dino": [
+    256,
+    498,
+    490,
+    675
+   ],
+   "koala": [
+    490,
+    498,
+    720,
+    675
+   ],
+   "tarsier": [
+    727,
+    498,
+    958,
+    675
+   ],
+   "eagle": [
+    963,
+    498,
+    1193,
+    675
+   ],
+   "bronco": [
+    1200,
+    498,
+    1437,
+    675
+   ]
+  },
+  "swatch_center_x": {
+   "click": 147,
+   "dino": 378.5,
+   "koala": 619.5,
+   "tarsier": 851.5,
+   "eagle": 1086,
+   "bronco": 1329.5
+  },
+  "swatch_center_y": [
+   548.5,
+   575.5,
+   602,
+   628.5,
+   654
+  ],
+  "swatch_size": 23,
+  "text": "per row: role label (Nunito Sans SemiBold 600, 10.5 px, sentence case) at swatch_cx+16, hex (Nunito Sans Regular 400, 10 px, caps #RRGGBB, tabular) at swatch_cx+57; erase the baked label+hex with the same row-median erase used in compfx.retype; refill swatch squares with the final hex (flat, 1 px darker border)",
+  "five_row_card_limit": "The cards have 5 rows and doc 15 wants six slots, but the row compression was reverted by the owner: do NOT shrink rows. Keep five rows; for Bronco put the bandana in row 4",
+  "bronco_card": {
+   "row_1_primary": "coat",
+   "row_2_secondary": "coat shade",
+   "row_3_accent": "red star/gear (stays RED, e.g. #E63946)",
+   "row_4": "REPLACE old 'Gear #B91C1C' (the old crimson bandana definition) by 'Bandana (Maroon)' with the final maroon hex (provisional values: doc 09 #8E1B30, sheet swatch #9F0A26)",
+   "row_5_detail": "dark leather/mane (#3B2A1F as printed)"
+  },
+  "other_cards": "re-print hex strings from the final palette JSON so printed text == swatch pixels (doc 09 s6: Eagle Secondary/Detail printed text was off 64/108 RGB units); optional 'PROVISIONAL' tag right-aligned in the panel chip row"
+ },
+ "text_not_in_step_1_or_2": "all other baked AI raster text on 00/07/08 (chips, taglines, sign tabs, nameplates, environment labels, HUD numerals, design-rule paragraphs, hex are covered above) is OPTIONAL: see the audit report; boxes in the report.",
+ "status": "APPLIED by step2.py (called from build_composites.py). Kept as the measured-box record; see step2.py for the final constants."
+}

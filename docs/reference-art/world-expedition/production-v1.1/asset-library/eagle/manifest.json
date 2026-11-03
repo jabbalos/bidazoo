@@ -1,0 +1,1498 @@
+{
+  "schema": "m4-release-library-manifest/1",
+  "generated": "2026-10-13",
+  "character": "eagle",
+  "source_sheet": "eagle.png = production-v1.1 05 white-head corrected sheet (read-only)",
+  "excluded": "six expression states",
+  "role_vocabulary": {
+    "canonical": "fills one doc 15/16 slot",
+    "supplemental": "real art, not a canonical slot; must not be used as canonical",
+    "historical": "old flat-sheet silhouettes, QA comparison only",
+    "superseded": "earlier versions, audit only"
+  },
+  "status_vocabulary": [
+    "READY WITH CROP/MATTING",
+    "NEEDS CONTROLLED EDIT",
+    "MISSING / TO AUTHOR",
+    "PROVISIONAL",
+    "HISTORICAL / QA-COMPARISON ONLY"
+  ],
+  "owner_accepted_minor_renders_as": "READY WITH CROP/MATTING",
+  "canonical_slots": {
+    "F detail 1": "eagle_detail_academy_a_patch.png",
+    "F detail 3": "eagle_detail_mountain_emblem.png",
+    "F detail 2": "eagle_detail_varsity_collar.png",
+    "F detail 4": "eagle_detail_wing_feather_treatment.png",
+    "C head": "eagle_head.png",
+    "B hero": "eagle_hero.png",
+    "A turnaround 34": "eagle_turnaround_34.png",
+    "A turnaround back": "eagle_turnaround_back.png",
+    "A turnaround front": "eagle_turnaround_front.png",
+    "A turnaround side": "eagle_turnaround_side.png",
+    "E silhouette front": "eagle_silhouette_front.png",
+    "E silhouette 34": "eagle_silhouette_34.png",
+    "E silhouette side": "eagle_silhouette_side.png",
+    "E silhouette back": "eagle_silhouette_back.png",
+    "E silhouette action": "eagle_silhouette_action.png"
+  },
+  "counts": {
+    "canonical": 15,
+    "supplemental": 2,
+    "historical_silhouettes": 5,
+    "superseded": 1,
+    "status_by_role": {
+      "canonical": {
+        "READY WITH CROP/MATTING": 14,
+        "OWNER-ACCEPTED MINOR": 1
+      },
+      "supplemental": {
+        "READY WITH CROP/MATTING": 2
+      }
+    }
+  },
+  "assets": [
+    {
+      "file": "eagle_detail_academy_a_patch.png",
+      "asset": "detail_academy_a_patch",
+      "role": "canonical",
+      "slot": "F detail 1",
+      "status": "READY WITH CROP/MATTING",
+      "sha256": "1d1b347bbc1dc0dc325d3010d5491d3365df47cfc196672304c844b926df744b",
+      "png_size": [
+        195,
+        90
+      ],
+      "mode": "RGBA",
+      "preview_4bg": "eagle_detail_academy_a_patch_4bg.png",
+      "source_provenance": {
+        "source_sheet": "eagle.png = production-v1.1 05 white-head corrected sheet (read-only)",
+        "source_panel_box": [
+          458,
+          827,
+          661,
+          921
+        ],
+        "trim_origin_xy": [
+          464,
+          830
+        ],
+        "derived_from": null,
+        "derived_rect_in_source_asset": null,
+        "method": "parchment_matte",
+        "auto_metrics": {
+          "clipping": false,
+          "clip_edges": {
+            "clip_left": 0.0,
+            "clip_right": 0.0,
+            "clip_top": 0.0,
+            "clip_bottom": 0.0
+          },
+          "halo_fraction": 0.0,
+          "extra_components": [],
+          "outline_missing_px": 0,
+          "auto_pass": true,
+          "flags": []
+        },
+        "pass": true,
+        "pass_basis": "auto",
+        "needs_attention": false,
+        "drawn_height_px": 90,
+        "png_size": [
+          195,
+          90
+        ],
+        "recommended_eye_line_src_y": null,
+        "eye_line_sheet_y": null,
+        "eye_line_basis": null,
+        "notes": ""
+      },
+      "recommended_eye_line_src_y": null,
+      "eye_line_basis": null
+    },
+    {
+      "file": "eagle_detail_cuff.png",
+      "asset": "detail_cuff",
+      "role": "supplemental",
+      "slot": null,
+      "status": "READY WITH CROP/MATTING",
+      "sha256": "f255f0748c293b34cfe797ac5cf2c7e2a62996a5b981af9f1238be34b8af759e",
+      "png_size": [
+        131,
+        87
+      ],
+      "mode": "RGBA",
+      "preview_4bg": "eagle_detail_cuff_4bg.png",
+      "source_provenance": {
+        "source_sheet": "eagle.png = production-v1.1 05 white-head corrected sheet (read-only)",
+        "source_panel_box": [
+          714,
+          949,
+          850,
+          1038
+        ],
+        "trim_origin_xy": [
+          716,
+          951
+        ],
+        "derived_from": null,
+        "derived_rect_in_source_asset": null,
+        "method": "parchment_matte",
+        "auto_metrics": {
+          "clipping": false,
+          "clip_edges": {
+            "clip_left": 0.0,
+            "clip_right": 0.0,
+            "clip_top": 0.0,
+            "clip_bottom": 0.0
+          },
+          "halo_fraction": 0.0,
+          "extra_components": [],
+          "outline_missing_px": 0,
+          "auto_pass": true,
+          "flags": []
+        },
+        "pass": true,
+        "pass_basis": "auto",
+        "needs_attention": false,
+        "drawn_height_px": 87,
+        "png_size": [
+          131,
+          87
+        ],
+        "recommended_eye_line_src_y": null,
+        "eye_line_sheet_y": null,
+        "eye_line_basis": null,
+        "notes": "supplemental extra (beyond the four doc 16 section 9 detail cells)"
+      },
+      "role_reason": "SUPPLEMENTAL: beyond the four doc 16 section 9 detail slots.",
+      "canonical_slot_references": [],
+      "recommended_eye_line_src_y": null,
+      "eye_line_basis": null
+    },
+    {
+      "file": "eagle_detail_custom_buttons.png",
+      "asset": "detail_custom_buttons",
+      "role": "supplemental",
+      "slot": null,
+      "status": "READY WITH CROP/MATTING",
+      "sha256": "7a012bb4e344618a52cf625fed75bfb97187d9e16ffa7b1a8f35aed93ba3b6ce",
+      "png_size": [
+        123,
+        85
+      ],
+      "mode": "RGBA",
+      "preview_4bg": "eagle_detail_custom_buttons_4bg.png",
+      "source_provenance": {
+        "source_sheet": "eagle.png = production-v1.1 05 white-head corrected sheet (read-only)",
+        "source_panel_box": [
+          595,
+          949,
+          718,
+          1038
+        ],
+        "trim_origin_xy": [
+          595,
+          951
+        ],
+        "derived_from": null,
+        "derived_rect_in_source_asset": null,
+        "method": "parchment_matte",
+        "auto_metrics": {
+          "clipping": false,
+          "clip_edges": {
+            "clip_left": 0.0,
+            "clip_right": 0.0,
+            "clip_top": 0.0,
+            "clip_bottom": 0.0
+          },
+          "halo_fraction": 0.0,
+          "extra_components": [],
+          "outline_missing_px": 0,
+          "auto_pass": true,
+          "flags": []
+        },
+        "pass": true,
+        "pass_basis": "auto",
+        "needs_attention": false,
+        "drawn_height_px": 85,
+        "png_size": [
+          123,
+          85
+        ],
+        "recommended_eye_line_src_y": null,
+        "eye_line_sheet_y": null,
+        "eye_line_basis": null,
+        "notes": "supplemental extra (beyond the four doc 16 section 9 detail cells)"
+      },
+      "role_reason": "SUPPLEMENTAL: beyond the four doc 16 section 9 detail slots.",
+      "canonical_slot_references": [],
+      "recommended_eye_line_src_y": null,
+      "eye_line_basis": null
+    },
+    {
+      "file": "eagle_detail_mountain_emblem.png",
+      "asset": "detail_mountain_emblem",
+      "role": "canonical",
+      "slot": "F detail 3",
+      "status": "READY WITH CROP/MATTING",
+      "sha256": "b20b7010e659d16bbcc9cf6f87c1f69e8b66de2cb2017260430717c43c7b342d",
+      "png_size": [
+        187,
+        89
+      ],
+      "mode": "RGBA",
+      "preview_4bg": "eagle_detail_mountain_emblem_4bg.png",
+      "source_provenance": {
+        "source_sheet": "eagle.png = production-v1.1 05 white-head corrected sheet (read-only)",
+        "source_panel_box": [
+          656,
+          827,
+          846,
+          921
+        ],
+        "trim_origin_xy": [
+          657,
+          831
+        ],
+        "derived_from": null,
+        "derived_rect_in_source_asset": null,
+        "method": "parchment_matte",
+        "auto_metrics": {
+          "clipping": false,
+          "clip_edges": {
+            "clip_left": 0.0,
+            "clip_right": 0.0,
+            "clip_top": 0.0,
+            "clip_bottom": 0.0
+          },
+          "halo_fraction": 0.0,
+          "extra_components": [],
+          "outline_missing_px": 0,
+          "auto_pass": true,
+          "flags": []
+        },
+        "pass": true,
+        "pass_basis": "auto",
+        "needs_attention": false,
+        "drawn_height_px": 89,
+        "png_size": [
+          187,
+          89
+        ],
+        "recommended_eye_line_src_y": null,
+        "eye_line_sheet_y": null,
+        "eye_line_basis": null,
+        "notes": ""
+      },
+      "recommended_eye_line_src_y": null,
+      "eye_line_basis": null
+    },
+    {
+      "file": "eagle_detail_varsity_collar.png",
+      "asset": "detail_varsity_collar",
+      "role": "canonical",
+      "slot": "F detail 2",
+      "status": "READY WITH CROP/MATTING",
+      "sha256": "9dd7581dba7483c2f00f552627ebcf35d95d950e2cc5efeb24743704023558ab",
+      "png_size": [
+        134,
+        85
+      ],
+      "mode": "RGBA",
+      "preview_4bg": "eagle_detail_varsity_collar_4bg.png",
+      "source_provenance": {
+        "source_sheet": "eagle.png = production-v1.1 05 white-head corrected sheet (read-only)",
+        "source_panel_box": [
+          458,
+          949,
+          598,
+          1038
+        ],
+        "trim_origin_xy": [
+          463,
+          951
+        ],
+        "derived_from": null,
+        "derived_rect_in_source_asset": null,
+        "method": "parchment_matte",
+        "auto_metrics": {
+          "clipping": false,
+          "clip_edges": {
+            "clip_left": 0.0,
+            "clip_right": 0.0,
+            "clip_top": 0.0,
+            "clip_bottom": 0.0
+          },
+          "halo_fraction": 0.0,
+          "extra_components": [],
+          "outline_missing_px": 0,
+          "auto_pass": true,
+          "flags": []
+        },
+        "pass": true,
+        "pass_basis": "auto",
+        "needs_attention": false,
+        "drawn_height_px": 85,
+        "png_size": [
+          134,
+          85
+        ],
+        "recommended_eye_line_src_y": null,
+        "eye_line_sheet_y": null,
+        "eye_line_basis": null,
+        "notes": ""
+      },
+      "recommended_eye_line_src_y": null,
+      "eye_line_basis": null
+    },
+    {
+      "file": "eagle_detail_wing_feather_treatment.png",
+      "asset": "detail_wing_feather_treatment",
+      "role": "canonical",
+      "slot": "F detail 4",
+      "status": "READY WITH CROP/MATTING",
+      "sha256": "4d3bb26b6ea180bae36f09bdb509751c787b09024acf7e61d6fae029b1086c99",
+      "png_size": [
+        81,
+        151
+      ],
+      "mode": "RGBA",
+      "preview_4bg": "eagle_detail_wing_feather_treatment_4bg.png",
+      "source_provenance": {
+        "source_sheet": "eagle.png = production-v1.1 05 white-head corrected sheet (read-only)",
+        "source_panel_box": null,
+        "trim_origin_xy": null,
+        "derived_from": "eagle_turnaround_front",
+        "derived_rect_in_source_asset": [
+          191,
+          80,
+          272,
+          231
+        ],
+        "method": "derived_crop",
+        "auto_metrics": {
+          "clipping": false,
+          "clip_edges": {
+            "clip_left": 0,
+            "clip_right": 0,
+            "clip_top": 0,
+            "clip_bottom": 0
+          },
+          "halo_fraction": 0.0906,
+          "extra_components": [],
+          "outline_missing_px": 0,
+          "auto_pass": true,
+          "flags": []
+        },
+        "pass": true,
+        "pass_basis": "auto",
+        "needs_attention": false,
+        "drawn_height_px": 151,
+        "png_size": [
+          81,
+          151
+        ],
+        "recommended_eye_line_src_y": null,
+        "eye_line_sheet_y": null,
+        "eye_line_basis": null,
+        "notes": "derived crop (right wing feather treatment) from matted front turnaround; wings are not edited"
+      },
+      "recommended_eye_line_src_y": null,
+      "eye_line_basis": null
+    },
+    {
+      "file": "eagle_head.png",
+      "asset": "head",
+      "role": "canonical",
+      "slot": "C head",
+      "status": "READY WITH CROP/MATTING",
+      "sha256": "bfb5843e7e2c4ad84cf121f3090be9f027522e1d7758e601f64419dfec66bc4b",
+      "png_size": [
+        241,
+        215
+      ],
+      "mode": "RGBA",
+      "preview_4bg": "eagle_head_4bg.png",
+      "source_provenance": {
+        "source_sheet": "eagle.png = production-v1.1 05 white-head corrected sheet (read-only)",
+        "source_panel_box": [
+          15,
+          555,
+          290,
+          795
+        ],
+        "trim_origin_xy": [
+          15,
+          580
+        ],
+        "derived_from": null,
+        "derived_rect_in_source_asset": null,
+        "method": "scenic",
+        "auto_metrics": {
+          "clipping": false,
+          "clip_edges": {
+            "clip_left": 0.011,
+            "clip_right": 0.0,
+            "clip_top": 0.0,
+            "clip_bottom": 0.741
+          },
+          "halo_fraction": 0.0028,
+          "extra_components": [],
+          "outline_missing_px": 0,
+          "auto_pass": true,
+          "flags": []
+        },
+        "pass": true,
+        "pass_basis": "auto",
+        "needs_attention": false,
+        "drawn_height_px": 215,
+        "png_size": [
+          241,
+          215
+        ],
+        "recommended_eye_line_src_y": 102,
+        "eye_line_sheet_y": 682,
+        "eye_line_basis": "visual estimate (png px from top)",
+        "notes": "scenic matte; bottom is the hard source crop (jacket collar); white head verified: brown pixel fraction in head region 1.8% (brow/beak/shadow only); no brown head patches, so NOT flagged NEEDS CONTROLLED EDIT"
+      },
+      "recommended_eye_line_src_y": 102,
+      "eye_line_basis": "visual estimate (png px from top)"
+    },
+    {
+      "file": "eagle_hero.png",
+      "asset": "hero",
+      "role": "canonical",
+      "slot": "B hero",
+      "status": "OWNER-ACCEPTED MINOR",
+      "sha256": "9659bf14fe08d8129ac64b20569c2c1f4ae8beacfcdffd04167d7091f092c0ae",
+      "png_size": [
+        432,
+        335
+      ],
+      "mode": "RGBA",
+      "preview_4bg": "eagle_hero_4bg.png",
+      "source_provenance": {
+        "source_sheet": "eagle.png = production-v1.1 05 white-head corrected sheet (read-only)",
+        "source_panel_box": [
+          1005,
+          186,
+          1437,
+          545
+        ],
+        "trim_origin_xy": [
+          1005,
+          186
+        ],
+        "derived_from": null,
+        "derived_rect_in_source_asset": null,
+        "method": "scenic",
+        "auto_metrics": {
+          "clipping": true,
+          "clip_edges": {
+            "clip_left": 0.006,
+            "clip_right": 0.008,
+            "clip_top": 0.055,
+            "clip_bottom": 0.0
+          },
+          "halo_fraction": 0.002,
+          "extra_components": [],
+          "outline_missing_px": 17,
+          "auto_pass": false,
+          "flags": [
+            "clipping"
+          ]
+        },
+        "pass": true,
+        "pass_basis": "W1 repair pass, visually reviewed on 4 backgrounds",
+        "needs_attention": true,
+        "drawn_height_px": 335,
+        "png_size": [
+          432,
+          335
+        ],
+        "recommended_eye_line_src_y": 112,
+        "eye_line_sheet_y": 298,
+        "eye_line_basis": "visual estimate (png px from top)",
+        "notes": "W1: sky scraps between wing/tail/talons removed; head is white with blue eyes, no brown on head; top wing tip is cut by the source panel edge (3-row soft fade applied, no art added). | prev: ART/TEMPLATE REVIEW REQUIRED: top wing tip is cut by the source panel edge; small sky scraps remain between tail feathers and belly (scenic matte); white head verified: brown pixel fraction in head re",
+        "w1_repaired": true
+      },
+      "renders_as": "READY WITH CROP/MATTING",
+      "recommended_eye_line_src_y": 112,
+      "eye_line_basis": "visual estimate (png px from top)"
+    },
+    {
+      "file": "eagle_turnaround_34.png",
+      "asset": "turnaround_34",
+      "role": "canonical",
+      "slot": "A turnaround 34",
+      "status": "READY WITH CROP/MATTING",
+      "sha256": "778e67970b21fd20e377f0c9fe0f0329c0d88e274341bda3293caccba572dc49",
+      "png_size": [
+        223,
+        288
+      ],
+      "mode": "RGBA",
+      "preview_4bg": "eagle_turnaround_34_4bg.png",
+      "source_provenance": {
+        "source_sheet": "eagle.png = production-v1.1 05 white-head corrected sheet (read-only)",
+        "source_panel_box": [
+          277,
+          212,
+          516,
+          509
+        ],
+        "trim_origin_xy": [
+          282,
+          219
+        ],
+        "derived_from": null,
+        "derived_rect_in_source_asset": null,
+        "method": "turnaround_watershed",
+        "auto_metrics": {
+          "clipping": false,
+          "clip_edges": {
+            "clip_left": 0.0,
+            "clip_right": 0.0,
+            "clip_top": 0.0,
+            "clip_bottom": 0.0
+          },
+          "halo_fraction": 0.0712,
+          "extra_components": [],
+          "outline_missing_px": 0,
+          "auto_pass": true,
+          "flags": []
+        },
+        "pass": true,
+        "pass_basis": "auto",
+        "needs_attention": false,
+        "drawn_height_px": 288,
+        "png_size": [
+          223,
+          288
+        ],
+        "recommended_eye_line_src_y": 60,
+        "eye_line_sheet_y": 279,
+        "eye_line_basis": "visual estimate (png px from top)",
+        "notes": "white head verified: brown pixel fraction in head region 1.5% (brow/beak/shadow only); no brown head patches, so NOT flagged NEEDS CONTROLLED EDIT; parchment matte with local-background field + touching-neighbor watershed split + floor-shadow removal; floor contact shadow removed"
+      },
+      "recommended_eye_line_src_y": 60,
+      "eye_line_basis": "visual estimate (png px from top)"
+    },
+    {
+      "file": "eagle_turnaround_back.png",
+      "asset": "turnaround_back",
+      "role": "canonical",
+      "slot": "A turnaround back",
+      "status": "READY WITH CROP/MATTING",
+      "sha256": "6cb0caac67837be89650c1dd333c6411e34a82dae611c26df61420701bf4d295",
+      "png_size": [
+        253,
+        285
+      ],
+      "mode": "RGBA",
+      "preview_4bg": "eagle_turnaround_back_4bg.png",
+      "source_provenance": {
+        "source_sheet": "eagle.png = production-v1.1 05 white-head corrected sheet (read-only)",
+        "source_panel_box": [
+          732,
+          212,
+          995,
+          509
+        ],
+        "trim_origin_xy": [
+          740,
+          221
+        ],
+        "derived_from": null,
+        "derived_rect_in_source_asset": null,
+        "method": "turnaround_watershed",
+        "auto_metrics": {
+          "clipping": false,
+          "clip_edges": {
+            "clip_left": 0.0,
+            "clip_right": 0.0,
+            "clip_top": 0.0,
+            "clip_bottom": 0.0
+          },
+          "halo_fraction": 0.1016,
+          "extra_components": [],
+          "outline_missing_px": 0,
+          "auto_pass": true,
+          "flags": []
+        },
+        "pass": true,
+        "pass_basis": "auto",
+        "needs_attention": false,
+        "drawn_height_px": 285,
+        "png_size": [
+          253,
+          285
+        ],
+        "recommended_eye_line_src_y": null,
+        "eye_line_sheet_y": null,
+        "eye_line_basis": null,
+        "notes": "white head verified: brown pixel fraction in head region 0.0% (brow/beak/shadow only); no brown head patches, so NOT flagged NEEDS CONTROLLED EDIT; parchment matte with local-background field + touching-neighbor watershed split + floor-shadow removal; floor contact shadow removed"
+      },
+      "recommended_eye_line_src_y": null,
+      "eye_line_basis": null
+    },
+    {
+      "file": "eagle_turnaround_front.png",
+      "asset": "turnaround_front",
+      "role": "canonical",
+      "slot": "A turnaround front",
+      "status": "READY WITH CROP/MATTING",
+      "sha256": "fc6d1eba682bf91648435e8e2aef9eaee89d00640f21f0bcc682a6acce28dadc",
+      "png_size": [
+        273,
+        289
+      ],
+      "mode": "RGBA",
+      "preview_4bg": "eagle_turnaround_front_4bg.png",
+      "source_provenance": {
+        "source_sheet": "eagle.png = production-v1.1 05 white-head corrected sheet (read-only)",
+        "source_panel_box": [
+          10,
+          212,
+          296,
+          509
+        ],
+        "trim_origin_xy": [
+          11,
+          220
+        ],
+        "derived_from": null,
+        "derived_rect_in_source_asset": null,
+        "method": "turnaround_watershed",
+        "auto_metrics": {
+          "clipping": false,
+          "clip_edges": {
+            "clip_left": 0.0,
+            "clip_right": 0.0,
+            "clip_top": 0.0,
+            "clip_bottom": 0.0
+          },
+          "halo_fraction": 0.0906,
+          "extra_components": [],
+          "outline_missing_px": 0,
+          "auto_pass": true,
+          "flags": []
+        },
+        "pass": true,
+        "pass_basis": "auto",
+        "needs_attention": false,
+        "drawn_height_px": 289,
+        "png_size": [
+          273,
+          289
+        ],
+        "recommended_eye_line_src_y": 64,
+        "eye_line_sheet_y": 284,
+        "eye_line_basis": "visual estimate (png px from top)",
+        "notes": "white head verified: brown pixel fraction in head region 1.2% (brow/beak/shadow only); no brown head patches, so NOT flagged NEEDS CONTROLLED EDIT; parchment matte with local-background field + touching-neighbor watershed split + floor-shadow removal; floor contact shadow removed"
+      },
+      "recommended_eye_line_src_y": 64,
+      "eye_line_basis": "visual estimate (png px from top)"
+    },
+    {
+      "file": "eagle_turnaround_side.png",
+      "asset": "turnaround_side",
+      "role": "canonical",
+      "slot": "A turnaround side",
+      "status": "READY WITH CROP/MATTING",
+      "sha256": "1842de278e305a589eeddf673a9c634fe76a423d5e331787ddb92bfc22dcc097",
+      "png_size": [
+        217,
+        289
+      ],
+      "mode": "RGBA",
+      "preview_4bg": "eagle_turnaround_side_4bg.png",
+      "source_provenance": {
+        "source_sheet": "eagle.png = production-v1.1 05 white-head corrected sheet (read-only)",
+        "source_panel_box": [
+          494,
+          212,
+          730,
+          509
+        ],
+        "trim_origin_xy": [
+          500,
+          220
+        ],
+        "derived_from": null,
+        "derived_rect_in_source_asset": null,
+        "method": "turnaround_watershed",
+        "auto_metrics": {
+          "clipping": false,
+          "clip_edges": {
+            "clip_left": 0.0,
+            "clip_right": 0.0,
+            "clip_top": 0.0,
+            "clip_bottom": 0.0
+          },
+          "halo_fraction": 0.0696,
+          "extra_components": [],
+          "outline_missing_px": 0,
+          "auto_pass": true,
+          "flags": []
+        },
+        "pass": true,
+        "pass_basis": "auto",
+        "needs_attention": false,
+        "drawn_height_px": 289,
+        "png_size": [
+          217,
+          289
+        ],
+        "recommended_eye_line_src_y": 58,
+        "eye_line_sheet_y": 278,
+        "eye_line_basis": "visual estimate (png px from top)",
+        "notes": "white head verified: brown pixel fraction in head region 0.8% (brow/beak/shadow only); no brown head patches, so NOT flagged NEEDS CONTROLLED EDIT; parchment matte with local-background field + touching-neighbor watershed split + floor-shadow removal; floor contact shadow removed"
+      },
+      "recommended_eye_line_src_y": 58,
+      "eye_line_basis": "visual estimate (png px from top)"
+    },
+    {
+      "file": "eagle_silhouette_front.png",
+      "asset": "silhouette_front",
+      "role": "canonical",
+      "slot": "E silhouette front",
+      "status": "READY WITH CROP/MATTING",
+      "sha256": "e41d20eeed0ad63542771e5d2fe5f4d592e3e43afd447d85d523d6ff1052b4f2",
+      "png_size": [
+        264,
+        281
+      ],
+      "mode": "RGBA",
+      "preview_4bg": "eagle_silhouette_front_4bg.png",
+      "fill": "#1E3A5F (doc 15 section 9 silhouette fill, flat navy)",
+      "derived_from": {
+        "asset": "eagle_turnaround_front.png",
+        "sha256": "fc6d1eba682bf91648435e8e2aef9eaee89d00640f21f0bcc682a6acce28dadc",
+        "source_library_path": "library/eagle/eagle_turnaround_front.png"
+      },
+      "derivation": {
+        "tool": "library-tools/derive_silhouettes.py + library-tools/sil_config.py (deterministic)",
+        "source_size": [
+          273,
+          289
+        ],
+        "bbox_in_source_xywh": [
+          4,
+          4,
+          264,
+          281
+        ],
+        "source_opaque_px": 47281,
+        "removed_px": 2489,
+        "final_mask_px": 44813,
+        "detached_specks_dropped_px": [
+          3
+        ],
+        "holes": [
+          {
+            "area_px": 5,
+            "centroid_xy": [
+              203.2,
+              263.8
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 4,
+            "centroid_xy": [
+              221.2,
+              263.2
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 3,
+            "centroid_xy": [
+              228.0,
+              263.0
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 4,
+            "centroid_xy": [
+              64.5,
+              269.5
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 7,
+            "centroid_xy": [
+              88.6,
+              272.1
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 1,
+            "centroid_xy": [
+              234.0,
+              274.0
+            ],
+            "action": "filled (artifact)"
+          }
+        ],
+        "cleanup": {
+          "strip": 26,
+          "cut": [
+            [
+              96,
+              248,
+              166,
+              289
+            ]
+          ]
+        },
+        "alpha": "gaussian(0.8) antialias of the cleaned binary mask, 50% contour = mask edge"
+      },
+      "caveat": "inherits any silhouette-affecting matte defects of the source alpha beyond the listed cleanups; see library-qa/silhouette_comparison_eagle.png",
+      "recommended_eye_line_src_y": null,
+      "eye_line_basis": null
+    },
+    {
+      "file": "eagle_silhouette_34.png",
+      "asset": "silhouette_34",
+      "role": "canonical",
+      "slot": "E silhouette 34",
+      "status": "READY WITH CROP/MATTING",
+      "sha256": "ce98a743ab0e976970d83e444c6121d71690cddbf8b6366e17575bdcfe26e1f7",
+      "png_size": [
+        213,
+        278
+      ],
+      "mode": "RGBA",
+      "preview_4bg": "eagle_silhouette_34_4bg.png",
+      "fill": "#1E3A5F (doc 15 section 9 silhouette fill, flat navy)",
+      "derived_from": {
+        "asset": "eagle_turnaround_34.png",
+        "sha256": "778e67970b21fd20e377f0c9fe0f0329c0d88e274341bda3293caccba572dc49",
+        "source_library_path": "library/eagle/eagle_turnaround_34.png"
+      },
+      "derivation": {
+        "tool": "library-tools/derive_silhouettes.py + library-tools/sil_config.py (deterministic)",
+        "source_size": [
+          223,
+          288
+        ],
+        "bbox_in_source_xywh": [
+          4,
+          5,
+          213,
+          278
+        ],
+        "source_opaque_px": 40400,
+        "removed_px": 1223,
+        "final_mask_px": 39222,
+        "detached_specks_dropped_px": [
+          1,
+          2,
+          1
+        ],
+        "holes": [
+          {
+            "area_px": 8,
+            "centroid_xy": [
+              172.9,
+              267.2
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 8,
+            "centroid_xy": [
+              93.5,
+              267.0
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 4,
+            "centroid_xy": [
+              53.8,
+              267.2
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 8,
+            "centroid_xy": [
+              66.6,
+              269.1
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 2,
+            "centroid_xy": [
+              109.5,
+              267.5
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 9,
+            "centroid_xy": [
+              91.6,
+              271.7
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 9,
+            "centroid_xy": [
+              96.4,
+              275.1
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 1,
+            "centroid_xy": [
+              60.0,
+              276.0
+            ],
+            "action": "filled (artifact)"
+          }
+        ],
+        "cleanup": {
+          "strip": 26,
+          "cut": [
+            [
+              108,
+              250,
+              142,
+              288
+            ]
+          ]
+        },
+        "alpha": "gaussian(0.8) antialias of the cleaned binary mask, 50% contour = mask edge"
+      },
+      "caveat": "inherits any silhouette-affecting matte defects of the source alpha beyond the listed cleanups; see library-qa/silhouette_comparison_eagle.png",
+      "recommended_eye_line_src_y": null,
+      "eye_line_basis": null
+    },
+    {
+      "file": "eagle_silhouette_side.png",
+      "asset": "silhouette_side",
+      "role": "canonical",
+      "slot": "E silhouette side",
+      "status": "READY WITH CROP/MATTING",
+      "sha256": "fbd11c68bbc5de59266d644e3800d18648521d372badf97da744732855254bfe",
+      "png_size": [
+        207,
+        278
+      ],
+      "mode": "RGBA",
+      "preview_4bg": "eagle_silhouette_side_4bg.png",
+      "fill": "#1E3A5F (doc 15 section 9 silhouette fill, flat navy)",
+      "derived_from": {
+        "asset": "eagle_turnaround_side.png",
+        "sha256": "1842de278e305a589eeddf673a9c634fe76a423d5e331787ddb92bfc22dcc097",
+        "source_library_path": "library/eagle/eagle_turnaround_side.png"
+      },
+      "derivation": {
+        "tool": "library-tools/derive_silhouettes.py + library-tools/sil_config.py (deterministic)",
+        "source_size": [
+          217,
+          289
+        ],
+        "bbox_in_source_xywh": [
+          5,
+          4,
+          207,
+          278
+        ],
+        "source_opaque_px": 34036,
+        "removed_px": 1390,
+        "final_mask_px": 32657,
+        "detached_specks_dropped_px": [
+          3,
+          2,
+          8
+        ],
+        "holes": [
+          {
+            "area_px": 5,
+            "centroid_xy": [
+              132.8,
+              242.4
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 256,
+            "centroid_xy": [
+              143.3,
+              249.7
+            ],
+            "action": "kept (real negative space)"
+          },
+          {
+            "area_px": 11,
+            "centroid_xy": [
+              193.5,
+              264.5
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 5,
+            "centroid_xy": [
+              158.2,
+              262.8
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 3,
+            "centroid_xy": [
+              145.0,
+              271.0
+            ],
+            "action": "filled (artifact)"
+          }
+        ],
+        "cleanup": {
+          "strip": 28,
+          "cut": [
+            [
+              132,
+              242,
+              152,
+              258
+            ]
+          ]
+        },
+        "alpha": "gaussian(0.8) antialias of the cleaned binary mask, 50% contour = mask edge"
+      },
+      "caveat": "inherits any silhouette-affecting matte defects of the source alpha beyond the listed cleanups; see library-qa/silhouette_comparison_eagle.png",
+      "recommended_eye_line_src_y": null,
+      "eye_line_basis": null
+    },
+    {
+      "file": "eagle_silhouette_back.png",
+      "asset": "silhouette_back",
+      "role": "canonical",
+      "slot": "E silhouette back",
+      "status": "READY WITH CROP/MATTING",
+      "sha256": "1edc0abf89a3ae647855718b4876446b5b37f054352c21349d90dec86c022c32",
+      "png_size": [
+        244,
+        273
+      ],
+      "mode": "RGBA",
+      "preview_4bg": "eagle_silhouette_back_4bg.png",
+      "fill": "#1E3A5F (doc 15 section 9 silhouette fill, flat navy)",
+      "derived_from": {
+        "asset": "eagle_turnaround_back.png",
+        "sha256": "6cb0caac67837be89650c1dd333c6411e34a82dae611c26df61420701bf4d295",
+        "source_library_path": "library/eagle/eagle_turnaround_back.png"
+      },
+      "derivation": {
+        "tool": "library-tools/derive_silhouettes.py + library-tools/sil_config.py (deterministic)",
+        "source_size": [
+          253,
+          285
+        ],
+        "bbox_in_source_xywh": [
+          4,
+          4,
+          244,
+          273
+        ],
+        "source_opaque_px": 41940,
+        "removed_px": 1556,
+        "final_mask_px": 40431,
+        "detached_specks_dropped_px": [
+          1,
+          1
+        ],
+        "holes": [
+          {
+            "area_px": 37,
+            "centroid_xy": [
+              156.2,
+              261.3
+            ],
+            "action": "kept (real negative space)"
+          },
+          {
+            "area_px": 12,
+            "centroid_xy": [
+              70.6,
+              264.1
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 3,
+            "centroid_xy": [
+              62.3,
+              264.0
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 13,
+            "centroid_xy": [
+              89.8,
+              270.7
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 21,
+            "centroid_xy": [
+              164.7,
+              270.9
+            ],
+            "action": "filled (artifact)"
+          }
+        ],
+        "cleanup": {
+          "strip": 25
+        },
+        "alpha": "gaussian(0.8) antialias of the cleaned binary mask, 50% contour = mask edge"
+      },
+      "caveat": "inherits any silhouette-affecting matte defects of the source alpha beyond the listed cleanups; see library-qa/silhouette_comparison_eagle.png",
+      "recommended_eye_line_src_y": null,
+      "eye_line_basis": null
+    },
+    {
+      "file": "eagle_silhouette_action.png",
+      "asset": "silhouette_action",
+      "role": "canonical",
+      "slot": "E silhouette action",
+      "status": "READY WITH CROP/MATTING",
+      "sha256": "9c37152d8a686578271b7661c0a4dec8744c9424baa4b094695cae6aa61a517c",
+      "png_size": [
+        428,
+        329
+      ],
+      "mode": "RGBA",
+      "preview_4bg": "eagle_silhouette_action_4bg.png",
+      "fill": "#1E3A5F (doc 15 section 9 silhouette fill, flat navy)",
+      "derived_from": {
+        "asset": "eagle_hero.png",
+        "sha256": "9659bf14fe08d8129ac64b20569c2c1f4ae8beacfcdffd04167d7091f092c0ae",
+        "source_library_path": "library/eagle/eagle_hero.png"
+      },
+      "derivation": {
+        "tool": "library-tools/derive_silhouettes.py + library-tools/sil_config.py (deterministic)",
+        "source_size": [
+          432,
+          335
+        ],
+        "bbox_in_source_xywh": [
+          2,
+          3,
+          428,
+          329
+        ],
+        "source_opaque_px": 75688,
+        "removed_px": 0,
+        "final_mask_px": 75877,
+        "detached_specks_dropped_px": [],
+        "holes": [
+          {
+            "area_px": 1,
+            "centroid_xy": [
+              392.0,
+              29.0
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 6,
+            "centroid_xy": [
+              156.5,
+              107.7
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 82,
+            "centroid_xy": [
+              154.1,
+              120.8
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 1,
+            "centroid_xy": [
+              160.0,
+              112.0
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 1,
+            "centroid_xy": [
+              105.0,
+              140.0
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 1,
+            "centroid_xy": [
+              116.0,
+              174.0
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 7,
+            "centroid_xy": [
+              119.6,
+              175.3
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 24,
+            "centroid_xy": [
+              125.7,
+              177.4
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 5,
+            "centroid_xy": [
+              269.6,
+              201.8
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 1,
+            "centroid_xy": [
+              271.0,
+              201.0
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 27,
+            "centroid_xy": [
+              281.9,
+              204.9
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 2,
+            "centroid_xy": [
+              275.5,
+              204.0
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 1,
+            "centroid_xy": [
+              290.0,
+              206.0
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 1,
+            "centroid_xy": [
+              292.0,
+              206.0
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 7,
+            "centroid_xy": [
+              352.1,
+              216.7
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 1,
+            "centroid_xy": [
+              272.0,
+              217.0
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 6,
+            "centroid_xy": [
+              276.5,
+              218.5
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 1,
+            "centroid_xy": [
+              280.0,
+              220.0
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 6,
+            "centroid_xy": [
+              368.2,
+              233.8
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 181,
+            "centroid_xy": [
+              294.1,
+              286.9
+            ],
+            "action": "kept (real negative space)"
+          },
+          {
+            "area_px": 1,
+            "centroid_xy": [
+              230.0,
+              290.0
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 5,
+            "centroid_xy": [
+              319.4,
+              303.6
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 2,
+            "centroid_xy": [
+              293.5,
+              313.5
+            ],
+            "action": "filled (artifact)"
+          }
+        ],
+        "cleanup": {
+          "fill": [
+            [
+              145,
+              112,
+              165,
+              130
+            ]
+          ]
+        },
+        "alpha": "gaussian(0.8) antialias of the cleaned binary mask, 50% contour = mask edge"
+      },
+      "caveat": "inherits any silhouette-affecting matte defects of the source alpha beyond the listed cleanups; see library-qa/silhouette_comparison_eagle.png",
+      "recommended_eye_line_src_y": null,
+      "eye_line_basis": null
+    }
+  ],
+  "historical_silhouettes": [
+    {
+      "file": "_historical-silhouettes/eagle_silhouette_34.png",
+      "role": "historical",
+      "status": "HISTORICAL / QA-COMPARISON ONLY",
+      "pre_m4_status": "PROVISIONAL",
+      "sha256": "e5bcb268a07c46f9ac4c59dfab87d67d230877f6b327197d97e01c8e0d43c6b3",
+      "png_size": [
+        73,
+        122
+      ],
+      "mode": "RGBA",
+      "reason": "flat-sheet silhouette artwork, not derived from matted alpha; never a canonical slot"
+    },
+    {
+      "file": "_historical-silhouettes/eagle_silhouette_action.png",
+      "role": "historical",
+      "status": "HISTORICAL / QA-COMPARISON ONLY",
+      "pre_m4_status": "PROVISIONAL",
+      "sha256": "2c8bee003e18f9108d33e44a7c04f3af24a9fbf3866398596f2720722dfcb9cb",
+      "png_size": [
+        109,
+        159
+      ],
+      "mode": "RGBA",
+      "reason": "flat-sheet silhouette artwork, not derived from matted alpha; never a canonical slot"
+    },
+    {
+      "file": "_historical-silhouettes/eagle_silhouette_back.png",
+      "role": "historical",
+      "status": "HISTORICAL / QA-COMPARISON ONLY",
+      "pre_m4_status": "PROVISIONAL",
+      "sha256": "cec66425cb2398aea72a206cd88521af5d30109100b258869c9dc78065a7e177",
+      "png_size": [
+        98,
+        121
+      ],
+      "mode": "RGBA",
+      "reason": "flat-sheet silhouette artwork, not derived from matted alpha; never a canonical slot"
+    },
+    {
+      "file": "_historical-silhouettes/eagle_silhouette_front.png",
+      "role": "historical",
+      "status": "HISTORICAL / QA-COMPARISON ONLY",
+      "pre_m4_status": "PROVISIONAL",
+      "sha256": "4adbcbe8a9004a92fd040d4056e6e0b1d908e61ecd4c0636dcb517562bb3d60c",
+      "png_size": [
+        106,
+        122
+      ],
+      "mode": "RGBA",
+      "reason": "flat-sheet silhouette artwork, not derived from matted alpha; never a canonical slot"
+    },
+    {
+      "file": "_historical-silhouettes/eagle_silhouette_side.png",
+      "role": "historical",
+      "status": "HISTORICAL / QA-COMPARISON ONLY",
+      "pre_m4_status": "PROVISIONAL",
+      "sha256": "9839b14a848506e7ec68e43d766d38c63d3915741762aadf7b792584f7337695",
+      "png_size": [
+        74,
+        119
+      ],
+      "mode": "RGBA",
+      "reason": "flat-sheet silhouette artwork, not derived from matted alpha; never a canonical slot"
+    }
+  ],
+  "superseded": [
+    {
+      "file": "_superseded/eagle_hero.png",
+      "role": "superseded",
+      "sha256": "adc80a67ff68976915aeb3e07d68c39cf5b250f992469812ad587d90b0568738",
+      "png_size": [
+        432,
+        335
+      ],
+      "mode": "RGBA"
+    }
+  ],
+  "eagle_white_head_check": {
+    "method": "brown-pixel fraction (hue 8-32, sat>0.4, 0.28<V<0.7) over head region of each head-bearing asset",
+    "fractions": {
+      "turnaround_front": 0.012,
+      "turnaround_34": 0.0154,
+      "turnaround_side": 0.008,
+      "turnaround_back": 0.0,
+      "hero": 0.0208,
+      "head": 0.0176
+    },
+    "flag_threshold": 0.05,
+    "assets_flagged_NEEDS_CONTROLLED_EDIT": []
+  }
+}

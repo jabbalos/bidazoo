@@ -1,0 +1,316 @@
+{
+  "schema_version": 1,
+  "character": {
+    "id": "tarsier",
+    "name": "Tarsier",
+    "role": "Small, agile scout and discoverer",
+    "tagline": null,
+    "kind": "starter"
+  },
+  "sheet": {
+    "status_line": "M4 BUILD - LOGO_ASSET logo/BidaZoo_World_Expedition_logo_master.png (READY WITH CROP/MATTING); palette 63ec00673ac0 PROVISIONAL (docs); cast scale PROVISIONAL",
+    "logo": {
+      "path": "logo/BidaZoo_World_Expedition_logo_master.png",
+      "sha256": "944915d0f0522c2714b47a9eab4840bf0790d4900709a8c5d13d0a57f4e0f21c",
+      "status": "READY WITH CROP/MATTING"
+    }
+  },
+  "cast": {
+    "k": 0.57,
+    "k_status": "PROVISIONAL",
+    "s0": 0.184
+  },
+  "palette": {
+    "status": "PROVISIONAL",
+    "slots": [
+      {
+        "label": "PRIMARY",
+        "name": "Golden-brown fur",
+        "hex": "#A8642C",
+        "status": "PROVISIONAL"
+      },
+      {
+        "label": "SECONDARY",
+        "name": "Scout hood yellow",
+        "hex": "#FCC003",
+        "status": "PROVISIONAL"
+      },
+      {
+        "label": "ACCENT",
+        "name": "Goggle lens blue",
+        "hex": "#05B5DD",
+        "status": "PROVISIONAL"
+      },
+      {
+        "label": "GEAR",
+        "name": "Scout pack slate",
+        "hex": "#2B4B53",
+        "status": "PROVISIONAL"
+      },
+      {
+        "label": "DETAIL",
+        "name": "Ear inner coral",
+        "hex": "#FC8161",
+        "status": "PROVISIONAL"
+      },
+      {
+        "label": "EYE RING",
+        "name": "Amber",
+        "hex": "#E07A05",
+        "status": "PROVISIONAL"
+      }
+    ],
+    "mapping_note": "palettes.json sha256 63ec00673ac0336a: hex sampled from final matted art, all PROVISIONAL per docs 09 / 15 (no hex locked); ACCENT/CHARACTER-SPECIFIC semantics per doc 16 s7 (Bronco: red star/gear separate from BANDANA maroon)"
+  },
+  "turnaround": {
+    "front": {
+      "path": "asset-library/tarsier/tarsier_turnaround_front.png",
+      "sha256": "fde2929c1e37b1ee1cc25c367d6b8d63e136ba083b31cd2243092b9fc8b71d9e",
+      "status": "READY WITH CROP/MATTING",
+      "plan_status": "READY WITH CROP/MATTING",
+      "transform": {
+        "ref_height_src_px": 231
+      }
+    },
+    "threeQuarter": {
+      "path": "asset-library/tarsier/tarsier_turnaround_34.png",
+      "sha256": "20db660ea8da88be4aa5dbb5caa7625d6f3805d0b46bbfe79ae91e52eb259406",
+      "status": "READY WITH CROP/MATTING",
+      "plan_status": "READY WITH CROP/MATTING",
+      "transform": {
+        "ref_height_src_px": 231
+      }
+    },
+    "side": {
+      "path": "asset-library/tarsier/tarsier_turnaround_side.png",
+      "sha256": "3f6041cb79a6a49a869a3f47bd6b8053daa50796c8f054a102ea45f01a997b45",
+      "status": "READY WITH CROP/MATTING",
+      "plan_status": "READY WITH CROP/MATTING",
+      "transform": {
+        "ref_height_src_px": 231
+      }
+    },
+    "back": {
+      "path": "asset-library/tarsier/tarsier_turnaround_back.png",
+      "sha256": "aa16fe527d0ae45d9a7fbb3aef72fc18d4c5eea9e9d43644e42ba74a520b4d97",
+      "status": "READY WITH CROP/MATTING",
+      "plan_status": "READY WITH CROP/MATTING",
+      "transform": {
+        "ref_height_src_px": 231
+      }
+    }
+  },
+  "hero": {
+    "path": "asset-library/tarsier/tarsier_hero.png",
+    "sha256": "f9ebc6925b3362db8c5c01c3e5af6b6293e8399a81c4f6175b50fe82e5463f0f",
+    "status": "OWNER-ACCEPTED MINOR",
+    "plan_status": "READY WITH CROP/MATTING",
+    "transform": {
+      "mode": "fit"
+    }
+  },
+  "head": {
+    "path": "asset-library/tarsier/tarsier_head.png",
+    "sha256": "740a87774251a54ce145668e89a55164bfbb3f0c3923ef85ef32144b536c57ca",
+    "status": "READY WITH CROP/MATTING",
+    "plan_status": "READY WITH CROP/MATTING",
+    "transform": {
+      "eye_line_src_y": 95,
+      "core_box": [
+        3,
+        3,
+        280,
+        146
+      ],
+      "anchor": "bottom"
+    }
+  },
+  "expressions": {
+    "head_scale": 0.5228,
+    "head_scale_basis": "v2: min(100/median core width, 109/widest core width) after density normalization; see template-rules-v2.md",
+    "idle": {
+      "path": "expression-batch/tarsier/tarsier_idle.png",
+      "sha256": "dace8b6cc79e4be0c869807ecb6ae5158b8221094547545f7e958bcc544da2f0",
+      "status": "READY WITH CROP/MATTING",
+      "plan_status": "READY WITH CROP/MATTING",
+      "transform": {
+        "units_per_source_px": 0.7526,
+        "eye_line_src_y": 97,
+        "core_box": [
+          3,
+          2,
+          280,
+          149
+        ],
+        "core_source": "derived",
+        "crop_kind": "head_only"
+      },
+      "notes": "status from expression_status.json (doc 17 s2: M1 closed, PASS 32 / OWNER-ACCEPTED MINOR 4); historical matte-tool report pass=None"
+    },
+    "happy": {
+      "path": "expression-batch/tarsier/tarsier_happy.png",
+      "sha256": "98fe59d73369c8e391a0b33d4aa060d077d20b3957869f6c5765d1f45de12d95",
+      "status": "READY WITH CROP/MATTING",
+      "plan_status": "READY WITH CROP/MATTING",
+      "transform": {
+        "units_per_source_px": 1.0,
+        "eye_line_src_y": 65,
+        "core_box": [
+          1,
+          2,
+          156,
+          100
+        ],
+        "core_source": "derived",
+        "crop_kind": "bust"
+      },
+      "notes": "status from expression_status.json (doc 17 s2: M1 closed, PASS 32 / OWNER-ACCEPTED MINOR 4); historical matte-tool report pass=False"
+    },
+    "thinking": {
+      "path": "expression-batch/tarsier/tarsier_thinking.png",
+      "sha256": "d5c8326cc10f1537cf3dda03fea9ca38db85feba80656e59d8a100ab2876c2a3",
+      "status": "READY WITH CROP/MATTING",
+      "plan_status": "READY WITH CROP/MATTING",
+      "transform": {
+        "units_per_source_px": 1.0,
+        "eye_line_src_y": 72,
+        "core_box": [
+          2,
+          2,
+          166,
+          110
+        ],
+        "core_source": "derived",
+        "crop_kind": "bust"
+      },
+      "notes": "status from expression_status.json (doc 17 s2: M1 closed, PASS 32 / OWNER-ACCEPTED MINOR 4); historical matte-tool report pass=True"
+    },
+    "cheer": {
+      "path": "expression-batch/tarsier/tarsier_cheer.png",
+      "sha256": "115f23dd63650d663d66462ffbe8fd4a64244647e24dff6a6908e29e3cf38ec6",
+      "status": "READY WITH CROP/MATTING",
+      "plan_status": "READY WITH CROP/MATTING",
+      "transform": {
+        "units_per_source_px": 1.0,
+        "eye_line_src_y": 65,
+        "core_box": [
+          5,
+          2,
+          156,
+          100
+        ],
+        "core_source": "derived",
+        "crop_kind": "bust"
+      },
+      "notes": "status from expression_status.json (doc 17 s2: M1 closed, PASS 32 / OWNER-ACCEPTED MINOR 4); historical matte-tool report pass=False"
+    },
+    "discover": {
+      "path": "expression-batch/tarsier/tarsier_discover.png",
+      "sha256": "1a02e1c3a74fec0c071a0ef05a58a83eb44a74d92b2e8fd6afd389fdaade58cf",
+      "status": "READY WITH CROP/MATTING",
+      "plan_status": "READY WITH CROP/MATTING",
+      "transform": {
+        "units_per_source_px": 1.0,
+        "eye_line_src_y": 75,
+        "core_box": [
+          1,
+          2,
+          173,
+          115
+        ],
+        "core_source": "derived",
+        "crop_kind": "bust"
+      },
+      "notes": "status from expression_status.json (doc 17 s2: M1 closed, PASS 32 / OWNER-ACCEPTED MINOR 4); historical matte-tool report pass=False"
+    },
+    "tryAgain": {
+      "path": "expression-batch/tarsier/tarsier_tryAgain.png",
+      "sha256": "c8828c9d856ee56e5db039dc8805f0fb711915f681a2a5edda875aff74b8985e",
+      "status": "READY WITH CROP/MATTING",
+      "plan_status": "READY WITH CROP/MATTING",
+      "transform": {
+        "units_per_source_px": 0.7526,
+        "eye_line_src_y": 98,
+        "core_box": [
+          3,
+          3,
+          277,
+          163
+        ],
+        "core_source": "report",
+        "crop_kind": "bust"
+      },
+      "notes": "status from expression_status.json (doc 17 s2: M1 closed, PASS 32 / OWNER-ACCEPTED MINOR 4); historical matte-tool report pass=None"
+    },
+    "vertical_anchor": "eye_line"
+  },
+  "details": [
+    {
+      "path": "asset-library/tarsier/tarsier_detail_goggles_front.png",
+      "sha256": "5b967528a1640ebb4ef2b0d555a76dbe157651d05b5688ffbdb86e5a5f690e3a",
+      "status": "READY WITH CROP/MATTING",
+      "plan_status": "READY WITH CROP/MATTING",
+      "caption": "Goggles (front)"
+    },
+    {
+      "path": "asset-library/tarsier/tarsier_detail_backpack_front.png",
+      "sha256": "87d5dbadbb19198271515ebd2bbbe5a568bec650c4403d028594f0888169808b",
+      "status": "READY WITH CROP/MATTING",
+      "plan_status": "READY WITH CROP/MATTING",
+      "caption": "Explorer backpack"
+    },
+    {
+      "path": "asset-library/tarsier/tarsier_detail_paw_emblem.png",
+      "sha256": "39759af9ceca335d080c7f6bb3145fe27f59ac61fc3dc18e6238e395149852a4",
+      "status": "READY WITH CROP/MATTING",
+      "plan_status": "READY WITH CROP/MATTING",
+      "caption": "Paw emblem"
+    },
+    {
+      "path": "asset-library/tarsier/tarsier_detail_hood_scout_jacket.png",
+      "sha256": "65324d78b9cd263f3148bc5a6e81e1e3b22270a31e63ba00272680483816390e",
+      "status": "READY WITH CROP/MATTING",
+      "plan_status": "READY WITH CROP/MATTING",
+      "caption": "Hood / scout jacket"
+    }
+  ],
+  "silhouettes": {
+    "derive": true,
+    "items": {
+      "front": {
+        "path": "asset-library/tarsier/tarsier_silhouette_front.png",
+        "sha256": "8bbb2d297809e0c68acca2cee0a141de45967ad085e7604594ab6835ee36b8ef",
+        "status": "READY WITH CROP/MATTING",
+        "plan_status": "READY WITH CROP/MATTING"
+      },
+      "threeQuarter": {
+        "path": "asset-library/tarsier/tarsier_silhouette_34.png",
+        "sha256": "08c4afece7a97b018d583967e9b3a9de4506c242732049f1b1815af0b9f5dda1",
+        "status": "READY WITH CROP/MATTING",
+        "plan_status": "READY WITH CROP/MATTING"
+      },
+      "side": {
+        "path": "asset-library/tarsier/tarsier_silhouette_side.png",
+        "sha256": "b270e1d13d3c102a2e320e8203652ac62b86f959ab144d8bb7bdfb4adf8742c3",
+        "status": "READY WITH CROP/MATTING",
+        "plan_status": "READY WITH CROP/MATTING"
+      },
+      "back": {
+        "path": "asset-library/tarsier/tarsier_silhouette_back.png",
+        "sha256": "43c217c51e552675fdbf59768225acf4254607b0a3a04a50e90bdb25508e37d8",
+        "status": "READY WITH CROP/MATTING",
+        "plan_status": "READY WITH CROP/MATTING"
+      },
+      "action": {
+        "path": "asset-library/tarsier/tarsier_silhouette_action.png",
+        "sha256": "b8aaceb3d6678c55fba71e2598fd8e731d19094952ecf5607a012795d54ee1f3",
+        "status": "READY WITH CROP/MATTING",
+        "plan_status": "READY WITH CROP/MATTING"
+      }
+    }
+  },
+  "proportion": {
+    "front_reference": "turnaround.front",
+    "comparison": null
+  }
+}

@@ -1,0 +1,174 @@
+{
+  "schema_version": 1,
+  "character": {
+    "id": "tarsier",
+    "name": "Tarsier",
+    "role": "Small, agile scout and discoverer",
+    "tagline": null,
+    "kind": "starter"
+  },
+  "sheet": {
+    "status_line": "LAYOUT PROOF - placeholders only; LOGO_ASSET and most art MISSING / TO AUTHOR",
+    "logo": {
+      "path": null,
+      "status": "MISSING / TO AUTHOR"
+    }
+  },
+  "cast": {
+    "k": 0.57,
+    "k_status": "PROVISIONAL",
+    "s0": 0.184
+  },
+  "palette": {
+    "status": "PROVISIONAL",
+    "mapping_note": "Names/hex from doc 09 s3 (code/ref values, not authority). Role mapping is a PROPOSAL pending production-plan step 9.",
+    "slots": [
+      {
+        "label": "PRIMARY",
+        "name": "Fur",
+        "hex": "#B98650",
+        "status": "PROVISIONAL"
+      },
+      {
+        "label": "SECONDARY",
+        "name": "Fur shade",
+        "hex": "#8D6338",
+        "status": "PROVISIONAL"
+      },
+      {
+        "label": "ACCENT",
+        "name": "Hood yellow",
+        "hex": "#F2C230",
+        "status": "PROVISIONAL"
+      },
+      {
+        "status": "OPEN"
+      },
+      {
+        "label": "DETAIL",
+        "name": "Goggle lens",
+        "hex": "#7FDCF2",
+        "status": "PROVISIONAL"
+      },
+      {
+        "status": "OPEN"
+      }
+    ]
+  },
+  "turnaround": {
+    "front": {
+      "path": null,
+      "status": "MISSING / TO AUTHOR",
+      "plan_status": "READY WITH CROP/MATTING",
+      "transform_hint": "when authored: transform.ref_height_src_px (or units_per_source_px), optional ground_y_src"
+    },
+    "threeQuarter": {
+      "path": null,
+      "status": "MISSING / TO AUTHOR",
+      "plan_status": "READY WITH CROP/MATTING",
+      "transform_hint": "when authored: transform.ref_height_src_px (or units_per_source_px), optional ground_y_src"
+    },
+    "side": {
+      "path": null,
+      "status": "MISSING / TO AUTHOR",
+      "plan_status": "READY WITH CROP/MATTING",
+      "transform_hint": "when authored: transform.ref_height_src_px (or units_per_source_px), optional ground_y_src"
+    },
+    "back": {
+      "path": null,
+      "status": "MISSING / TO AUTHOR",
+      "plan_status": "READY WITH CROP/MATTING",
+      "transform_hint": "when authored: transform.ref_height_src_px (or units_per_source_px), optional ground_y_src"
+    }
+  },
+  "hero": {
+    "path": null,
+    "status": "MISSING / TO AUTHOR",
+    "plan_status": "READY WITH CROP/MATTING"
+  },
+  "head": {
+    "path": null,
+    "status": "MISSING / TO AUTHOR",
+    "plan_status": "READY WITH CROP/MATTING"
+  },
+  "expressions": {
+    "head_scale": 0.361,
+    "head_scale_basis": "PROVISIONAL: matted bbox width of the first wired expression asset = nominal 100 px; replace once real matted heads exist",
+    "idle": {
+      "path": "idle-review-3/tarsier_idle_approved.png",
+      "sha256": "dace8b6cc79e4be0c869807ecb6ae5158b8221094547545f7e958bcc544da2f0",
+      "status": "PROVISIONAL",
+      "plan_status": "MISSING / TO AUTHOR",
+      "transform": {
+        "units_per_source_px": 1.0,
+        "eye_line_src_y": 95
+      },
+      "notes": "Existing transparent PNG wired for layout proof. No sign-off recorded, so it stays PROVISIONAL (doc 16 s2). eye_line_src_y is a manual visual estimate (+-3 src px)."
+    },
+    "happy": {
+      "path": null,
+      "status": "MISSING / TO AUTHOR",
+      "plan_status": "READY WITH CROP/MATTING"
+    },
+    "thinking": {
+      "path": null,
+      "status": "MISSING / TO AUTHOR",
+      "plan_status": "READY WITH CROP/MATTING"
+    },
+    "cheer": {
+      "path": null,
+      "status": "MISSING / TO AUTHOR",
+      "plan_status": "MISSING / TO AUTHOR"
+    },
+    "discover": {
+      "path": null,
+      "status": "MISSING / TO AUTHOR",
+      "plan_status": "PROVISIONAL"
+    },
+    "tryAgain": {
+      "path": "try-again-review/tarsier_tryagain.png",
+      "sha256": "2fa39c5a43f55eb243780ab25e3e74fd98c2d4c1c3679410403fe5c63670a3be",
+      "status": "PROVISIONAL",
+      "plan_status": "MISSING / TO AUTHOR",
+      "transform": {
+        "units_per_source_px": 1.0,
+        "eye_line_src_y": 95
+      },
+      "notes": "Existing transparent PNG wired for layout proof. No sign-off recorded, so it stays PROVISIONAL (doc 16 s2). eye_line_src_y is a manual visual estimate (+-3 src px)."
+    }
+  },
+  "details": [
+    {
+      "path": null,
+      "status": "MISSING / TO AUTHOR",
+      "plan_status": "READY WITH CROP/MATTING",
+      "caption": "Goggles (front)"
+    },
+    {
+      "path": null,
+      "status": "MISSING / TO AUTHOR",
+      "plan_status": "READY WITH CROP/MATTING",
+      "caption": "Explorer backpack"
+    },
+    {
+      "path": null,
+      "status": "MISSING / TO AUTHOR",
+      "plan_status": "READY WITH CROP/MATTING",
+      "caption": "Paw emblem"
+    },
+    {
+      "path": null,
+      "status": "MISSING / TO AUTHOR",
+      "plan_status": "READY WITH CROP/MATTING",
+      "caption": "Hood / scout jacket"
+    }
+  ],
+  "silhouettes": {
+    "derive": true,
+    "items": {}
+  },
+  "proportion": {
+    "front_reference": "turnaround.front",
+    "comparison": null
+  }
+}

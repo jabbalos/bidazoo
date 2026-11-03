@@ -1,0 +1,134 @@
+{
+  "schemaVersion": 1,
+  "purpose": "Provenance for the curated runtime Bronco expression PNGs (Checkpoint F4). Machine-readable authority; verified by tests/integration/character-runtime-assets.test.ts.",
+  "character": "bronco",
+  "runtimeDirectory": "games/zoo-sprint/assets/world-expedition/characters/bronco",
+  "canonicalLibrary": "docs/reference-art/world-expedition/production-v1.1",
+  "canonicalManifest": "docs/reference-art/world-expedition/production-v1.1/renderer/final-manifests/bronco.json",
+  "storage": "normal Git blobs (no Git LFS rule matches the runtime directory)",
+  "derivation": "byte-for-byte copy of the canonical M4 file: no re-encode, no crop, no resize, no recolor, no metadata edit",
+  "headScale": 0.606,
+  "expressions": {
+    "idle": {
+      "runtimeFile": "bronco_idle.png",
+      "runtimeSha256": "950796e5799ed3d02c4a330b45aa96fddcf7d70e5bc1c7f3725c883b57a777c0",
+      "runtimeBytes": 51727,
+      "width": 176,
+      "height": 144,
+      "canonicalSourcePath": "docs/reference-art/world-expedition/production-v1.1/expression-batch/bronco/bronco_idle.png",
+      "canonicalSha256": "950796e5799ed3d02c4a330b45aa96fddcf7d70e5bc1c7f3725c883b57a777c0",
+      "derivation": "byte-for-byte copy",
+      "anchor": {
+        "eyeLineSrcY": 68,
+        "coreBox": [
+          2,
+          0,
+          173,
+          105
+        ],
+        "cropKind": "bust"
+      }
+    },
+    "happy": {
+      "runtimeFile": "bronco_happy.png",
+      "runtimeSha256": "9bd170a3effdb145ca8e52e3fb85f1a97d5ef6e589e5af35577fb2d50c9284ac",
+      "runtimeBytes": 51929,
+      "width": 162,
+      "height": 153,
+      "canonicalSourcePath": "docs/reference-art/world-expedition/production-v1.1/expression-batch/bronco/bronco_happy.png",
+      "canonicalSha256": "9bd170a3effdb145ca8e52e3fb85f1a97d5ef6e589e5af35577fb2d50c9284ac",
+      "derivation": "byte-for-byte copy",
+      "anchor": {
+        "eyeLineSrcY": 64,
+        "coreBox": [
+          7,
+          3,
+          157,
+          98
+        ],
+        "cropKind": "bust"
+      }
+    },
+    "thinking": {
+      "runtimeFile": "bronco_thinking.png",
+      "runtimeSha256": "e397a0ee8d9678181a397218c4dee32987faff74a34cf10485d3c58712ecd847",
+      "runtimeBytes": 55032,
+      "width": 195,
+      "height": 151,
+      "canonicalSourcePath": "docs/reference-art/world-expedition/production-v1.1/expression-batch/bronco/bronco_thinking.png",
+      "canonicalSha256": "e397a0ee8d9678181a397218c4dee32987faff74a34cf10485d3c58712ecd847",
+      "derivation": "byte-for-byte copy",
+      "anchor": {
+        "eyeLineSrcY": 74,
+        "coreBox": [
+          3,
+          8,
+          179,
+          149
+        ],
+        "cropKind": "bust"
+      }
+    },
+    "cheer": {
+      "runtimeFile": "bronco_cheer.png",
+      "runtimeSha256": "4e3ca177405571345d2aebcebe11c9f3facfb532e2990fcc331b4e8544ba610b",
+      "runtimeBytes": 50518,
+      "width": 172,
+      "height": 147,
+      "canonicalSourcePath": "docs/reference-art/world-expedition/production-v1.1/expression-batch/bronco/bronco_cheer.png",
+      "canonicalSha256": "4e3ca177405571345d2aebcebe11c9f3facfb532e2990fcc331b4e8544ba610b",
+      "derivation": "byte-for-byte copy",
+      "anchor": {
+        "eyeLineSrcY": 77,
+        "coreBox": [
+          4,
+          5,
+          167,
+          144
+        ],
+        "cropKind": "bust"
+      }
+    },
+    "discover": {
+      "runtimeFile": "bronco_discover.png",
+      "runtimeSha256": "8f722008ebf761d577e430868ef69ee5f054728b5861863139864db336749a98",
+      "runtimeBytes": 55358,
+      "width": 168,
+      "height": 154,
+      "canonicalSourcePath": "docs/reference-art/world-expedition/production-v1.1/expression-batch/bronco/bronco_discover.png",
+      "canonicalSha256": "8f722008ebf761d577e430868ef69ee5f054728b5861863139864db336749a98",
+      "derivation": "byte-for-byte copy",
+      "anchor": {
+        "eyeLineSrcY": 70,
+        "coreBox": [
+          5,
+          4,
+          165,
+          106
+        ],
+        "cropKind": "bust"
+      }
+    },
+    "tryAgain": {
+      "runtimeFile": "bronco_tryAgain.png",
+      "runtimeSha256": "a72fdd816096dd5666b6e7857677bd26cbea4ec419756cace26ec195f145840d",
+      "runtimeBytes": 56115,
+      "width": 168,
+      "height": 151,
+      "canonicalSourcePath": "docs/reference-art/world-expedition/production-v1.1/expression-batch/bronco/bronco_tryAgain.png",
+      "canonicalSha256": "a72fdd816096dd5666b6e7857677bd26cbea4ec419756cace26ec195f145840d",
+      "derivation": "byte-for-byte copy",
+      "anchor": {
+        "eyeLineSrcY": 72,
+        "coreBox": [
+          0,
+          3,
+          167,
+          110
+        ],
+        "cropKind": "bust"
+      }
+    }
+  },
+  "totalRuntimeBytes": 320679
+}

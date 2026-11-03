@@ -1,0 +1,267 @@
+import { type Page } from '@playwright/test';
+import { computeExpressionPlacement } from '../../games/zoo-sprint/src/character-assets';
+import { EXPRESSION_STATES, type CastId, type ExpressionState } from '../../games/zoo-sprint/src/character-definitions';
+import { expect, test } from './fixtures';
+import { LAB_PORT } from './lab-env';
+
+/**
+ * Checkpoints F3 + F4: proves in a real browser, under the real client CSP, that every cast member's
+ * six production expressions (36 files) load as ordinary same-origin images, can all be shown, and
+ * stay put. Dino was proven first (F3); F4 runs the same checks for Koala, Tarsier, Eagle, Bronco
+ * and Click. Click is the host and guide: he can be inspected here, and still is not selectable.
+ *
+ * Uses the developer-only lab build (`npm run build:character-lab -w @bidazoo/play`, served on its
+ * own port). The lab has no platform access, so nothing here can touch questions, XP, or coins.
+ * The shared fixture still fails every test on a CSP violation, console error, or page error.
+ */
+test.use({ baseURL: `http://127.0.0.1:${LAB_PORT}` });
+
+const MIN_TAP = 44;
+const PNG_SIGNATURE = '89504e470d0a1a0a';
+const CAST: readonly CastId[] = ['dino', 'koala', 'tarsier', 'eagle', 'bronco', 'click'];
+const PNG_PATH = /^\/assets\/(dino|koala|tarsier|eagle|bronco|click)_([A-Za-z]+)-[^.]+\.png$/;
+
+interface Geometry {
+  id: string;
+  expression: ExpressionState;
+  production: boolean;
+  textureKey: string;
+  displayWidth: number;
+  displayHeight: number;
+  anchorX: number;
+  anchorY: number;
+  size: number;
+  worldEyeY: number;
+  worldX: number;
+  bounds: { x: number; y: number; w: number; h: number };
+}
+/** The fields of a SecurityPolicyViolationEvent this suite reads. */
+interface CspViolation {
+  blockedURI: string;
+  effectiveDirective: string;
+  violatedDirective: string;
+}
+interface Target {
+  id: string;
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+}
+
+async function attr(page: Page, name: string): Promise<string> {
+  return (await page.locator('#game').getAttribute(name)) ?? '';
+}
+async function geometry(page: Page): Promise<Geometry[]> {
+  return JSON.parse(await attr(page, 'data-lab-geometry')) as Geometry[];
+}
+async function openLab(page: Page, query = ''): Promise<void> {
+  await page.goto(`/?character-lab${query}`);
+  await expect(page.locator('#game')).toHaveAttribute('data-scene', 'character-lab');
+  await expect(page.locator('#game')).toHaveAttribute('data-lab-ready', 'true');
+}
+async function tap(page: Page, id: string): Promise<void> {
+  const targets = JSON.parse(await attr(page, 'data-hit-targets')) as Target[];
+  const target = targets.find((t) => t.id === id);
+  expect(target, `target ${id}`).toBeTruthy();
+  const box = await page.locator('#game canvas').boundingBox();
+  expect(box).toBeTruthy();
+  const x = box!.x + target!.x + target!.w / 2;
+  const y = box!.y + target!.y + target!.h / 2;
+  if (test.info().project.use.hasTouch === true) await page.touchscreen.tap(x, y);
+  else await page.mouse.click(x, y);
+}
+async function shot(page: Page, name: string): Promise<void> {
+  const dir = process.env['BZ_SHOTS_DIR'];
+  if (!dir) return;
+  await page.waitForTimeout(250);
+  await page.screenshot({ path: `${dir}/${test.info().project.name}__${name}.png` });
+}
+
+test.describe('Cast production expressions (lab build)', () => {
+  for (const id of CAST) {
+    test(`${id}: all six expressions load as production art and stay anchored`, async ({ page }) => {
+      const apiCalls: string[] = [];
+      page.on('request', (request) => {
+        const { pathname } = new URL(request.url());
+        if (pathname.startsWith('/api/')) apiCalls.push(pathname);
+      });
+      await openLab(page, `&cast=${id}`);
+      expect(await attr(page, 'data-lab-cast')).toBe(id);
+      // The lab loads the whole cast once: 6 characters x 6 expressions.
+      expect(await attr(page, 'data-production-art')).toBe('36');
+
+      const viewport = page.viewportSize()!;
+      const seen: Geometry[] = [];
+      for (const state of EXPRESSION_STATES) {
+        await tap(page, `lab-state-${state}`);
+        await expect(page.locator('#game')).toHaveAttribute('data-lab-state', state);
+        const [look] = await geometry(page);
+        expect(look, state).toBeTruthy();
+        expect(look!.expression).toBe(state);
+        expect(look!.production, `${state} uses production art`).toBe(true);
+        expect(look!.id).toBe(id);
+        expect(look!.textureKey).toBe(`bz-we-character-${id}-${state}`);
+        seen.push(look!);
+        await shot(page, `${id}-${state}`);
+      }
+
+      // The placement the scene actually produced equals the contract's rule, at the real bust size.
+      for (const look of seen) {
+        const placement = computeExpressionPlacement(id, look.expression, look.size)!;
+        expect(Math.abs(look.displayWidth - placement.displayWidth), `${look.expression} width`).toBeLessThan(0.5);
+        expect(Math.abs(look.displayHeight - placement.displayHeight), `${look.expression} height`).toBeLessThan(0.5);
+      }
+      // One scale for all six (no head-size jump) and the eye line and head center never move.
+      const scales = seen.map((look) => look.displayWidth / computeExpressionPlacement(id, look.expression, look.size)!.displayWidth);
+      expect(Math.max(...scales) - Math.min(...scales)).toBeLessThan(0.005);
+      const eyes = seen.map((look) => look.worldEyeY);
+      const columns = seen.map((look) => look.worldX);
+      expect(Math.max(...eyes) - Math.min(...eyes), 'eye line stays on one row').toBeLessThan(0.5);
+      expect(Math.max(...columns) - Math.min(...columns), 'head center stays in one column').toBeLessThan(0.5);
+
+      // Nothing clipped by the screen or by the bust box.
+      for (const look of seen) {
+        const half = look.size / 2;
+        const cx = look.worldX;
+        const cy = look.worldEyeY - (look.anchorY - 0); // container center y = worldEyeY - anchorY
+        expect(look.bounds.x, `${look.expression} left`).toBeGreaterThanOrEqual(0);
+        expect(look.bounds.y, `${look.expression} top`).toBeGreaterThanOrEqual(0);
+        expect(look.bounds.x + look.bounds.w, `${look.expression} right`).toBeLessThanOrEqual(viewport.width);
+        expect(look.bounds.y + look.bounds.h, `${look.expression} bottom`).toBeLessThanOrEqual(viewport.height);
+        expect(look.bounds.x, `${look.expression} inside box left`).toBeGreaterThanOrEqual(cx - half - 1);
+        expect(look.bounds.x + look.bounds.w, `${look.expression} inside box right`).toBeLessThanOrEqual(cx + half + 1);
+        expect(look.bounds.y, `${look.expression} inside box top`).toBeGreaterThanOrEqual(cy - half - 1);
+        expect(look.bounds.y + look.bounds.h, `${look.expression} inside box bottom`).toBeLessThanOrEqual(cy + half + 1);
+      }
+
+      // The page does not scroll, and the six buttons are real, reachable tap targets.
+      const page$ = await page.evaluate(() => ({
+        sh: document.documentElement.scrollHeight,
+        ih: window.innerHeight,
+        sw: document.documentElement.scrollWidth,
+        iw: window.innerWidth,
+      }));
+      expect(page$.sh).toBeLessThanOrEqual(page$.ih);
+      expect(page$.sw).toBeLessThanOrEqual(page$.iw);
+      const targets = (JSON.parse(await attr(page, 'data-hit-targets')) as Target[]).filter((t) => t.id.startsWith('lab-state-'));
+      expect(targets.map((t) => t.id)).toEqual(EXPRESSION_STATES.map((s) => `lab-state-${s}`));
+      for (const t of targets) {
+        expect(t.w, `${t.id} width`).toBeGreaterThanOrEqual(MIN_TAP);
+        expect(t.h, `${t.id} height`).toBeGreaterThanOrEqual(MIN_TAP);
+        expect(t.x).toBeGreaterThanOrEqual(0);
+        expect(t.x + t.w).toBeLessThanOrEqual(viewport.width);
+        expect(t.y + t.h).toBeLessThanOrEqual(viewport.height);
+      }
+
+      // Switching expressions is presentation only: the lab never talks to the platform API.
+      expect(apiCalls.filter((path) => path !== '/api/v1/device'), 'no platform calls from the lab').toEqual([]);
+    });
+
+  }
+
+  test('loads each of the 36 PNGs once, as a real same-origin image, and nothing else', async ({ page }) => {
+    const pngRequests: string[] = [];
+    const responses: Array<{ url: string; status: number; type: string; signature: string }> = [];
+    page.on('request', (request) => {
+      if (/\.png(\?|$)/.test(request.url())) pngRequests.push(new URL(request.url()).pathname);
+    });
+    page.on('response', async (response) => {
+      if (!/\.png(\?|$)/.test(response.url())) return;
+      const body = await response.body();
+      responses.push({
+        url: new URL(response.url()).pathname,
+        status: response.status(),
+        type: response.headers()['content-type'] ?? '',
+        signature: body.subarray(0, 8).toString('hex'),
+      });
+    });
+    await openLab(page);
+
+    // Exactly the 36 cast PNGs (6 characters x 6 expressions), each requested once (no duplicate loads), all real PNG bytes.
+    expect(pngRequests.length).toBe(36);
+    expect(new Set(pngRequests).size).toBe(36);
+    const wanted = CAST.flatMap((id) => EXPRESSION_STATES.map((state) => `${id}_${state}`)).sort();
+    expect(pngRequests.map((p) => p.replace(PNG_PATH, '$1_$2')).sort()).toEqual(wanted);
+    await expect.poll(() => responses.length).toBe(36);
+    for (const response of responses) {
+      expect(response.status, response.url).toBe(200);
+      expect(response.type, response.url).toBe('image/png');
+      expect(response.signature, `${response.url} is a real PNG, not LFS pointer text`).toBe(PNG_SIGNATURE);
+    }
+
+    // The browser reports how each file was fetched: an <img> element, not XHR/fetch (which would be a blob: image).
+    const entries = await page.evaluate(() =>
+      performance
+        .getEntriesByType('resource')
+        .filter((entry) => /\.png/.test(entry.name))
+        .map((entry) => ({ name: new URL(entry.name).pathname, initiator: (entry as PerformanceResourceTiming).initiatorType })),
+    );
+    expect(entries.length).toBe(36);
+    for (const entry of entries) expect(entry.initiator, entry.name).toBe('img');
+  });
+
+  for (const id of CAST) {
+    test(`${id} strip view: all six at once share one scale and one eye line`, async ({ page }) => {
+      await openLab(page, `&view=strip&cast=${id}`);
+      expect(await attr(page, 'data-lab-view')).toBe('strip');
+      const looks = await geometry(page);
+      expect(looks.map((look) => look.expression)).toEqual([...EXPRESSION_STATES]);
+      for (const look of looks) {
+        expect(look.production).toBe(true);
+        const placement = computeExpressionPlacement(id, look.expression, look.size)!;
+        expect(Math.abs(look.displayWidth - placement.displayWidth)).toBeLessThan(0.5);
+        expect(Math.abs(look.displayHeight - placement.displayHeight)).toBeLessThan(0.5);
+        // Local anchor is the same fraction of the bust box in every cell.
+        expect(look.anchorY / look.size).toBeCloseTo(computeExpressionPlacement(id, look.expression, look.size)!.y / look.size, 5);
+      }
+      expect(new Set(looks.map((look) => look.size)).size).toBe(1);
+      for (const look of looks) expect(look.id).toBe(id);
+      await shot(page, `strip-${id}`);
+    });
+  }
+
+  test('negative control: Phaser default XHR loading IS blocked by the CSP, so the guard and the fix are real', async ({ page }) => {
+    // The shared fixture treats CSP violations as failures; this annotation is its existing opt-out
+    // for a test that provokes one on purpose. The fixture is unchanged.
+    test.info().annotations.push({ type: 'expects-csp-violation', description: 'XHR image loading creates blob: URLs, which img-src forbids' });
+
+    // Observe the standards-based SecurityPolicyViolationEvent, not Chromium's console wording.
+    // Captured in the page from the very first script and read back with page.evaluate().
+    await page.addInitScript(() => {
+      const violations: CspViolation[] = [];
+      (window as unknown as { __bzCspViolations: CspViolation[] }).__bzCspViolations = violations;
+      window.addEventListener(
+        'securitypolicyviolation',
+        (event) => {
+          violations.push({ blockedURI: event.blockedURI, effectiveDirective: event.effectiveDirective, violatedDirective: event.violatedDirective });
+        },
+        true,
+      );
+    });
+    const readViolations = (): Promise<CspViolation[]> =>
+      page.evaluate(() => (window as unknown as { __bzCspViolations?: CspViolation[] }).__bzCspViolations ?? []);
+
+    await page.goto('/?character-lab&loader=xhr');
+    await expect(page.locator('#game')).toHaveAttribute('data-lab-ready', 'true');
+
+    // A CSP violation happened, against an image load of a blob: resource, under img-src.
+    // (Browsers report the blocked URI as "blob" or "blob:"; the directive as img-src or img-src-elem.)
+    await expect
+      .poll(async () => (await readViolations()).some((v) => /^blob\b/.test(v.blockedURI) && /^img-src/.test(v.effectiveDirective || v.violatedDirective)))
+      .toBe(true);
+
+    // No texture survives, so the lab (and the game) would fall back to code-drawn art.
+    expect(await attr(page, 'data-production-art')).toBe('0');
+
+    // Resource Timing: the default path fetched the PNGs, but NOT as ordinary <img> loads.
+    const initiators = await page.evaluate(() =>
+      performance
+        .getEntriesByType('resource')
+        .filter((entry) => /\.png/.test(entry.name))
+        .map((entry) => (entry as PerformanceResourceTiming).initiatorType),
+    );
+    expect(initiators.length).toBeGreaterThan(0);
+    for (const initiator of initiators) expect(initiator).not.toBe('img');
+  });
+});

@@ -1,0 +1,51 @@
+# 18. World Expedition visual recovery
+
+Presentation-only pass on branch `feature/world-expedition-visual-recovery`. No backend, API contract, schema,
+progression, XP/coin, question, grading, mastery, identity or deployment change. The live build stays the
+technical beta baseline.
+
+## Why the first integration undershot
+
+1. Characters were sized as a *square bust box* from the head core (`headScale x 0.62`), which at card/track sizes
+   gave 50-100 px heads. The art is head-and-bust crops with a hard flat bottom edge, so it was never placed where a
+   large crop could be hidden.
+2. Backgrounds were flat jungle-green fills; no depth, no terraces, no light.
+3. Layouts were the legacy prototype: a 2-column card grid on select, a progress track with a sticker on it in play.
+4. The documented scale relationships existed in data but did not drive composition.
+5. Source art is small (about 130-430 px wide), so large presentation needs deliberate upscaling and foreground
+   pieces, not just bigger boxes.
+6. The canvas is CSS-pixel based (no DPR resolution), so upscaled art and text were softer than they should be.
+
+## What changed
+
+- `computeHeroFit()` sizes a character to the space it is given (one uniform scale, same eye line, flat crop pushed
+  below a foreground plate/card/ledge). `castPresence()` (factor^0.4) keeps Eagle > Bronco > Dino > Koala > Tarsier
+  while still letting the smallest buddy read as a hero.
+- Shared presentation layer under `games/zoo-sprint/src/presentation/`: responsive layout rules (stack vs split by
+  screen shape), baked environment backdrops (sky, ridges, rice terraces, mist, lanterns), surfaces (parchment,
+  timber, glossy buttons, ribbon, ledge), icons, hero stage, medallions, guide chip.
+- Nunito Sans (OFL), self-hosted, loaded before first paint.
+- Choose Your Buddy, gameplay and results rebuilt on that layer. Click is the host/guide only and has no hit target.
+- Expressions: idle waiting/loading, discover on the first question, thinking while a question is open and while
+  submitting, happy on correct, cheer on a streak of 3+, tryAgain on wrong (amber, never red), cheer/discover on results.
+
+## Owner decisions still open
+
+- Trait copy in `presentation/traits.ts` is proposed.
+- `PRESENCE_EXPONENT` (how much the smallest buddies are enlarged).
+- Voice preview: not built (no audio assets exist).
+- Upscale softness (about 2-3.4x) until higher-resolution runtime art exists.
+
+## Step 2 polish and Step 3 verification
+
+- Character Select: heroes are sized by a normalized visible height (`visibleHeight` in `computeHeroFit`), so all five starters share one baseline and visible scale; the hero stage is capped at 1.3 x the content width and the freed height goes to breathing room, not sky.
+- Gameplay: buddy reduced about 7.5%; HUD, scenery gap, question card and answer buttons unchanged; answer hit targets are identical in question, submitting and feedback states (no layout jump).
+- Image sharpness audit: the 36 runtime expression PNGs are 106-294 px wide byte-copies of production-v1.1 crops cut from 1448x1086 sheets. No higher-resolution approved source (PSD/TIFF/SVG/larger PNG) exists in the library, so no art was regenerated. A real sharpness fix needs an owner-approved higher-resolution re-render. Upscale on phones is about 1.1x to 2.5x CSS px, doubled again in device px at DPR 2.
+- E2E specs updated to the new presentation (one medallion row, "Choose {Name}" label, Discover on the first question, Thinking on later ones, Cheer on a streak of three, longer waits for the 1 s celebration under software GL). Playwright runs on the cloud Chromium are supplementary; official validation is the studio PC.
+
+## Step 3 adjustment pass
+
+- Desktop Character Select: title, guide, medallions and CTA now form one centered column with a single vertical rhythm; CTA is shorter, medallions larger. Phone layouts unchanged.
+- Results: the buddy is sized by visible height and is much larger; summit scene is wider on desktop; the summary panel fits its content and is grouped with the banner and Play Again; a static sunburst and confetti add payoff. All result data is unchanged.
+- Dino tryAgain: a small hidden-bounds polygon (character-art.ts) keeps stray backpack pixels from showing above the card. The approved PNG on disk is not edited.
+- Sharpness: unchanged by design (separate asset-quality decision).

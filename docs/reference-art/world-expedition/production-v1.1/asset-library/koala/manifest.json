@@ -1,0 +1,1285 @@
+{
+  "schema": "m4-release-library-manifest/1",
+  "generated": "2026-10-13",
+  "character": "koala",
+  "source_sheet": "koala.png (1448x1086)",
+  "excluded": "six expression states",
+  "role_vocabulary": {
+    "canonical": "fills one doc 15/16 slot",
+    "supplemental": "real art, not a canonical slot; must not be used as canonical",
+    "historical": "old flat-sheet silhouettes, QA comparison only",
+    "superseded": "earlier versions, audit only"
+  },
+  "status_vocabulary": [
+    "READY WITH CROP/MATTING",
+    "NEEDS CONTROLLED EDIT",
+    "MISSING / TO AUTHOR",
+    "PROVISIONAL",
+    "HISTORICAL / QA-COMPARISON ONLY"
+  ],
+  "owner_accepted_minor_renders_as": "READY WITH CROP/MATTING",
+  "canonical_slots": {
+    "F detail 2": "koala_detail_glasses.png",
+    "F detail 3": "koala_detail_scholar_book.png",
+    "F detail 1": "koala_detail_scholar_hat.png",
+    "F detail 4": "koala_detail_scholar_jacket.png",
+    "C head": "koala_head.png",
+    "B hero": "koala_hero_reading.png",
+    "A turnaround 34": "koala_turnaround_34.png",
+    "A turnaround back": "koala_turnaround_back.png",
+    "A turnaround front": "koala_turnaround_front.png",
+    "A turnaround side": "koala_turnaround_side.png",
+    "E silhouette front": "koala_silhouette_front.png",
+    "E silhouette 34": "koala_silhouette_34.png",
+    "E silhouette side": "koala_silhouette_side.png",
+    "E silhouette back": "koala_silhouette_back.png",
+    "E silhouette reading": "koala_silhouette_reading.png"
+  },
+  "counts": {
+    "canonical": 15,
+    "supplemental": 2,
+    "historical_silhouettes": 5,
+    "superseded": 5,
+    "status_by_role": {
+      "canonical": {
+        "OWNER-ACCEPTED MINOR": 3,
+        "READY WITH CROP/MATTING": 12
+      },
+      "supplemental": {
+        "READY WITH CROP/MATTING": 1,
+        "NEEDS CONTROLLED EDIT": 1
+      }
+    }
+  },
+  "assets": [
+    {
+      "file": "koala_detail_glasses.png",
+      "asset": "detail_glasses",
+      "role": "canonical",
+      "slot": "F detail 2",
+      "status": "OWNER-ACCEPTED MINOR",
+      "sha256": "9e7d5a6475338f6f7a8ab681a9b3ae2f7bf508b8c586560d8883fe11f0547bc5",
+      "png_size": [
+        175,
+        67
+      ],
+      "mode": "RGBA",
+      "preview_4bg": "koala_detail_glasses_4bg.png",
+      "source_provenance": {
+        "source_sheet": "koala.png (1448x1086)",
+        "source_panel_box": [
+          596,
+          898,
+          772,
+          968
+        ],
+        "method": "parchment",
+        "auto_metrics": {
+          "clipping": false,
+          "clip_edges": {
+            "clip_left": 0.0,
+            "clip_right": 0.0,
+            "clip_top": 0.0,
+            "clip_bottom": 0.028
+          },
+          "halo_fraction": 0.0,
+          "extra_components": [],
+          "outline_missing_px": 0,
+          "auto_pass": true
+        },
+        "pass": true,
+        "pass_basis": "W1 repair pass, visually reviewed on 4 backgrounds",
+        "drawn_height_px": 63,
+        "png_size": [
+          175,
+          67
+        ],
+        "recommended_eye_line_src_y": null,
+        "eye_line_basis": null,
+        "notes": "W1: dotted light fringe on inner lens rims recolored to frame tone. Frame color check: the approved detail panel itself renders the frames dark brown-black with warm highlights (not a matte artifact), so colors left as source; reads slightly browner than the near-black frames on the turnaround/IDLE heads (art-direction note, not corrected to avoid redesign). | prev: Lens interiors made transparent by darkness-vs-parchment alpha (frame is dark, lenses/specks are not); label text and hat-shadow streak painted out. A faint thin pale line remains on the inner lens ri || M4: frames recoloured to canonical dark charcoal / near-black (see m4_correction).",
+        "w1_repaired": true
+      },
+      "renders_as": "READY WITH CROP/MATTING",
+      "m4_correction": {
+        "task": "A: canonical dark charcoal / near-black frames",
+        "result": "colour correction PASS; overall status stays OWNER-ACCEPTED MINOR (W1 soft-edge / thin pale inner-rim line unchanged and still owner-accepted; geometry untouched)",
+        "method": "library-tools/koala_glasses_fix.py: per-pixel luminance remap + chroma replacement; alpha channel byte-identical; no other Koala asset recoloured",
+        "colour_authority": {
+          "library/koala_turnaround_front.png": {
+            "n": 316,
+            "median_rgb": [
+              7.0,
+              3.0,
+              6.0
+            ]
+          },
+          "library/koala_head.png": {
+            "n": 600,
+            "median_rgb": [
+              12.0,
+              6.0,
+              6.0
+            ]
+          },
+          "production-v1/03 head close-up": {
+            "n": 479,
+            "median_rgb": [
+              8.0,
+              5.0,
+              5.0
+            ]
+          }
+        },
+        "canonical_frame_rgb": [
+          9.0,
+          5.0,
+          6.0
+        ],
+        "body_mean_rgb_before": [
+          27.3,
+          12.4,
+          6.3
+        ],
+        "body_mean_rgb_after": [
+          17.1,
+          13.1,
+          14.0
+        ],
+        "alpha_identical": true,
+        "luminance_correlation_old_new": 0.9896494355782395,
+        "brown_pixels_before_after": [
+          2309,
+          1
+        ],
+        "pre_m4_file": "_superseded/koala_detail_glasses_pre-M4-brown.png",
+        "pre_m4_sha256": "6bfcf2e9719e5eabbdac917dd4dbf3a8a9543b2b2dbaf4af5edbfa49eb9b8d4d",
+        "verified_on": [
+          "checkerboard",
+          "parchment",
+          "dark navy",
+          "mid gray"
+        ],
+        "caveat": "near-black frames have inherently low contrast on the dark navy tile (same as the approved turnaround/head art); frames remain readable via charcoal rim highlights"
+      },
+      "recommended_eye_line_src_y": null,
+      "eye_line_basis": null
+    },
+    {
+      "file": "koala_detail_scholar_book.png",
+      "asset": "detail_scholar_book",
+      "role": "canonical",
+      "slot": "F detail 3",
+      "status": "READY WITH CROP/MATTING",
+      "sha256": "86d9e8c80b15646f649ca4e286c64904097c5dccbe2e6978dbe7b41241106d5d",
+      "png_size": [
+        121,
+        138
+      ],
+      "mode": "RGBA",
+      "preview_4bg": "koala_detail_scholar_book_4bg.png",
+      "source_provenance": {
+        "source_sheet": "koala.png (1448x1086)",
+        "source_panel_box": [
+          762,
+          826,
+          886,
+          968
+        ],
+        "method": "parchment",
+        "auto_metrics": {
+          "clipping": false,
+          "clip_edges": {
+            "clip_left": 0.0,
+            "clip_right": 0.0,
+            "clip_top": 0.0,
+            "clip_bottom": 0.035
+          },
+          "halo_fraction": 0.0012,
+          "extra_components": [],
+          "outline_missing_px": 0,
+          "auto_pass": true
+        },
+        "pass": true,
+        "pass_basis": "auto",
+        "drawn_height_px": 134,
+        "png_size": [
+          121,
+          138
+        ],
+        "recommended_eye_line_src_y": null,
+        "eye_line_basis": null,
+        "notes": "Matted object."
+      },
+      "recommended_eye_line_src_y": null,
+      "eye_line_basis": null
+    },
+    {
+      "file": "koala_detail_scholar_hat.png",
+      "asset": "detail_scholar_hat",
+      "role": "canonical",
+      "slot": "F detail 1",
+      "status": "READY WITH CROP/MATTING",
+      "sha256": "86fc973d098bc8cd266f8be08592dc4d9e5faa8ed3bc94de55f12dd4d0776fea",
+      "png_size": [
+        159,
+        87
+      ],
+      "mode": "RGBA",
+      "preview_4bg": "koala_detail_scholar_hat_4bg.png",
+      "source_provenance": {
+        "source_sheet": "koala.png (1448x1086)",
+        "source_panel_box": [
+          534,
+          822,
+          694,
+          909
+        ],
+        "method": "parchment",
+        "auto_metrics": {
+          "clipping": false,
+          "clip_edges": {
+            "clip_left": 0.0,
+            "clip_right": 0.0,
+            "clip_top": 0.0,
+            "clip_bottom": 0.748
+          },
+          "halo_fraction": 0.0,
+          "extra_components": [],
+          "outline_missing_px": 0,
+          "auto_pass": true
+        },
+        "pass": true,
+        "pass_basis": "auto",
+        "drawn_height_px": 85,
+        "png_size": [
+          159,
+          87
+        ],
+        "recommended_eye_line_src_y": null,
+        "eye_line_basis": null,
+        "notes": "Contact-shadow cream removed; faint cream shadow fringe may remain at bottom right. cream_clear(lens/shadow transparency)"
+      },
+      "recommended_eye_line_src_y": null,
+      "eye_line_basis": null
+    },
+    {
+      "file": "koala_detail_scholar_jacket.png",
+      "asset": "detail_scholar_jacket",
+      "role": "canonical",
+      "slot": "F detail 4",
+      "status": "READY WITH CROP/MATTING",
+      "sha256": "af9c53c70e05e1b2606670e471d1748ec982511ee209b8f5516c917cb9165931",
+      "png_size": [
+        186,
+        94
+      ],
+      "mode": "RGBA",
+      "preview_4bg": "koala_detail_scholar_jacket_4bg.png",
+      "source_provenance": {
+        "source_sheet": "koala.png (1448x1086)",
+        "source_panel_box": [
+          498,
+          210,
+          724,
+          488
+        ],
+        "method": "derived_crop",
+        "auto_metrics": {
+          "clipping": false,
+          "clip_edges": {},
+          "halo_fraction": 0.0059,
+          "extra_components": [],
+          "outline_missing_px": 0,
+          "auto_pass": true
+        },
+        "pass": true,
+        "pass_basis": "auto, visually confirmed",
+        "drawn_height_px": 94,
+        "png_size": [
+          186,
+          94
+        ],
+        "recommended_eye_line_src_y": null,
+        "eye_line_basis": null,
+        "notes": "Derived crop (doc 16 slot 4: scholar jacket from turnaround). Hard-cut top/bottom edges."
+      },
+      "recommended_eye_line_src_y": null,
+      "eye_line_basis": null
+    },
+    {
+      "file": "koala_head.png",
+      "asset": "head",
+      "role": "canonical",
+      "slot": "C head",
+      "status": "OWNER-ACCEPTED MINOR",
+      "sha256": "0bc633dbd38d55a5df2236082be0cd2a507782712641c06e0f4eca45e23c5995",
+      "png_size": [
+        321,
+        258
+      ],
+      "mode": "RGBA",
+      "preview_4bg": "koala_head_4bg.png",
+      "source_provenance": {
+        "source_sheet": "koala.png (1448x1086)",
+        "source_panel_box": [
+          10,
+          205,
+          340,
+          478
+        ],
+        "method": "scenic",
+        "auto_metrics": {
+          "clipping": false,
+          "clip_edges": {
+            "clip_left": 0.0,
+            "clip_right": 0.0,
+            "clip_top": 0.0,
+            "clip_bottom": 0.0
+          },
+          "halo_fraction": 0.0022,
+          "extra_components": [],
+          "outline_missing_px": 7,
+          "auto_pass": true
+        },
+        "pass": true,
+        "pass_basis": "W1 repair pass, visually reviewed on 4 backgrounds",
+        "drawn_height_px": 253,
+        "png_size": [
+          321,
+          258
+        ],
+        "recommended_eye_line_src_y": 117,
+        "eye_line_basis": "visual estimate (png px from top)",
+        "notes": "W1: white ear-fringe on dark backgrounds recolored to inner fur tone (fur edge preserved). Bottom is an intentional soft bust fade; old panel crop kept as koala_head_panel.png. | prev: Portrait-style bust with shoulders and jacket, re-extracted from the Character Overview hero (the Head Close-Up panel has no shoulders). Source limit: the bust is only 321x258 px (not ~520 tall) becau",
+        "w1_repaired": true
+      },
+      "renders_as": "READY WITH CROP/MATTING",
+      "recommended_eye_line_src_y": 117,
+      "eye_line_basis": "visual estimate (png px from top)"
+    },
+    {
+      "file": "koala_head_panel.png",
+      "asset": "head_panel",
+      "role": "supplemental",
+      "slot": null,
+      "status": "READY WITH CROP/MATTING",
+      "sha256": "adcb7578e09681a6e1559d2c3cd2f93e8bef6ef8e810c243c466accafd5393ab",
+      "png_size": [
+        380,
+        212
+      ],
+      "mode": "RGBA",
+      "preview_4bg": "koala_head_panel_4bg.png",
+      "source_provenance": {
+        "source_sheet": "koala.png (1448x1086)",
+        "source_panel_box": [
+          24,
+          566,
+          470,
+          784
+        ],
+        "method": "scenic",
+        "auto_metrics": {
+          "clipping": false,
+          "clip_edges": {
+            "clip_left": 0.0,
+            "clip_right": 0.0,
+            "clip_top": 0.0,
+            "clip_bottom": 0.515
+          },
+          "halo_fraction": 0.0215,
+          "extra_components": [],
+          "outline_missing_px": 0,
+          "auto_pass": true
+        },
+        "pass": true,
+        "pass_basis": "auto, visually confirmed",
+        "drawn_height_px": 209,
+        "png_size": [
+          380,
+          212
+        ],
+        "recommended_eye_line_src_y": 135,
+        "eye_line_basis": "visual estimate (png px from top)",
+        "notes": "Previous landscape extract from the Head Close-Up panel (wide ears, bottom edge is the hard source panel cut). Baked \"Expressive eyes!\" arrow and paw removed; sky/cloud removed by hue."
+      },
+      "role_reason": "SUPPLEMENTAL: alternate wide head-panel crop; canonical Koala head is koala_head (doc 16 section 8).",
+      "canonical_slot_references": [],
+      "recommended_eye_line_src_y": 135,
+      "eye_line_basis": "visual estimate (png px from top)"
+    },
+    {
+      "file": "koala_hero_overview.png",
+      "asset": "hero_overview",
+      "role": "supplemental",
+      "slot": null,
+      "status": "NEEDS CONTROLLED EDIT",
+      "sha256": "229620b606b58b6bb0c5acc13a910dcd08e4cf8f44dc26efd1f8fe2ee63fe112",
+      "png_size": [
+        326,
+        346
+      ],
+      "mode": "RGBA",
+      "preview_4bg": "koala_hero_overview_4bg.png",
+      "source_provenance": {
+        "source_sheet": "koala.png (1448x1086)",
+        "source_panel_box": [
+          10,
+          205,
+          336,
+          566
+        ],
+        "method": "scenic",
+        "auto_metrics": {
+          "clipping": true,
+          "clip_edges": {
+            "clip_left": 0.029,
+            "clip_right": 0.035,
+            "clip_top": 0.0,
+            "clip_bottom": 0.812
+          },
+          "halo_fraction": 0.0007,
+          "extra_components": [],
+          "outline_missing_px": 93,
+          "auto_pass": false
+        },
+        "pass": false,
+        "pass_basis": "auto, visually confirmed",
+        "drawn_height_px": 343,
+        "png_size": [
+          326,
+          346
+        ],
+        "recommended_eye_line_src_y": 117,
+        "eye_line_basis": "visual estimate (png px from top)",
+        "notes": "Alternate scenic hero from Character Overview panel. Rocks/plants and a blue sky remnant remain, panel cuts the lower body; only use after hand cleanup. hero_reading is the recommended hero."
+      },
+      "role_reason": "SUPPLEMENTAL: deferred, flagged NEEDS CONTROLLED EDIT, NOT repaired in M4. Canonical Koala hero is koala_hero_reading. No canonical slot references it.",
+      "canonical_slot_references": [],
+      "flag": "SUPPLEMENTAL - NOT REPAIRED (deferred by owner)",
+      "recommended_eye_line_src_y": 117,
+      "eye_line_basis": "visual estimate (png px from top)"
+    },
+    {
+      "file": "koala_hero_reading.png",
+      "asset": "hero_reading",
+      "role": "canonical",
+      "slot": "B hero",
+      "status": "READY WITH CROP/MATTING",
+      "sha256": "5989e248c681e780179c539d2dd56d746d03eb5d35dd8f9d6ffa86960762c3f8",
+      "png_size": [
+        206,
+        241
+      ],
+      "mode": "RGBA",
+      "preview_4bg": "koala_hero_reading_4bg.png",
+      "source_provenance": {
+        "source_sheet": "koala.png (1448x1086)",
+        "source_panel_box": [
+          1219,
+          226,
+          1436,
+          488
+        ],
+        "method": "parchment",
+        "auto_metrics": {
+          "clipping": true,
+          "clip_edges": {
+            "clip_left": 0.036,
+            "clip_right": 0.0,
+            "clip_top": 0.0,
+            "clip_bottom": 0.0
+          },
+          "halo_fraction": 0.0,
+          "extra_components": [],
+          "outline_missing_px": 0,
+          "auto_pass": false
+        },
+        "pass": true,
+        "pass_basis": "reviewed override of auto flag",
+        "drawn_height_px": 235,
+        "png_size": [
+          206,
+          241
+        ],
+        "recommended_eye_line_src_y": 80,
+        "eye_line_basis": "visual estimate (png px from top)",
+        "notes": "Doc 16 lists the reading action pose as hero material. Ground shadow trimmed; left-edge flag is the cast shadow, no body clipping seen."
+      },
+      "recommended_eye_line_src_y": 80,
+      "eye_line_basis": "visual estimate (png px from top)"
+    },
+    {
+      "file": "koala_turnaround_34.png",
+      "asset": "turnaround_34",
+      "role": "canonical",
+      "slot": "A turnaround 34",
+      "status": "OWNER-ACCEPTED MINOR",
+      "sha256": "02331884ac62e4fb3cd1cfc09f78058f8a5207d5a53514078617fb67213be361",
+      "png_size": [
+        180,
+        267
+      ],
+      "mode": "RGBA",
+      "preview_4bg": "koala_turnaround_34_4bg.png",
+      "source_provenance": {
+        "source_sheet": "koala.png (1448x1086)",
+        "source_panel_box": [
+          676,
+          210,
+          866,
+          488
+        ],
+        "method": "parchment",
+        "auto_metrics": {
+          "clipping": true,
+          "clip_edges": {
+            "clip_left": 0.0,
+            "clip_right": 0.022,
+            "clip_top": 0.0,
+            "clip_bottom": 0.0
+          },
+          "halo_fraction": 0.0187,
+          "extra_components": [],
+          "outline_missing_px": 0,
+          "auto_pass": false
+        },
+        "pass": true,
+        "pass_basis": "W1 repair pass, visually reviewed on 4 backgrounds",
+        "drawn_height_px": 261,
+        "png_size": [
+          180,
+          267
+        ],
+        "recommended_eye_line_src_y": 90,
+        "eye_line_basis": "visual estimate (png px from top)",
+        "notes": "W1: right cheek/jaw contour restored from source (hand polygon), floor sliver removed. Remaining: slightly ragged right-ear fur edge (source fur is wispy; not visible at display size). | prev: Re-split at the true gaps (source gap to the side-view ear is a clean ~1px; fringe split from the front-view ear along a line through the overlap). Neighbor ears painted out only outside the figure. S",
+        "w1_repaired": true
+      },
+      "renders_as": "READY WITH CROP/MATTING",
+      "recommended_eye_line_src_y": 90,
+      "eye_line_basis": "visual estimate (png px from top)"
+    },
+    {
+      "file": "koala_turnaround_back.png",
+      "asset": "turnaround_back",
+      "role": "canonical",
+      "slot": "A turnaround back",
+      "status": "READY WITH CROP/MATTING",
+      "sha256": "542c11f503177c253788c7ea9fc3c91dc20a85bf2c54fc11d0c1ae08679a343b",
+      "png_size": [
+        218,
+        262
+      ],
+      "mode": "RGBA",
+      "preview_4bg": "koala_turnaround_back_4bg.png",
+      "source_provenance": {
+        "source_sheet": "koala.png (1448x1086)",
+        "source_panel_box": [
+          1002,
+          210,
+          1226,
+          488
+        ],
+        "method": "parchment",
+        "auto_metrics": {
+          "clipping": false,
+          "clip_edges": {
+            "clip_left": 0.0,
+            "clip_right": 0.0,
+            "clip_top": 0.0,
+            "clip_bottom": 0.0
+          },
+          "halo_fraction": 0.0054,
+          "extra_components": [],
+          "outline_missing_px": 0,
+          "auto_pass": true
+        },
+        "pass": true,
+        "pass_basis": "auto",
+        "drawn_height_px": 256,
+        "png_size": [
+          218,
+          262
+        ],
+        "recommended_eye_line_src_y": null,
+        "eye_line_basis": null,
+        "notes": "Side-view nose painted out at left edge."
+      },
+      "recommended_eye_line_src_y": null,
+      "eye_line_basis": null
+    },
+    {
+      "file": "koala_turnaround_front.png",
+      "asset": "turnaround_front",
+      "role": "canonical",
+      "slot": "A turnaround front",
+      "status": "READY WITH CROP/MATTING",
+      "sha256": "d18d2277964590c28abf2c2332fe78b2505ed74a79aded8eee400065cb03e216",
+      "png_size": [
+        220,
+        260
+      ],
+      "mode": "RGBA",
+      "preview_4bg": "koala_turnaround_front_4bg.png",
+      "source_provenance": {
+        "source_sheet": "koala.png (1448x1086)",
+        "source_panel_box": [
+          498,
+          210,
+          724,
+          488
+        ],
+        "method": "parchment",
+        "auto_metrics": {
+          "clipping": false,
+          "clip_edges": {
+            "clip_left": 0.013,
+            "clip_right": 0.0,
+            "clip_top": 0.0,
+            "clip_bottom": 0.0
+          },
+          "halo_fraction": 0.0059,
+          "extra_components": [],
+          "outline_missing_px": 0,
+          "auto_pass": true
+        },
+        "pass": true,
+        "pass_basis": "auto",
+        "drawn_height_px": 254,
+        "png_size": [
+          220,
+          260
+        ],
+        "recommended_eye_line_src_y": 83,
+        "eye_line_basis": "visual estimate (png px from top)",
+        "notes": "Panel border line painted out beside the ear. Right ear separated from 3/4 view along a hand-placed split line (fringe overlap)."
+      },
+      "recommended_eye_line_src_y": 83,
+      "eye_line_basis": "visual estimate (png px from top)"
+    },
+    {
+      "file": "koala_turnaround_side.png",
+      "asset": "turnaround_side",
+      "role": "canonical",
+      "slot": "A turnaround side",
+      "status": "READY WITH CROP/MATTING",
+      "sha256": "855dac579ea760022a4f8d62cb92df86be4bc58f36d8a11a45d3c8b165e51962",
+      "png_size": [
+        174,
+        261
+      ],
+      "mode": "RGBA",
+      "preview_4bg": "koala_turnaround_side_4bg.png",
+      "source_provenance": {
+        "source_sheet": "koala.png (1448x1086)",
+        "source_panel_box": [
+          858,
+          210,
+          1032,
+          488
+        ],
+        "method": "parchment",
+        "auto_metrics": {
+          "clipping": true,
+          "clip_edges": {
+            "clip_left": 0.013,
+            "clip_right": 0.026,
+            "clip_top": 0.0,
+            "clip_bottom": 0.0
+          },
+          "halo_fraction": 0.0029,
+          "extra_components": [],
+          "outline_missing_px": 0,
+          "auto_pass": false
+        },
+        "pass": true,
+        "pass_basis": "W1 repair pass, visually reviewed on 4 backgrounds",
+        "drawn_height_px": 260,
+        "png_size": [
+          174,
+          261
+        ],
+        "recommended_eye_line_src_y": 89,
+        "eye_line_basis": "visual estimate (png px from top)",
+        "notes": "W1: muzzle/jaw contour restored from source pixels (hand polygon along the face edge, nothing smoothed); floor-shadow strips removed below feet. QA REJECT cleared. | prev: Re-split along the true diagonal gap between the nose and the back-view ear (6+ px clear at the nose), neighbor ears painted out outside the figure. Small auto edge flags are 1-3 px glow at box edges;",
+        "w1_repaired": true
+      },
+      "recommended_eye_line_src_y": 89,
+      "eye_line_basis": "visual estimate (png px from top)"
+    },
+    {
+      "file": "koala_silhouette_front.png",
+      "asset": "silhouette_front",
+      "role": "canonical",
+      "slot": "E silhouette front",
+      "status": "READY WITH CROP/MATTING",
+      "sha256": "70163dc26b07cfdf47036c9cf2e50430ab3827fc576149cca8e5c8de21bdc2d0",
+      "png_size": [
+        214,
+        250
+      ],
+      "mode": "RGBA",
+      "preview_4bg": "koala_silhouette_front_4bg.png",
+      "fill": "#1E3A5F (doc 15 section 9 silhouette fill, flat navy)",
+      "derived_from": {
+        "asset": "koala_turnaround_front.png",
+        "sha256": "d18d2277964590c28abf2c2332fe78b2505ed74a79aded8eee400065cb03e216",
+        "source_library_path": "library/koala/koala_turnaround_front.png"
+      },
+      "derivation": {
+        "tool": "library-tools/derive_silhouettes.py + library-tools/sil_config.py (deterministic)",
+        "source_size": [
+          220,
+          260
+        ],
+        "bbox_in_source_xywh": [
+          2,
+          4,
+          214,
+          250
+        ],
+        "source_opaque_px": 34159,
+        "removed_px": 942,
+        "final_mask_px": 33583,
+        "detached_specks_dropped_px": [],
+        "holes": [
+          {
+            "area_px": 50,
+            "centroid_xy": [
+              97.2,
+              229.7
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 22,
+            "centroid_xy": [
+              84.0,
+              249.6
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 6,
+            "centroid_xy": [
+              93.0,
+              248.5
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 6,
+            "centroid_xy": [
+              164.0,
+              248.5
+            ],
+            "action": "filled (artifact)"
+          }
+        ],
+        "cleanup": {
+          "strip": 12,
+          "cut": [
+            [
+              96,
+              223,
+              128,
+              252
+            ]
+          ],
+          "hull": [
+            [
+              144,
+              198,
+              172,
+              232
+            ]
+          ],
+          "erase": [
+            [
+              98,
+              246,
+              126,
+              254
+            ],
+            [
+              8,
+              90,
+              16,
+              118
+            ]
+          ],
+          "fill": [
+            [
+              92,
+              218,
+              102,
+              242
+            ]
+          ]
+        },
+        "alpha": "gaussian(0.8) antialias of the cleaned binary mask, 50% contour = mask edge"
+      },
+      "caveat": "inherits any silhouette-affecting matte defects of the source alpha beyond the listed cleanups; see library-qa/silhouette_comparison_koala.png",
+      "recommended_eye_line_src_y": null,
+      "eye_line_basis": null
+    },
+    {
+      "file": "koala_silhouette_34.png",
+      "asset": "silhouette_34",
+      "role": "canonical",
+      "slot": "E silhouette 34",
+      "status": "READY WITH CROP/MATTING",
+      "sha256": "49a3cd8f8e21416fcf60592625685a7b0d755dd3423b382a033333e19c739698",
+      "png_size": [
+        172,
+        256
+      ],
+      "mode": "RGBA",
+      "preview_4bg": "koala_silhouette_34_4bg.png",
+      "fill": "#1E3A5F (doc 15 section 9 silhouette fill, flat navy)",
+      "derived_from": {
+        "asset": "koala_turnaround_34.png",
+        "sha256": "02331884ac62e4fb3cd1cfc09f78058f8a5207d5a53514078617fb67213be361",
+        "source_library_path": "library/koala/koala_turnaround_34.png"
+      },
+      "derivation": {
+        "tool": "library-tools/derive_silhouettes.py + library-tools/sil_config.py (deterministic)",
+        "source_size": [
+          180,
+          267
+        ],
+        "bbox_in_source_xywh": [
+          8,
+          5,
+          172,
+          256
+        ],
+        "source_opaque_px": 28556,
+        "removed_px": 107,
+        "final_mask_px": 28544,
+        "detached_specks_dropped_px": [],
+        "holes": [
+          {
+            "area_px": 6,
+            "centroid_xy": [
+              141.5,
+              100.2
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 12,
+            "centroid_xy": [
+              81.2,
+              253.8
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 64,
+            "centroid_xy": [
+              97.0,
+              253.7
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 10,
+            "centroid_xy": [
+              138.0,
+              251.8
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 3,
+            "centroid_xy": [
+              144.7,
+              253.0
+            ],
+            "action": "filled (artifact)"
+          }
+        ],
+        "cleanup": {
+          "strip": 16,
+          "fill": [
+            [
+              90,
+              246,
+              106,
+              258
+            ]
+          ]
+        },
+        "alpha": "gaussian(0.8) antialias of the cleaned binary mask, 50% contour = mask edge"
+      },
+      "caveat": "inherits any silhouette-affecting matte defects of the source alpha beyond the listed cleanups; see library-qa/silhouette_comparison_koala.png",
+      "recommended_eye_line_src_y": null,
+      "eye_line_basis": null
+    },
+    {
+      "file": "koala_silhouette_side.png",
+      "asset": "silhouette_side",
+      "role": "canonical",
+      "slot": "E silhouette side",
+      "status": "READY WITH CROP/MATTING",
+      "sha256": "1c9a766b4cad7e758dd4e94410d31281859e968107c13e09d5f9b497924e4245",
+      "png_size": [
+        153,
+        254
+      ],
+      "mode": "RGBA",
+      "preview_4bg": "koala_silhouette_side_4bg.png",
+      "fill": "#1E3A5F (doc 15 section 9 silhouette fill, flat navy)",
+      "derived_from": {
+        "asset": "koala_turnaround_side.png",
+        "sha256": "855dac579ea760022a4f8d62cb92df86be4bc58f36d8a11a45d3c8b165e51962",
+        "source_library_path": "library/koala/koala_turnaround_side.png"
+      },
+      "derivation": {
+        "tool": "library-tools/derive_silhouettes.py + library-tools/sil_config.py (deterministic)",
+        "source_size": [
+          174,
+          261
+        ],
+        "bbox_in_source_xywh": [
+          8,
+          4,
+          153,
+          254
+        ],
+        "source_opaque_px": 23722,
+        "removed_px": 14,
+        "final_mask_px": 23735,
+        "detached_specks_dropped_px": [],
+        "holes": [
+          {
+            "area_px": 18,
+            "centroid_xy": [
+              137.5,
+              100.9
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 4,
+            "centroid_xy": [
+              99.5,
+              253.5
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 4,
+            "centroid_xy": [
+              109.5,
+              253.5
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 1,
+            "centroid_xy": [
+              117.0,
+              253.0
+            ],
+            "action": "filled (artifact)"
+          }
+        ],
+        "cleanup": {
+          "strip": 8
+        },
+        "alpha": "gaussian(0.8) antialias of the cleaned binary mask, 50% contour = mask edge"
+      },
+      "caveat": "inherits any silhouette-affecting matte defects of the source alpha beyond the listed cleanups; see library-qa/silhouette_comparison_koala.png",
+      "recommended_eye_line_src_y": null,
+      "eye_line_basis": null
+    },
+    {
+      "file": "koala_silhouette_back.png",
+      "asset": "silhouette_back",
+      "role": "canonical",
+      "slot": "E silhouette back",
+      "status": "READY WITH CROP/MATTING",
+      "sha256": "f4aedc2294c8ef2318417c8853e4d9e7bc54a8dca296d91ec436ec8eded8047f",
+      "png_size": [
+        209,
+        251
+      ],
+      "mode": "RGBA",
+      "preview_4bg": "koala_silhouette_back_4bg.png",
+      "fill": "#1E3A5F (doc 15 section 9 silhouette fill, flat navy)",
+      "derived_from": {
+        "asset": "koala_turnaround_back.png",
+        "sha256": "542c11f503177c253788c7ea9fc3c91dc20a85bf2c54fc11d0c1ae08679a343b",
+        "source_library_path": "library/koala/koala_turnaround_back.png"
+      },
+      "derivation": {
+        "tool": "library-tools/derive_silhouettes.py + library-tools/sil_config.py (deterministic)",
+        "source_size": [
+          218,
+          262
+        ],
+        "bbox_in_source_xywh": [
+          4,
+          4,
+          209,
+          251
+        ],
+        "source_opaque_px": 32983,
+        "removed_px": 511,
+        "final_mask_px": 32477,
+        "detached_specks_dropped_px": [
+          1
+        ],
+        "holes": [
+          {
+            "area_px": 2,
+            "centroid_xy": [
+              147.0,
+              248.5
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 2,
+            "centroid_xy": [
+              84.5,
+              249.5
+            ],
+            "action": "filled (artifact)"
+          },
+          {
+            "area_px": 2,
+            "centroid_xy": [
+              88.0,
+              250.5
+            ],
+            "action": "filled (artifact)"
+          }
+        ],
+        "cleanup": {
+          "strip": 14,
+          "cut": [
+            [
+              96,
+              222,
+              118,
+              254
+            ]
+          ],
+          "erase": [
+            [
+              96,
+              248,
+              120,
+              254
+            ]
+          ]
+        },
+        "alpha": "gaussian(0.8) antialias of the cleaned binary mask, 50% contour = mask edge"
+      },
+      "caveat": "inherits any silhouette-affecting matte defects of the source alpha beyond the listed cleanups; see library-qa/silhouette_comparison_koala.png",
+      "recommended_eye_line_src_y": null,
+      "eye_line_basis": null
+    },
+    {
+      "file": "koala_silhouette_reading.png",
+      "asset": "silhouette_reading",
+      "role": "canonical",
+      "slot": "E silhouette reading",
+      "status": "READY WITH CROP/MATTING",
+      "sha256": "b7e3c5378fab0f2219ef055bf19195d39e4edb57855d5efec854e4ea0a95fd4f",
+      "png_size": [
+        199,
+        229
+      ],
+      "mode": "RGBA",
+      "preview_4bg": "koala_silhouette_reading_4bg.png",
+      "fill": "#1E3A5F (doc 15 section 9 silhouette fill, flat navy)",
+      "derived_from": {
+        "asset": "koala_hero_reading.png",
+        "sha256": "5989e248c681e780179c539d2dd56d746d03eb5d35dd8f9d6ffa86960762c3f8",
+        "source_library_path": "library/koala/koala_hero_reading.png"
+      },
+      "derivation": {
+        "tool": "library-tools/derive_silhouettes.py + library-tools/sil_config.py (deterministic)",
+        "source_size": [
+          206,
+          241
+        ],
+        "bbox_in_source_xywh": [
+          3,
+          3,
+          199,
+          229
+        ],
+        "source_opaque_px": 34251,
+        "removed_px": 1266,
+        "final_mask_px": 33002,
+        "detached_specks_dropped_px": [
+          5
+        ],
+        "holes": [
+          {
+            "area_px": 22,
+            "centroid_xy": [
+              127.3,
+              225.5
+            ],
+            "action": "filled (artifact)"
+          }
+        ],
+        "cleanup": {
+          "strip": 18,
+          "below_line": [
+            [
+              0,
+              217
+            ],
+            [
+              30,
+              219
+            ],
+            [
+              62,
+              225
+            ],
+            [
+              96,
+              231
+            ],
+            [
+              206,
+              232
+            ]
+          ]
+        },
+        "alpha": "gaussian(0.8) antialias of the cleaned binary mask, 50% contour = mask edge"
+      },
+      "caveat": "inherits any silhouette-affecting matte defects of the source alpha beyond the listed cleanups; see library-qa/silhouette_comparison_koala.png",
+      "recommended_eye_line_src_y": null,
+      "eye_line_basis": null
+    }
+  ],
+  "historical_silhouettes": [
+    {
+      "file": "_historical-silhouettes/koala_silhouette_34.png",
+      "role": "historical",
+      "status": "HISTORICAL / QA-COMPARISON ONLY",
+      "pre_m4_status": "PROVISIONAL",
+      "sha256": "9b65ea4b0d2b7bfaeecbbb886383f41e096ad2f21275fd65cb6ab5909efb80aa",
+      "png_size": [
+        93,
+        137
+      ],
+      "mode": "RGBA",
+      "reason": "flat-sheet silhouette artwork, not derived from matted alpha; never a canonical slot"
+    },
+    {
+      "file": "_historical-silhouettes/koala_silhouette_back.png",
+      "role": "historical",
+      "status": "HISTORICAL / QA-COMPARISON ONLY",
+      "pre_m4_status": "PROVISIONAL",
+      "sha256": "93d1383388f68b5ba9ba7c63e701c0df762eb55827b6b7db8faab253c49968b3",
+      "png_size": [
+        104,
+        134
+      ],
+      "mode": "RGBA",
+      "reason": "flat-sheet silhouette artwork, not derived from matted alpha; never a canonical slot"
+    },
+    {
+      "file": "_historical-silhouettes/koala_silhouette_front.png",
+      "role": "historical",
+      "status": "HISTORICAL / QA-COMPARISON ONLY",
+      "pre_m4_status": "PROVISIONAL",
+      "sha256": "72d2f3da8bd438a17ff43a0abc52ca97ec058ef80a40dfcd4bdeb85e89efcd90",
+      "png_size": [
+        105,
+        134
+      ],
+      "mode": "RGBA",
+      "reason": "flat-sheet silhouette artwork, not derived from matted alpha; never a canonical slot"
+    },
+    {
+      "file": "_historical-silhouettes/koala_silhouette_reading.png",
+      "role": "historical",
+      "status": "HISTORICAL / QA-COMPARISON ONLY",
+      "pre_m4_status": "PROVISIONAL",
+      "sha256": "42a2896906fa804f2179a2f1748c83640e331ff349aa4cdad6c02f3dbd47adfd",
+      "png_size": [
+        111,
+        130
+      ],
+      "mode": "RGBA",
+      "reason": "flat-sheet silhouette artwork, not derived from matted alpha; never a canonical slot"
+    },
+    {
+      "file": "_historical-silhouettes/koala_silhouette_side.png",
+      "role": "historical",
+      "status": "HISTORICAL / QA-COMPARISON ONLY",
+      "pre_m4_status": "PROVISIONAL",
+      "sha256": "f3c72b32c8fecdf0f9a7a55939a2fa5eecf5d4190a954fb86ee955ecf993aeff",
+      "png_size": [
+        86,
+        137
+      ],
+      "mode": "RGBA",
+      "reason": "flat-sheet silhouette artwork, not derived from matted alpha; never a canonical slot"
+    }
+  ],
+  "superseded": [
+    {
+      "file": "_superseded/koala_detail_glasses.png",
+      "role": "superseded",
+      "sha256": "ad51b4e75c4f4e9793e88bfbfb29c899814b52b68af3f8d06cac416a7d4930ef",
+      "png_size": [
+        175,
+        67
+      ],
+      "mode": "RGBA"
+    },
+    {
+      "file": "_superseded/koala_detail_glasses_pre-M4-brown.png",
+      "role": "superseded",
+      "sha256": "6bfcf2e9719e5eabbdac917dd4dbf3a8a9543b2b2dbaf4af5edbfa49eb9b8d4d",
+      "png_size": [
+        175,
+        67
+      ],
+      "mode": "RGBA"
+    },
+    {
+      "file": "_superseded/koala_head.png",
+      "role": "superseded",
+      "sha256": "d959603d531c363d02a7b7794a8b1dff0487457561364da647a79aca5ac318fa",
+      "png_size": [
+        321,
+        258
+      ],
+      "mode": "RGBA"
+    },
+    {
+      "file": "_superseded/koala_turnaround_34.png",
+      "role": "superseded",
+      "sha256": "d161e2e97d365b742ce5b30cc7747dc2f07cc57611e221790ba8b8af41c612db",
+      "png_size": [
+        180,
+        267
+      ],
+      "mode": "RGBA"
+    },
+    {
+      "file": "_superseded/koala_turnaround_side.png",
+      "role": "superseded",
+      "sha256": "d38401da500d2734ca8412fa08ce961931ae5395d74756abf73e86e66f47007a",
+      "png_size": [
+        174,
+        266
+      ],
+      "mode": "RGBA"
+    }
+  ]
+}

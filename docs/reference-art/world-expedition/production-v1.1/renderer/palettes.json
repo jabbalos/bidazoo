@@ -1,0 +1,4324 @@
+{
+ "schema": "bidazoo-palettes-1",
+ "doc_refs": [
+  "docs/visual/09-palette.md",
+  "docs/visual/15-character-sheet-template.md s2",
+  "docs/visual/16-character-art-production-plan.md s7"
+ ],
+ "status_policy": "every hex PROVISIONAL (doc 09 header, doc 15 s2: no final production hex is locked); no slot is OPEN",
+ "method": "tools/palette_sampler.py: interior pixels (alpha>=250 eroded), HSV window, middle luma band 25-75 percent, per-channel median; verified on independent final assets (CIE76 dE <= 12 median)",
+ "slot_order": [
+  "PRIMARY",
+  "SECONDARY",
+  "ACCENT",
+  "GEAR",
+  "DETAIL",
+  "CHARACTER-SPECIFIC"
+ ],
+ "characters": {
+  "click": {
+   "slots": [
+    {
+     "slot": 1,
+     "role": "PRIMARY",
+     "label": "PRIMARY",
+     "name": "Orange fur",
+     "hex": "#E77B2C",
+     "status": "PROVISIONAL",
+     "sample": {
+      "rgb": [
+       231,
+       123,
+       44
+      ],
+      "pixels_in_window": 32454,
+      "pixels_in_band": 16226,
+      "band_percentiles": [
+       25,
+       75
+      ],
+      "band_channel_min": [
+       172,
+       92,
+       10
+      ],
+      "band_channel_max": [
+       255,
+       151,
+       98
+      ],
+      "window": {
+       "hue_deg": [
+        18,
+        32
+       ],
+       "sat": [
+        0.55,
+        0.95
+       ],
+       "val": [
+        0.6,
+        1
+       ]
+      },
+      "alpha_rule": "alpha>=250, eroded by erode_px (per source; default 2)",
+      "sources": [
+       {
+        "path": "asset-library/click/click_turnaround_front.png",
+        "sha256": "b6fa5165d8b6559071fe571c3b9604fecc535d6986e9acaa9b1f0aecd292d91e",
+        "size_px": [
+         199,
+         296
+        ],
+        "region": null,
+        "erode_px": 2,
+        "pixels_in_window": 10090
+       },
+       {
+        "path": "asset-library/click/click_turnaround_34.png",
+        "sha256": "0ba115ffe9ef705f6590f79935e26b63762ab4fb7afcdca38c85600ebacbb59d",
+        "size_px": [
+         208,
+         296
+        ],
+        "region": null,
+        "erode_px": 2,
+        "pixels_in_window": 11563
+       },
+       {
+        "path": "asset-library/click/click_turnaround_side.png",
+        "sha256": "8c3c8f580518652a0c95259273b2809598b4d099b26c2e2ad5b5393c38ef8bd0",
+        "size_px": [
+         186,
+         282
+        ],
+        "region": null,
+        "erode_px": 2,
+        "pixels_in_window": 10801
+       }
+      ]
+     },
+     "verify": {
+      "assets": [
+       {
+        "path": "asset-library/click/click_turnaround_back.png",
+        "sha256": "0b6555a231c46ef48461010599ac23e0886c0c91cf10ed868790f53f6a221aca",
+        "hex": "#E07229",
+        "dE76": 3.78,
+        "regions": null,
+        "pixels_in_window": 15183
+       },
+       {
+        "path": "asset-library/click/click_hero.png",
+        "sha256": "b48303a661a9fa88e0938e8f5162cda22fb968269348b4a99fd1528f77511e2b",
+        "hex": "#EA7928",
+        "dE76": 2.7,
+        "regions": null,
+        "pixels_in_window": 14388
+       },
+       {
+        "path": "expression-batch/click/click_idle.png",
+        "sha256": "71432a630f4346e7bc7fd1298a8c6a6a788736c5ccaf05d3da7e489beb20e726",
+        "hex": "#F38835",
+        "dE76": 4.81,
+        "regions": null,
+        "pixels_in_window": 2949
+       },
+       {
+        "path": "expression-batch/click/click_happy.png",
+        "sha256": "366b9d8c4b54d79e19010c55169003414fb7308ba254313606cd3d017fb5e99c",
+        "hex": "#F08737",
+        "dE76": 4.44,
+        "regions": null,
+        "pixels_in_window": 2348
+       }
+      ],
+      "median_dE76": 4.11,
+      "max_dE76": 4.81,
+      "limit_dE76": 12.0,
+      "pass": true
+     },
+     "note": null
+    },
+    {
+     "slot": 2,
+     "role": "SECONDARY",
+     "label": "SECONDARY",
+     "name": "Tan belly / muzzle",
+     "hex": "#FDDCA5",
+     "status": "PROVISIONAL",
+     "sample": {
+      "rgb": [
+       253,
+       220,
+       165
+      ],
+      "pixels_in_window": 6671,
+      "pixels_in_band": 3336,
+      "band_percentiles": [
+       25,
+       75
+      ],
+      "band_channel_min": [
+       227,
+       207,
+       138
+      ],
+      "band_channel_max": [
+       255,
+       232,
+       204
+      ],
+      "window": {
+       "hue_deg": [
+        25,
+        45
+       ],
+       "sat": [
+        0.15,
+        0.45
+       ],
+       "val": [
+        0.85,
+        1
+       ]
+      },
+      "alpha_rule": "alpha>=250, eroded by erode_px (per source; default 2)",
+      "sources": [
+       {
+        "path": "asset-library/click/click_turnaround_front.png",
+        "sha256": "b6fa5165d8b6559071fe571c3b9604fecc535d6986e9acaa9b1f0aecd292d91e",
+        "size_px": [
+         199,
+         296
+        ],
+        "region": null,
+        "erode_px": 2,
+        "pixels_in_window": 3244
+       },
+       {
+        "path": "asset-library/click/click_turnaround_34.png",
+        "sha256": "0ba115ffe9ef705f6590f79935e26b63762ab4fb7afcdca38c85600ebacbb59d",
+        "size_px": [
+         208,
+         296
+        ],
+        "region": null,
+        "erode_px": 2,
+        "pixels_in_window": 2511
+       },
+       {
+        "path": "asset-library/click/click_turnaround_side.png",
+        "sha256": "8c3c8f580518652a0c95259273b2809598b4d099b26c2e2ad5b5393c38ef8bd0",
+        "size_px": [
+         186,
+         282
+        ],
+        "region": null,
+        "erode_px": 2,
+        "pixels_in_window": 916
+       }
+      ]
+     },
+     "verify": {
+      "assets": [
+       {
+        "path": "asset-library/click/click_turnaround_back.png",
+        "sha256": "0b6555a231c46ef48461010599ac23e0886c0c91cf10ed868790f53f6a221aca",
+        "hex": "#FDDBA7",
+        "dE76": 1.53,
+        "regions": null,
+        "pixels_in_window": 491
+       },
+       {
+        "path": "asset-library/click/click_hero.png",
+        "sha256": "b48303a661a9fa88e0938e8f5162cda22fb968269348b4a99fd1528f77511e2b",
+        "hex": "#FDD39B",
+        "dE76": 4.67,
+        "regions": null,
+        "pixels_in_window": 1743
+       },
+       {
+        "path": "expression-batch/click/click_idle.png",
+        "sha256": "71432a630f4346e7bc7fd1298a8c6a6a788736c5ccaf05d3da7e489beb20e726",
+        "hex": "#F9CD9E",
+        "dE76": 7.11,
+        "regions": null,
+        "pixels_in_window": 972
+       },
+       {
+        "path": "expression-batch/click/click_happy.png",
+        "sha256": "366b9d8c4b54d79e19010c55169003414fb7308ba254313606cd3d017fb5e99c",
+        "hex": "#FCD4A0",
+        "dE76": 3.82,
+        "regions": null,
+        "pixels_in_window": 806
+       }
+      ],
+      "median_dE76": 4.25,
+      "max_dE76": 7.11,
+      "limit_dE76": 12.0,
+      "pass": true
+     },
+     "note": null
+    },
+    {
+     "slot": 3,
+     "role": "ACCENT",
+     "label": "ACCENT",
+     "name": "Emblem blue",
+     "hex": "#0153D9",
+     "status": "PROVISIONAL",
+     "sample": {
+      "rgb": [
+       1,
+       83,
+       217
+      ],
+      "pixels_in_window": 3088,
+      "pixels_in_band": 1544,
+      "band_percentiles": [
+       25,
+       75
+      ],
+      "band_channel_min": [
+       0,
+       68,
+       119
+      ],
+      "band_channel_max": [
+       46,
+       92,
+       250
+      ],
+      "window": {
+       "hue_deg": [
+        205,
+        235
+       ],
+       "sat": [
+        0.6,
+        1
+       ],
+       "val": [
+        0.4,
+        1
+       ]
+      },
+      "alpha_rule": "alpha>=250, eroded by erode_px (per source; default 2)",
+      "sources": [
+       {
+        "path": "asset-library/click/click_turnaround_front.png",
+        "sha256": "b6fa5165d8b6559071fe571c3b9604fecc535d6986e9acaa9b1f0aecd292d91e",
+        "size_px": [
+         199,
+         296
+        ],
+        "region": null,
+        "erode_px": 2,
+        "pixels_in_window": 264
+       },
+       {
+        "path": "asset-library/click/click_turnaround_34.png",
+        "sha256": "0ba115ffe9ef705f6590f79935e26b63762ab4fb7afcdca38c85600ebacbb59d",
+        "size_px": [
+         208,
+         296
+        ],
+        "region": null,
+        "erode_px": 2,
+        "pixels_in_window": 179
+       },
+       {
+        "path": "asset-library/click/click_turnaround_side.png",
+        "sha256": "8c3c8f580518652a0c95259273b2809598b4d099b26c2e2ad5b5393c38ef8bd0",
+        "size_px": [
+         186,
+         282
+        ],
+        "region": null,
+        "erode_px": 2,
+        "pixels_in_window": 22
+       },
+       {
+        "path": "asset-library/click/click_detail_c_emblem.png",
+        "sha256": "4ecac139477d0898ffb9b28a960a37842970df0c9963dce5caea1f19abc5ec23",
+        "size_px": [
+         146,
+         110
+        ],
+        "region": null,
+        "erode_px": 2,
+        "pixels_in_window": 2623
+       }
+      ]
+     },
+     "verify": {
+      "assets": [
+       {
+        "path": "asset-library/click/click_hero.png",
+        "sha256": "b48303a661a9fa88e0938e8f5162cda22fb968269348b4a99fd1528f77511e2b",
+        "hex": "#0948C8",
+        "dE76": 5.19,
+        "regions": null,
+        "pixels_in_window": 312
+       },
+       {
+        "path": "asset-library/click/click_head.png",
+        "result": "fewer than 60 pixels in window (skipped)"
+       },
+       {
+        "path": "expression-batch/click/click_idle.png",
+        "result": "fewer than 60 pixels in window (skipped)"
+       }
+      ],
+      "median_dE76": 5.19,
+      "max_dE76": 5.19,
+      "limit_dE76": 12.0,
+      "pass": true
+     },
+     "note": null
+    },
+    {
+     "slot": 4,
+     "role": "GEAR",
+     "label": "GEAR",
+     "name": "Harness brown",
+     "hex": "#341D10",
+     "status": "PROVISIONAL",
+     "sample": {
+      "rgb": [
+       52,
+       29,
+       16
+      ],
+      "pixels_in_window": 2348,
+      "pixels_in_band": 1174,
+      "band_percentiles": [
+       25,
+       75
+      ],
+      "band_channel_min": [
+       29,
+       19,
+       8
+      ],
+      "band_channel_max": [
+       70,
+       40,
+       36
+      ],
+      "window": {
+       "hue_deg": [
+        15,
+        40
+       ],
+       "sat": [
+        0.2,
+        0.8
+       ],
+       "val": [
+        0.0,
+        0.28
+       ]
+      },
+      "alpha_rule": "alpha>=250, eroded by erode_px (per source; default 2)",
+      "sources": [
+       {
+        "path": "asset-library/click/click_turnaround_front.png",
+        "sha256": "b6fa5165d8b6559071fe571c3b9604fecc535d6986e9acaa9b1f0aecd292d91e",
+        "size_px": [
+         199,
+         296
+        ],
+        "region": null,
+        "erode_px": 2,
+        "pixels_in_window": 696
+       },
+       {
+        "path": "asset-library/click/click_turnaround_34.png",
+        "sha256": "0ba115ffe9ef705f6590f79935e26b63762ab4fb7afcdca38c85600ebacbb59d",
+        "size_px": [
+         208,
+         296
+        ],
+        "region": null,
+        "erode_px": 2,
+        "pixels_in_window": 834
+       },
+       {
+        "path": "asset-library/click/click_turnaround_side.png",
+        "sha256": "8c3c8f580518652a0c95259273b2809598b4d099b26c2e2ad5b5393c38ef8bd0",
+        "size_px": [
+         186,
+         282
+        ],
+        "region": null,
+        "erode_px": 2,
+        "pixels_in_window": 818
+       }
+      ]
+     },
+     "verify": {
+      "assets": [
+       {
+        "path": "asset-library/click/click_turnaround_back.png",
+        "sha256": "0b6555a231c46ef48461010599ac23e0886c0c91cf10ed868790f53f6a221aca",
+        "hex": "#331E12",
+        "dE76": 1.4,
+        "regions": null,
+        "pixels_in_window": 692
+       },
+       {
+        "path": "asset-library/click/click_hero.png",
+        "sha256": "b48303a661a9fa88e0938e8f5162cda22fb968269348b4a99fd1528f77511e2b",
+        "hex": "#311A0E",
+        "dE76": 1.69,
+        "regions": null,
+        "pixels_in_window": 870
+       },
+       {
+        "path": "expression-batch/click/click_idle.png",
+        "sha256": "71432a630f4346e7bc7fd1298a8c6a6a788736c5ccaf05d3da7e489beb20e726",
+        "hex": "#110A06",
+        "dE76": 17.04,
+        "regions": null,
+        "pixels_in_window": 79
+       }
+      ],
+      "median_dE76": 1.69,
+      "max_dE76": 17.04,
+      "limit_dE76": 12.0,
+      "pass": true
+     },
+     "note": null
+    },
+    {
+     "slot": 5,
+     "role": "DETAIL",
+     "label": "DETAIL",
+     "name": "Inner ear coral",
+     "hex": "#FA664F",
+     "status": "PROVISIONAL",
+     "sample": {
+      "rgb": [
+       250,
+       102,
+       79
+      ],
+      "pixels_in_window": 5627,
+      "pixels_in_band": 2815,
+      "band_percentiles": [
+       25,
+       75
+      ],
+      "band_channel_min": [
+       180,
+       65,
+       45
+      ],
+      "band_channel_max": [
+       255,
+       126,
+       104
+      ],
+      "window": {
+       "hue_deg": [
+        0,
+        12
+       ],
+       "sat": [
+        0.35,
+        0.8
+       ],
+       "val": [
+        0.7,
+        1
+       ]
+      },
+      "alpha_rule": "alpha>=250, eroded by erode_px (per source; default 2)",
+      "sources": [
+       {
+        "path": "asset-library/click/click_turnaround_front.png",
+        "sha256": "b6fa5165d8b6559071fe571c3b9604fecc535d6986e9acaa9b1f0aecd292d91e",
+        "size_px": [
+         199,
+         296
+        ],
+        "region": null,
+        "erode_px": 2,
+        "pixels_in_window": 2899
+       },
+       {
+        "path": "asset-library/click/click_turnaround_34.png",
+        "sha256": "0ba115ffe9ef705f6590f79935e26b63762ab4fb7afcdca38c85600ebacbb59d",
+        "size_px": [
+         208,
+         296
+        ],
+        "region": null,
+        "erode_px": 2,
+        "pixels_in_window": 1348
+       },
+       {
+        "path": "asset-library/click/click_turnaround_side.png",
+        "sha256": "8c3c8f580518652a0c95259273b2809598b4d099b26c2e2ad5b5393c38ef8bd0",
+        "size_px": [
+         186,
+         282
+        ],
+        "region": null,
+        "erode_px": 2,
+        "pixels_in_window": 1380
+       }
+      ]
+     },
+     "verify": {
+      "assets": [
+       {
+        "path": "asset-library/click/click_turnaround_back.png",
+        "result": "fewer than 60 pixels in window (skipped)"
+       },
+       {
+        "path": "asset-library/click/click_hero.png",
+        "sha256": "b48303a661a9fa88e0938e8f5162cda22fb968269348b4a99fd1528f77511e2b",
+        "hex": "#F8614A",
+        "dE76": 2.12,
+        "regions": null,
+        "pixels_in_window": 2767
+       },
+       {
+        "path": "expression-batch/click/click_idle.png",
+        "sha256": "71432a630f4346e7bc7fd1298a8c6a6a788736c5ccaf05d3da7e489beb20e726",
+        "hex": "#FB674F",
+        "dE76": 0.54,
+        "regions": null,
+        "pixels_in_window": 2804
+       },
+       {
+        "path": "expression-batch/click/click_happy.png",
+        "sha256": "366b9d8c4b54d79e19010c55169003414fb7308ba254313606cd3d017fb5e99c",
+        "hex": "#F9644E",
+        "dE76": 0.71,
+        "regions": null,
+        "pixels_in_window": 1460
+       }
+      ],
+      "median_dE76": 0.71,
+      "max_dE76": 2.12,
+      "limit_dE76": 12.0,
+      "pass": true
+     },
+     "note": null
+    },
+    {
+     "slot": 6,
+     "role": "CHARACTER-SPECIFIC",
+     "label": "C GOLD",
+     "name": "Emblem gold",
+     "hex": "#FAC718",
+     "status": "PROVISIONAL",
+     "sample": {
+      "rgb": [
+       250,
+       199,
+       24
+      ],
+      "pixels_in_window": 319,
+      "pixels_in_band": 159,
+      "band_percentiles": [
+       25,
+       75
+      ],
+      "band_channel_min": [
+       231,
+       183,
+       0
+      ],
+      "band_channel_max": [
+       255,
+       214,
+       75
+      ],
+      "window": {
+       "hue_deg": [
+        40,
+        55
+       ],
+       "sat": [
+        0.7,
+        1
+       ],
+       "val": [
+        0.8,
+        1
+       ]
+      },
+      "alpha_rule": "alpha>=250, eroded by erode_px (per source; default 2)",
+      "sources": [
+       {
+        "path": "asset-library/click/click_turnaround_front.png",
+        "sha256": "b6fa5165d8b6559071fe571c3b9604fecc535d6986e9acaa9b1f0aecd292d91e",
+        "size_px": [
+         199,
+         296
+        ],
+        "region": null,
+        "erode_px": 2,
+        "pixels_in_window": 162
+       },
+       {
+        "path": "asset-library/click/click_turnaround_34.png",
+        "sha256": "0ba115ffe9ef705f6590f79935e26b63762ab4fb7afcdca38c85600ebacbb59d",
+        "size_px": [
+         208,
+         296
+        ],
+        "region": null,
+        "erode_px": 2,
+        "pixels_in_window": 112
+       },
+       {
+        "path": "asset-library/click/click_turnaround_side.png",
+        "sha256": "8c3c8f580518652a0c95259273b2809598b4d099b26c2e2ad5b5393c38ef8bd0",
+        "size_px": [
+         186,
+         282
+        ],
+        "region": null,
+        "erode_px": 2,
+        "pixels_in_window": 45
+       }
+      ]
+     },
+     "verify": {
+      "assets": [
+       {
+        "path": "asset-library/click/click_detail_c_emblem.png",
+        "sha256": "4ecac139477d0898ffb9b28a960a37842970df0c9963dce5caea1f19abc5ec23",
+        "hex": "#FCC70D",
+        "dE76": 1.89,
+        "regions": null,
+        "pixels_in_window": 1370
+       },
+       {
+        "path": "asset-library/click/click_hero.png",
+        "sha256": "b48303a661a9fa88e0938e8f5162cda22fb968269348b4a99fd1528f77511e2b",
+        "hex": "#FAC513",
+        "dE76": 1.16,
+        "regions": null,
+        "pixels_in_window": 163
+       },
+       {
+        "path": "expression-batch/click/click_idle.png",
+        "result": "fewer than 60 pixels in window (skipped)"
+       }
+      ],
+      "median_dE76": 1.52,
+      "max_dE76": 1.89,
+      "limit_dE76": 12.0,
+      "pass": true
+     },
+     "note": null
+    }
+   ]
+  },
+  "dino": {
+   "slots": [
+    {
+     "slot": 1,
+     "role": "PRIMARY",
+     "label": "PRIMARY",
+     "name": "Teal body",
+     "hex": "#03BDB2",
+     "status": "PROVISIONAL",
+     "sample": {
+      "rgb": [
+       3,
+       189,
+       178
+      ],
+      "pixels_in_window": 28020,
+      "pixels_in_band": 14010,
+      "band_percentiles": [
+       25,
+       75
+      ],
+      "band_channel_min": [
+       0,
+       140,
+       123
+      ],
+      "band_channel_max": [
+       89,
+       222,
+       242
+      ],
+      "window": {
+       "hue_deg": [
+        160,
+        190
+       ],
+       "sat": [
+        0.5,
+        1
+       ],
+       "val": [
+        0.55,
+        1
+       ]
+      },
+      "alpha_rule": "alpha>=250, eroded by erode_px (per source; default 2)",
+      "sources": [
+       {
+        "path": "asset-library/dino/dino_turnaround_front.png",
+        "sha256": "05725520e310c88e2e2f3ee7a33b19344587c8f5796187e865e8c510fe98fa0b",
+        "size_px": [
+         201,
+         277
+        ],
+        "region": null,
+        "erode_px": 2,
+        "pixels_in_window": 7555
+       },
+       {
+        "path": "asset-library/dino/dino_turnaround_34.png",
+        "sha256": "5f7b9065db2906c63700cffbb585d7eabfe4fef782a415b5fba7a651e8738d65",
+        "size_px": [
+         212,
+         277
+        ],
+        "region": null,
+        "erode_px": 2,
+        "pixels_in_window": 9034
+       },
+       {
+        "path": "asset-library/dino/dino_turnaround_side.png",
+        "sha256": "6c4ea533a75544b43bf53e54a491707ff11e1294c5f6bb629c2c72652483a209",
+        "size_px": [
+         224,
+         277
+        ],
+        "region": null,
+        "erode_px": 2,
+        "pixels_in_window": 11431
+       }
+      ]
+     },
+     "verify": {
+      "assets": [
+       {
+        "path": "asset-library/dino/dino_turnaround_back.png",
+        "sha256": "94448c690a4b14cf987efdf59a469b00419e4ce547f87d0085ca7cd35c1043f6",
+        "hex": "#08B7AB",
+        "dE76": 2.34,
+        "regions": null,
+        "pixels_in_window": 6038
+       },
+       {
+        "path": "asset-library/dino/dino_hero.png",
+        "sha256": "e752cd86233753e9d409be543a0551b851e31d7d596e6728821fbd6ad4d8c254",
+        "hex": "#07B8B9",
+        "dE76": 7.43,
+        "regions": null,
+        "pixels_in_window": 8648
+       },
+       {
+        "path": "expression-batch/dino/dino_idle.png",
+        "sha256": "95aa9a23772dbf312408f4c4e0d4e0097dd512a46bd7c9bd2762b9817e217f76",
+        "hex": "#05BEBA",
+        "dE76": 4.12,
+        "regions": null,
+        "pixels_in_window": 2662
+       },
+       {
+        "path": "expression-batch/dino/dino_happy.png",
+        "sha256": "e7ad95e3f7e3dc200d1e50207161be2de8237ceb988b396da3dcf5553de3efde",
+        "hex": "#0BCCC5",
+        "dE76": 5.89,
+        "regions": null,
+        "pixels_in_window": 2962
+       }
+      ],
+      "median_dE76": 5.0,
+      "max_dE76": 7.43,
+      "limit_dE76": 12.0,
+      "pass": true
+     },
+     "note": null
+    },
+    {
+     "slot": 2,
+     "role": "SECONDARY",
+     "label": "SECONDARY",
+     "name": "Cream belly",
+     "hex": "#FDEC9A",
+     "status": "PROVISIONAL",
+     "sample": {
+      "rgb": [
+       253,
+       236,
+       154
+      ],
+      "pixels_in_window": 6043,
+      "pixels_in_band": 3024,
+      "band_percentiles": [
+       25,
+       75
+      ],
+      "band_channel_min": [
+       223,
+       225,
+       125
+      ],
+      "band_channel_max": [
+       255,
+       249,
+       212
+      ],
+      "window": {
+       "hue_deg": [
+        45,
+        70
+       ],
+       "sat": [
+        0.12,
+        0.5
+       ],
+       "val": [
+        0.85,
+        1
+       ]
+      },
+      "alpha_rule": "alpha>=250, eroded by erode_px (per source; default 2)",
+      "sources": [
+       {
+        "path": "asset-library/dino/dino_turnaround_front.png",
+        "sha256": "05725520e310c88e2e2f3ee7a33b19344587c8f5796187e865e8c510fe98fa0b",
+        "size_px": [
+         201,
+         277
+        ],
+        "region": null,
+        "erode_px": 2,
+        "pixels_in_window": 3006
+       },
+       {
+        "path": "asset-library/dino/dino_turnaround_34.png",
+        "sha256": "5f7b9065db2906c63700cffbb585d7eabfe4fef782a415b5fba7a651e8738d65",
+        "size_px": [
+         212,
+         277
+        ],
+        "region": null,
+        "erode_px": 2,
+        "pixels_in_window": 2292
+       },
+       {
+        "path": "asset-library/dino/dino_turnaround_side.png",
+        "sha256": "6c4ea533a75544b43bf53e54a491707ff11e1294c5f6bb629c2c72652483a209",
+        "size_px": [
+         224,
+         277
+        ],
+        "region": null,
+        "erode_px": 2,
+        "pixels_in_window": 745
+       }
+      ]
+     },
+     "verify": {
+      "assets": [
+       {
+        "path": "asset-library/dino/dino_turnaround_back.png",
+        "sha256": "94448c690a4b14cf987efdf59a469b00419e4ce547f87d0085ca7cd35c1043f6",
+        "hex": "#F2E594",
+        "dE76": 3.17,
+        "regions": null,
+        "pixels_in_window": 92
+       },
+       {
+        "path": "asset-library/dino/dino_hero.png",
+        "sha256": "e752cd86233753e9d409be543a0551b851e31d7d596e6728821fbd6ad4d8c254",
+        "hex": "#FAE498",
+        "dE76": 4.04,
+        "regions": null,
+        "pixels_in_window": 1734
+       },
+       {
+        "path": "expression-batch/dino/dino_idle.png",
+        "sha256": "95aa9a23772dbf312408f4c4e0d4e0097dd512a46bd7c9bd2762b9817e217f76",
+        "hex": "#EEDD8B",
+        "dE76": 5.28,
+        "regions": null,
+        "pixels_in_window": 435
+       },
+       {
+        "path": "expression-batch/dino/dino_happy.png",
+        "sha256": "e7ad95e3f7e3dc200d1e50207161be2de8237ceb988b396da3dcf5553de3efde",
+        "hex": "#F8E599",
+        "dE76": 3.58,
+        "regions": null,
+        "pixels_in_window": 711
+       }
+      ],
+      "median_dE76": 3.81,
+      "max_dE76": 5.28,
+      "limit_dE76": 12.0,
+      "pass": true
+     },
+     "note": "belly / snout underside"
+    },
+    {
+     "slot": 3,
+     "role": "ACCENT",
+     "label": "ACCENT",
+     "name": "Orange spikes",
+     "hex": "#F54A05",
+     "status": "PROVISIONAL",
+     "sample": {
+      "rgb": [
+       245,
+       74,
+       5
+      ],
+      "pixels_in_window": 6374,
+      "pixels_in_band": 3186,
+      "band_percentiles": [
+       25,
+       75
+      ],
+      "band_channel_min": [
+       179,
+       40,
+       0
+      ],
+      "band_channel_max": [
+       255,
+       112,
+       58
+      ],
+      "window": {
+       "hue_deg": [
+        5,
+        40
+       ],
+       "sat": [
+        0.75,
+        1
+       ],
+       "val": [
+        0.7,
+        1
+       ]
+      },
+      "alpha_rule": "alpha>=250, eroded by erode_px (per source; default 2)",
+      "sources": [
+       {
+        "path": "asset-library/dino/dino_turnaround_front.png",
+        "sha256": "05725520e310c88e2e2f3ee7a33b19344587c8f5796187e865e8c510fe98fa0b",
+        "size_px": [
+         201,
+         277
+        ],
+        "region": null,
+        "erode_px": 2,
+        "pixels_in_window": 1444
+       },
+       {
+        "path": "asset-library/dino/dino_turnaround_34.png",
+        "sha256": "5f7b9065db2906c63700cffbb585d7eabfe4fef782a415b5fba7a651e8738d65",
+        "size_px": [
+         212,
+         277
+        ],
+        "region": null,
+        "erode_px": 2,
+        "pixels_in_window": 2005
+       },
+       {
+        "path": "asset-library/dino/dino_turnaround_side.png",
+        "sha256": "6c4ea533a75544b43bf53e54a491707ff11e1294c5f6bb629c2c72652483a209",
+        "size_px": [
+         224,
+         277
+        ],
+        "region": null,
+        "erode_px": 2,
+        "pixels_in_window": 2925
+       }
+      ]
+     },
+     "verify": {
+      "assets": [
+       {
+        "path": "asset-library/dino/dino_turnaround_back.png",
+        "sha256": "94448c690a4b14cf987efdf59a469b00419e4ce547f87d0085ca7cd35c1043f6",
+        "hex": "#F45005",
+        "dE76": 2.67,
+        "regions": null,
+        "pixels_in_window": 4997
+       },
+       {
+        "path": "asset-library/dino/dino_hero.png",
+        "sha256": "e752cd86233753e9d409be543a0551b851e31d7d596e6728821fbd6ad4d8c254",
+        "hex": "#F54805",
+        "dE76": 0.78,
+        "regions": null,
+        "pixels_in_window": 2046
+       },
+       {
+        "path": "expression-batch/dino/dino_idle.png",
+        "sha256": "95aa9a23772dbf312408f4c4e0d4e0097dd512a46bd7c9bd2762b9817e217f76",
+        "hex": "#FC3D07",
+        "dE76": 6.46,
+        "regions": null,
+        "pixels_in_window": 374
+       },
+       {
+        "path": "expression-batch/dino/dino_happy.png",
+        "sha256": "e7ad95e3f7e3dc200d1e50207161be2de8237ceb988b396da3dcf5553de3efde",
+        "hex": "#F44108",
+        "dE76": 3.41,
+        "regions": null,
+        "pixels_in_window": 877
+       }
+      ],
+      "median_dE76": 3.04,
+      "max_dE76": 6.46,
+      "limit_dE76": 12.0,
+      "pass": true
+     },
+     "note": "OWNER FLAG (doc 09 s6, unchanged): the approved art renders the locked-orange spikes red-orange (hue ~17 deg); sampled as drawn, semantic name stays Orange"
+    },
+    {
+     "slot": 4,
+     "role": "GEAR",
+     "label": "GEAR",
+     "name": "Pack strap brown",
+     "hex": "#763B13",
+     "status": "PROVISIONAL",
+     "sample": {
+      "rgb": [
+       118,
+       59,
+       19
+      ],
+      "pixels_in_window": 3804,
+      "pixels_in_band": 1902,
+      "band_percentiles": [
+       25,
+       75
+      ],
+      "band_channel_min": [
+       73,
+       39,
+       5
+      ],
+      "band_channel_max": [
+       153,
+       79,
+       53
+      ],
+      "window": {
+       "hue_deg": [
+        15,
+        35
+       ],
+       "sat": [
+        0.5,
+        0.95
+       ],
+       "val": [
+        0.25,
+        0.6
+       ]
+      },
+      "alpha_rule": "alpha>=250, eroded by erode_px (per source; default 2)",
+      "sources": [
+       {
+        "path": "asset-library/dino/dino_turnaround_front.png",
+        "sha256": "05725520e310c88e2e2f3ee7a33b19344587c8f5796187e865e8c510fe98fa0b",
+        "size_px": [
+         201,
+         277
+        ],
+        "region": null,
+        "erode_px": 2,
+        "pixels_in_window": 358
+       },
+       {
+        "path": "asset-library/dino/dino_turnaround_34.png",
+        "sha256": "5f7b9065db2906c63700cffbb585d7eabfe4fef782a415b5fba7a651e8738d65",
+        "size_px": [
+         212,
+         277
+        ],
+        "region": null,
+        "erode_px": 2,
+        "pixels_in_window": 444
+       },
+       {
+        "path": "asset-library/dino/dino_turnaround_side.png",
+        "sha256": "6c4ea533a75544b43bf53e54a491707ff11e1294c5f6bb629c2c72652483a209",
+        "size_px": [
+         224,
+         277
+        ],
+        "region": null,
+        "erode_px": 2,
+        "pixels_in_window": 483
+       },
+       {
+        "path": "asset-library/dino/dino_detail_backpack_front.png",
+        "sha256": "964964bac5140056add65befdc960301e79c393f638a79d0351e99b51c2e9332",
+        "size_px": [
+         160,
+         160
+        ],
+        "region": null,
+        "erode_px": 2,
+        "pixels_in_window": 1863
+       },
+       {
+        "path": "asset-library/dino/dino_detail_buckle.png",
+        "sha256": "dcb527274f49f1ad784681cccc9f82acf943bbfe46ab7825f47e032c86da9989",
+        "size_px": [
+         72,
+         47
+        ],
+        "region": null,
+        "erode_px": 2,
+        "pixels_in_window": 656
+       }
+      ]
+     },
+     "verify": {
+      "assets": [
+       {
+        "path": "asset-library/dino/dino_hero.png",
+        "sha256": "e752cd86233753e9d409be543a0551b851e31d7d596e6728821fbd6ad4d8c254",
+        "hex": "#67300A",
+        "dE76": 5.32,
+        "regions": null,
+        "pixels_in_window": 812
+       },
+       {
+        "path": "asset-library/dino/dino_turnaround_back.png",
+        "sha256": "94448c690a4b14cf987efdf59a469b00419e4ce547f87d0085ca7cd35c1043f6",
+        "hex": "#7A3B14",
+        "dE76": 1.96,
+        "regions": null,
+        "pixels_in_window": 1050
+       }
+      ],
+      "median_dE76": 3.64,
+      "max_dE76": 5.32,
+      "limit_dE76": 12.0,
+      "pass": true
+     },
+     "note": null
+    },
+    {
+     "slot": 5,
+     "role": "DETAIL",
+     "label": "DETAIL",
+     "name": "Deep teal shade",
+     "hex": "#01857B",
+     "status": "PROVISIONAL",
+     "sample": {
+      "rgb": [
+       1,
+       133,
+       123
+      ],
+      "pixels_in_window": 9246,
+      "pixels_in_band": 4622,
+      "band_percentiles": [
+       25,
+       75
+      ],
+      "band_channel_min": [
+       0,
+       95,
+       86
+      ],
+      "band_channel_max": [
+       53,
+       152,
+       158
+      ],
+      "window": {
+       "hue_deg": [
+        160,
+        190
+       ],
+       "sat": [
+        0.55,
+        1
+       ],
+       "val": [
+        0.35,
+        0.62
+       ]
+      },
+      "alpha_rule": "alpha>=250, eroded by erode_px (per source; default 2)",
+      "sources": [
+       {
+        "path": "asset-library/dino/dino_turnaround_front.png",
+        "sha256": "05725520e310c88e2e2f3ee7a33b19344587c8f5796187e865e8c510fe98fa0b",
+        "size_px": [
+         201,
+         277
+        ],
+        "region": null,
+        "erode_px": 2,
+        "pixels_in_window": 2561
+       },
+       {
+        "path": "asset-library/dino/dino_turnaround_34.png",
+        "sha256": "5f7b9065db2906c63700cffbb585d7eabfe4fef782a415b5fba7a651e8738d65",
+        "size_px": [
+         212,
+         277
+        ],
+        "region": null,
+        "erode_px": 2,
+        "pixels_in_window": 3428
+       },
+       {
+        "path": "asset-library/dino/dino_turnaround_side.png",
+        "sha256": "6c4ea533a75544b43bf53e54a491707ff11e1294c5f6bb629c2c72652483a209",
+        "size_px": [
+         224,
+         277
+        ],
+        "region": null,
+        "erode_px": 2,
+        "pixels_in_window": 3257
+       }
+      ]
+     },
+     "verify": {
+      "assets": [
+       {
+        "path": "asset-library/dino/dino_turnaround_back.png",
+        "sha256": "94448c690a4b14cf987efdf59a469b00419e4ce547f87d0085ca7cd35c1043f6",
+        "hex": "#028080",
+        "dE76": 6.69,
+        "regions": null,
+        "pixels_in_window": 2881
+       },
+       {
+        "path": "asset-library/dino/dino_hero.png",
+        "sha256": "e752cd86233753e9d409be543a0551b851e31d7d596e6728821fbd6ad4d8c254",
+        "hex": "#028175",
+        "dE76": 2.0,
+        "regions": null,
+        "pixels_in_window": 3661
+       },
+       {
+        "path": "expression-batch/dino/dino_idle.png",
+        "sha256": "95aa9a23772dbf312408f4c4e0d4e0097dd512a46bd7c9bd2762b9817e217f76",
+        "hex": "#008688",
+        "dE76": 7.48,
+        "regions": null,
+        "pixels_in_window": 499
+       },
+       {
+        "path": "expression-batch/dino/dino_happy.png",
+        "sha256": "e7ad95e3f7e3dc200d1e50207161be2de8237ceb988b396da3dcf5553de3efde",
+        "hex": "#028180",
+        "dE76": 5.95,
+        "regions": null,
+        "pixels_in_window": 640
+       }
+      ],
+      "median_dE76": 6.32,
+      "max_dE76": 7.48,
+      "limit_dE76": 12.0,
+      "pass": true
+     },
+     "note": null
+    },
+    {
+     "slot": 6,
+     "role": "CHARACTER-SPECIFIC",
+     "label": "PACK BODY",
+     "name": "Olive green",
+     "hex": "#1D4331",
+     "status": "PROVISIONAL",
+     "sample": {
+      "rgb": [
+       29,
+       67,
+       49
+      ],
+      "pixels_in_window": 4966,
+      "pixels_in_band": 2485,
+      "band_percentiles": [
+       25,
+       75
+      ],
+      "band_channel_min": [
+       6,
+       49,
+       30
+      ],
+      "band_channel_max": [
+       54,
+       99,
+       77
+      ],
+      "window": {
+       "hue_deg": [
+        120,
+        170
+       ],
+       "sat": [
+        0.3,
+        0.9
+       ],
+       "val": [
+        0.15,
+        0.45
+       ]
+      },
+      "alpha_rule": "alpha>=250, eroded by erode_px (per source; default 2)",
+      "sources": [
+       {
+        "path": "asset-library/dino/dino_turnaround_front.png",
+        "sha256": "05725520e310c88e2e2f3ee7a33b19344587c8f5796187e865e8c510fe98fa0b",
+        "size_px": [
+         201,
+         277
+        ],
+        "region": null,
+        "erode_px": 2,
+        "pixels_in_window": 227
+       },
+       {
+        "path": "asset-library/dino/dino_turnaround_34.png",
+        "sha256": "5f7b9065db2906c63700cffbb585d7eabfe4fef782a415b5fba7a651e8738d65",
+        "size_px": [
+         212,
+         277
+        ],
+        "region": null,
+        "erode_px": 2,
+        "pixels_in_window": 594
+       },
+       {
+        "path": "asset-library/dino/dino_turnaround_side.png",
+        "sha256": "6c4ea533a75544b43bf53e54a491707ff11e1294c5f6bb629c2c72652483a209",
+        "size_px": [
+         224,
+         277
+        ],
+        "region": null,
+        "erode_px": 2,
+        "pixels_in_window": 692
+       },
+       {
+        "path": "asset-library/dino/dino_detail_backpack_back.png",
+        "sha256": "7955af88799ef1c76a95bb57b9e32a4a8f070ffe719819cff1c45837c39789ff",
+        "size_px": [
+         126,
+         152
+        ],
+        "region": null,
+        "erode_px": 2,
+        "pixels_in_window": 3453
+       }
+      ]
+     },
+     "verify": {
+      "assets": [
+       {
+        "path": "asset-library/dino/dino_hero.png",
+        "sha256": "e752cd86233753e9d409be543a0551b851e31d7d596e6728821fbd6ad4d8c254",
+        "hex": "#1A523D",
+        "dE76": 7.79,
+        "regions": null,
+        "pixels_in_window": 526
+       },
+       {
+        "path": "asset-library/dino/dino_turnaround_back.png",
+        "sha256": "94448c690a4b14cf987efdf59a469b00419e4ce547f87d0085ca7cd35c1043f6",
+        "hex": "#235D40",
+        "dE76": 13.37,
+        "regions": null,
+        "pixels_in_window": 923
+       }
+      ],
+      "median_dE76": 10.58,
+      "max_dE76": 13.37,
+      "limit_dE76": 12.0,
+      "pass": true
+     },
+     "note": "exactly one backpack; green body is owner-accepted (doc 09 s6); straps are slot 4"
+    }
+   ]
+  },
+  "koala": {
+   "slots": [
+    {
+     "slot": 1,
+     "role": "PRIMARY",
+     "label": "PRIMARY",
+     "name": "Gray-lavender fur",
+     "hex": "#9B85B9",
+     "status": "PROVISIONAL",
+     "sample": {
+      "rgb": [
+       155,
+       133,
+       185
+      ],
+      "pixels_in_window": 7965,
+      "pixels_in_band": 3983,
+      "band_percentiles": [
+       25,
+       75
+      ],
+      "band_channel_min": [
+       122,
+       109,
+       147
+      ],
+      "band_channel_max": [
+       185,
+       152,
+       229
+      ],
+      "window": {
+       "hue_deg": [
+        230,
+        285
+       ],
+       "sat": [
+        0.12,
+        0.5
+       ],
+       "val": [
+        0.55,
+        0.9
+       ]
+      },
+      "alpha_rule": "alpha>=250, eroded by erode_px (per source; default 2)",
+      "sources": [
+       {
+        "path": "asset-library/koala/koala_turnaround_front.png",
+        "sha256": "d18d2277964590c28abf2c2332fe78b2505ed74a79aded8eee400065cb03e216",
+        "size_px": [
+         220,
+         260
+        ],
+        "region": null,
+        "erode_px": 2,
+        "pixels_in_window": 3846
+       },
+       {
+        "path": "asset-library/koala/koala_turnaround_34.png",
+        "sha256": "02331884ac62e4fb3cd1cfc09f78058f8a5207d5a53514078617fb67213be361",
+        "size_px": [
+         180,
+         267
+        ],
+        "region": null,
+        "erode_px": 2,
+        "pixels_in_window": 1444
+       },
+       {
+        "path": "asset-library/koala/koala_turnaround_side.png",
+        "sha256": "855dac579ea760022a4f8d62cb92df86be4bc58f36d8a11a45d3c8b165e51962",
+        "size_px": [
+         174,
+         261
+        ],
+        "region": null,
+        "erode_px": 2,
+        "pixels_in_window": 2675
+       }
+      ]
+     },
+     "verify": {
+      "assets": [
+       {
+        "path": "asset-library/koala/koala_turnaround_back.png",
+        "sha256": "542c11f503177c253788c7ea9fc3c91dc20a85bf2c54fc11d0c1ae08679a343b",
+        "hex": "#9E87B9",
+        "dE76": 1.45,
+        "regions": null,
+        "pixels_in_window": 5933
+       },
+       {
+        "path": "asset-library/koala/koala_hero_reading.png",
+        "sha256": "5989e248c681e780179c539d2dd56d746d03eb5d35dd8f9d6ffa86960762c3f8",
+        "hex": "#9885BF",
+        "dE76": 3.5,
+        "regions": null,
+        "pixels_in_window": 5248
+       },
+       {
+        "path": "expression-batch/koala/koala_idle.png",
+        "sha256": "27842bcae6be4779cb8230165fbb24e0c6db5561cc936621978ae9a7929630fc",
+        "hex": "#9C84B8",
+        "dE76": 0.75,
+        "regions": null,
+        "pixels_in_window": 1585
+       },
+       {
+        "path": "expression-batch/koala/koala_happy.png",
+        "sha256": "b7a16e546a222c8f777ce952c97d863ae9eee00d4790da5fd9b86f8e463f4f8a",
+        "hex": "#9B86BE",
+        "dE76": 2.27,
+        "regions": null,
+        "pixels_in_window": 1466
+       }
+      ],
+      "median_dE76": 1.86,
+      "max_dE76": 3.5,
+      "limit_dE76": 12.0,
+      "pass": true
+     },
+     "note": null
+    },
+    {
+     "slot": 2,
+     "role": "SECONDARY",
+     "label": "SECONDARY",
+     "name": "Light lavender fur",
+     "hex": "#E7CCF2",
+     "status": "PROVISIONAL",
+     "sample": {
+      "rgb": [
+       231,
+       204,
+       242
+      ],
+      "pixels_in_window": 988,
+      "pixels_in_band": 494,
+      "band_percentiles": [
+       25,
+       75
+      ],
+      "band_channel_min": [
+       210,
+       188,
+       219
+      ],
+      "band_channel_max": [
+       248,
+       224,
+       255
+      ],
+      "window": {
+       "hue_deg": [
+        230,
+        300
+       ],
+       "sat": [
+        0.03,
+        0.2
+       ],
+       "val": [
+        0.85,
+        1
+       ]
+      },
+      "alpha_rule": "alpha>=250, eroded by erode_px (per source; default 2)",
+      "sources": [
+       {
+        "path": "asset-library/koala/koala_turnaround_front.png",
+        "sha256": "d18d2277964590c28abf2c2332fe78b2505ed74a79aded8eee400065cb03e216",
+        "size_px": [
+         220,
+         260
+        ],
+        "region": null,
+        "erode_px": 2,
+        "pixels_in_window": 733
+       },
+       {
+        "path": "asset-library/koala/koala_turnaround_34.png",
+        "sha256": "02331884ac62e4fb3cd1cfc09f78058f8a5207d5a53514078617fb67213be361",
+        "size_px": [
+         180,
+         267
+        ],
+        "region": null,
+        "erode_px": 2,
+        "pixels_in_window": 73
+       },
+       {
+        "path": "asset-library/koala/koala_turnaround_side.png",
+        "sha256": "855dac579ea760022a4f8d62cb92df86be4bc58f36d8a11a45d3c8b165e51962",
+        "size_px": [
+         174,
+         261
+        ],
+        "region": null,
+        "erode_px": 2,
+        "pixels_in_window": 182
+       }
+      ]
+     },
+     "verify": {
+      "assets": [
+       {
+        "path": "asset-library/koala/koala_turnaround_back.png",
+        "sha256": "542c11f503177c253788c7ea9fc3c91dc20a85bf2c54fc11d0c1ae08679a343b",
+        "hex": "#E0C3E7",
+        "dE76": 3.33,
+        "regions": null,
+        "pixels_in_window": 567
+       },
+       {
+        "path": "asset-library/koala/koala_hero_reading.png",
+        "sha256": "5989e248c681e780179c539d2dd56d746d03eb5d35dd8f9d6ffa86960762c3f8",
+        "hex": "#DDC4EB",
+        "dE76": 3.14,
+        "regions": null,
+        "pixels_in_window": 685
+       },
+       {
+        "path": "expression-batch/koala/koala_idle.png",
+        "sha256": "27842bcae6be4779cb8230165fbb24e0c6db5561cc936621978ae9a7929630fc",
+        "hex": "#E4CCF5",
+        "dE76": 1.91,
+        "regions": null,
+        "pixels_in_window": 331
+       },
+       {
+        "path": "expression-batch/koala/koala_happy.png",
+        "sha256": "b7a16e546a222c8f777ce952c97d863ae9eee00d4790da5fd9b86f8e463f4f8a",
+        "hex": "#E3CCF4",
+        "dE76": 1.78,
+        "regions": null,
+        "pixels_in_window": 309
+       }
+      ],
+      "median_dE76": 2.52,
+      "max_dE76": 3.33,
+      "limit_dE76": 12.0,
+      "pass": true
+     },
+     "note": null
+    },
+    {
+     "slot": 3,
+     "role": "ACCENT",
+     "label": "ACCENT",
+     "name": "Ear inner peach",
+     "hex": "#FAAB97",
+     "status": "PROVISIONAL",
+     "sample": {
+      "rgb": [
+       250,
+       171,
+       151
+      ],
+      "pixels_in_window": 2167,
+      "pixels_in_band": 1083,
+      "band_percentiles": [
+       25,
+       75
+      ],
+      "band_channel_min": [
+       205,
+       145,
+       97
+      ],
+      "band_channel_max": [
+       255,
+       190,
+       176
+      ],
+      "window": {
+       "hue_deg": [
+        5,
+        20
+       ],
+       "sat": [
+        0.25,
+        0.7
+       ],
+       "val": [
+        0.8,
+        1
+       ]
+      },
+      "alpha_rule": "alpha>=250, eroded by erode_px (per source; default 2)",
+      "sources": [
+       {
+        "path": "asset-library/koala/koala_turnaround_front.png",
+        "sha256": "d18d2277964590c28abf2c2332fe78b2505ed74a79aded8eee400065cb03e216",
+        "size_px": [
+         220,
+         260
+        ],
+        "region": null,
+        "erode_px": 2,
+        "pixels_in_window": 882
+       },
+       {
+        "path": "asset-library/koala/koala_turnaround_34.png",
+        "sha256": "02331884ac62e4fb3cd1cfc09f78058f8a5207d5a53514078617fb67213be361",
+        "size_px": [
+         180,
+         267
+        ],
+        "region": null,
+        "erode_px": 2,
+        "pixels_in_window": 983
+       },
+       {
+        "path": "asset-library/koala/koala_turnaround_side.png",
+        "sha256": "855dac579ea760022a4f8d62cb92df86be4bc58f36d8a11a45d3c8b165e51962",
+        "size_px": [
+         174,
+         261
+        ],
+        "region": null,
+        "erode_px": 2,
+        "pixels_in_window": 302
+       }
+      ]
+     },
+     "verify": {
+      "assets": [
+       {
+        "path": "asset-library/koala/koala_turnaround_back.png",
+        "result": "fewer than 60 pixels in window (skipped)"
+       },
+       {
+        "path": "asset-library/koala/koala_hero_reading.png",
+        "sha256": "5989e248c681e780179c539d2dd56d746d03eb5d35dd8f9d6ffa86960762c3f8",
+        "hex": "#FCA18C",
+        "dE76": 6.09,
+        "regions": null,
+        "pixels_in_window": 888
+       },
+       {
+        "path": "expression-batch/koala/koala_idle.png",
+        "sha256": "27842bcae6be4779cb8230165fbb24e0c6db5561cc936621978ae9a7929630fc",
+        "hex": "#FDA696",
+        "dE76": 3.77,
+        "regions": null,
+        "pixels_in_window": 612
+       },
+       {
+        "path": "expression-batch/koala/koala_happy.png",
+        "sha256": "b7a16e546a222c8f777ce952c97d863ae9eee00d4790da5fd9b86f8e463f4f8a",
+        "hex": "#FCAB91",
+        "dE76": 3.42,
+        "regions": null,
+        "pixels_in_window": 559
+       }
+      ],
+      "median_dE76": 3.77,
+      "max_dE76": 6.09,
+      "limit_dE76": 12.0,
+      "pass": true
+     },
+     "note": null
+    },
+    {
+     "slot": 4,
+     "role": "GEAR",
+     "label": "GEAR",
+     "name": "Scholar jacket",
+     "hex": "#241511",
+     "status": "PROVISIONAL",
+     "sample": {
+      "rgb": [
+       36,
+       21,
+       17
+      ],
+      "pixels_in_window": 6309,
+      "pixels_in_band": 3155,
+      "band_percentiles": [
+       25,
+       75
+      ],
+      "band_channel_min": [
+       20,
+       11,
+       8
+      ],
+      "band_channel_max": [
+       59,
+       32,
+       31
+      ],
+      "window": {
+       "hue_deg": [
+        0,
+        50
+       ],
+       "sat": [
+        0.1,
+        0.7
+       ],
+       "val": [
+        0.0,
+        0.25
+       ]
+      },
+      "alpha_rule": "alpha>=250, eroded by erode_px (per source; default 2)",
+      "sources": [
+       {
+        "path": "asset-library/koala/koala_turnaround_front.png",
+        "sha256": "d18d2277964590c28abf2c2332fe78b2505ed74a79aded8eee400065cb03e216",
+        "size_px": [
+         220,
+         260
+        ],
+        "region": null,
+        "erode_px": 2,
+        "pixels_in_window": 1238
+       },
+       {
+        "path": "asset-library/koala/koala_turnaround_34.png",
+        "sha256": "02331884ac62e4fb3cd1cfc09f78058f8a5207d5a53514078617fb67213be361",
+        "size_px": [
+         180,
+         267
+        ],
+        "region": null,
+        "erode_px": 2,
+        "pixels_in_window": 2794
+       },
+       {
+        "path": "asset-library/koala/koala_turnaround_side.png",
+        "sha256": "855dac579ea760022a4f8d62cb92df86be4bc58f36d8a11a45d3c8b165e51962",
+        "size_px": [
+         174,
+         261
+        ],
+        "region": null,
+        "erode_px": 2,
+        "pixels_in_window": 2277
+       }
+      ]
+     },
+     "verify": {
+      "assets": [
+       {
+        "path": "asset-library/koala/koala_hero_reading.png",
+        "sha256": "5989e248c681e780179c539d2dd56d746d03eb5d35dd8f9d6ffa86960762c3f8",
+        "hex": "#331D18",
+        "dE76": 6.34,
+        "regions": null,
+        "pixels_in_window": 1678
+       },
+       {
+        "path": "expression-batch/koala/koala_idle.png",
+        "sha256": "27842bcae6be4779cb8230165fbb24e0c6db5561cc936621978ae9a7929630fc",
+        "hex": "#281814",
+        "dE76": 1.77,
+        "regions": null,
+        "pixels_in_window": 736
+       },
+       {
+        "path": "expression-batch/koala/koala_happy.png",
+        "sha256": "b7a16e546a222c8f777ce952c97d863ae9eee00d4790da5fd9b86f8e463f4f8a",
+        "hex": "#1E110E",
+        "dE76": 3.0,
+        "regions": null,
+        "pixels_in_window": 700
+       }
+      ],
+      "median_dE76": 3.0,
+      "max_dE76": 6.34,
+      "limit_dE76": 12.0,
+      "pass": true
+     },
+     "note": null
+    },
+    {
+     "slot": 5,
+     "role": "DETAIL",
+     "label": "DETAIL",
+     "name": "Glasses frames charcoal",
+     "hex": "#0B0604",
+     "status": "PROVISIONAL",
+     "sample": {
+      "rgb": [
+       11,
+       6,
+       4
+      ],
+      "pixels_in_window": 304,
+      "pixels_in_band": 152,
+      "band_percentiles": [
+       25,
+       75
+      ],
+      "band_channel_min": [
+       1,
+       0,
+       0
+      ],
+      "band_channel_max": [
+       41,
+       13,
+       14
+      ],
+      "window": {
+       "hue_deg": [
+        0,
+        360
+       ],
+       "sat": [
+        0.0,
+        1.0
+       ],
+       "val": [
+        0.0,
+        0.2
+       ]
+      },
+      "alpha_rule": "alpha>=250, eroded by erode_px (per source; default 2)",
+      "sources": [
+       {
+        "path": "asset-library/koala/koala_head.png",
+        "sha256": "0bc633dbd38d55a5df2236082be0cd2a507782712641c06e0f4eca45e23c5995",
+        "size_px": [
+         321,
+         258
+        ],
+        "region": [
+         106,
+         112,
+         114,
+         135
+        ],
+        "erode_px": 1,
+        "pixels_in_window": 2
+       },
+       {
+        "path": "asset-library/koala/koala_head.png",
+        "sha256": "0bc633dbd38d55a5df2236082be0cd2a507782712641c06e0f4eca45e23c5995",
+        "size_px": [
+         321,
+         258
+        ],
+        "region": [
+         125,
+         140,
+         160,
+         147
+        ],
+        "erode_px": 1,
+        "pixels_in_window": 86
+       },
+       {
+        "path": "asset-library/koala/koala_head.png",
+        "sha256": "0bc633dbd38d55a5df2236082be0cd2a507782712641c06e0f4eca45e23c5995",
+        "size_px": [
+         321,
+         258
+        ],
+        "region": [
+         215,
+         140,
+         250,
+         147
+        ],
+        "erode_px": 1,
+        "pixels_in_window": 41
+       },
+       {
+        "path": "asset-library/koala/koala_head.png",
+        "sha256": "0bc633dbd38d55a5df2236082be0cd2a507782712641c06e0f4eca45e23c5995",
+        "size_px": [
+         321,
+         258
+        ],
+        "region": [
+         255,
+         112,
+         262,
+         135
+        ],
+        "erode_px": 1,
+        "pixels_in_window": 65
+       },
+       {
+        "path": "asset-library/koala/koala_head.png",
+        "sha256": "0bc633dbd38d55a5df2236082be0cd2a507782712641c06e0f4eca45e23c5995",
+        "size_px": [
+         321,
+         258
+        ],
+        "region": [
+         240,
+         99,
+         265,
+         108
+        ],
+        "erode_px": 1,
+        "pixels_in_window": 110
+       }
+      ]
+     },
+     "verify": {
+      "assets": [
+       {
+        "path": "asset-library/koala/koala_turnaround_front.png",
+        "sha256": "d18d2277964590c28abf2c2332fe78b2505ed74a79aded8eee400065cb03e216",
+        "hex": "#080407",
+        "dE76": 2.1,
+        "regions": [
+         [
+          60,
+          69,
+          100,
+          75
+         ],
+         [
+          128,
+          69,
+          158,
+          75
+         ],
+         [
+          72,
+          94,
+          98,
+          99
+         ],
+         [
+          128,
+          94,
+          155,
+          99
+         ]
+        ],
+        "pixels_in_window": 289
+       }
+      ],
+      "median_dE76": 2.1,
+      "max_dE76": 2.1,
+      "limit_dE76": 12.0,
+      "pass": true
+     },
+     "note": "canonical frames dark charcoal / near-black (owner decision B); sampled from rim and temple strips of the approved head close-up (nose, pupils and hat excluded by region); the corrected glasses detail asset must match this value"
+    },
+    {
+     "slot": 6,
+     "role": "CHARACTER-SPECIFIC",
+     "label": "BOOK",
+     "name": "Leather brown",
+     "hex": "#5F341F",
+     "status": "PROVISIONAL",
+     "sample": {
+      "rgb": [
+       95,
+       52,
+       31
+      ],
+      "pixels_in_window": 10717,
+      "pixels_in_band": 5360,
+      "band_percentiles": [
+       25,
+       75
+      ],
+      "band_channel_min": [
+       71,
+       36,
+       5
+      ],
+      "band_channel_max": [
+       134,
+       66,
+       49
+      ],
+      "window": {
+       "hue_deg": [
+        15,
+        35
+       ],
+       "sat": [
+        0.5,
+        0.95
+       ],
+       "val": [
+        0.25,
+        0.6
+       ]
+      },
+      "alpha_rule": "alpha>=250, eroded by erode_px (per source; default 2)",
+      "sources": [
+       {
+        "path": "asset-library/koala/koala_turnaround_front.png",
+        "sha256": "d18d2277964590c28abf2c2332fe78b2505ed74a79aded8eee400065cb03e216",
+        "size_px": [
+         220,
+         260
+        ],
+        "region": null,
+        "erode_px": 2,
+        "pixels_in_window": 1107
+       },
+       {
+        "path": "asset-library/koala/koala_turnaround_34.png",
+        "sha256": "02331884ac62e4fb3cd1cfc09f78058f8a5207d5a53514078617fb67213be361",
+        "size_px": [
+         180,
+         267
+        ],
+        "region": null,
+        "erode_px": 2,
+        "pixels_in_window": 1501
+       },
+       {
+        "path": "asset-library/koala/koala_turnaround_side.png",
+        "sha256": "855dac579ea760022a4f8d62cb92df86be4bc58f36d8a11a45d3c8b165e51962",
+        "size_px": [
+         174,
+         261
+        ],
+        "region": null,
+        "erode_px": 2,
+        "pixels_in_window": 1162
+       },
+       {
+        "path": "asset-library/koala/koala_detail_scholar_book.png",
+        "sha256": "86d9e8c80b15646f649ca4e286c64904097c5dccbe2e6978dbe7b41241106d5d",
+        "size_px": [
+         121,
+         138
+        ],
+        "region": null,
+        "erode_px": 2,
+        "pixels_in_window": 6947
+       }
+      ]
+     },
+     "verify": {
+      "assets": [
+       {
+        "path": "asset-library/koala/koala_hero_reading.png",
+        "sha256": "5989e248c681e780179c539d2dd56d746d03eb5d35dd8f9d6ffa86960762c3f8",
+        "hex": "#4F2614",
+        "dE76": 6.38,
+        "regions": null,
+        "pixels_in_window": 1575
+       },
+       {
+        "path": "expression-batch/koala/koala_idle.png",
+        "sha256": "27842bcae6be4779cb8230165fbb24e0c6db5561cc936621978ae9a7929630fc",
+        "hex": "#6D422E",
+        "dE76": 6.13,
+        "regions": null,
+        "pixels_in_window": 150
+       },
+       {
+        "path": "expression-batch/koala/koala_thinking_analytical.png",
+        "sha256": "ff7cb37351ce1d65dc5ffae019c39aec4143920ef8412c692630734f658a30d5",
+        "hex": "#704631",
+        "dE76": 7.67,
+        "regions": null,
+        "pixels_in_window": 246
+       }
+      ],
+      "median_dE76": 6.38,
+      "max_dE76": 7.67,
+      "limit_dE76": 12.0,
+      "pass": true
+     },
+     "note": "scholar book; hat brown is a neighbouring tone, not a slot"
+    }
+   ]
+  },
+  "tarsier": {
+   "slots": [
+    {
+     "slot": 1,
+     "role": "PRIMARY",
+     "label": "PRIMARY",
+     "name": "Golden-brown fur",
+     "hex": "#A8642C",
+     "status": "PROVISIONAL",
+     "sample": {
+      "rgb": [
+       168,
+       100,
+       44
+      ],
+      "pixels_in_window": 6573,
+      "pixels_in_band": 3288,
+      "band_percentiles": [
+       25,
+       75
+      ],
+      "band_channel_min": [
+       118,
+       81,
+       30
+      ],
+      "band_channel_max": [
+       204,
+       124,
+       91
+      ],
+      "window": {
+       "hue_deg": [
+        22,
+        38
+       ],
+       "sat": [
+        0.4,
+        0.8
+       ],
+       "val": [
+        0.4,
+        0.8
+       ]
+      },
+      "alpha_rule": "alpha>=250, eroded by erode_px (per source; default 2)",
+      "sources": [
+       {
+        "path": "asset-library/tarsier/tarsier_turnaround_front.png",
+        "sha256": "fde2929c1e37b1ee1cc25c367d6b8d63e136ba083b31cd2243092b9fc8b71d9e",
+        "size_px": [
+         283,
+         234
+        ],
+        "region": null,
+        "erode_px": 2,
+        "pixels_in_window": 2010
+       },
+       {
+        "path": "asset-library/tarsier/tarsier_turnaround_34.png",
+        "sha256": "20db660ea8da88be4aa5dbb5caa7625d6f3805d0b46bbfe79ae91e52eb259406",
+        "size_px": [
+         296,
+         235
+        ],
+        "region": null,
+        "erode_px": 2,
+        "pixels_in_window": 2363
+       },
+       {
+        "path": "asset-library/tarsier/tarsier_turnaround_side.png",
+        "sha256": "3f6041cb79a6a49a869a3f47bd6b8053daa50796c8f054a102ea45f01a997b45",
+        "size_px": [
+         249,
+         229
+        ],
+        "region": null,
+        "erode_px": 2,
+        "pixels_in_window": 2200
+       }
+      ]
+     },
+     "verify": {
+      "assets": [
+       {
+        "path": "asset-library/tarsier/tarsier_turnaround_back.png",
+        "sha256": "aa16fe527d0ae45d9a7fbb3aef72fc18d4c5eea9e9d43644e42ba74a520b4d97",
+        "hex": "#AB6329",
+        "dE76": 2.44,
+        "regions": null,
+        "pixels_in_window": 2898
+       },
+       {
+        "path": "asset-library/tarsier/tarsier_hero.png",
+        "sha256": "f9ebc6925b3362db8c5c01c3e5af6b6293e8399a81c4f6175b50fe82e5463f0f",
+        "hex": "#A9632E",
+        "dE76": 1.5,
+        "regions": null,
+        "pixels_in_window": 1844
+       },
+       {
+        "path": "expression-batch/tarsier/tarsier_idle.png",
+        "sha256": "dace8b6cc79e4be0c869807ecb6ae5158b8221094547545f7e958bcc544da2f0",
+        "hex": "#B6672D",
+        "dE76": 5.84,
+        "regions": null,
+        "pixels_in_window": 931
+       },
+       {
+        "path": "expression-batch/tarsier/tarsier_happy.png",
+        "sha256": "98fe59d73369c8e391a0b33d4aa060d077d20b3957869f6c5765d1f45de12d95",
+        "hex": "#B5682F",
+        "dE76": 4.85,
+        "regions": null,
+        "pixels_in_window": 1014
+       }
+      ],
+      "median_dE76": 3.64,
+      "max_dE76": 5.84,
+      "limit_dE76": 12.0,
+      "pass": true
+     },
+     "note": null
+    },
+    {
+     "slot": 2,
+     "role": "SECONDARY",
+     "label": "SECONDARY",
+     "name": "Scout hood yellow",
+     "hex": "#FCC003",
+     "status": "PROVISIONAL",
+     "sample": {
+      "rgb": [
+       252,
+       192,
+       3
+      ],
+      "pixels_in_window": 4610,
+      "pixels_in_band": 2305,
+      "band_percentiles": [
+       25,
+       75
+      ],
+      "band_channel_min": [
+       221,
+       179,
+       0
+      ],
+      "band_channel_max": [
+       255,
+       210,
+       50
+      ],
+      "window": {
+       "hue_deg": [
+        40,
+        52
+       ],
+       "sat": [
+        0.8,
+        1
+       ],
+       "val": [
+        0.8,
+        1
+       ]
+      },
+      "alpha_rule": "alpha>=250, eroded by erode_px (per source; default 2)",
+      "sources": [
+       {
+        "path": "asset-library/tarsier/tarsier_turnaround_front.png",
+        "sha256": "fde2929c1e37b1ee1cc25c367d6b8d63e136ba083b31cd2243092b9fc8b71d9e",
+        "size_px": [
+         283,
+         234
+        ],
+        "region": null,
+        "erode_px": 2,
+        "pixels_in_window": 1562
+       },
+       {
+        "path": "asset-library/tarsier/tarsier_turnaround_34.png",
+        "sha256": "20db660ea8da88be4aa5dbb5caa7625d6f3805d0b46bbfe79ae91e52eb259406",
+        "size_px": [
+         296,
+         235
+        ],
+        "region": null,
+        "erode_px": 2,
+        "pixels_in_window": 1667
+       },
+       {
+        "path": "asset-library/tarsier/tarsier_turnaround_side.png",
+        "sha256": "3f6041cb79a6a49a869a3f47bd6b8053daa50796c8f054a102ea45f01a997b45",
+        "size_px": [
+         249,
+         229
+        ],
+        "region": null,
+        "erode_px": 2,
+        "pixels_in_window": 1381
+       }
+      ]
+     },
+     "verify": {
+      "assets": [
+       {
+        "path": "asset-library/tarsier/tarsier_turnaround_back.png",
+        "sha256": "aa16fe527d0ae45d9a7fbb3aef72fc18d4c5eea9e9d43644e42ba74a520b4d97",
+        "hex": "#F8C307",
+        "dE76": 3.27,
+        "regions": null,
+        "pixels_in_window": 432
+       },
+       {
+        "path": "asset-library/tarsier/tarsier_hero.png",
+        "sha256": "f9ebc6925b3362db8c5c01c3e5af6b6293e8399a81c4f6175b50fe82e5463f0f",
+        "hex": "#FCBF05",
+        "dE76": 0.69,
+        "regions": null,
+        "pixels_in_window": 860
+       },
+       {
+        "path": "expression-batch/tarsier/tarsier_idle.png",
+        "sha256": "dace8b6cc79e4be0c869807ecb6ae5158b8221094547545f7e958bcc544da2f0",
+        "hex": "#FAC108",
+        "dE76": 1.44,
+        "regions": null,
+        "pixels_in_window": 497
+       },
+       {
+        "path": "expression-batch/tarsier/tarsier_happy.png",
+        "sha256": "98fe59d73369c8e391a0b33d4aa060d077d20b3957869f6c5765d1f45de12d95",
+        "hex": "#FBBE04",
+        "dE76": 1.02,
+        "regions": null,
+        "pixels_in_window": 560
+       }
+      ],
+      "median_dE76": 1.23,
+      "max_dE76": 3.27,
+      "limit_dE76": 12.0,
+      "pass": true
+     },
+     "note": null
+    },
+    {
+     "slot": 3,
+     "role": "ACCENT",
+     "label": "ACCENT",
+     "name": "Goggle lens blue",
+     "hex": "#05B5DD",
+     "status": "PROVISIONAL",
+     "sample": {
+      "rgb": [
+       5,
+       181,
+       221
+      ],
+      "pixels_in_window": 1744,
+      "pixels_in_band": 872,
+      "band_percentiles": [
+       25,
+       75
+      ],
+      "band_channel_min": [
+       0,
+       129,
+       156
+      ],
+      "band_channel_max": [
+       98,
+       216,
+       255
+      ],
+      "window": {
+       "hue_deg": [
+        180,
+        200
+       ],
+       "sat": [
+        0.5,
+        1
+       ],
+       "val": [
+        0.6,
+        1
+       ]
+      },
+      "alpha_rule": "alpha>=250, eroded by erode_px (per source; default 2)",
+      "sources": [
+       {
+        "path": "asset-library/tarsier/tarsier_turnaround_front.png",
+        "sha256": "fde2929c1e37b1ee1cc25c367d6b8d63e136ba083b31cd2243092b9fc8b71d9e",
+        "size_px": [
+         283,
+         234
+        ],
+        "region": null,
+        "erode_px": 2,
+        "pixels_in_window": 765
+       },
+       {
+        "path": "asset-library/tarsier/tarsier_turnaround_34.png",
+        "sha256": "20db660ea8da88be4aa5dbb5caa7625d6f3805d0b46bbfe79ae91e52eb259406",
+        "size_px": [
+         296,
+         235
+        ],
+        "region": null,
+        "erode_px": 2,
+        "pixels_in_window": 639
+       },
+       {
+        "path": "asset-library/tarsier/tarsier_turnaround_side.png",
+        "sha256": "3f6041cb79a6a49a869a3f47bd6b8053daa50796c8f054a102ea45f01a997b45",
+        "size_px": [
+         249,
+         229
+        ],
+        "region": null,
+        "erode_px": 2,
+        "pixels_in_window": 340
+       }
+      ]
+     },
+     "verify": {
+      "assets": [
+       {
+        "path": "asset-library/tarsier/tarsier_turnaround_back.png",
+        "result": "fewer than 60 pixels in window (skipped)"
+       },
+       {
+        "path": "asset-library/tarsier/tarsier_hero.png",
+        "sha256": "f9ebc6925b3362db8c5c01c3e5af6b6293e8399a81c4f6175b50fe82e5463f0f",
+        "hex": "#06AACF",
+        "dE76": 4.33,
+        "regions": null,
+        "pixels_in_window": 522
+       },
+       {
+        "path": "expression-batch/tarsier/tarsier_idle.png",
+        "sha256": "dace8b6cc79e4be0c869807ecb6ae5158b8221094547545f7e958bcc544da2f0",
+        "hex": "#05B5DE",
+        "dE76": 0.6,
+        "regions": null,
+        "pixels_in_window": 765
+       },
+       {
+        "path": "expression-batch/tarsier/tarsier_happy.png",
+        "sha256": "98fe59d73369c8e391a0b33d4aa060d077d20b3957869f6c5765d1f45de12d95",
+        "hex": "#1793B3",
+        "dE76": 13.52,
+        "regions": null,
+        "pixels_in_window": 74
+       }
+      ],
+      "median_dE76": 4.33,
+      "max_dE76": 13.52,
+      "limit_dE76": 12.0,
+      "pass": true
+     },
+     "note": null
+    },
+    {
+     "slot": 4,
+     "role": "GEAR",
+     "label": "GEAR",
+     "name": "Scout pack slate",
+     "hex": "#2B4B53",
+     "status": "PROVISIONAL",
+     "sample": {
+      "rgb": [
+       43,
+       75,
+       83
+      ],
+      "pixels_in_window": 1400,
+      "pixels_in_band": 700,
+      "band_percentiles": [
+       25,
+       75
+      ],
+      "band_channel_min": [
+       10,
+       48,
+       52
+      ],
+      "band_channel_max": [
+       64,
+       93,
+       122
+      ],
+      "window": {
+       "hue_deg": [
+        180,
+        215
+       ],
+       "sat": [
+        0.3,
+        0.9
+       ],
+       "val": [
+        0.15,
+        0.5
+       ]
+      },
+      "alpha_rule": "alpha>=250, eroded by erode_px (per source; default 2)",
+      "sources": [
+       {
+        "path": "asset-library/tarsier/tarsier_turnaround_front.png",
+        "sha256": "fde2929c1e37b1ee1cc25c367d6b8d63e136ba083b31cd2243092b9fc8b71d9e",
+        "size_px": [
+         283,
+         234
+        ],
+        "region": null,
+        "erode_px": 2,
+        "pixels_in_window": 332
+       },
+       {
+        "path": "asset-library/tarsier/tarsier_turnaround_34.png",
+        "sha256": "20db660ea8da88be4aa5dbb5caa7625d6f3805d0b46bbfe79ae91e52eb259406",
+        "size_px": [
+         296,
+         235
+        ],
+        "region": null,
+        "erode_px": 2,
+        "pixels_in_window": 248
+       },
+       {
+        "path": "asset-library/tarsier/tarsier_turnaround_side.png",
+        "sha256": "3f6041cb79a6a49a869a3f47bd6b8053daa50796c8f054a102ea45f01a997b45",
+        "size_px": [
+         249,
+         229
+        ],
+        "region": null,
+        "erode_px": 2,
+        "pixels_in_window": 219
+       },
+       {
+        "path": "asset-library/tarsier/tarsier_detail_backpack_front.png",
+        "sha256": "87d5dbadbb19198271515ebd2bbbe5a568bec650c4403d028594f0888169808b",
+        "size_px": [
+         113,
+         107
+        ],
+        "region": null,
+        "erode_px": 2,
+        "pixels_in_window": 601
+       }
+      ]
+     },
+     "verify": {
+      "assets": [
+       {
+        "path": "asset-library/tarsier/tarsier_hero.png",
+        "sha256": "f9ebc6925b3362db8c5c01c3e5af6b6293e8399a81c4f6175b50fe82e5463f0f",
+        "hex": "#234150",
+        "dE76": 6.41,
+        "regions": null,
+        "pixels_in_window": 311
+       },
+       {
+        "path": "asset-library/tarsier/tarsier_turnaround_back.png",
+        "sha256": "aa16fe527d0ae45d9a7fbb3aef72fc18d4c5eea9e9d43644e42ba74a520b4d97",
+        "hex": "#2B4553",
+        "dE76": 5.22,
+        "regions": null,
+        "pixels_in_window": 134
+       }
+      ],
+      "median_dE76": 5.81,
+      "max_dE76": 6.41,
+      "limit_dE76": 12.0,
+      "pass": true
+     },
+     "note": null
+    },
+    {
+     "slot": 5,
+     "role": "DETAIL",
+     "label": "DETAIL",
+     "name": "Ear inner coral",
+     "hex": "#FC8161",
+     "status": "PROVISIONAL",
+     "sample": {
+      "rgb": [
+       252,
+       129,
+       97
+      ],
+      "pixels_in_window": 6304,
+      "pixels_in_band": 3152,
+      "band_percentiles": [
+       25,
+       75
+      ],
+      "band_channel_min": [
+       217,
+       108,
+       60
+      ],
+      "band_channel_max": [
+       255,
+       165,
+       144
+      ],
+      "window": {
+       "hue_deg": [
+        0,
+        20
+       ],
+       "sat": [
+        0.3,
+        0.75
+       ],
+       "val": [
+        0.85,
+        1
+       ]
+      },
+      "alpha_rule": "alpha>=250, eroded by erode_px (per source; default 2)",
+      "sources": [
+       {
+        "path": "asset-library/tarsier/tarsier_turnaround_front.png",
+        "sha256": "fde2929c1e37b1ee1cc25c367d6b8d63e136ba083b31cd2243092b9fc8b71d9e",
+        "size_px": [
+         283,
+         234
+        ],
+        "region": null,
+        "erode_px": 2,
+        "pixels_in_window": 3232
+       },
+       {
+        "path": "asset-library/tarsier/tarsier_turnaround_34.png",
+        "sha256": "20db660ea8da88be4aa5dbb5caa7625d6f3805d0b46bbfe79ae91e52eb259406",
+        "size_px": [
+         296,
+         235
+        ],
+        "region": null,
+        "erode_px": 2,
+        "pixels_in_window": 2367
+       },
+       {
+        "path": "asset-library/tarsier/tarsier_turnaround_side.png",
+        "sha256": "3f6041cb79a6a49a869a3f47bd6b8053daa50796c8f054a102ea45f01a997b45",
+        "size_px": [
+         249,
+         229
+        ],
+        "region": null,
+        "erode_px": 2,
+        "pixels_in_window": 705
+       }
+      ]
+     },
+     "verify": {
+      "assets": [
+       {
+        "path": "asset-library/tarsier/tarsier_turnaround_back.png",
+        "sha256": "aa16fe527d0ae45d9a7fbb3aef72fc18d4c5eea9e9d43644e42ba74a520b4d97",
+        "hex": "#F4713E",
+        "dE76": 13.62,
+        "regions": null,
+        "pixels_in_window": 70
+       },
+       {
+        "path": "asset-library/tarsier/tarsier_hero.png",
+        "sha256": "f9ebc6925b3362db8c5c01c3e5af6b6293e8399a81c4f6175b50fe82e5463f0f",
+        "hex": "#F67860",
+        "dE76": 4.44,
+        "regions": null,
+        "pixels_in_window": 1274
+       },
+       {
+        "path": "expression-batch/tarsier/tarsier_idle.png",
+        "sha256": "dace8b6cc79e4be0c869807ecb6ae5158b8221094547545f7e958bcc544da2f0",
+        "hex": "#FA7E5F",
+        "dE76": 1.09,
+        "regions": null,
+        "pixels_in_window": 3165
+       },
+       {
+        "path": "expression-batch/tarsier/tarsier_happy.png",
+        "sha256": "98fe59d73369c8e391a0b33d4aa060d077d20b3957869f6c5765d1f45de12d95",
+        "hex": "#E3705B",
+        "dE76": 9.41,
+        "regions": null,
+        "pixels_in_window": 761
+       }
+      ],
+      "median_dE76": 6.93,
+      "max_dE76": 13.62,
+      "limit_dE76": 12.0,
+      "pass": true
+     },
+     "note": null
+    },
+    {
+     "slot": 6,
+     "role": "CHARACTER-SPECIFIC",
+     "label": "EYE RING",
+     "name": "Amber",
+     "hex": "#E07A05",
+     "status": "PROVISIONAL",
+     "sample": {
+      "rgb": [
+       224,
+       122,
+       5
+      ],
+      "pixels_in_window": 7268,
+      "pixels_in_band": 3634,
+      "band_percentiles": [
+       25,
+       75
+      ],
+      "band_channel_min": [
+       168,
+       95,
+       0
+      ],
+      "band_channel_max": [
+       255,
+       156,
+       49
+      ],
+      "window": {
+       "hue_deg": [
+        25,
+        42
+       ],
+       "sat": [
+        0.8,
+        1
+       ],
+       "val": [
+        0.55,
+        1
+       ]
+      },
+      "alpha_rule": "alpha>=250, eroded by erode_px (per source; default 2)",
+      "sources": [
+       {
+        "path": "asset-library/tarsier/tarsier_head.png",
+        "sha256": "740a87774251a54ce145668e89a55164bfbb3f0c3923ef85ef32144b536c57ca",
+        "size_px": [
+         283,
+         182
+        ],
+        "region": null,
+        "erode_px": 2,
+        "pixels_in_window": 3258
+       },
+       {
+        "path": "expression-batch/tarsier/tarsier_idle.png",
+        "sha256": "dace8b6cc79e4be0c869807ecb6ae5158b8221094547545f7e958bcc544da2f0",
+        "size_px": [
+         283,
+         159
+        ],
+        "region": null,
+        "erode_px": 2,
+        "pixels_in_window": 1901
+       },
+       {
+        "path": "expression-batch/tarsier/tarsier_happy.png",
+        "sha256": "98fe59d73369c8e391a0b33d4aa060d077d20b3957869f6c5765d1f45de12d95",
+        "size_px": [
+         167,
+         158
+        ],
+        "region": null,
+        "erode_px": 2,
+        "pixels_in_window": 2109
+       }
+      ]
+     },
+     "verify": {
+      "assets": [
+       {
+        "path": "asset-library/tarsier/tarsier_turnaround_front.png",
+        "sha256": "fde2929c1e37b1ee1cc25c367d6b8d63e136ba083b31cd2243092b9fc8b71d9e",
+        "hex": "#E17B05",
+        "dE76": 0.47,
+        "regions": null,
+        "pixels_in_window": 4363
+       },
+       {
+        "path": "asset-library/tarsier/tarsier_hero.png",
+        "sha256": "f9ebc6925b3362db8c5c01c3e5af6b6293e8399a81c4f6175b50fe82e5463f0f",
+        "hex": "#DD7E04",
+        "dE76": 3.38,
+        "regions": null,
+        "pixels_in_window": 3216
+       }
+      ],
+      "median_dE76": 1.92,
+      "max_dE76": 3.38,
+      "limit_dE76": 12.0,
+      "pass": true
+     },
+     "note": "huge-eye amber iris ring; sampled from head close-up + expressions"
+    }
+   ]
+  },
+  "eagle": {
+   "slots": [
+    {
+     "slot": 1,
+     "role": "PRIMARY",
+     "label": "PRIMARY",
+     "name": "White head",
+     "hex": "#FDF6ED",
+     "status": "PROVISIONAL",
+     "sample": {
+      "rgb": [
+       253,
+       246,
+       237
+      ],
+      "pixels_in_window": 12173,
+      "pixels_in_band": 6102,
+      "band_percentiles": [
+       25,
+       75
+      ],
+      "band_channel_min": [
+       230,
+       237,
+       223
+      ],
+      "band_channel_max": [
+       255,
+       255,
+       255
+      ],
+      "window": {
+       "hue_deg": [
+        0,
+        360
+       ],
+       "sat": [
+        0.0,
+        0.1
+       ],
+       "val": [
+        0.9,
+        1
+       ]
+      },
+      "alpha_rule": "alpha>=250, eroded by erode_px (per source; default 2)",
+      "sources": [
+       {
+        "path": "asset-library/eagle/eagle_turnaround_front.png",
+        "sha256": "fc6d1eba682bf91648435e8e2aef9eaee89d00640f21f0bcc682a6acce28dadc",
+        "size_px": [
+         273,
+         289
+        ],
+        "region": null,
+        "erode_px": 2,
+        "pixels_in_window": 4912
+       },
+       {
+        "path": "asset-library/eagle/eagle_turnaround_34.png",
+        "sha256": "778e67970b21fd20e377f0c9fe0f0329c0d88e274341bda3293caccba572dc49",
+        "size_px": [
+         223,
+         288
+        ],
+        "region": null,
+        "erode_px": 2,
+        "pixels_in_window": 3991
+       },
+       {
+        "path": "asset-library/eagle/eagle_turnaround_side.png",
+        "sha256": "1842de278e305a589eeddf673a9c634fe76a423d5e331787ddb92bfc22dcc097",
+        "size_px": [
+         217,
+         289
+        ],
+        "region": null,
+        "erode_px": 2,
+        "pixels_in_window": 3270
+       }
+      ]
+     },
+     "verify": {
+      "assets": [
+       {
+        "path": "asset-library/eagle/eagle_turnaround_back.png",
+        "sha256": "6cb0caac67837be89650c1dd333c6411e34a82dae611c26df61420701bf4d295",
+        "hex": "#FCF3EA",
+        "dE76": 1.15,
+        "regions": null,
+        "pixels_in_window": 4711
+       },
+       {
+        "path": "asset-library/eagle/eagle_hero.png",
+        "sha256": "9659bf14fe08d8129ac64b20569c2c1f4ae8beacfcdffd04167d7091f092c0ae",
+        "hex": "#F8EEE8",
+        "dE76": 3.1,
+        "regions": null,
+        "pixels_in_window": 5077
+       },
+       {
+        "path": "expression-batch/eagle/eagle_idle.png",
+        "sha256": "2a35baf058d0f3ad7b5f0f4918fbbc2ebc08b5e521e758ee7049a7f2d6a1a78a",
+        "hex": "#FCF3EB",
+        "dE76": 1.23,
+        "regions": null,
+        "pixels_in_window": 2362
+       },
+       {
+        "path": "expression-batch/eagle/eagle_happy.png",
+        "sha256": "c84c8b04b4d6e136cc3c1680a05657be0b1ecada0fcb30755445c39019ed8af5",
+        "hex": "#FBF2E9",
+        "dE76": 1.44,
+        "regions": null,
+        "pixels_in_window": 3365
+       }
+      ],
+      "median_dE76": 1.33,
+      "max_dE76": 3.1,
+      "limit_dE76": 12.0,
+      "pass": true
+     },
+     "note": "locked: clearly white-headed"
+    },
+    {
+     "slot": 2,
+     "role": "SECONDARY",
+     "label": "SECONDARY",
+     "name": "Brown wings",
+     "hex": "#602F1D",
+     "status": "PROVISIONAL",
+     "sample": {
+      "rgb": [
+       96,
+       47,
+       29
+      ],
+      "pixels_in_window": 13890,
+      "pixels_in_band": 6944,
+      "band_percentiles": [
+       25,
+       75
+      ],
+      "band_channel_min": [
+       65,
+       32,
+       9
+      ],
+      "band_channel_max": [
+       137,
+       68,
+       49
+      ],
+      "window": {
+       "hue_deg": [
+        10,
+        30
+       ],
+       "sat": [
+        0.5,
+        0.9
+       ],
+       "val": [
+        0.25,
+        0.55
+       ]
+      },
+      "alpha_rule": "alpha>=250, eroded by erode_px (per source; default 2)",
+      "sources": [
+       {
+        "path": "asset-library/eagle/eagle_turnaround_front.png",
+        "sha256": "fc6d1eba682bf91648435e8e2aef9eaee89d00640f21f0bcc682a6acce28dadc",
+        "size_px": [
+         273,
+         289
+        ],
+        "region": null,
+        "erode_px": 2,
+        "pixels_in_window": 5620
+       },
+       {
+        "path": "asset-library/eagle/eagle_turnaround_34.png",
+        "sha256": "778e67970b21fd20e377f0c9fe0f0329c0d88e274341bda3293caccba572dc49",
+        "size_px": [
+         223,
+         288
+        ],
+        "region": null,
+        "erode_px": 2,
+        "pixels_in_window": 4621
+       },
+       {
+        "path": "asset-library/eagle/eagle_turnaround_side.png",
+        "sha256": "1842de278e305a589eeddf673a9c634fe76a423d5e331787ddb92bfc22dcc097",
+        "size_px": [
+         217,
+         289
+        ],
+        "region": null,
+        "erode_px": 2,
+        "pixels_in_window": 3649
+       }
+      ]
+     },
+     "verify": {
+      "assets": [
+       {
+        "path": "asset-library/eagle/eagle_turnaround_back.png",
+        "sha256": "6cb0caac67837be89650c1dd333c6411e34a82dae611c26df61420701bf4d295",
+        "hex": "#6A3522",
+        "dE76": 3.53,
+        "regions": null,
+        "pixels_in_window": 6175
+       },
+       {
+        "path": "asset-library/eagle/eagle_hero.png",
+        "sha256": "9659bf14fe08d8129ac64b20569c2c1f4ae8beacfcdffd04167d7091f092c0ae",
+        "hex": "#5C2D18",
+        "dE76": 2.16,
+        "regions": null,
+        "pixels_in_window": 12748
+       },
+       {
+        "path": "expression-batch/eagle/eagle_idle.png",
+        "result": "fewer than 60 pixels in window (skipped)"
+       },
+       {
+        "path": "expression-batch/eagle/eagle_happy.png",
+        "result": "fewer than 60 pixels in window (skipped)"
+       }
+      ],
+      "median_dE76": 2.84,
+      "max_dE76": 3.53,
+      "limit_dE76": 12.0,
+      "pass": true
+     },
+     "note": null
+    },
+    {
+     "slot": 3,
+     "role": "ACCENT",
+     "label": "ACCENT",
+     "name": "Beak and letter gold",
+     "hex": "#FCBF15",
+     "status": "PROVISIONAL",
+     "sample": {
+      "rgb": [
+       252,
+       191,
+       21
+      ],
+      "pixels_in_window": 2737,
+      "pixels_in_band": 1369,
+      "band_percentiles": [
+       25,
+       75
+      ],
+      "band_channel_min": [
+       224,
+       174,
+       0
+      ],
+      "band_channel_max": [
+       255,
+       209,
+       63
+      ],
+      "window": {
+       "hue_deg": [
+        38,
+        52
+       ],
+       "sat": [
+        0.75,
+        1
+       ],
+       "val": [
+        0.85,
+        1
+       ]
+      },
+      "alpha_rule": "alpha>=250, eroded by erode_px (per source; default 2)",
+      "sources": [
+       {
+        "path": "asset-library/eagle/eagle_turnaround_front.png",
+        "sha256": "fc6d1eba682bf91648435e8e2aef9eaee89d00640f21f0bcc682a6acce28dadc",
+        "size_px": [
+         273,
+         289
+        ],
+        "region": null,
+        "erode_px": 2,
+        "pixels_in_window": 1434
+       },
+       {
+        "path": "asset-library/eagle/eagle_turnaround_34.png",
+        "sha256": "778e67970b21fd20e377f0c9fe0f0329c0d88e274341bda3293caccba572dc49",
+        "size_px": [
+         223,
+         288
+        ],
+        "region": null,
+        "erode_px": 2,
+        "pixels_in_window": 767
+       },
+       {
+        "path": "asset-library/eagle/eagle_turnaround_side.png",
+        "sha256": "1842de278e305a589eeddf673a9c634fe76a423d5e331787ddb92bfc22dcc097",
+        "size_px": [
+         217,
+         289
+        ],
+        "region": null,
+        "erode_px": 2,
+        "pixels_in_window": 536
+       }
+      ]
+     },
+     "verify": {
+      "assets": [
+       {
+        "path": "asset-library/eagle/eagle_turnaround_back.png",
+        "sha256": "6cb0caac67837be89650c1dd333c6411e34a82dae611c26df61420701bf4d295",
+        "hex": "#F5BD27",
+        "dE76": 5.39,
+        "regions": null,
+        "pixels_in_window": 112
+       },
+       {
+        "path": "asset-library/eagle/eagle_hero.png",
+        "sha256": "9659bf14fe08d8129ac64b20569c2c1f4ae8beacfcdffd04167d7091f092c0ae",
+        "hex": "#FAB111",
+        "dE76": 7.63,
+        "regions": null,
+        "pixels_in_window": 1589
+       },
+       {
+        "path": "expression-batch/eagle/eagle_idle.png",
+        "sha256": "2a35baf058d0f3ad7b5f0f4918fbbc2ebc08b5e521e758ee7049a7f2d6a1a78a",
+        "hex": "#FEB62B",
+        "dE76": 8.91,
+        "regions": null,
+        "pixels_in_window": 134
+       },
+       {
+        "path": "expression-batch/eagle/eagle_happy.png",
+        "sha256": "c84c8b04b4d6e136cc3c1680a05657be0b1ecada0fcb30755445c39019ed8af5",
+        "hex": "#FBB320",
+        "dE76": 8.05,
+        "regions": null,
+        "pixels_in_window": 226
+       }
+      ],
+      "median_dE76": 7.84,
+      "max_dE76": 8.91,
+      "limit_dE76": 12.0,
+      "pass": true
+     },
+     "note": "beak, original varsity A (gold) and trim"
+    },
+    {
+     "slot": 4,
+     "role": "GEAR",
+     "label": "GEAR",
+     "name": "Varsity jacket green",
+     "hex": "#0E472B",
+     "status": "PROVISIONAL",
+     "sample": {
+      "rgb": [
+       14,
+       71,
+       43
+      ],
+      "pixels_in_window": 4470,
+      "pixels_in_band": 2236,
+      "band_percentiles": [
+       25,
+       75
+      ],
+      "band_channel_min": [
+       0,
+       54,
+       28
+      ],
+      "band_channel_max": [
+       30,
+       86,
+       59
+      ],
+      "window": {
+       "hue_deg": [
+        135,
+        165
+       ],
+       "sat": [
+        0.6,
+        1
+       ],
+       "val": [
+        0.2,
+        0.55
+       ]
+      },
+      "alpha_rule": "alpha>=250, eroded by erode_px (per source; default 2)",
+      "sources": [
+       {
+        "path": "asset-library/eagle/eagle_turnaround_front.png",
+        "sha256": "fc6d1eba682bf91648435e8e2aef9eaee89d00640f21f0bcc682a6acce28dadc",
+        "size_px": [
+         273,
+         289
+        ],
+        "region": null,
+        "erode_px": 2,
+        "pixels_in_window": 1880
+       },
+       {
+        "path": "asset-library/eagle/eagle_turnaround_34.png",
+        "sha256": "778e67970b21fd20e377f0c9fe0f0329c0d88e274341bda3293caccba572dc49",
+        "size_px": [
+         223,
+         288
+        ],
+        "region": null,
+        "erode_px": 2,
+        "pixels_in_window": 1786
+       },
+       {
+        "path": "asset-library/eagle/eagle_turnaround_side.png",
+        "sha256": "1842de278e305a589eeddf673a9c634fe76a423d5e331787ddb92bfc22dcc097",
+        "size_px": [
+         217,
+         289
+        ],
+        "region": null,
+        "erode_px": 2,
+        "pixels_in_window": 804
+       }
+      ]
+     },
+     "verify": {
+      "assets": [
+       {
+        "path": "asset-library/eagle/eagle_turnaround_back.png",
+        "sha256": "6cb0caac67837be89650c1dd333c6411e34a82dae611c26df61420701bf4d295",
+        "hex": "#0C4128",
+        "dE76": 3.2,
+        "regions": null,
+        "pixels_in_window": 2587
+       },
+       {
+        "path": "asset-library/eagle/eagle_hero.png",
+        "sha256": "9659bf14fe08d8129ac64b20569c2c1f4ae8beacfcdffd04167d7091f092c0ae",
+        "hex": "#043E29",
+        "dE76": 5.62,
+        "regions": null,
+        "pixels_in_window": 1042
+       },
+       {
+        "path": "expression-batch/eagle/eagle_idle.png",
+        "result": "fewer than 60 pixels in window (skipped)"
+       },
+       {
+        "path": "expression-batch/eagle/eagle_happy.png",
+        "sha256": "c84c8b04b4d6e136cc3c1680a05657be0b1ecada0fcb30755445c39019ed8af5",
+        "hex": "#0B442C",
+        "dE76": 2.77,
+        "regions": null,
+        "pixels_in_window": 680
+       }
+      ],
+      "median_dE76": 3.2,
+      "max_dE76": 5.62,
+      "limit_dE76": 12.0,
+      "pass": true
+     },
+     "note": null
+    },
+    {
+     "slot": 5,
+     "role": "DETAIL",
+     "label": "DETAIL",
+     "name": "Feet orange",
+     "hex": "#F68905",
+     "status": "PROVISIONAL",
+     "sample": {
+      "rgb": [
+       246,
+       137,
+       5
+      ],
+      "pixels_in_window": 2421,
+      "pixels_in_band": 1212,
+      "band_percentiles": [
+       25,
+       75
+      ],
+      "band_channel_min": [
+       230,
+       118,
+       0
+      ],
+      "band_channel_max": [
+       255,
+       156,
+       48
+      ],
+      "window": {
+       "hue_deg": [
+        25,
+        38
+       ],
+       "sat": [
+        0.8,
+        1
+       ],
+       "val": [
+        0.9,
+        1
+       ]
+      },
+      "alpha_rule": "alpha>=250, eroded by erode_px (per source; default 2)",
+      "sources": [
+       {
+        "path": "asset-library/eagle/eagle_turnaround_front.png",
+        "sha256": "fc6d1eba682bf91648435e8e2aef9eaee89d00640f21f0bcc682a6acce28dadc",
+        "size_px": [
+         273,
+         289
+        ],
+        "region": null,
+        "erode_px": 2,
+        "pixels_in_window": 813
+       },
+       {
+        "path": "asset-library/eagle/eagle_turnaround_34.png",
+        "sha256": "778e67970b21fd20e377f0c9fe0f0329c0d88e274341bda3293caccba572dc49",
+        "size_px": [
+         223,
+         288
+        ],
+        "region": null,
+        "erode_px": 2,
+        "pixels_in_window": 834
+       },
+       {
+        "path": "asset-library/eagle/eagle_turnaround_side.png",
+        "sha256": "1842de278e305a589eeddf673a9c634fe76a423d5e331787ddb92bfc22dcc097",
+        "size_px": [
+         217,
+         289
+        ],
+        "region": null,
+        "erode_px": 2,
+        "pixels_in_window": 774
+       }
+      ]
+     },
+     "verify": {
+      "assets": [
+       {
+        "path": "asset-library/eagle/eagle_turnaround_back.png",
+        "sha256": "6cb0caac67837be89650c1dd333c6411e34a82dae611c26df61420701bf4d295",
+        "hex": "#F37C07",
+        "dE76": 6.7,
+        "regions": null,
+        "pixels_in_window": 74
+       },
+       {
+        "path": "asset-library/eagle/eagle_hero.png",
+        "sha256": "9659bf14fe08d8129ac64b20569c2c1f4ae8beacfcdffd04167d7091f092c0ae",
+        "hex": "#F49006",
+        "dE76": 4.63,
+        "regions": null,
+        "pixels_in_window": 1027
+       }
+      ],
+      "median_dE76": 5.67,
+      "max_dE76": 6.7,
+      "limit_dE76": 12.0,
+      "pass": true
+     },
+     "note": null
+    },
+    {
+     "slot": 6,
+     "role": "CHARACTER-SPECIFIC",
+     "label": "EYES",
+     "name": "Blue",
+     "hex": "#058AC4",
+     "status": "PROVISIONAL",
+     "sample": {
+      "rgb": [
+       5,
+       138,
+       196
+      ],
+      "pixels_in_window": 260,
+      "pixels_in_band": 130,
+      "band_percentiles": [
+       25,
+       75
+      ],
+      "band_channel_min": [
+       0,
+       110,
+       153
+      ],
+      "band_channel_max": [
+       64,
+       172,
+       242
+      ],
+      "window": {
+       "hue_deg": [
+        190,
+        215
+       ],
+       "sat": [
+        0.6,
+        1
+       ],
+       "val": [
+        0.6,
+        1
+       ]
+      },
+      "alpha_rule": "alpha>=250, eroded by erode_px (per source; default 2)",
+      "sources": [
+       {
+        "path": "asset-library/eagle/eagle_head.png",
+        "sha256": "bfb5843e7e2c4ad84cf121f3090be9f027522e1d7758e601f64419dfec66bc4b",
+        "size_px": [
+         241,
+         215
+        ],
+        "region": null,
+        "erode_px": 2,
+        "pixels_in_window": 160
+       },
+       {
+        "path": "expression-batch/eagle/eagle_idle.png",
+        "sha256": "2a35baf058d0f3ad7b5f0f4918fbbc2ebc08b5e521e758ee7049a7f2d6a1a78a",
+        "size_px": [
+         163,
+         141
+        ],
+        "region": null,
+        "erode_px": 2,
+        "pixels_in_window": 55
+       },
+       {
+        "path": "expression-batch/eagle/eagle_happy.png",
+        "sha256": "c84c8b04b4d6e136cc3c1680a05657be0b1ecada0fcb30755445c39019ed8af5",
+        "size_px": [
+         163,
+         168
+        ],
+        "region": null,
+        "erode_px": 2,
+        "pixels_in_window": 45
+       }
+      ]
+     },
+     "verify": {
+      "assets": [
+       {
+        "path": "expression-batch/eagle/eagle_thinking.png",
+        "result": "fewer than 60 pixels in window (skipped)"
+       },
+       {
+        "path": "expression-batch/eagle/eagle_discover.png",
+        "sha256": "91ad39e3507ada55a1bb7535474127830a413d8022543791bebb47fb9ebc587e",
+        "hex": "#088BCA",
+        "dE76": 3.08,
+        "regions": null,
+        "pixels_in_window": 119
+       },
+       {
+        "path": "expression-batch/eagle/eagle_cheer.png",
+        "result": "fewer than 60 pixels in window (skipped)"
+       }
+      ],
+      "median_dE76": 3.08,
+      "max_dE76": 3.08,
+      "limit_dE76": 12.0,
+      "pass": true
+     },
+     "note": "locked: blue eyes (code value yellow is transitional)"
+    }
+   ]
+  },
+  "bronco": {
+   "slots": [
+    {
+     "slot": 1,
+     "role": "PRIMARY",
+     "label": "PRIMARY",
+     "name": "Chestnut coat",
+     "hex": "#DF733A",
+     "status": "PROVISIONAL",
+     "sample": {
+      "rgb": [
+       223,
+       115,
+       58
+      ],
+      "pixels_in_window": 17510,
+      "pixels_in_band": 8754,
+      "band_percentiles": [
+       25,
+       75
+      ],
+      "band_channel_min": [
+       159,
+       88,
+       22
+      ],
+      "band_channel_max": [
+       255,
+       149,
+       108
+      ],
+      "window": {
+       "hue_deg": [
+        18,
+        34
+       ],
+       "sat": [
+        0.5,
+        0.9
+       ],
+       "val": [
+        0.55,
+        1
+       ]
+      },
+      "alpha_rule": "alpha>=250, eroded by erode_px (per source; default 2)",
+      "sources": [
+       {
+        "path": "asset-library/bronco/bronco_turnaround_front.png",
+        "sha256": "cadae7bede1076f2c4413eb2b2f5e5b2d606f8fe6911894043ff00a33f606c69",
+        "size_px": [
+         184,
+         278
+        ],
+        "region": null,
+        "erode_px": 2,
+        "pixels_in_window": 4852
+       },
+       {
+        "path": "asset-library/bronco/bronco_turnaround_34.png",
+        "sha256": "612c2468a8d2ad533bb41516c7c02939dd69c570631016b7c1a16a51e4890a74",
+        "size_px": [
+         230,
+         278
+        ],
+        "region": null,
+        "erode_px": 2,
+        "pixels_in_window": 5922
+       },
+       {
+        "path": "asset-library/bronco/bronco_turnaround_side.png",
+        "sha256": "68e5d0fdc765eca9e05d329995d08dea0c29f57aed7f92356759b0f175e3b045",
+        "size_px": [
+         269,
+         279
+        ],
+        "region": null,
+        "erode_px": 2,
+        "pixels_in_window": 6736
+       }
+      ]
+     },
+     "verify": {
+      "assets": [
+       {
+        "path": "asset-library/bronco/bronco_turnaround_back.png",
+        "sha256": "06a82c6ae519bfad836ab09ec78d596f1d434b206c924ffc81be2f649c2189c7",
+        "hex": "#D97B49",
+        "dE76": 8.85,
+        "regions": null,
+        "pixels_in_window": 3222
+       },
+       {
+        "path": "asset-library/bronco/bronco_hero.png",
+        "sha256": "1c7a4463267b07140303e0615eb54c1eb853cf7e27082292b75ddae25b20faff",
+        "hex": "#CD6A36",
+        "dE76": 6.31,
+        "regions": null,
+        "pixels_in_window": 4766
+       },
+       {
+        "path": "expression-batch/bronco/bronco_idle.png",
+        "sha256": "950796e5799ed3d02c4a330b45aa96fddcf7d70e5bc1c7f3725c883b57a777c0",
+        "hex": "#E2773E",
+        "dE76": 1.52,
+        "regions": null,
+        "pixels_in_window": 2142
+       },
+       {
+        "path": "expression-batch/bronco/bronco_happy.png",
+        "sha256": "9bd170a3effdb145ca8e52e3fb85f1a97d5ef6e589e5af35577fb2d50c9284ac",
+        "hex": "#E5773B",
+        "dE76": 2.31,
+        "regions": null,
+        "pixels_in_window": 2855
+       }
+      ],
+      "median_dE76": 4.31,
+      "max_dE76": 8.85,
+      "limit_dE76": 12.0,
+      "pass": true
+     },
+     "note": null
+    },
+    {
+     "slot": 2,
+     "role": "SECONDARY",
+     "label": "SECONDARY",
+     "name": "Dark mane",
+     "hex": "#2C1610",
+     "status": "PROVISIONAL",
+     "sample": {
+      "rgb": [
+       44,
+       22,
+       16
+      ],
+      "pixels_in_window": 19848,
+      "pixels_in_band": 9925,
+      "band_percentiles": [
+       25,
+       75
+      ],
+      "band_channel_min": [
+       24,
+       9,
+       4
+      ],
+      "band_channel_max": [
+       76,
+       35,
+       32
+      ],
+      "window": {
+       "hue_deg": [
+        5,
+        25
+       ],
+       "sat": [
+        0.3,
+        0.9
+       ],
+       "val": [
+        0.0,
+        0.3
+       ]
+      },
+      "alpha_rule": "alpha>=250, eroded by erode_px (per source; default 2)",
+      "sources": [
+       {
+        "path": "asset-library/bronco/bronco_turnaround_front.png",
+        "sha256": "cadae7bede1076f2c4413eb2b2f5e5b2d606f8fe6911894043ff00a33f606c69",
+        "size_px": [
+         184,
+         278
+        ],
+        "region": null,
+        "erode_px": 2,
+        "pixels_in_window": 4385
+       },
+       {
+        "path": "asset-library/bronco/bronco_turnaround_34.png",
+        "sha256": "612c2468a8d2ad533bb41516c7c02939dd69c570631016b7c1a16a51e4890a74",
+        "size_px": [
+         230,
+         278
+        ],
+        "region": null,
+        "erode_px": 2,
+        "pixels_in_window": 6783
+       },
+       {
+        "path": "asset-library/bronco/bronco_turnaround_side.png",
+        "sha256": "68e5d0fdc765eca9e05d329995d08dea0c29f57aed7f92356759b0f175e3b045",
+        "size_px": [
+         269,
+         279
+        ],
+        "region": null,
+        "erode_px": 2,
+        "pixels_in_window": 8680
+       }
+      ]
+     },
+     "verify": {
+      "assets": [
+       {
+        "path": "asset-library/bronco/bronco_turnaround_back.png",
+        "sha256": "06a82c6ae519bfad836ab09ec78d596f1d434b206c924ffc81be2f649c2189c7",
+        "hex": "#2D150F",
+        "dE76": 1.16,
+        "regions": null,
+        "pixels_in_window": 5874
+       },
+       {
+        "path": "asset-library/bronco/bronco_hero.png",
+        "sha256": "1c7a4463267b07140303e0615eb54c1eb853cf7e27082292b75ddae25b20faff",
+        "hex": "#30160E",
+        "dE76": 2.84,
+        "regions": null,
+        "pixels_in_window": 4638
+       },
+       {
+        "path": "expression-batch/bronco/bronco_idle.png",
+        "sha256": "950796e5799ed3d02c4a330b45aa96fddcf7d70e5bc1c7f3725c883b57a777c0",
+        "hex": "#28100B",
+        "dE76": 3.2,
+        "regions": null,
+        "pixels_in_window": 1981
+       },
+       {
+        "path": "expression-batch/bronco/bronco_happy.png",
+        "sha256": "9bd170a3effdb145ca8e52e3fb85f1a97d5ef6e589e5af35577fb2d50c9284ac",
+        "hex": "#2D130C",
+        "dE76": 2.48,
+        "regions": null,
+        "pixels_in_window": 2324
+       }
+      ],
+      "median_dE76": 2.66,
+      "max_dE76": 3.2,
+      "limit_dE76": 12.0,
+      "pass": true
+     },
+     "note": null
+    },
+    {
+     "slot": 3,
+     "role": "ACCENT",
+     "label": "ACCENT",
+     "name": "Red star / gear",
+     "hex": "#B41C2E",
+     "status": "PROVISIONAL",
+     "sample": {
+      "rgb": [
+       180,
+       28,
+       46
+      ],
+      "pixels_in_window": 1448,
+      "pixels_in_band": 724,
+      "band_percentiles": [
+       25,
+       75
+      ],
+      "band_channel_min": [
+       159,
+       17,
+       35
+      ],
+      "band_channel_max": [
+       205,
+       52,
+       58
+      ],
+      "window": {
+       "hue_deg": [
+        345,
+        360
+       ],
+       "sat": [
+        0.5,
+        1
+       ],
+       "val": [
+        0.62,
+        1
+       ]
+      },
+      "alpha_rule": "alpha>=250, eroded by erode_px (per source; default 2)",
+      "sources": [
+       {
+        "path": "asset-library/bronco/bronco_detail_star_treatment.png",
+        "sha256": "c8a2577621ae62c8d6de9506b0db0602a5cfc6357c1530fe71204faf44eaae8f",
+        "size_px": [
+         69,
+         61
+        ],
+        "region": null,
+        "erode_px": 2,
+        "pixels_in_window": 724
+       },
+       {
+        "path": "asset-library/bronco/bronco_detail_saddle_pack.png",
+        "sha256": "02d645c0b74fe2bf669a128bd2275df77a48a24ff96d637d2b53c643eed6cd81",
+        "size_px": [
+         157,
+         117
+        ],
+        "region": null,
+        "erode_px": 2,
+        "pixels_in_window": 724
+       }
+      ]
+     },
+     "verify": {
+      "assets": [
+       {
+        "path": "asset-library/bronco/bronco_hero.png",
+        "sha256": "1c7a4463267b07140303e0615eb54c1eb853cf7e27082292b75ddae25b20faff",
+        "hex": "#B61A32",
+        "dE76": 2.32,
+        "regions": [
+         [
+          94,
+          88,
+          125,
+          118
+         ]
+        ],
+        "pixels_in_window": 105
+       },
+       {
+        "path": "asset-library/bronco/bronco_turnaround_34.png",
+        "sha256": "612c2468a8d2ad533bb41516c7c02939dd69c570631016b7c1a16a51e4890a74",
+        "hex": "#BA3F4C",
+        "dE76": 14.75,
+        "regions": [
+         [
+          72,
+          130,
+          102,
+          170
+         ]
+        ],
+        "pixels_in_window": 113
+       }
+      ],
+      "median_dE76": 8.54,
+      "max_dE76": 14.75,
+      "limit_dE76": 12.0,
+      "pass": true
+     },
+     "note": "red star / gear treatment stays red and is never the bandana (doc 16 s7)"
+    },
+    {
+     "slot": 4,
+     "role": "GEAR",
+     "label": "GEAR",
+     "name": "Saddle leather",
+     "hex": "#673620",
+     "status": "PROVISIONAL",
+     "sample": {
+      "rgb": [
+       103,
+       54,
+       32
+      ],
+      "pixels_in_window": 1292,
+      "pixels_in_band": 646,
+      "band_percentiles": [
+       25,
+       75
+      ],
+      "band_channel_min": [
+       67,
+       37,
+       11
+      ],
+      "band_channel_max": [
+       127,
+       70,
+       55
+      ],
+      "window": {
+       "hue_deg": [
+        15,
+        30
+       ],
+       "sat": [
+        0.4,
+        0.9
+       ],
+       "val": [
+        0.2,
+        0.5
+       ]
+      },
+      "alpha_rule": "alpha>=250, eroded by erode_px (per source; default 2)",
+      "sources": [
+       {
+        "path": "asset-library/bronco/bronco_detail_saddle_pack.png",
+        "sha256": "02d645c0b74fe2bf669a128bd2275df77a48a24ff96d637d2b53c643eed6cd81",
+        "size_px": [
+         157,
+         117
+        ],
+        "region": null,
+        "erode_px": 2,
+        "pixels_in_window": 1292
+       }
+      ]
+     },
+     "verify": {
+      "assets": [
+       {
+        "path": "asset-library/bronco/bronco_hero.png",
+        "sha256": "1c7a4463267b07140303e0615eb54c1eb853cf7e27082292b75ddae25b20faff",
+        "hex": "#5B301C",
+        "dE76": 4.56,
+        "regions": null,
+        "pixels_in_window": 1991
+       },
+       {
+        "path": "asset-library/bronco/bronco_turnaround_34.png",
+        "sha256": "612c2468a8d2ad533bb41516c7c02939dd69c570631016b7c1a16a51e4890a74",
+        "hex": "#64311D",
+        "dE76": 2.26,
+        "regions": null,
+        "pixels_in_window": 1889
+       }
+      ],
+      "median_dE76": 3.41,
+      "max_dE76": 4.56,
+      "limit_dE76": 12.0,
+      "pass": true
+     },
+     "note": "GEAR = saddle and leather (step 9 decision); red stays on ACCENT only"
+    },
+    {
+     "slot": 5,
+     "role": "DETAIL",
+     "label": "DETAIL",
+     "name": "Muzzle & blaze",
+     "hex": "#FBDEC5",
+     "status": "PROVISIONAL",
+     "sample": {
+      "rgb": [
+       251,
+       222,
+       197
+      ],
+      "pixels_in_window": 7211,
+      "pixels_in_band": 3605,
+      "band_percentiles": [
+       25,
+       75
+      ],
+      "band_channel_min": [
+       219,
+       202,
+       160
+      ],
+      "band_channel_max": [
+       255,
+       239,
+       231
+      ],
+      "window": {
+       "hue_deg": [
+        15,
+        45
+       ],
+       "sat": [
+        0.05,
+        0.35
+       ],
+       "val": [
+        0.85,
+        1.0
+       ]
+      },
+      "alpha_rule": "alpha>=250, eroded by erode_px (per source; default 2)",
+      "sources": [
+       {
+        "path": "asset-library/bronco/bronco_turnaround_front.png",
+        "sha256": "cadae7bede1076f2c4413eb2b2f5e5b2d606f8fe6911894043ff00a33f606c69",
+        "size_px": [
+         184,
+         278
+        ],
+        "region": null,
+        "erode_px": 2,
+        "pixels_in_window": 2224
+       },
+       {
+        "path": "asset-library/bronco/bronco_turnaround_34.png",
+        "sha256": "612c2468a8d2ad533bb41516c7c02939dd69c570631016b7c1a16a51e4890a74",
+        "size_px": [
+         230,
+         278
+        ],
+        "region": null,
+        "erode_px": 2,
+        "pixels_in_window": 2158
+       },
+       {
+        "path": "asset-library/bronco/bronco_turnaround_side.png",
+        "sha256": "68e5d0fdc765eca9e05d329995d08dea0c29f57aed7f92356759b0f175e3b045",
+        "size_px": [
+         269,
+         279
+        ],
+        "region": null,
+        "erode_px": 2,
+        "pixels_in_window": 2829
+       }
+      ]
+     },
+     "verify": {
+      "assets": [
+       {
+        "path": "asset-library/bronco/bronco_turnaround_back.png",
+        "sha256": "06a82c6ae519bfad836ab09ec78d596f1d434b206c924ffc81be2f649c2189c7",
+        "hex": "#F4D6C0",
+        "dE76": 3.07,
+        "regions": null,
+        "pixels_in_window": 672
+       },
+       {
+        "path": "asset-library/bronco/bronco_hero.png",
+        "sha256": "1c7a4463267b07140303e0615eb54c1eb853cf7e27082292b75ddae25b20faff",
+        "hex": "#F9D7BC",
+        "dE76": 3.17,
+        "regions": null,
+        "pixels_in_window": 1009
+       },
+       {
+        "path": "expression-batch/bronco/bronco_idle.png",
+        "sha256": "950796e5799ed3d02c4a330b45aa96fddcf7d70e5bc1c7f3725c883b57a777c0",
+        "hex": "#F9DECD",
+        "dE76": 4.22,
+        "regions": null,
+        "pixels_in_window": 1350
+       },
+       {
+        "path": "expression-batch/bronco/bronco_happy.png",
+        "sha256": "9bd170a3effdb145ca8e52e3fb85f1a97d5ef6e589e5af35577fb2d50c9284ac",
+        "hex": "#FBD6B8",
+        "dE76": 4.9,
+        "regions": null,
+        "pixels_in_window": 860
+       }
+      ],
+      "median_dE76": 3.69,
+      "max_dE76": 4.9,
+      "limit_dE76": 12.0,
+      "pass": true
+     },
+     "note": null
+    },
+    {
+     "slot": 6,
+     "role": "CHARACTER-SPECIFIC",
+     "label": "BANDANA",
+     "name": "Maroon",
+     "hex": "#6F1228",
+     "status": "PROVISIONAL",
+     "sample": {
+      "rgb": [
+       111,
+       18,
+       40
+      ],
+      "pixels_in_window": 6141,
+      "pixels_in_band": 3071,
+      "band_percentiles": [
+       25,
+       75
+      ],
+      "band_channel_min": [
+       53,
+       5,
+       16
+      ],
+      "band_channel_max": [
+       149,
+       46,
+       61
+      ],
+      "window": {
+       "hue_deg": [
+        335,
+        360
+       ],
+       "sat": [
+        0.45,
+        1
+       ],
+       "val": [
+        0.15,
+        0.75
+       ]
+      },
+      "alpha_rule": "alpha>=250, eroded by erode_px (per source; default 2)",
+      "sources": [
+       {
+        "path": "asset-library/bronco/bronco_detail_bandana.png",
+        "sha256": "359ad0623191a81d2536a46a4c84ffc0f3eeb2807c57e4dad0460514ab22f422",
+        "size_px": [
+         97,
+         89
+        ],
+        "region": null,
+        "erode_px": 2,
+        "pixels_in_window": 3670
+       },
+       {
+        "path": "asset-library/bronco/bronco_turnaround_front.png",
+        "sha256": "cadae7bede1076f2c4413eb2b2f5e5b2d606f8fe6911894043ff00a33f606c69",
+        "size_px": [
+         184,
+         278
+        ],
+        "region": null,
+        "erode_px": 2,
+        "pixels_in_window": 2471
+       }
+      ]
+     },
+     "verify": {
+      "assets": [
+       {
+        "path": "asset-library/bronco/bronco_hero.png",
+        "sha256": "1c7a4463267b07140303e0615eb54c1eb853cf7e27082292b75ddae25b20faff",
+        "hex": "#6D071B",
+        "dE76": 7.07,
+        "regions": null,
+        "pixels_in_window": 1672
+       },
+       {
+        "path": "asset-library/bronco/bronco_turnaround_34.png",
+        "sha256": "612c2468a8d2ad533bb41516c7c02939dd69c570631016b7c1a16a51e4890a74",
+        "hex": "#700B25",
+        "dE76": 2.49,
+        "regions": null,
+        "pixels_in_window": 2391
+       },
+       {
+        "path": "asset-library/bronco/bronco_turnaround_side.png",
+        "sha256": "68e5d0fdc765eca9e05d329995d08dea0c29f57aed7f92356759b0f175e3b045",
+        "hex": "#730922",
+        "dE76": 5.25,
+        "regions": null,
+        "pixels_in_window": 2220
+       },
+       {
+        "path": "expression-batch/bronco/bronco_idle.png",
+        "sha256": "950796e5799ed3d02c4a330b45aa96fddcf7d70e5bc1c7f3725c883b57a777c0",
+        "hex": "#6E0A25",
+        "dE76": 2.02,
+        "regions": null,
+        "pixels_in_window": 382
+       },
+       {
+        "path": "expression-batch/bronco/bronco_happy.png",
+        "sha256": "9bd170a3effdb145ca8e52e3fb85f1a97d5ef6e589e5af35577fb2d50c9284ac",
+        "hex": "#6E0F23",
+        "dE76": 2.66,
+        "regions": null,
+        "pixels_in_window": 785
+       }
+      ],
+      "median_dE76": 2.66,
+      "max_dE76": 7.07,
+      "limit_dE76": 12.0,
+      "pass": true
+     },
+     "note": "locked semantic: MAROON bandana (doc 16 s7: 'BANDANA - MAROON'; the 130 px string does not fit the 88 px label, so label BANDANA + name Maroon). Sampled value is darker than the doc 09 code value #8E1B30; flagged, code not overwritten"
+    }
+   ]
+  }
+ }
+}

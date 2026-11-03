@@ -160,6 +160,14 @@ generated once per character and mood into a cached texture, so portraits, sprit
 can replace it later without touching scenes. The selection is still presentation-only
 (`localStorage`); old `panda`/`monkey`/`lion` values fall back to Dino with no migration.
 
+**Update (October 15, 2026).** The paragraph above describes `main`. On the runtime branch
+`feature/world-expedition-runtime-integration` (Checkpoints F1 to F6, closed; `f3b5483`) the
+production art is complete and integrated: all six cast members, including Click, have six
+production expressions (idle, happy, thinking, cheer, discover, tryAgain). The five starters remain
+the only selectable characters. Click is the host/guide and is **not selectable**: it has no starter
+storage value and appears in no gameplay API payload. Expressions are presentation-only. This
+reaches `main` at release-candidate integration. No LOCKED constraint above has changed.
+
 ## 9. Change control
 
 Changes to LOCKED items need explicit written approval from the project owner. Record each change

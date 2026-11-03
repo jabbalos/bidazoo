@@ -1,3 +1,28 @@
+/* Nunito Sans (SIL OFL 1.1, licence beside the files): the locked World Expedition family. The game
+   draws its text on a canvas by font-family name, so these faces only need to exist in the page;
+   BootScene waits for them before the first real screen. Same-origin files satisfy font-src 'self'. */
+@font-face {
+  font-family: 'Nunito Sans';
+  font-style: normal;
+  font-weight: 600;
+  font-display: block;
+  src: url('./fonts/NunitoSans-SemiBold.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Nunito Sans';
+  font-style: normal;
+  font-weight: 700;
+  font-display: block;
+  src: url('./fonts/NunitoSans-Bold.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Nunito Sans';
+  font-style: normal;
+  font-weight: 800;
+  font-display: block;
+  src: url('./fonts/NunitoSans-ExtraBold.ttf') format('truetype');
+}
+
 /* Moved out of index.html so the client Content-Security-Policy can use style-src 'self'
    (no inline <style>, no 'unsafe-inline'). */
 html,

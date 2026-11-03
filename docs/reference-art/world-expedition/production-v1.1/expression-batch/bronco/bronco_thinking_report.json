@@ -1,0 +1,39 @@
+{
+ "name": "bronco_thinking",
+ "box": [
+  538,
+  612,
+  716,
+  765
+ ],
+ "mode": "parchment",
+ "bg_rgb": [
+  253,
+  243,
+  226
+ ],
+ "clip_left": 0.02832244008714597,
+ "clip_right": 0.006535947712418301,
+ "clip_top": 0.0,
+ "clip_bottom": 0.0,
+ "clipping": true,
+ "extra_components": [],
+ "contamination": false,
+ "halo_fraction": 0.003003003003003003,
+ "halo": false,
+ "outline_missing_px": 10,
+ "outline_missing": false,
+ "pass": false,
+ "size": [
+  195,
+  151
+ ],
+ "qa_fix2": "cream fragment removal, edge hardening/decontam, rounded bottom-left corner (no soft fade), 6.5deg CCW head tilt, orange ? cue",
+ "q_mark_box_trimmed": null,
+ "core_box": [
+  3,
+  8,
+  179,
+  149
+ ]
+}

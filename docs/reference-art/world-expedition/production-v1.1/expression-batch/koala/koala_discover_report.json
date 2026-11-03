@@ -1,0 +1,62 @@
+{
+ "name": "koala_discover",
+ "box": [
+  1104,
+  566,
+  1262,
+  727
+ ],
+ "mode": "parchment",
+ "bg_rgb": [
+  253,
+  244,
+  228
+ ],
+ "clip_left": 0.0,
+ "clip_right": 0.0,
+ "clip_top": 0.0,
+ "clip_bottom": 0.0,
+ "clipping": false,
+ "extra_components": [],
+ "contamination": false,
+ "halo_fraction": 0.010194624652455977,
+ "halo": false,
+ "outline_missing_px": 13,
+ "outline_missing": false,
+ "pass": true,
+ "size": [
+  155,
+  155
+ ],
+ "params": {
+  "fade": 12,
+  "paints": [
+   [
+    1104,
+    725,
+    1262,
+    727
+   ]
+  ],
+  "force": [
+   [
+    [
+     1187,
+     712
+    ],
+    [
+     1203,
+     712
+    ],
+    [
+     1203,
+     724
+    ],
+    [
+     1186,
+     724
+    ]
+   ]
+  ]
+ }
+}

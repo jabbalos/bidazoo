@@ -1,0 +1,319 @@
+{
+  "schema_version": 1,
+  "character": {
+    "id": "eagle",
+    "name": "Eagle",
+    "role": "White-headed varsity eagle",
+    "tagline": null,
+    "kind": "starter"
+  },
+  "sheet": {
+    "status_line": "M4 BUILD - LOGO_ASSET logo/BidaZoo_World_Expedition_logo_master.png (READY WITH CROP/MATTING); palette 63ec00673ac0 PROVISIONAL (docs); cast scale PROVISIONAL",
+    "logo": {
+      "path": "logo/BidaZoo_World_Expedition_logo_master.png",
+      "sha256": "944915d0f0522c2714b47a9eab4840bf0790d4900709a8c5d13d0a57f4e0f21c",
+      "status": "READY WITH CROP/MATTING"
+    }
+  },
+  "cast": {
+    "k": 1.0,
+    "k_status": "PROVISIONAL",
+    "s0": 0.184
+  },
+  "palette": {
+    "status": "PROVISIONAL",
+    "slots": [
+      {
+        "label": "PRIMARY",
+        "name": "White head",
+        "hex": "#FDF6ED",
+        "status": "PROVISIONAL"
+      },
+      {
+        "label": "SECONDARY",
+        "name": "Brown wings",
+        "hex": "#602F1D",
+        "status": "PROVISIONAL"
+      },
+      {
+        "label": "ACCENT",
+        "name": "Beak and letter gold",
+        "hex": "#FCBF15",
+        "status": "PROVISIONAL"
+      },
+      {
+        "label": "GEAR",
+        "name": "Varsity jacket green",
+        "hex": "#0E472B",
+        "status": "PROVISIONAL"
+      },
+      {
+        "label": "DETAIL",
+        "name": "Feet orange",
+        "hex": "#F68905",
+        "status": "PROVISIONAL"
+      },
+      {
+        "label": "EYES",
+        "name": "Blue",
+        "hex": "#058AC4",
+        "status": "PROVISIONAL"
+      }
+    ],
+    "mapping_note": "palettes.json sha256 63ec00673ac0336a: hex sampled from final matted art, all PROVISIONAL per docs 09 / 15 (no hex locked); ACCENT/CHARACTER-SPECIFIC semantics per doc 16 s7 (Bronco: red star/gear separate from BANDANA maroon)"
+  },
+  "turnaround": {
+    "front": {
+      "path": "asset-library/eagle/eagle_turnaround_front.png",
+      "sha256": "fc6d1eba682bf91648435e8e2aef9eaee89d00640f21f0bcc682a6acce28dadc",
+      "status": "READY WITH CROP/MATTING",
+      "plan_status": "READY WITH CROP/MATTING",
+      "transform": {
+        "ref_height_src_px": 283
+      }
+    },
+    "threeQuarter": {
+      "path": "asset-library/eagle/eagle_turnaround_34.png",
+      "sha256": "778e67970b21fd20e377f0c9fe0f0329c0d88e274341bda3293caccba572dc49",
+      "status": "READY WITH CROP/MATTING",
+      "plan_status": "READY WITH CROP/MATTING",
+      "transform": {
+        "ref_height_src_px": 283
+      }
+    },
+    "side": {
+      "path": "asset-library/eagle/eagle_turnaround_side.png",
+      "sha256": "1842de278e305a589eeddf673a9c634fe76a423d5e331787ddb92bfc22dcc097",
+      "status": "READY WITH CROP/MATTING",
+      "plan_status": "READY WITH CROP/MATTING",
+      "transform": {
+        "ref_height_src_px": 283
+      }
+    },
+    "back": {
+      "path": "asset-library/eagle/eagle_turnaround_back.png",
+      "sha256": "6cb0caac67837be89650c1dd333c6411e34a82dae611c26df61420701bf4d295",
+      "status": "READY WITH CROP/MATTING",
+      "plan_status": "READY WITH CROP/MATTING",
+      "transform": {
+        "ref_height_src_px": 283
+      }
+    }
+  },
+  "hero": {
+    "path": "asset-library/eagle/eagle_hero.png",
+    "sha256": "9659bf14fe08d8129ac64b20569c2c1f4ae8beacfcdffd04167d7091f092c0ae",
+    "status": "OWNER-ACCEPTED MINOR",
+    "plan_status": "READY WITH CROP/MATTING",
+    "transform": {
+      "mode": "fit"
+    }
+  },
+  "head": {
+    "path": "asset-library/eagle/eagle_head.png",
+    "sha256": "bfb5843e7e2c4ad84cf121f3090be9f027522e1d7758e601f64419dfec66bc4b",
+    "status": "READY WITH CROP/MATTING",
+    "plan_status": "READY WITH CROP/MATTING",
+    "transform": {
+      "eye_line_src_y": 102,
+      "core_box": [
+        12,
+        3,
+        238,
+        156
+      ],
+      "anchor": "bottom"
+    }
+  },
+  "expressions": {
+    "head_scale": 0.6535,
+    "head_scale_basis": "v2: min(100/median core width, 109/widest core width) after density normalization; see template-rules-v2.md",
+    "idle": {
+      "path": "expression-batch/eagle/eagle_idle.png",
+      "sha256": "2a35baf058d0f3ad7b5f0f4918fbbc2ebc08b5e521e758ee7049a7f2d6a1a78a",
+      "status": "READY WITH CROP/MATTING",
+      "plan_status": "READY WITH CROP/MATTING",
+      "transform": {
+        "units_per_source_px": 1.0,
+        "eye_line_src_y": 68,
+        "core_box": [
+          12,
+          2,
+          161,
+          104
+        ],
+        "core_source": "derived",
+        "crop_kind": "head_only"
+      },
+      "notes": "status from expression_status.json (doc 17 s2: M1 closed, PASS 32 / OWNER-ACCEPTED MINOR 4); historical matte-tool report pass=None"
+    },
+    "happy": {
+      "path": "expression-batch/eagle/eagle_happy.png",
+      "sha256": "c84c8b04b4d6e136cc3c1680a05657be0b1ecada0fcb30755445c39019ed8af5",
+      "status": "READY WITH CROP/MATTING",
+      "plan_status": "READY WITH CROP/MATTING",
+      "transform": {
+        "units_per_source_px": 1.0,
+        "eye_line_src_y": 62,
+        "core_box": [
+          3,
+          3,
+          159,
+          163
+        ],
+        "core_source": "report",
+        "crop_kind": "bust"
+      },
+      "notes": "status from expression_status.json (doc 17 s2: M1 closed, PASS 32 / OWNER-ACCEPTED MINOR 4); historical matte-tool report pass=False"
+    },
+    "thinking": {
+      "path": "expression-batch/eagle/eagle_thinking.png",
+      "sha256": "1f5e337c6df287d95a1e8e839327664904b3b3a84b2dd8b0fdb037bcfe60571d",
+      "status": "OWNER-ACCEPTED MINOR",
+      "plan_status": "OWNER-ACCEPTED MINOR",
+      "transform": {
+        "units_per_source_px": 1.0,
+        "eye_line_src_y": 68,
+        "core_box": [
+          3,
+          7,
+          155,
+          164
+        ],
+        "core_source": "report",
+        "crop_kind": "bust"
+      },
+      "notes": "status from expression_status.json (doc 17 s2: M1 closed, PASS 32 / OWNER-ACCEPTED MINOR 4); historical matte-tool report pass=None"
+    },
+    "cheer": {
+      "path": "expression-batch/eagle/eagle_cheer.png",
+      "sha256": "21110400bf55802b723cbc0e88283f14fb350c86dcfdf6c5a52512886e0393b0",
+      "status": "READY WITH CROP/MATTING",
+      "plan_status": "READY WITH CROP/MATTING",
+      "transform": {
+        "units_per_source_px": 1.0,
+        "eye_line_src_y": 65,
+        "core_box": [
+          3,
+          4,
+          158,
+          163
+        ],
+        "core_source": "report",
+        "crop_kind": "bust"
+      },
+      "notes": "status from expression_status.json (doc 17 s2: M1 closed, PASS 32 / OWNER-ACCEPTED MINOR 4); historical matte-tool report pass=None"
+    },
+    "discover": {
+      "path": "expression-batch/eagle/eagle_discover.png",
+      "sha256": "91ad39e3507ada55a1bb7535474127830a413d8022543791bebb47fb9ebc587e",
+      "status": "READY WITH CROP/MATTING",
+      "plan_status": "READY WITH CROP/MATTING",
+      "transform": {
+        "units_per_source_px": 1.0,
+        "eye_line_src_y": 72,
+        "core_box": [
+          11,
+          3,
+          152,
+          110
+        ],
+        "core_source": "derived (report rejected)",
+        "crop_kind": "bust"
+      },
+      "notes": "status from expression_status.json (doc 17 s2: M1 closed, PASS 32 / OWNER-ACCEPTED MINOR 4); historical matte-tool report pass=False"
+    },
+    "tryAgain": {
+      "path": "expression-batch/eagle/eagle_tryAgain.png",
+      "sha256": "bb4473f5c262f6f2421c313832a3735a413483af893a2412e0dc4b709f12986e",
+      "status": "OWNER-ACCEPTED MINOR",
+      "plan_status": "OWNER-ACCEPTED MINOR",
+      "transform": {
+        "units_per_source_px": 1.0,
+        "eye_line_src_y": 66,
+        "core_box": [
+          3,
+          3,
+          157,
+          164
+        ],
+        "core_source": "report",
+        "crop_kind": "bust"
+      },
+      "notes": "status from expression_status.json (doc 17 s2: M1 closed, PASS 32 / OWNER-ACCEPTED MINOR 4); historical matte-tool report pass=None"
+    },
+    "vertical_anchor": "eye_line"
+  },
+  "details": [
+    {
+      "path": "asset-library/eagle/eagle_detail_academy_a_patch.png",
+      "sha256": "1d1b347bbc1dc0dc325d3010d5491d3365df47cfc196672304c844b926df744b",
+      "status": "READY WITH CROP/MATTING",
+      "plan_status": "READY WITH CROP/MATTING",
+      "caption": "Academy A patch"
+    },
+    {
+      "path": "asset-library/eagle/eagle_detail_varsity_collar.png",
+      "sha256": "9dd7581dba7483c2f00f552627ebcf35d95d950e2cc5efeb24743704023558ab",
+      "status": "READY WITH CROP/MATTING",
+      "plan_status": "READY WITH CROP/MATTING",
+      "caption": "Varsity collar & stripes"
+    },
+    {
+      "path": "asset-library/eagle/eagle_detail_mountain_emblem.png",
+      "sha256": "b20b7010e659d16bbcc9cf6f87c1f69e8b66de2cb2017260430717c43c7b342d",
+      "status": "READY WITH CROP/MATTING",
+      "plan_status": "READY WITH CROP/MATTING",
+      "caption": "Mountain emblem"
+    },
+    {
+      "path": "asset-library/eagle/eagle_detail_wing_feather_treatment.png",
+      "sha256": "4d3bb26b6ea180bae36f09bdb509751c787b09024acf7e61d6fae029b1086c99",
+      "status": "READY WITH CROP/MATTING",
+      "plan_status": "READY WITH CROP/MATTING",
+      "caption": "Wing-feather treatment"
+    }
+  ],
+  "silhouettes": {
+    "derive": true,
+    "items": {
+      "front": {
+        "path": "asset-library/eagle/eagle_silhouette_front.png",
+        "sha256": "e41d20eeed0ad63542771e5d2fe5f4d592e3e43afd447d85d523d6ff1052b4f2",
+        "status": "READY WITH CROP/MATTING",
+        "plan_status": "READY WITH CROP/MATTING"
+      },
+      "threeQuarter": {
+        "path": "asset-library/eagle/eagle_silhouette_34.png",
+        "sha256": "ce98a743ab0e976970d83e444c6121d71690cddbf8b6366e17575bdcfe26e1f7",
+        "status": "READY WITH CROP/MATTING",
+        "plan_status": "READY WITH CROP/MATTING"
+      },
+      "side": {
+        "path": "asset-library/eagle/eagle_silhouette_side.png",
+        "sha256": "fbd11c68bbc5de59266d644e3800d18648521d372badf97da744732855254bfe",
+        "status": "READY WITH CROP/MATTING",
+        "plan_status": "READY WITH CROP/MATTING"
+      },
+      "back": {
+        "path": "asset-library/eagle/eagle_silhouette_back.png",
+        "sha256": "1edc0abf89a3ae647855718b4876446b5b37f054352c21349d90dec86c022c32",
+        "status": "READY WITH CROP/MATTING",
+        "plan_status": "READY WITH CROP/MATTING"
+      },
+      "action": {
+        "path": "asset-library/eagle/eagle_silhouette_action.png",
+        "sha256": "9c37152d8a686578271b7661c0a4dec8744c9424baa4b094695cae6aa61a517c",
+        "status": "READY WITH CROP/MATTING",
+        "plan_status": "READY WITH CROP/MATTING"
+      }
+    }
+  },
+  "proportion": {
+    "front_reference": "turnaround.front",
+    "comparison": {
+      "tag": "TAR",
+      "k": 0.57
+    }
+  }
+}

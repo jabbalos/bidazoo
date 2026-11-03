@@ -1,0 +1,48 @@
+{
+ "name": "eagle_tryAgain",
+ "core_box": [
+  3,
+  3,
+  157,
+  164
+ ],
+ "core_box_note": "x0,y0,x1,y1 of main head+jacket component, excluding detached marks",
+ "size": [
+  163,
+  168
+ ],
+ "method": "IDLE head repainted: wide level bright eyes, cheek lift, soft lifted inner brows (near+far), clearly open-beak smile (wide gape, dark interior, tongue, upturned corner), 3deg chin-up; crest/jacket alpha via shared $S/lib/eagle_edge.process_rgba (8x supersampled, carved crest tips, shared jacket contour); happy jacket composited; gold ticks secondary",
+ "qa": {
+  "file": "/mnt/user-data/outputs/expression-batch/eagle/eagle_tryAgain.png",
+  "size": [
+   163,
+   168
+  ],
+  "mode_ok": true,
+  "border_opaque": {
+   "left": 0.0,
+   "right": 0.0,
+   "top": 0.0,
+   "bottom": 0.0
+  },
+  "components": [
+   19391,
+   45,
+   38,
+   29
+  ],
+  "edge_brighter_frac": 0.09836065573770492,
+  "edge_parchlike_frac": 0.19836065573770492,
+  "faint_alpha_frac": 0.019548108657019548,
+  "cell_fit": {
+   "scale": 0.669,
+   "placed_w": 109,
+   "placed_h": 112,
+   "fits_109": true,
+   "fits_height": true
+  },
+  "light_fringe_px": 201
+ },
+ "identity": "HIGH",
+ "shoulder_fix": "lower-left wing covert rebuilt in the happy body layer: pale patch lifted off, sleeve green mirrored behind it, covert re-placed 3px lower with rounded top-left corner (R=10) and 4px soft top ramp; head composited over it so hair flows across the shoulder (no rectangular edge); thinking rotation done on a 168-row canvas so lower hair is not clipped"
+}

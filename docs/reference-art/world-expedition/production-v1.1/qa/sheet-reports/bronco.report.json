@@ -1,0 +1,996 @@
+{
+  "renderer_version": "1.0.0",
+  "placeholders": [],
+  "overflows": [],
+  "placements": [
+    {
+      "zone": "header",
+      "slot": "LOGO_ASSET",
+      "asset": "logo/BidaZoo_World_Expedition_logo_master.png",
+      "bbox": {
+        "x": 79,
+        "y": 36,
+        "w": 226,
+        "h": 96
+      }
+    },
+    {
+      "zone": "turnaround",
+      "slot": "front",
+      "asset": "asset-library/bronco/bronco_turnaround_front.png",
+      "status": "READY WITH CROP/MATTING",
+      "scale_px_per_source_px": 0.62,
+      "cast": {
+        "s0": 0.184,
+        "k": 0.92,
+        "units_per_source_px": 3.663
+      },
+      "image_origin": [
+        146,
+        229
+      ],
+      "matted_bbox": {
+        "x": 148.313,
+        "y": 231.34,
+        "w": 110.373,
+        "h": 168.66
+      },
+      "baseline_y": 400,
+      "cell_center_x": 203.5,
+      "height_above_baseline_px": 168.66,
+      "limits": {
+        "max_height": 184,
+        "max_width": 335
+      },
+      "overflow": false
+    },
+    {
+      "zone": "turnaround",
+      "slot": "threeQuarter",
+      "asset": "asset-library/bronco/bronco_turnaround_34.png",
+      "status": "READY WITH CROP/MATTING",
+      "scale_px_per_source_px": 0.62,
+      "cast": {
+        "s0": 0.184,
+        "k": 0.92,
+        "units_per_source_px": 3.663
+      },
+      "image_origin": [
+        479,
+        229
+      ],
+      "matted_bbox": {
+        "x": 481.052,
+        "y": 231.34,
+        "w": 138.896,
+        "h": 168.66
+      },
+      "baseline_y": 400,
+      "cell_center_x": 550.5,
+      "height_above_baseline_px": 168.66,
+      "limits": {
+        "max_height": 184,
+        "max_width": 335
+      },
+      "overflow": false
+    },
+    {
+      "zone": "turnaround",
+      "slot": "side",
+      "asset": "asset-library/bronco/bronco_turnaround_side.png",
+      "status": "READY WITH CROP/MATTING",
+      "scale_px_per_source_px": 0.62,
+      "cast": {
+        "s0": 0.184,
+        "k": 0.92,
+        "units_per_source_px": 3.663
+      },
+      "image_origin": [
+        815,
+        229
+      ],
+      "matted_bbox": {
+        "x": 815.03,
+        "y": 230.72,
+        "w": 164.939,
+        "h": 169.28
+      },
+      "baseline_y": 400,
+      "cell_center_x": 897.5,
+      "height_above_baseline_px": 169.28,
+      "limits": {
+        "max_height": 184,
+        "max_width": 335
+      },
+      "overflow": false
+    },
+    {
+      "zone": "turnaround",
+      "slot": "back",
+      "asset": "asset-library/bronco/bronco_turnaround_back.png",
+      "status": "READY WITH CROP/MATTING",
+      "scale_px_per_source_px": 0.62,
+      "cast": {
+        "s0": 0.184,
+        "k": 0.92,
+        "units_per_source_px": 3.663
+      },
+      "image_origin": [
+        1194,
+        230
+      ],
+      "matted_bbox": {
+        "x": 1195.204,
+        "y": 231.96,
+        "w": 98.592,
+        "h": 168.04
+      },
+      "baseline_y": 400,
+      "cell_center_x": 1244.5,
+      "height_above_baseline_px": 168.04,
+      "limits": {
+        "max_height": 184,
+        "max_width": 335
+      },
+      "overflow": false
+    },
+    {
+      "zone": "hero",
+      "slot": "hero",
+      "asset": "asset-library/bronco/bronco_hero.png",
+      "status": "OWNER-ACCEPTED MINOR",
+      "mode": "fit",
+      "scale_px_per_source_px": 0.957,
+      "image_origin": [
+        65,
+        534
+      ],
+      "matted_bbox": {
+        "x": 67.304,
+        "y": 536.0,
+        "w": 233.391,
+        "h": 198.0
+      },
+      "clearance_px": 24.0,
+      "overflow": false
+    },
+    {
+      "zone": "head",
+      "slot": "head",
+      "asset": "asset-library/bronco/bronco_head.png",
+      "status": "OWNER-ACCEPTED MINOR",
+      "scale_px_per_source_px": 0.69,
+      "image_origin": [
+        378,
+        552
+      ],
+      "matted_bbox": {
+        "x": 378.0,
+        "y": 551.702,
+        "w": 176.0,
+        "h": 204.298
+      },
+      "head_width_px": 176.0,
+      "eye_line_y": 629.004,
+      "cropped_by_box": false,
+      "bleed_shift_px": 0.0,
+      "bottom_y": 756.0,
+      "bottom_gap_to_box_px": 0.0,
+      "note": "crop-to-fill is allowed in the head close-up"
+    },
+    {
+      "zone": "expressions",
+      "slot": "idle",
+      "asset": "expression-batch/bronco/bronco_idle.png",
+      "status": "READY WITH CROP/MATTING",
+      "scale_px_per_source_px": 0.606,
+      "head_scale": 0.606,
+      "units_per_source_px": 1.0,
+      "fit_down_factor": 1.0,
+      "effective_head_scale": 0.606,
+      "width_excess_before_fit_px": 0.0,
+      "width_tolerance_px": 1.0,
+      "image_origin": [
+        610,
+        557
+      ],
+      "anchor": "eye_line",
+      "crop_kind": "bust",
+      "core_source": "core_box",
+      "core_box_src": [
+        2.0,
+        0.0,
+        173.0,
+        105.0
+      ],
+      "core_px": {
+        "x": 611.687,
+        "y": 556.792,
+        "w": 103.626,
+        "h": 63.63
+      },
+      "matted_bbox": {
+        "x": 610.475,
+        "y": 556.792,
+        "w": 104.838,
+        "h": 86.658
+      },
+      "eye_line_y": 598.0,
+      "bottom_y": 643.45,
+      "allowance_shift_dx": 0.0,
+      "overflow": false,
+      "limits": {
+        "core_safe_width": 109,
+        "core_nominal_width": 100,
+        "crown_min_y": 520,
+        "allowance_x": [
+          595,
+          732
+        ],
+        "allowance_note": "cell +/- 6 px (gutter midpoint)",
+        "cell_bottom_y": 726
+      }
+    },
+    {
+      "zone": "expressions",
+      "slot": "happy",
+      "asset": "expression-batch/bronco/bronco_happy.png",
+      "status": "READY WITH CROP/MATTING",
+      "scale_px_per_source_px": 0.606,
+      "head_scale": 0.606,
+      "units_per_source_px": 1.0,
+      "fit_down_factor": 1.0,
+      "effective_head_scale": 0.606,
+      "width_excess_before_fit_px": 0.0,
+      "width_tolerance_px": 1.0,
+      "image_origin": [
+        751,
+        559
+      ],
+      "anchor": "eye_line",
+      "crop_kind": "bust",
+      "core_source": "core_box",
+      "core_box_src": [
+        7.0,
+        3.0,
+        157.0,
+        98.0
+      ],
+      "core_px": {
+        "x": 755.05,
+        "y": 561.034,
+        "w": 90.9,
+        "h": 57.57
+      },
+      "matted_bbox": {
+        "x": 752.02,
+        "y": 561.034,
+        "w": 95.142,
+        "h": 90.294
+      },
+      "eye_line_y": 598.0,
+      "bottom_y": 651.328,
+      "allowance_shift_dx": 0.0,
+      "overflow": false,
+      "limits": {
+        "core_safe_width": 109,
+        "core_nominal_width": 100,
+        "crown_min_y": 520,
+        "allowance_x": [
+          732,
+          869
+        ],
+        "allowance_note": "cell +/- 6 px (gutter midpoint)",
+        "cell_bottom_y": 726
+      }
+    },
+    {
+      "zone": "expressions",
+      "slot": "thinking",
+      "asset": "expression-batch/bronco/bronco_thinking.png",
+      "status": "READY WITH CROP/MATTING",
+      "scale_px_per_source_px": 0.606,
+      "head_scale": 0.606,
+      "units_per_source_px": 1.0,
+      "fit_down_factor": 1.0,
+      "effective_head_scale": 0.606,
+      "width_excess_before_fit_px": 0.0,
+      "width_tolerance_px": 1.0,
+      "image_origin": [
+        882,
+        553
+      ],
+      "anchor": "eye_line",
+      "crop_kind": "bust",
+      "core_source": "core_box",
+      "core_box_src": [
+        3.0,
+        8.0,
+        179.0,
+        149.0
+      ],
+      "core_px": {
+        "x": 884.172,
+        "y": 558.004,
+        "w": 106.656,
+        "h": 85.446
+      },
+      "matted_bbox": {
+        "x": 884.172,
+        "y": 554.974,
+        "w": 114.534,
+        "h": 89.688
+      },
+      "eye_line_y": 598.0,
+      "bottom_y": 644.662,
+      "allowance_shift_dx": 0.0,
+      "overflow": false,
+      "limits": {
+        "core_safe_width": 109,
+        "core_nominal_width": 100,
+        "crown_min_y": 520,
+        "allowance_x": [
+          869,
+          1006
+        ],
+        "allowance_note": "cell +/- 6 px (gutter midpoint)",
+        "cell_bottom_y": 726
+      }
+    },
+    {
+      "zone": "expressions",
+      "slot": "cheer",
+      "asset": "expression-batch/bronco/bronco_cheer.png",
+      "status": "OWNER-ACCEPTED MINOR",
+      "scale_px_per_source_px": 0.606,
+      "head_scale": 0.606,
+      "units_per_source_px": 1.0,
+      "fit_down_factor": 1.0,
+      "effective_head_scale": 0.606,
+      "width_excess_before_fit_px": 0.0,
+      "width_tolerance_px": 1.0,
+      "image_origin": [
+        1023,
+        551
+      ],
+      "anchor": "eye_line",
+      "crop_kind": "bust",
+      "core_source": "core_box",
+      "core_box_src": [
+        4.0,
+        5.0,
+        167.0,
+        144.0
+      ],
+      "core_px": {
+        "x": 1025.111,
+        "y": 554.368,
+        "w": 98.778,
+        "h": 84.234
+      },
+      "matted_bbox": {
+        "x": 1023.293,
+        "y": 551.338,
+        "w": 103.02,
+        "h": 88.476
+      },
+      "eye_line_y": 598.0,
+      "bottom_y": 639.814,
+      "allowance_shift_dx": 0.0,
+      "overflow": false,
+      "limits": {
+        "core_safe_width": 109,
+        "core_nominal_width": 100,
+        "crown_min_y": 520,
+        "allowance_x": [
+          1006,
+          1143
+        ],
+        "allowance_note": "cell +/- 6 px (gutter midpoint)",
+        "cell_bottom_y": 726
+      }
+    },
+    {
+      "zone": "expressions",
+      "slot": "discover",
+      "asset": "expression-batch/bronco/bronco_discover.png",
+      "status": "READY WITH CROP/MATTING",
+      "scale_px_per_source_px": 0.606,
+      "head_scale": 0.606,
+      "units_per_source_px": 1.0,
+      "fit_down_factor": 1.0,
+      "effective_head_scale": 0.606,
+      "width_excess_before_fit_px": 0.0,
+      "width_tolerance_px": 1.0,
+      "image_origin": [
+        1160,
+        556
+      ],
+      "anchor": "eye_line",
+      "crop_kind": "bust",
+      "core_source": "core_box",
+      "core_box_src": [
+        5.0,
+        4.0,
+        165.0,
+        106.0
+      ],
+      "core_px": {
+        "x": 1163.02,
+        "y": 558.004,
+        "w": 96.96,
+        "h": 61.812
+      },
+      "matted_bbox": {
+        "x": 1161.808,
+        "y": 558.004,
+        "w": 98.172,
+        "h": 90.294
+      },
+      "eye_line_y": 598.0,
+      "bottom_y": 648.298,
+      "allowance_shift_dx": 0.0,
+      "overflow": false,
+      "limits": {
+        "core_safe_width": 109,
+        "core_nominal_width": 100,
+        "crown_min_y": 520,
+        "allowance_x": [
+          1143,
+          1280
+        ],
+        "allowance_note": "cell +/- 6 px (gutter midpoint)",
+        "cell_bottom_y": 726
+      }
+    },
+    {
+      "zone": "expressions",
+      "slot": "tryAgain",
+      "asset": "expression-batch/bronco/bronco_tryAgain.png",
+      "status": "READY WITH CROP/MATTING",
+      "scale_px_per_source_px": 0.606,
+      "head_scale": 0.606,
+      "units_per_source_px": 1.0,
+      "fit_down_factor": 1.0,
+      "effective_head_scale": 0.606,
+      "width_excess_before_fit_px": 0.0,
+      "width_tolerance_px": 1.0,
+      "image_origin": [
+        1298,
+        554
+      ],
+      "anchor": "eye_line",
+      "crop_kind": "bust",
+      "core_source": "core_box",
+      "core_box_src": [
+        0.0,
+        3.0,
+        167.0,
+        110.0
+      ],
+      "core_px": {
+        "x": 1297.899,
+        "y": 556.186,
+        "w": 101.202,
+        "h": 64.842
+      },
+      "matted_bbox": {
+        "x": 1297.899,
+        "y": 556.186,
+        "w": 101.202,
+        "h": 89.082
+      },
+      "eye_line_y": 598.0,
+      "bottom_y": 645.268,
+      "allowance_shift_dx": 0.0,
+      "overflow": false,
+      "limits": {
+        "core_safe_width": 109,
+        "core_nominal_width": 100,
+        "crown_min_y": 520,
+        "allowance_x": [
+          1280,
+          1417
+        ],
+        "allowance_note": "cell +/- 6 px (gutter midpoint)",
+        "cell_bottom_y": 726
+      }
+    },
+    {
+      "zone": "silhouettes",
+      "slot": "front",
+      "asset": "asset-library/bronco/bronco_silhouette_front.png",
+      "status": "READY WITH CROP/MATTING",
+      "source": "explicit",
+      "fit_box": [
+        36,
+        824,
+        72,
+        182
+      ],
+      "fit_scale": 0.411,
+      "bbox": {
+        "x": 36,
+        "y": 895,
+        "w": 72,
+        "h": 111
+      },
+      "baseline_y": 1006,
+      "note": "fit scale is for recognition only; not a cast-size authority"
+    },
+    {
+      "zone": "silhouettes",
+      "slot": "threeQuarter",
+      "asset": "asset-library/bronco/bronco_silhouette_34.png",
+      "status": "READY WITH CROP/MATTING",
+      "source": "explicit",
+      "fit_box": [
+        116,
+        824,
+        72,
+        182
+      ],
+      "fit_scale": 0.326,
+      "bbox": {
+        "x": 116,
+        "y": 920,
+        "w": 72,
+        "h": 86
+      },
+      "baseline_y": 1006,
+      "note": "fit scale is for recognition only; not a cast-size authority"
+    },
+    {
+      "zone": "silhouettes",
+      "slot": "side",
+      "asset": "asset-library/bronco/bronco_silhouette_side.png",
+      "status": "READY WITH CROP/MATTING",
+      "source": "explicit",
+      "fit_box": [
+        196,
+        824,
+        72,
+        182
+      ],
+      "fit_scale": 0.277,
+      "bbox": {
+        "x": 196,
+        "y": 932,
+        "w": 72,
+        "h": 74
+      },
+      "baseline_y": 1006,
+      "note": "fit scale is for recognition only; not a cast-size authority"
+    },
+    {
+      "zone": "silhouettes",
+      "slot": "back",
+      "asset": "asset-library/bronco/bronco_silhouette_back.png",
+      "status": "READY WITH CROP/MATTING",
+      "source": "explicit",
+      "fit_box": [
+        276,
+        824,
+        72,
+        182
+      ],
+      "fit_scale": 0.459,
+      "bbox": {
+        "x": 276,
+        "y": 886,
+        "w": 72,
+        "h": 120
+      },
+      "baseline_y": 1006,
+      "note": "fit scale is for recognition only; not a cast-size authority"
+    },
+    {
+      "zone": "silhouettes",
+      "slot": "action",
+      "asset": "asset-library/bronco/bronco_silhouette_action.png",
+      "status": "READY WITH CROP/MATTING",
+      "source": "explicit",
+      "fit_box": [
+        356,
+        824,
+        108,
+        182
+      ],
+      "fit_scale": 0.443,
+      "bbox": {
+        "x": 356,
+        "y": 914,
+        "w": 108,
+        "h": 92
+      },
+      "baseline_y": 1006,
+      "note": "fit scale is for recognition only; not a cast-size authority"
+    },
+    {
+      "zone": "details",
+      "slot": "detail1",
+      "asset": "asset-library/bronco/bronco_detail_cowboy_hat.png",
+      "status": "READY WITH CROP/MATTING",
+      "fit_scale": 0.795,
+      "bbox": {
+        "x": 508,
+        "y": 832,
+        "w": 125,
+        "h": 66
+      }
+    },
+    {
+      "zone": "details",
+      "slot": "detail2",
+      "asset": "asset-library/bronco/bronco_detail_bandana.png",
+      "status": "READY WITH CROP/MATTING",
+      "fit_scale": 0.795,
+      "bbox": {
+        "x": 685,
+        "y": 832,
+        "w": 72,
+        "h": 66
+      }
+    },
+    {
+      "zone": "details",
+      "slot": "detail3",
+      "asset": "asset-library/bronco/bronco_detail_saddle_pack.png",
+      "status": "READY WITH CROP/MATTING",
+      "fit_scale": 0.584,
+      "bbox": {
+        "x": 527,
+        "y": 946,
+        "w": 88,
+        "h": 66
+      }
+    },
+    {
+      "zone": "details",
+      "slot": "detail4",
+      "asset": "asset-library/bronco/bronco_detail_star_treatment.png",
+      "status": "READY WITH CROP/MATTING",
+      "fit_scale": 1.082,
+      "bbox": {
+        "x": 683,
+        "y": 946,
+        "w": 75,
+        "h": 66
+      }
+    },
+    {
+      "zone": "proportion",
+      "slot": "front_reference",
+      "asset": "asset-library/bronco/bronco_turnaround_front.png",
+      "status": "READY WITH CROP/MATTING",
+      "scale_px_per_source_px": 0.566,
+      "R_px": 168,
+      "k": 0.92,
+      "image_origin": [
+        1252,
+        850
+      ],
+      "matted_bbox": {
+        "x": 1253.612,
+        "y": 852.006,
+        "w": 100.775,
+        "h": 153.994
+      },
+      "box": [
+        1196,
+        824,
+        216,
+        196
+      ],
+      "overflow": false
+    }
+  ],
+  "provisional": [
+    {
+      "zone": "palette",
+      "slot": "slot1",
+      "path": "#DF733A"
+    },
+    {
+      "zone": "palette",
+      "slot": "slot2",
+      "path": "#2C1610"
+    },
+    {
+      "zone": "palette",
+      "slot": "slot3",
+      "path": "#B41C2E"
+    },
+    {
+      "zone": "palette",
+      "slot": "slot4",
+      "path": "#673620"
+    },
+    {
+      "zone": "palette",
+      "slot": "slot5",
+      "path": "#FBDEC5"
+    },
+    {
+      "zone": "palette",
+      "slot": "slot6",
+      "path": "#6F1228"
+    }
+  ],
+  "template_defects": [],
+  "text_adjustments": [
+    {
+      "zone": "details",
+      "slot": "detail1",
+      "what": "2-line caption is 26px; caption box is 20px (see README open question)"
+    }
+  ],
+  "warnings": [],
+  "assets": [
+    {
+      "path": "logo/BidaZoo_World_Expedition_logo_master.png",
+      "sha256": "944915d0f0522c2714b47a9eab4840bf0790d4900709a8c5d13d0a57f4e0f21c",
+      "bytes": 1089662,
+      "size_px": [
+        1467,
+        633
+      ]
+    },
+    {
+      "path": "asset-library/bronco/bronco_turnaround_front.png",
+      "sha256": "cadae7bede1076f2c4413eb2b2f5e5b2d606f8fe6911894043ff00a33f606c69",
+      "bytes": 103750,
+      "size_px": [
+        184,
+        278
+      ]
+    },
+    {
+      "path": "asset-library/bronco/bronco_turnaround_34.png",
+      "sha256": "612c2468a8d2ad533bb41516c7c02939dd69c570631016b7c1a16a51e4890a74",
+      "bytes": 117671,
+      "size_px": [
+        230,
+        278
+      ]
+    },
+    {
+      "path": "asset-library/bronco/bronco_turnaround_side.png",
+      "sha256": "68e5d0fdc765eca9e05d329995d08dea0c29f57aed7f92356759b0f175e3b045",
+      "bytes": 128025,
+      "size_px": [
+        269,
+        279
+      ]
+    },
+    {
+      "path": "asset-library/bronco/bronco_turnaround_back.png",
+      "sha256": "06a82c6ae519bfad836ab09ec78d596f1d434b206c924ffc81be2f649c2189c7",
+      "bytes": 88741,
+      "size_px": [
+        164,
+        277
+      ]
+    },
+    {
+      "path": "asset-library/bronco/bronco_hero.png",
+      "sha256": "1c7a4463267b07140303e0615eb54c1eb853cf7e27082292b75ddae25b20faff",
+      "bytes": 90334,
+      "size_px": [
+        249,
+        212
+      ]
+    },
+    {
+      "path": "asset-library/bronco/bronco_head.png",
+      "sha256": "373e2b83a860d9c7b3624414a80b747cac6b0ca8f79a27a1445cb278025e30ab",
+      "bytes": 142513,
+      "size_px": [
+        255,
+        297
+      ]
+    },
+    {
+      "path": "expression-batch/bronco/bronco_idle.png",
+      "sha256": "950796e5799ed3d02c4a330b45aa96fddcf7d70e5bc1c7f3725c883b57a777c0",
+      "bytes": 51727,
+      "size_px": [
+        176,
+        144
+      ]
+    },
+    {
+      "path": "expression-batch/bronco/bronco_happy.png",
+      "sha256": "9bd170a3effdb145ca8e52e3fb85f1a97d5ef6e589e5af35577fb2d50c9284ac",
+      "bytes": 51929,
+      "size_px": [
+        162,
+        153
+      ]
+    },
+    {
+      "path": "expression-batch/bronco/bronco_thinking.png",
+      "sha256": "e397a0ee8d9678181a397218c4dee32987faff74a34cf10485d3c58712ecd847",
+      "bytes": 55032,
+      "size_px": [
+        195,
+        151
+      ]
+    },
+    {
+      "path": "expression-batch/bronco/bronco_cheer.png",
+      "sha256": "4e3ca177405571345d2aebcebe11c9f3facfb532e2990fcc331b4e8544ba610b",
+      "bytes": 50518,
+      "size_px": [
+        172,
+        147
+      ]
+    },
+    {
+      "path": "expression-batch/bronco/bronco_discover.png",
+      "sha256": "8f722008ebf761d577e430868ef69ee5f054728b5861863139864db336749a98",
+      "bytes": 55358,
+      "size_px": [
+        168,
+        154
+      ]
+    },
+    {
+      "path": "expression-batch/bronco/bronco_tryAgain.png",
+      "sha256": "a72fdd816096dd5666b6e7857677bd26cbea4ec419756cace26ec195f145840d",
+      "bytes": 56115,
+      "size_px": [
+        168,
+        151
+      ]
+    },
+    {
+      "path": "asset-library/bronco/bronco_silhouette_front.png",
+      "sha256": "105d21bd1b62ab4be9e524d6262b3a954b76f20ec2e3ffe158b7bd0e0e481c8e",
+      "bytes": 10972,
+      "size_px": [
+        175,
+        269
+      ]
+    },
+    {
+      "path": "asset-library/bronco/bronco_silhouette_34.png",
+      "sha256": "a8a68d20a203f59662de30f891798087987822f067ff9bb2eb3b947e04395843",
+      "bytes": 12017,
+      "size_px": [
+        221,
+        265
+      ]
+    },
+    {
+      "path": "asset-library/bronco/bronco_silhouette_side.png",
+      "sha256": "553957bd31fae817bc4c841abd49131d661928d875acfe4ac9aab257be010e06",
+      "bytes": 12366,
+      "size_px": [
+        260,
+        267
+      ]
+    },
+    {
+      "path": "asset-library/bronco/bronco_silhouette_back.png",
+      "sha256": "501080c60fdcfbf820830ed3f122620c841db3d01ffcf49830951eebbe83007c",
+      "bytes": 10869,
+      "size_px": [
+        157,
+        262
+      ]
+    },
+    {
+      "path": "asset-library/bronco/bronco_silhouette_action.png",
+      "sha256": "64b06cf4d783c075362a22133f6cc61f068432f10e6d6d37e16fec84625de012",
+      "bytes": 11215,
+      "size_px": [
+        244,
+        207
+      ]
+    },
+    {
+      "path": "asset-library/bronco/bronco_detail_cowboy_hat.png",
+      "sha256": "e0ea81c6632503947dc9544d869859b0f780a8ee3d9b91589edbf40e4f877c03",
+      "bytes": 27591,
+      "size_px": [
+        163,
+        89
+      ]
+    },
+    {
+      "path": "asset-library/bronco/bronco_detail_bandana.png",
+      "sha256": "359ad0623191a81d2536a46a4c84ffc0f3eeb2807c57e4dad0460514ab22f422",
+      "bytes": 21068,
+      "size_px": [
+        97,
+        89
+      ]
+    },
+    {
+      "path": "asset-library/bronco/bronco_detail_saddle_pack.png",
+      "sha256": "02d645c0b74fe2bf669a128bd2275df77a48a24ff96d637d2b53c643eed6cd81",
+      "bytes": 38822,
+      "size_px": [
+        157,
+        117
+      ]
+    },
+    {
+      "path": "asset-library/bronco/bronco_detail_star_treatment.png",
+      "sha256": "c8a2577621ae62c8d6de9506b0db0602a5cfc6357c1530fe71204faf44eaae8f",
+      "bytes": 16832,
+      "size_px": [
+        69,
+        61
+      ]
+    }
+  ],
+  "expression_widest_core": {
+    "slot": "thinking",
+    "width_px": 106.656,
+    "safe_width": 109
+  },
+  "expression_fit_down": {
+    "idle": 1.0,
+    "happy": 1.0,
+    "thinking": 1.0,
+    "cheer": 1.0,
+    "discover": 1.0,
+    "tryAgain": 1.0
+  },
+  "proportion_comparison": {
+    "tag": "TAR",
+    "k": 0.57,
+    "tick_y": 910.24
+  },
+  "proportion_marker": {
+    "k": 0.92,
+    "marker_y": 851.44,
+    "reference_tick_y": 838,
+    "baseline_y": 1006,
+    "R_px": 168
+  },
+  "character": {
+    "id": "bronco",
+    "name": "Bronco",
+    "k": 0.92
+  },
+  "canvas": [
+    1448,
+    1086
+  ],
+  "fonts": {
+    "family": "Nunito Sans",
+    "files": {
+      "400": "NunitoSans-Regular.ttf",
+      "600": "NunitoSans-SemiBold.ttf",
+      "700": "NunitoSans-Bold.ttf",
+      "800": "NunitoSans-ExtraBold.ttf"
+    },
+    "sha256": {
+      "400": "a4591b8197c3606b891dbc0fa6b1075e5abef0d7614c62a5ab3b1aef523d3fd6",
+      "600": "585931b02451771fbfbb0c7121257ad96dc3ac5801b8bddb558c3ffbb69ff8bf",
+      "700": "9a09d236cb3aa42fdd03cdce5b17dfc5adbbaf61686f74c1a6a28048c87cc16c",
+      "800": "79d61a64c7b33c0d92fd2ca876453713ca71ca446bf2b566fad36f6addbbe12e"
+    },
+    "license": "SIL OFL 1.1 (fonts/OFL.txt)"
+  },
+  "manifest_sheet_status_line": "M4 BUILD - LOGO_ASSET logo/BidaZoo_World_Expedition_logo_master.png (READY WITH CROP/MATTING); palette 63ec00673ac0 PROVISIONAL (docs); cast scale PROVISIONAL",
+  "computed_sheet_status": "LAYOUT PROOF - NOT FINAL: 6 provisional slot(s)",
+  "counts": {
+    "placeholders": 0,
+    "overflows": 0,
+    "provisional": 6,
+    "template_defects": 0
+  },
+  "output": {
+    "file": "bronco_sheet_v2.png",
+    "sha256": "5e4c1a8ce71effd39149439572fbfde63ad0f426e07bec623153f554766fbfc8",
+    "size_px": [
+      1448,
+      1086
+    ]
+  },
+  "manifest_file": "bronco.json"
+}

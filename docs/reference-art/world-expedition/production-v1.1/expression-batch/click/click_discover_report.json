@@ -1,0 +1,41 @@
+{
+ "name": "click_discover",
+ "box": [
+  353,
+  645,
+  497,
+  805
+ ],
+ "mode": "parchment",
+ "bg_rgb": [
+  253,
+  239,
+  209
+ ],
+ "clip_left": 0.0,
+ "clip_right": 0.0,
+ "clip_top": 0.009259259259259259,
+ "clip_bottom": 0.2708333333333333,
+ "clipping": false,
+ "extra_components": [
+  264
+ ],
+ "contamination": true,
+ "halo_fraction": 0.0029498525073746312,
+ "halo": false,
+ "outline_missing_px": 17,
+ "outline_missing": false,
+ "pass": false,
+ "size": [
+  141,
+  160
+ ],
+ "composite_default_ring_rects": [
+  [
+   472,
+   700,
+   497,
+   746
+  ]
+ ]
+}

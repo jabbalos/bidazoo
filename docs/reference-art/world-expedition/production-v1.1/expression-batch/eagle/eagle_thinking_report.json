@@ -1,0 +1,46 @@
+{
+ "name": "eagle_thinking",
+ "core_box": [
+  3,
+  7,
+  155,
+  164
+ ],
+ "core_box_note": "x0,y0,x1,y1 of main head+jacket component, excluding detached marks",
+ "size": [
+  163,
+  168
+ ],
+ "method": "IDLE head repainted and tilted 12deg chin-up: iris up/aside 6.5/3.6 px, near brow arched high, far brow lowered, slightly pursed 'hmm' beak (thin dark gape, no downturn); alpha via shared eagle_edge.process_rgba; happy jacket composited; '?' secondary. No wing/hand-to-beak art exists in any Eagle sheet cell",
+ "qa": {
+  "file": "/mnt/user-data/outputs/expression-batch/eagle/eagle_thinking.png",
+  "size": [
+   163,
+   168
+  ],
+  "mode_ok": true,
+  "border_opaque": {
+   "left": 0.0,
+   "right": 0.0,
+   "top": 0.0,
+   "bottom": 0.0
+  },
+  "components": [
+   18246,
+   128
+  ],
+  "edge_brighter_frac": 0.07325383304940375,
+  "edge_parchlike_frac": 0.1686541737649063,
+  "faint_alpha_frac": 0.020027996123613653,
+  "cell_fit": {
+   "scale": 0.669,
+   "placed_w": 109,
+   "placed_h": 112,
+   "fits_109": true,
+   "fits_height": true
+  },
+  "light_fringe_px": 191
+ },
+ "identity": "HIGH",
+ "shoulder_fix": "lower-left wing covert rebuilt in the happy body layer: pale patch lifted off, sleeve green mirrored behind it, covert re-placed 3px lower with rounded top-left corner (R=10) and 4px soft top ramp; head composited over it so hair flows across the shoulder (no rectangular edge); thinking rotation done on a 168-row canvas so lower hair is not clipped"
+}

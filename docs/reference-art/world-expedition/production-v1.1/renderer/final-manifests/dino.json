@@ -1,0 +1,319 @@
+{
+  "schema_version": 1,
+  "character": {
+    "id": "dino",
+    "name": "Dino",
+    "role": "Teal explorer dinosaur",
+    "tagline": null,
+    "kind": "starter"
+  },
+  "sheet": {
+    "status_line": "M4 BUILD - LOGO_ASSET logo/BidaZoo_World_Expedition_logo_master.png (READY WITH CROP/MATTING); palette 63ec00673ac0 PROVISIONAL (docs); cast scale PROVISIONAL",
+    "logo": {
+      "path": "logo/BidaZoo_World_Expedition_logo_master.png",
+      "sha256": "944915d0f0522c2714b47a9eab4840bf0790d4900709a8c5d13d0a57f4e0f21c",
+      "status": "READY WITH CROP/MATTING"
+    }
+  },
+  "cast": {
+    "k": 0.85,
+    "k_status": "PROVISIONAL",
+    "s0": 0.184
+  },
+  "palette": {
+    "status": "PROVISIONAL",
+    "slots": [
+      {
+        "label": "PRIMARY",
+        "name": "Teal body",
+        "hex": "#03BDB2",
+        "status": "PROVISIONAL"
+      },
+      {
+        "label": "SECONDARY",
+        "name": "Cream belly",
+        "hex": "#FDEC9A",
+        "status": "PROVISIONAL"
+      },
+      {
+        "label": "ACCENT",
+        "name": "Orange spikes",
+        "hex": "#F54A05",
+        "status": "PROVISIONAL"
+      },
+      {
+        "label": "GEAR",
+        "name": "Pack strap brown",
+        "hex": "#763B13",
+        "status": "PROVISIONAL"
+      },
+      {
+        "label": "DETAIL",
+        "name": "Deep teal shade",
+        "hex": "#01857B",
+        "status": "PROVISIONAL"
+      },
+      {
+        "label": "PACK BODY",
+        "name": "Olive green",
+        "hex": "#1D4331",
+        "status": "PROVISIONAL"
+      }
+    ],
+    "mapping_note": "palettes.json sha256 63ec00673ac0336a: hex sampled from final matted art, all PROVISIONAL per docs 09 / 15 (no hex locked); ACCENT/CHARACTER-SPECIFIC semantics per doc 16 s7 (Bronco: red star/gear separate from BANDANA maroon)"
+  },
+  "turnaround": {
+    "front": {
+      "path": "asset-library/dino/dino_turnaround_front.png",
+      "sha256": "05725520e310c88e2e2f3ee7a33b19344587c8f5796187e865e8c510fe98fa0b",
+      "status": "READY WITH CROP/MATTING",
+      "plan_status": "READY WITH CROP/MATTING",
+      "transform": {
+        "ref_height_src_px": 275
+      }
+    },
+    "threeQuarter": {
+      "path": "asset-library/dino/dino_turnaround_34.png",
+      "sha256": "5f7b9065db2906c63700cffbb585d7eabfe4fef782a415b5fba7a651e8738d65",
+      "status": "READY WITH CROP/MATTING",
+      "plan_status": "READY WITH CROP/MATTING",
+      "transform": {
+        "ref_height_src_px": 275
+      }
+    },
+    "side": {
+      "path": "asset-library/dino/dino_turnaround_side.png",
+      "sha256": "6c4ea533a75544b43bf53e54a491707ff11e1294c5f6bb629c2c72652483a209",
+      "status": "READY WITH CROP/MATTING",
+      "plan_status": "READY WITH CROP/MATTING",
+      "transform": {
+        "ref_height_src_px": 275
+      }
+    },
+    "back": {
+      "path": "asset-library/dino/dino_turnaround_back.png",
+      "sha256": "94448c690a4b14cf987efdf59a469b00419e4ce547f87d0085ca7cd35c1043f6",
+      "status": "READY WITH CROP/MATTING",
+      "plan_status": "READY WITH CROP/MATTING",
+      "transform": {
+        "ref_height_src_px": 275
+      }
+    }
+  },
+  "hero": {
+    "path": "asset-library/dino/dino_hero.png",
+    "sha256": "e752cd86233753e9d409be543a0551b851e31d7d596e6728821fbd6ad4d8c254",
+    "status": "READY WITH CROP/MATTING",
+    "plan_status": "READY WITH CROP/MATTING",
+    "transform": {
+      "mode": "fit"
+    }
+  },
+  "head": {
+    "path": "asset-library/dino/dino_head.png",
+    "sha256": "59d8be2419908ac0e3e36f35b5f9e7dd8edfccb4a43e9915d47a1e625cfff6ae",
+    "status": "OWNER-ACCEPTED MINOR",
+    "plan_status": "READY WITH CROP/MATTING",
+    "transform": {
+      "eye_line_src_y": 113,
+      "core_box": [
+        5,
+        2,
+        216,
+        174
+      ],
+      "anchor": "bottom"
+    }
+  },
+  "expressions": {
+    "head_scale": 0.7843,
+    "head_scale_basis": "v2: min(100/median core width, 109/widest core width) after density normalization; see template-rules-v2.md",
+    "idle": {
+      "path": "expression-batch/dino/dino_idle.png",
+      "sha256": "95aa9a23772dbf312408f4c4e0d4e0097dd512a46bd7c9bd2762b9817e217f76",
+      "status": "READY WITH CROP/MATTING",
+      "plan_status": "READY WITH CROP/MATTING",
+      "transform": {
+        "units_per_source_px": 1.0,
+        "eye_line_src_y": 56,
+        "core_box": [
+          0,
+          0,
+          126,
+          87
+        ],
+        "core_source": "derived",
+        "crop_kind": "head_only"
+      },
+      "notes": "status from expression_status.json (doc 17 s2: M1 closed, PASS 32 / OWNER-ACCEPTED MINOR 4); historical matte-tool report pass=None"
+    },
+    "happy": {
+      "path": "expression-batch/dino/dino_happy.png",
+      "sha256": "e7ad95e3f7e3dc200d1e50207161be2de8237ceb988b396da3dcf5553de3efde",
+      "status": "READY WITH CROP/MATTING",
+      "plan_status": "READY WITH CROP/MATTING",
+      "transform": {
+        "units_per_source_px": 1.0,
+        "eye_line_src_y": 52,
+        "core_box": [
+          6,
+          2,
+          132,
+          80
+        ],
+        "core_source": "derived",
+        "crop_kind": "bust"
+      },
+      "notes": "status from expression_status.json (doc 17 s2: M1 closed, PASS 32 / OWNER-ACCEPTED MINOR 4); historical matte-tool report pass=True"
+    },
+    "thinking": {
+      "path": "expression-batch/dino/dino_thinking.png",
+      "sha256": "a41c83c46450d906c6e89f92555c1b2637bda1b6d48ae4f19b09b364f6d362dd",
+      "status": "READY WITH CROP/MATTING",
+      "plan_status": "READY WITH CROP/MATTING",
+      "transform": {
+        "units_per_source_px": 1.0,
+        "eye_line_src_y": 64,
+        "core_box": [
+          4,
+          3,
+          133,
+          98
+        ],
+        "core_source": "derived",
+        "crop_kind": "bust"
+      },
+      "notes": "status from expression_status.json (doc 17 s2: M1 closed, PASS 32 / OWNER-ACCEPTED MINOR 4); historical matte-tool report pass=False"
+    },
+    "cheer": {
+      "path": "expression-batch/dino/dino_cheer.png",
+      "sha256": "86ae9ae4e976fdcd0ac8481e9c6e2ea192912167d30c0b8f7f940a01aa2130f4",
+      "status": "READY WITH CROP/MATTING",
+      "plan_status": "READY WITH CROP/MATTING",
+      "transform": {
+        "units_per_source_px": 1.0,
+        "eye_line_src_y": 56,
+        "core_box": [
+          32,
+          3,
+          154,
+          85
+        ],
+        "core_source": "report",
+        "crop_kind": "bust"
+      },
+      "notes": "status from expression_status.json (doc 17 s2: M1 closed, PASS 32 / OWNER-ACCEPTED MINOR 4); historical matte-tool report pass=False"
+    },
+    "discover": {
+      "path": "expression-batch/dino/dino_discover.png",
+      "sha256": "3c6eec7e16baa8ecda90fe0021519b1dff85e6dcfb17d5042d3204c39083b229",
+      "status": "READY WITH CROP/MATTING",
+      "plan_status": "READY WITH CROP/MATTING",
+      "transform": {
+        "units_per_source_px": 1.0,
+        "eye_line_src_y": 67,
+        "core_box": [
+          4,
+          3,
+          135,
+          102
+        ],
+        "core_source": "report",
+        "crop_kind": "bust"
+      },
+      "notes": "status from expression_status.json (doc 17 s2: M1 closed, PASS 32 / OWNER-ACCEPTED MINOR 4); historical matte-tool report pass=False"
+    },
+    "tryAgain": {
+      "path": "expression-batch/dino/dino_tryAgain.png",
+      "sha256": "055a5f4d827fae878ff68056e406c595b232a5e6af155d35d9e624bf94d602ba",
+      "status": "READY WITH CROP/MATTING",
+      "plan_status": "READY WITH CROP/MATTING",
+      "transform": {
+        "units_per_source_px": 1.0,
+        "eye_line_src_y": 68,
+        "core_box": [
+          22,
+          3,
+          158,
+          104
+        ],
+        "core_source": "derived",
+        "crop_kind": "bust"
+      },
+      "notes": "status from expression_status.json (doc 17 s2: M1 closed, PASS 32 / OWNER-ACCEPTED MINOR 4); historical matte-tool report pass=True"
+    },
+    "vertical_anchor": "eye_line"
+  },
+  "details": [
+    {
+      "path": "asset-library/dino/dino_detail_backpack_front.png",
+      "sha256": "964964bac5140056add65befdc960301e79c393f638a79d0351e99b51c2e9332",
+      "status": "READY WITH CROP/MATTING",
+      "plan_status": "READY WITH CROP/MATTING",
+      "caption": "Backpack (front)"
+    },
+    {
+      "path": "asset-library/dino/dino_detail_buckle.png",
+      "sha256": "dcb527274f49f1ad784681cccc9f82acf943bbfe46ab7825f47e032c86da9989",
+      "status": "READY WITH CROP/MATTING",
+      "plan_status": "READY WITH CROP/MATTING",
+      "caption": "Strap & buckle"
+    },
+    {
+      "path": "asset-library/dino/dino_detail_paw_badge.png",
+      "sha256": "b4ad367988439cdc88107b9ee918ce1a99560d322a6a73168800e71334b1eeaf",
+      "status": "READY WITH CROP/MATTING",
+      "plan_status": "READY WITH CROP/MATTING",
+      "caption": "Paw badge"
+    },
+    {
+      "path": "asset-library/dino/dino_detail_dorsal_spikes.png",
+      "sha256": "ce8df08a5c8a10a7e659e1066fe6803a2ef129652a1afd6407d0fea5b81084a0",
+      "status": "READY WITH CROP/MATTING",
+      "plan_status": "READY WITH CROP/MATTING",
+      "caption": "Dorsal spikes"
+    }
+  ],
+  "silhouettes": {
+    "derive": true,
+    "items": {
+      "front": {
+        "path": "asset-library/dino/dino_silhouette_front.png",
+        "sha256": "ad0d0299ba1b55fa949652ae9d64339326c30c4daef8447dfd5b087c40ab8a0e",
+        "status": "READY WITH CROP/MATTING",
+        "plan_status": "READY WITH CROP/MATTING"
+      },
+      "threeQuarter": {
+        "path": "asset-library/dino/dino_silhouette_34.png",
+        "sha256": "e62970198c341b2e169aae9dd17e9c5c1a3ff382445ae2696876e6b141c9ddd9",
+        "status": "READY WITH CROP/MATTING",
+        "plan_status": "READY WITH CROP/MATTING"
+      },
+      "side": {
+        "path": "asset-library/dino/dino_silhouette_side.png",
+        "sha256": "246f734dc753a25018dd56f980b8ded99dd4868a62c46d9586e18565c5b68243",
+        "status": "READY WITH CROP/MATTING",
+        "plan_status": "READY WITH CROP/MATTING"
+      },
+      "back": {
+        "path": "asset-library/dino/dino_silhouette_back.png",
+        "sha256": "b440f20802f2461fc5fb4666b565baba7409762ed398190eaebab6fae9f426bf",
+        "status": "READY WITH CROP/MATTING",
+        "plan_status": "READY WITH CROP/MATTING"
+      },
+      "action": {
+        "path": "asset-library/dino/dino_silhouette_action.png",
+        "sha256": "80fe67e4882b24368b498046a5d906ef775eeeb45cca85398f33ac5079816997",
+        "status": "READY WITH CROP/MATTING",
+        "plan_status": "READY WITH CROP/MATTING"
+      }
+    }
+  },
+  "proportion": {
+    "front_reference": "turnaround.front",
+    "comparison": {
+      "tag": "TAR",
+      "k": 0.57
+    }
+  }
+}

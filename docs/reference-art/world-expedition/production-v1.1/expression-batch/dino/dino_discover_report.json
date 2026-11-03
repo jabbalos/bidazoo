@@ -1,0 +1,54 @@
+{
+ "name": "dino_discover",
+ "box": [
+  632,
+  602,
+  802,
+  766
+ ],
+ "mode": "parchment",
+ "bg_rgb": [
+  252,
+  242,
+  225
+ ],
+ "clip_left": 0.0,
+ "clip_right": 0.0,
+ "clip_top": 0.0,
+ "clip_bottom": 0.2568627450980392,
+ "clipping": false,
+ "extra_components": [
+  305,
+  178
+ ],
+ "contamination": true,
+ "halo_fraction": 0.0030557677616501145,
+ "halo": false,
+ "outline_missing_px": 8,
+ "outline_missing": false,
+ "pass": false,
+ "size": [
+  166,
+  164
+ ],
+ "composite_default_ring_rects": [
+  [
+   765,
+   605,
+   800,
+   650
+  ]
+ ],
+ "core_box": [
+  4,
+  3,
+  135,
+  102
+ ],
+ "core_box_note": "head + hat/spikes + backpack-top core as derived by renderer (excludes fists/arms and ! effects); unchanged by nudge",
+ "nudge": "effect nudge Oct 13 2026: detached ! marks moved 4 px left as a layer, clean re-composite; art right edge x 163 -> 159",
+ "art_x": [
+  3,
+  159
+ ]
+}

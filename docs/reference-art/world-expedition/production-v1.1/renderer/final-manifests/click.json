@@ -1,0 +1,319 @@
+{
+  "schema_version": 1,
+  "character": {
+    "id": "click",
+    "name": "Click",
+    "role": "Platform host, guide and mascot",
+    "tagline": null,
+    "kind": "host"
+  },
+  "sheet": {
+    "status_line": "M4 BUILD - LOGO_ASSET logo/BidaZoo_World_Expedition_logo_master.png (READY WITH CROP/MATTING); palette 63ec00673ac0 PROVISIONAL (docs); cast scale PROVISIONAL",
+    "logo": {
+      "path": "logo/BidaZoo_World_Expedition_logo_master.png",
+      "sha256": "944915d0f0522c2714b47a9eab4840bf0790d4900709a8c5d13d0a57f4e0f21c",
+      "status": "READY WITH CROP/MATTING"
+    }
+  },
+  "cast": {
+    "k": 0.92,
+    "k_status": "PROVISIONAL",
+    "s0": 0.184
+  },
+  "palette": {
+    "status": "PROVISIONAL",
+    "slots": [
+      {
+        "label": "PRIMARY",
+        "name": "Orange fur",
+        "hex": "#E77B2C",
+        "status": "PROVISIONAL"
+      },
+      {
+        "label": "SECONDARY",
+        "name": "Tan belly / muzzle",
+        "hex": "#FDDCA5",
+        "status": "PROVISIONAL"
+      },
+      {
+        "label": "ACCENT",
+        "name": "Emblem blue",
+        "hex": "#0153D9",
+        "status": "PROVISIONAL"
+      },
+      {
+        "label": "GEAR",
+        "name": "Harness brown",
+        "hex": "#341D10",
+        "status": "PROVISIONAL"
+      },
+      {
+        "label": "DETAIL",
+        "name": "Inner ear coral",
+        "hex": "#FA664F",
+        "status": "PROVISIONAL"
+      },
+      {
+        "label": "C GOLD",
+        "name": "Emblem gold",
+        "hex": "#FAC718",
+        "status": "PROVISIONAL"
+      }
+    ],
+    "mapping_note": "palettes.json sha256 63ec00673ac0336a: hex sampled from final matted art, all PROVISIONAL per docs 09 / 15 (no hex locked); ACCENT/CHARACTER-SPECIFIC semantics per doc 16 s7 (Bronco: red star/gear separate from BANDANA maroon)"
+  },
+  "turnaround": {
+    "front": {
+      "path": "asset-library/click/click_turnaround_front.png",
+      "sha256": "b6fa5165d8b6559071fe571c3b9604fecc535d6986e9acaa9b1f0aecd292d91e",
+      "status": "READY WITH CROP/MATTING",
+      "plan_status": "READY WITH CROP/MATTING",
+      "transform": {
+        "ref_height_src_px": 290
+      }
+    },
+    "threeQuarter": {
+      "path": "asset-library/click/click_turnaround_34.png",
+      "sha256": "0ba115ffe9ef705f6590f79935e26b63762ab4fb7afcdca38c85600ebacbb59d",
+      "status": "READY WITH CROP/MATTING",
+      "plan_status": "READY WITH CROP/MATTING",
+      "transform": {
+        "ref_height_src_px": 290
+      }
+    },
+    "side": {
+      "path": "asset-library/click/click_turnaround_side.png",
+      "sha256": "8c3c8f580518652a0c95259273b2809598b4d099b26c2e2ad5b5393c38ef8bd0",
+      "status": "READY WITH CROP/MATTING",
+      "plan_status": "READY WITH CROP/MATTING",
+      "transform": {
+        "ref_height_src_px": 290
+      }
+    },
+    "back": {
+      "path": "asset-library/click/click_turnaround_back.png",
+      "sha256": "0b6555a231c46ef48461010599ac23e0886c0c91cf10ed868790f53f6a221aca",
+      "status": "READY WITH CROP/MATTING",
+      "plan_status": "READY WITH CROP/MATTING",
+      "transform": {
+        "ref_height_src_px": 290
+      }
+    }
+  },
+  "hero": {
+    "path": "asset-library/click/click_hero.png",
+    "sha256": "b48303a661a9fa88e0938e8f5162cda22fb968269348b4a99fd1528f77511e2b",
+    "status": "READY WITH CROP/MATTING",
+    "plan_status": "READY WITH CROP/MATTING",
+    "transform": {
+      "mode": "fit"
+    }
+  },
+  "head": {
+    "path": "asset-library/click/click_head.png",
+    "sha256": "d938f7a11a78af009558430e63fd809773bc0614205d1f08fc61e6ea243b141e",
+    "status": "READY WITH CROP/MATTING",
+    "plan_status": "READY WITH CROP/MATTING",
+    "transform": {
+      "eye_line_src_y": 156,
+      "core_box": [
+        2,
+        3,
+        249,
+        240
+      ],
+      "anchor": "bottom"
+    }
+  },
+  "expressions": {
+    "head_scale": 0.5923,
+    "head_scale_basis": "v2: min(100/median core width, 109/widest core width) after density normalization; see template-rules-v2.md",
+    "idle": {
+      "path": "expression-batch/click/click_idle.png",
+      "sha256": "71432a630f4346e7bc7fd1298a8c6a6a788736c5ccaf05d3da7e489beb20e726",
+      "status": "READY WITH CROP/MATTING",
+      "plan_status": "READY WITH CROP/MATTING",
+      "transform": {
+        "units_per_source_px": 1.0,
+        "eye_line_src_y": 93,
+        "core_box": [
+          3,
+          0,
+          187,
+          144
+        ],
+        "core_source": "derived",
+        "crop_kind": "bust"
+      },
+      "notes": "status from expression_status.json (doc 17 s2: M1 closed, PASS 32 / OWNER-ACCEPTED MINOR 4); historical matte-tool report pass=None"
+    },
+    "happy": {
+      "path": "expression-batch/click/click_happy.png",
+      "sha256": "366b9d8c4b54d79e19010c55169003414fb7308ba254313606cd3d017fb5e99c",
+      "status": "READY WITH CROP/MATTING",
+      "plan_status": "READY WITH CROP/MATTING",
+      "transform": {
+        "units_per_source_px": 1.0,
+        "eye_line_src_y": 76,
+        "core_box": [
+          4,
+          8,
+          148,
+          113
+        ],
+        "core_source": "derived",
+        "crop_kind": "bust"
+      },
+      "notes": "status from expression_status.json (doc 17 s2: M1 closed, PASS 32 / OWNER-ACCEPTED MINOR 4); historical matte-tool report pass=True"
+    },
+    "thinking": {
+      "path": "expression-batch/click/click_thinking.png",
+      "sha256": "4a925455b2d98db9659a5838b0c04b9b79ef6c7cd7c4e89b3e613670a5f50eaf",
+      "status": "READY WITH CROP/MATTING",
+      "plan_status": "READY WITH CROP/MATTING",
+      "transform": {
+        "units_per_source_px": 1.0,
+        "eye_line_src_y": 81,
+        "core_box": [
+          3,
+          5,
+          143,
+          123
+        ],
+        "core_source": "derived",
+        "crop_kind": "bust"
+      },
+      "notes": "status from expression_status.json (doc 17 s2: M1 closed, PASS 32 / OWNER-ACCEPTED MINOR 4); historical matte-tool report pass=False"
+    },
+    "cheer": {
+      "path": "expression-batch/click/click_cheer.png",
+      "sha256": "527ff537b065c2f322b1614313baafb55730b539dffd5a7a8cf8e63c3c9252d1",
+      "status": "READY WITH CROP/MATTING",
+      "plan_status": "READY WITH CROP/MATTING",
+      "transform": {
+        "units_per_source_px": 1.0,
+        "eye_line_src_y": 67,
+        "core_box": [
+          17,
+          8,
+          176,
+          99
+        ],
+        "core_source": "derived",
+        "crop_kind": "bust"
+      },
+      "notes": "status from expression_status.json (doc 17 s2: M1 closed, PASS 32 / OWNER-ACCEPTED MINOR 4); historical matte-tool report pass=False"
+    },
+    "discover": {
+      "path": "expression-batch/click/click_discover.png",
+      "sha256": "ac4934d60798393b5f0c225e3d23ddc4a73322d22bf02687feb510dfc7c05d2c",
+      "status": "READY WITH CROP/MATTING",
+      "plan_status": "READY WITH CROP/MATTING",
+      "transform": {
+        "units_per_source_px": 1.0,
+        "eye_line_src_y": 88,
+        "core_box": [
+          2,
+          1,
+          138,
+          136
+        ],
+        "core_source": "derived",
+        "crop_kind": "bust"
+      },
+      "notes": "status from expression_status.json (doc 17 s2: M1 closed, PASS 32 / OWNER-ACCEPTED MINOR 4); historical matte-tool report pass=False"
+    },
+    "tryAgain": {
+      "path": "expression-batch/click/click_tryAgain.png",
+      "sha256": "253a2b6ce7cf7136ca77a9003a3d8fbecdc716a16cea4184a9e16e97a6bb955b",
+      "status": "READY WITH CROP/MATTING",
+      "plan_status": "READY WITH CROP/MATTING",
+      "transform": {
+        "units_per_source_px": 1.0,
+        "eye_line_src_y": 77,
+        "core_box": [
+          3,
+          2,
+          141,
+          118
+        ],
+        "core_source": "derived",
+        "crop_kind": "bust"
+      },
+      "notes": "status from expression_status.json (doc 17 s2: M1 closed, PASS 32 / OWNER-ACCEPTED MINOR 4); historical matte-tool report pass=False"
+    },
+    "vertical_anchor": "eye_line"
+  },
+  "details": [
+    {
+      "path": "asset-library/click/click_detail_harness_backpack.png",
+      "sha256": "b929419caedc7ed8df1d46c8994cc59314530c5670343c631dda39be123f8794",
+      "status": "READY WITH CROP/MATTING",
+      "plan_status": "READY WITH CROP/MATTING",
+      "caption": "Explorer harness & backpack"
+    },
+    {
+      "path": "asset-library/click/click_detail_c_emblem.png",
+      "sha256": "4ecac139477d0898ffb9b28a960a37842970df0c9963dce5caea1f19abc5ec23",
+      "status": "READY WITH CROP/MATTING",
+      "plan_status": "READY WITH CROP/MATTING",
+      "caption": "C emblem"
+    },
+    {
+      "path": "asset-library/click/click_detail_strap_buckle.png",
+      "sha256": "75639f4165c6a4452694a1c7c19e0c7094f879fdba2ed24de1106ebb4d8d2df9",
+      "status": "READY WITH CROP/MATTING",
+      "plan_status": "READY WITH CROP/MATTING",
+      "caption": "Strap & buckle"
+    },
+    {
+      "path": "asset-library/click/click_detail_back_pack.png",
+      "sha256": "3af48e23bfab5da1a17a6820c7df414efe26b4d95da17e49fefb27d4ee29d476",
+      "status": "READY WITH CROP/MATTING",
+      "plan_status": "READY WITH CROP/MATTING",
+      "caption": "Back-view pack detail"
+    }
+  ],
+  "silhouettes": {
+    "derive": true,
+    "items": {
+      "front": {
+        "path": "asset-library/click/click_silhouette_front.png",
+        "sha256": "88a7f970ce31efd3a1e76b41e0aa2accf3d81e9759b577be1f83eeb934b84d58",
+        "status": "READY WITH CROP/MATTING",
+        "plan_status": "READY WITH CROP/MATTING"
+      },
+      "threeQuarter": {
+        "path": "asset-library/click/click_silhouette_34.png",
+        "sha256": "c0843aa680efefbc24001dc7c059a0c2b7a983d09fd6632bbda15e2f51310638",
+        "status": "READY WITH CROP/MATTING",
+        "plan_status": "READY WITH CROP/MATTING"
+      },
+      "side": {
+        "path": "asset-library/click/click_silhouette_side.png",
+        "sha256": "cf990f48b96c9cc9a8a0ae8ff2d787160caf9365e77b4166bc363450040d3d25",
+        "status": "READY WITH CROP/MATTING",
+        "plan_status": "READY WITH CROP/MATTING"
+      },
+      "back": {
+        "path": "asset-library/click/click_silhouette_back.png",
+        "sha256": "471401734e147153f894f2b10d20c86d57c34fb1452da8481f2077cee13e5521",
+        "status": "READY WITH CROP/MATTING",
+        "plan_status": "READY WITH CROP/MATTING"
+      },
+      "action": {
+        "path": "asset-library/click/click_silhouette_action.png",
+        "sha256": "a5b1493d48bccc2ccf06c5165876f07585f7b19d106499d1456e364039dd5a38",
+        "status": "READY WITH CROP/MATTING",
+        "plan_status": "READY WITH CROP/MATTING"
+      }
+    }
+  },
+  "proportion": {
+    "front_reference": "turnaround.front",
+    "comparison": {
+      "tag": "TAR",
+      "k": 0.57
+    }
+  }
+}

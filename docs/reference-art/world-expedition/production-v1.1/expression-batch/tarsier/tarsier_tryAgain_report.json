@@ -1,0 +1,16 @@
+{
+ "name": "tarsier_tryAgain",
+ "method": "Frozen IDLE head (full-width whole ears) tilted 9deg about the neck; both brows drawn thick (inner ends lifted, outer lowered); lower lids raised (warm squint) on both eyes; IDLE closed smile kept; body from tarsier_cheer with rounded/slanted left shoulder and one shared bottom bleed; fist+sleeve from tarsier_thinking (index removed) with painted finger lines and thumb over fingers; no ticks, no wink",
+ "size": [
+  294,
+  194
+ ],
+ "clipping": false,
+ "core_box": [
+  3,
+  3,
+  277,
+  163
+ ],
+ "core_box_note": "x0,y0,x1,y1 of head+hood+ears silhouette (tilted IDLE head layer), excluding fist/arm/body"
+}

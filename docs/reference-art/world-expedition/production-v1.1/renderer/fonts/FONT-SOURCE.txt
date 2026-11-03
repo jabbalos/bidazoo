@@ -1,0 +1,12 @@
+Nunito Sans (LOCKED production family, doc 15 s4) - provenance
+Family      : Nunito Sans, static instances Regular 400, SemiBold 600, Bold 700, ExtraBold 800 (latin subset, 230 glyphs; covers the em dash, ellipsis, # / & used by the template)
+Source      : npm package @fontsource/nunito-sans 5.3.0 (registry tarball sha256 0aa04d2335e74af3ee250c4ad96425873d53ef7a58287e9c460ff2ad710644c7),
+              files/nunito-sans-latin-{400,600,700,800}-normal.woff  (upstream: github.com/Fonthausen/NunitoSans, "The Nunito Sans Project Authors")
+License     : SIL Open Font License 1.1 - text kept beside the fonts in OFL.txt (copied unmodified from the package LICENSE; no Reserved Font Name is declared in its copyright line)
+Conversion  : tools/build_fonts.py - fontTools re-wraps the WOFF as TTF (flavor removed, tables untouched, no glyph or name change); static, not variable, so no instancing was needed
+SHA-256     : see build_report.json "fonts_sha256" or `sha256sum fonts/*`
+Rules       : render_sheet.py loads ONLY these four files (name table, weight class, static-ness and glyph coverage are verified at start-up); a missing or wrong file is a hard error; there is no fallback family.
+9a09d236cb3aa42fdd03cdce5b17dfc5adbbaf61686f74c1a6a28048c87cc16c  fonts/NunitoSans-Bold.ttf
+79d61a64c7b33c0d92fd2ca876453713ca71ca446bf2b566fad36f6addbbe12e  fonts/NunitoSans-ExtraBold.ttf
+a4591b8197c3606b891dbc0fa6b1075e5abef0d7614c62a5ab3b1aef523d3fd6  fonts/NunitoSans-Regular.ttf
+585931b02451771fbfbb0c7121257ad96dc3ac5801b8bddb558c3ffbb69ff8bf  fonts/NunitoSans-SemiBold.ttf

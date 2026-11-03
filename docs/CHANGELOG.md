@@ -2,7 +2,85 @@
 
 All notable changes, by checkpoint. Dates use US format.
 
+## Release candidate merged into `main` + product direction (November 3, 2026)
+
+- `main` fast-forwarded (no conflicts) to `release/founding-family-beta` (`46fe5eb`) and then the World
+  Expedition visual recovery (`6cedf93`: Choose Your Buddy, gameplay and results rebuilt on a shared
+  presentation layer; presentation only). `spike/world-hub-exploration` is not merged (unfinished).
+- Studio validator: expected counts follow the merged code (51 unit, 685 integration + 3 todo, 244
+  Playwright; were 649 and 256 on the release branch). Validation of the exact `main` SHA is still pending.
+- Rehearsal tooling (`infrastructure/deployment/identity-release/`): the release branch is now `main`, and the
+  application baseline the candidate is compared against is `0e7d563` (the visual recovery plus the tab icon and desktop test allowances; was `f3b5483`), because the visual
+  recovery changes game code. `f3b5483` stays a required ancestor.
+- Sandbox check of the merged code (supplementary, not Studio validation): typecheck, unit 51, integration 685
+  + 3 todo, build, client scan CLEAN (47 files), live API playthrough ALL CHECKS PASSED, and all 244
+  Playwright tests passed on full Chromium 153 (run in parts after a container restart).
+- Found by that check and fixed: no favicon (desktop browsers logged a 404 for `/favicon.ico`); a BidaZoo
+  tab icon now ships. Five desktop (1440x900) browser tests needed more time under software rendering
+  (about 4 fps there; the feedback timer advances with frames); allowances raised, assertions unchanged.
+- Product direction recorded in PRODUCT.md and PROJECT-STATE.md: BidaZoo is the platform, BidaZoo sign-in is
+  the master account, Hop Quest's features are rebuilt inside BidaZoo (math first), the Hop Quest site becomes
+  a trial into BidaZoo. Roadmap checkpoints G-J.
+
+## Final release-candidate integration (October 15, 2026; branch `release/founding-family-beta`; merged into `main` November 3, 2026)
+
+Created from `main` (`856d012`) and merged, with histories preserved and no conflicts, in this order:
+`docs/reconcile-project-state-after-f6` (`bb8e14d`), `feature/world-expedition-runtime-integration`
+(`f3b5483`, F1-F6), `release/identity-beta` (`d90f572`). Application code is identical to the Studio-validated
+runtime; the release-only commits after the merges change documentation, deployment tooling and the Studio
+validator only.
+
+- **Rehearsal tooling retargeted** (`infrastructure/deployment/identity-release/`): the old identity-only
+  candidate `a283c24` is no longer a constant in any script. The candidate is immutable input (`-CandidateSha`
+  or `BZ_CANDIDATE_SHA`), refused if empty, abbreviated, a ref name or a historical commit, and its ancestry is
+  checked (`1a106bc`, `a283c24`, `856d012`, `bb8e14d`, `f3b5483`, `d90f572` must all be ancestors; only docs,
+  deployment tooling and the validator may differ from `f3b5483`). `1a106bc` stays the only rollback target.
+  Identity stays OFF by default. Safety guards are unchanged.
+- **M6 release gate added** (F6 follow-up): `tools/m6-headers.mjs`, rehearsal step `09-m6-release-headers.ps1`
+  and window step W8.2b verify hashed `/assets/*` immutable caching, no-cache HTML, `nosniff`, frame protection,
+  `Permissions-Policy`, the effective client CSP and the API's own policy, against the origin and the public URL.
+- **Studio validator hardened** (validator only): exact baseline counts (51 / 649 + 3 todo / 256 in 4 projects),
+  exact Chromium 156.0.8078.4 / Playwright 1.64.0 / PostgreSQL 16.15, required `-CandidateSha`, clean-tree
+  requirement, and baseline deviations are failures instead of warnings. New read-only
+  `scripts/validate-studio-selftest.ps1`. Details: [STUDIO-VALIDATION.md](STUDIO-VALIDATION.md).
+- **Not done:** official Studio validation of the candidate, release rehearsal, deployment, SMTP or DNS work,
+  identity enablement, and World / Explore / Basecamp.
+
+## Documentation reconciliation after Checkpoint F6 (October 15, 2026; documentation only)
+
+Documentation only: no runtime, API, database, learning-core, game-sdk, identity, infrastructure,
+test, validator or art change. It brings the project-state documents in line with the repository:
+Checkpoint E is on `main` (`856d012`) but not deployed or enabled; Checkpoints F1 to F6 are closed
+on the runtime branch (not yet merged); the guest-only closed beta at `play.bidazoo.com` and its
+backup record are no longer described as "nothing deployed" or "no backups"; and the remaining work
+is split into release work and game work. Historical records below (validation counts, closure
+statements) are kept as written. See [PROJECT-STATE.md](PROJECT-STATE.md).
+
+## Checkpoint F: World Expedition runtime integration (F1 to F6 CLOSED; on the runtime branch, not yet on `main`)
+
+Entry added October 15, 2026; the work is on `feature/world-expedition-runtime-integration`, which is
+**not merged into `main`** and **not deployed**. F1, F2, F3, F4, F5 and F6 are CLOSED by the project
+owner; F6 outcome **PASS WITH MINOR ITEMS**, with zero repository changes. Runtime SHA
+`f3b5483c2b253f0ccb0ee9b62060379b7575fb08` ("test(play): make expression wiring scan CRLF-safe").
+Official Studio-PC validation at that SHA: unit 51/51; integration 649 passed + 3 todo; Playwright
+256/256 across 4 projects (0 failed, 0 flaky, 0 skipped); build PASS; client bundle scan CLEAN;
+API playthrough ALL CHECKS PASSED; Chromium 156.0.8078.4; PostgreSQL 16.15.
+
+- **Delivered:** the production character art is integrated: six cast members (Dino, Koala, Tarsier,
+  Eagle, Bronco, Click) with six production expressions each (idle, happy, thinking, cheer, discover,
+  tryAgain). Five selectable starters; Click is the host/guide and is not selectable. Expressions
+  follow gameplay events and are presentation-only: no effect on question selection, grading,
+  mastery, XP, coins, attempts, persistence, identity or server authority.
+- **F6 minor items** (finite follow-ups, M1 to M10 and S1) and the M6 production header check are
+  listed in [PROJECT-STATE.md](PROJECT-STATE.md).
+- **Not done:** release-candidate integration, deployment, identity enablement and World / Explore /
+  Basecamp.
+
 ## Checkpoint E: family identity and migration (October 12, 2026; COMPLETE, Studio-PC validated, NOT deployed)
+
+> **Update (October 15, 2026):** `main` now contains Checkpoint E (`main` is `856d012`). The
+> statement below that `main` stays at `cf02ba5` was true at closure time and is kept as history.
+> Checkpoint E is still not deployed and identity is not enabled in production.
 
 Documentation only for this entry. Checkpoint E is **COMPLETE**: IMPLEMENTED yes, STUDIO-VALIDATED yes,
 DEPLOYED **no**. The exact validated commit is `a283c2470fe5abcb47f49d3f5753dea1bd881e78` ("tooling: update Studio validator for

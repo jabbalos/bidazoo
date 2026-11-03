@@ -1,0 +1,222 @@
+{
+ "result": "PASS",
+ "mode": "final",
+ "logo": "logo/BidaZoo_World_Expedition_logo_master.png",
+ "stub_logo": false,
+ "library_root_rel": "asset-library",
+ "expressions_root_rel": "expression-batch",
+ "input_files_snapshotted": 175,
+ "palettes_json_sha256": "63ec00673ac0336a0a720cbc012333991434a7079c85791936bb131d94f9f8af",
+ "fonts_sha256": {
+  "NunitoSans-Regular.ttf": "a4591b8197c3606b891dbc0fa6b1075e5abef0d7614c62a5ab3b1aef523d3fd6",
+  "NunitoSans-SemiBold.ttf": "585931b02451771fbfbb0c7121257ad96dc3ac5801b8bddb558c3ffbb69ff8bf",
+  "NunitoSans-Bold.ttf": "9a09d236cb3aa42fdd03cdce5b17dfc5adbbaf61686f74c1a6a28048c87cc16c",
+  "NunitoSans-ExtraBold.ttf": "79d61a64c7b33c0d92fd2ca876453713ca71ca446bf2b566fad36f6addbbe12e",
+  "OFL.txt": "6632e6c45fcc18cc03909a0a53d84e9775185e06203ff80d6367cf93959b91a8"
+ },
+ "steps": [
+  {
+   "step": "make_palettes(check-current)",
+   "exit": 0
+  },
+  {
+   "step": "make_real_manifests",
+   "exit": 0
+  },
+  {
+   "step": "derive_core_boxes",
+   "exit": 0
+  },
+  {
+   "step": "make_v2_manifests",
+   "exit": 0
+  },
+  {
+   "step": "run_all#1",
+   "exit": 0
+  },
+  {
+   "step": "run_all#2",
+   "exit": 0
+  },
+  {
+   "step": "check_consistency",
+   "exit": 0
+  },
+  {
+   "step": "schema_validation",
+   "errors": 0
+  }
+ ],
+ "repeat_render": {
+  "identical": true,
+  "per_file": {
+   "click.png": "identical",
+   "click.report.json": "identical",
+   "dino.png": "identical",
+   "dino.report.json": "identical",
+   "koala.png": "identical",
+   "koala.report.json": "identical",
+   "tarsier.png": "identical",
+   "tarsier.report.json": "identical",
+   "eagle.png": "identical",
+   "eagle.report.json": "identical",
+   "bronco.png": "identical",
+   "bronco.report.json": "identical"
+  }
+ },
+ "failures": [],
+ "waived_in_dev": [],
+ "per_sheet": {
+  "click": {
+   "placeholders": [],
+   "palette_open": [],
+   "provisional_art": [],
+   "template_defects": [],
+   "warnings": [],
+   "overflow_flags": [],
+   "fonts": {
+    "family": "Nunito Sans",
+    "files": {
+     "400": "NunitoSans-Regular.ttf",
+     "600": "NunitoSans-SemiBold.ttf",
+     "700": "NunitoSans-Bold.ttf",
+     "800": "NunitoSans-ExtraBold.ttf"
+    },
+    "sha256": {
+     "400": "a4591b8197c3606b891dbc0fa6b1075e5abef0d7614c62a5ab3b1aef523d3fd6",
+     "600": "585931b02451771fbfbb0c7121257ad96dc3ac5801b8bddb558c3ffbb69ff8bf",
+     "700": "9a09d236cb3aa42fdd03cdce5b17dfc5adbbaf61686f74c1a6a28048c87cc16c",
+     "800": "79d61a64c7b33c0d92fd2ca876453713ca71ca446bf2b566fad36f6addbbe12e"
+    },
+    "license": "SIL OFL 1.1 (fonts/OFL.txt)"
+   },
+   "computed_sheet_status": "LAYOUT PROOF - NOT FINAL: 6 provisional slot(s)"
+  },
+  "dino": {
+   "placeholders": [],
+   "palette_open": [],
+   "provisional_art": [],
+   "template_defects": [],
+   "warnings": [],
+   "overflow_flags": [],
+   "fonts": {
+    "family": "Nunito Sans",
+    "files": {
+     "400": "NunitoSans-Regular.ttf",
+     "600": "NunitoSans-SemiBold.ttf",
+     "700": "NunitoSans-Bold.ttf",
+     "800": "NunitoSans-ExtraBold.ttf"
+    },
+    "sha256": {
+     "400": "a4591b8197c3606b891dbc0fa6b1075e5abef0d7614c62a5ab3b1aef523d3fd6",
+     "600": "585931b02451771fbfbb0c7121257ad96dc3ac5801b8bddb558c3ffbb69ff8bf",
+     "700": "9a09d236cb3aa42fdd03cdce5b17dfc5adbbaf61686f74c1a6a28048c87cc16c",
+     "800": "79d61a64c7b33c0d92fd2ca876453713ca71ca446bf2b566fad36f6addbbe12e"
+    },
+    "license": "SIL OFL 1.1 (fonts/OFL.txt)"
+   },
+   "computed_sheet_status": "LAYOUT PROOF - NOT FINAL: 6 provisional slot(s)"
+  },
+  "koala": {
+   "placeholders": [],
+   "palette_open": [],
+   "provisional_art": [],
+   "template_defects": [],
+   "warnings": [],
+   "overflow_flags": [],
+   "fonts": {
+    "family": "Nunito Sans",
+    "files": {
+     "400": "NunitoSans-Regular.ttf",
+     "600": "NunitoSans-SemiBold.ttf",
+     "700": "NunitoSans-Bold.ttf",
+     "800": "NunitoSans-ExtraBold.ttf"
+    },
+    "sha256": {
+     "400": "a4591b8197c3606b891dbc0fa6b1075e5abef0d7614c62a5ab3b1aef523d3fd6",
+     "600": "585931b02451771fbfbb0c7121257ad96dc3ac5801b8bddb558c3ffbb69ff8bf",
+     "700": "9a09d236cb3aa42fdd03cdce5b17dfc5adbbaf61686f74c1a6a28048c87cc16c",
+     "800": "79d61a64c7b33c0d92fd2ca876453713ca71ca446bf2b566fad36f6addbbe12e"
+    },
+    "license": "SIL OFL 1.1 (fonts/OFL.txt)"
+   },
+   "computed_sheet_status": "LAYOUT PROOF - NOT FINAL: 6 provisional slot(s)"
+  },
+  "tarsier": {
+   "placeholders": [],
+   "palette_open": [],
+   "provisional_art": [],
+   "template_defects": [],
+   "warnings": [],
+   "overflow_flags": [],
+   "fonts": {
+    "family": "Nunito Sans",
+    "files": {
+     "400": "NunitoSans-Regular.ttf",
+     "600": "NunitoSans-SemiBold.ttf",
+     "700": "NunitoSans-Bold.ttf",
+     "800": "NunitoSans-ExtraBold.ttf"
+    },
+    "sha256": {
+     "400": "a4591b8197c3606b891dbc0fa6b1075e5abef0d7614c62a5ab3b1aef523d3fd6",
+     "600": "585931b02451771fbfbb0c7121257ad96dc3ac5801b8bddb558c3ffbb69ff8bf",
+     "700": "9a09d236cb3aa42fdd03cdce5b17dfc5adbbaf61686f74c1a6a28048c87cc16c",
+     "800": "79d61a64c7b33c0d92fd2ca876453713ca71ca446bf2b566fad36f6addbbe12e"
+    },
+    "license": "SIL OFL 1.1 (fonts/OFL.txt)"
+   },
+   "computed_sheet_status": "LAYOUT PROOF - NOT FINAL: 6 provisional slot(s)"
+  },
+  "eagle": {
+   "placeholders": [],
+   "palette_open": [],
+   "provisional_art": [],
+   "template_defects": [],
+   "warnings": [],
+   "overflow_flags": [],
+   "fonts": {
+    "family": "Nunito Sans",
+    "files": {
+     "400": "NunitoSans-Regular.ttf",
+     "600": "NunitoSans-SemiBold.ttf",
+     "700": "NunitoSans-Bold.ttf",
+     "800": "NunitoSans-ExtraBold.ttf"
+    },
+    "sha256": {
+     "400": "a4591b8197c3606b891dbc0fa6b1075e5abef0d7614c62a5ab3b1aef523d3fd6",
+     "600": "585931b02451771fbfbb0c7121257ad96dc3ac5801b8bddb558c3ffbb69ff8bf",
+     "700": "9a09d236cb3aa42fdd03cdce5b17dfc5adbbaf61686f74c1a6a28048c87cc16c",
+     "800": "79d61a64c7b33c0d92fd2ca876453713ca71ca446bf2b566fad36f6addbbe12e"
+    },
+    "license": "SIL OFL 1.1 (fonts/OFL.txt)"
+   },
+   "computed_sheet_status": "LAYOUT PROOF - NOT FINAL: 6 provisional slot(s)"
+  },
+  "bronco": {
+   "placeholders": [],
+   "palette_open": [],
+   "provisional_art": [],
+   "template_defects": [],
+   "warnings": [],
+   "overflow_flags": [],
+   "fonts": {
+    "family": "Nunito Sans",
+    "files": {
+     "400": "NunitoSans-Regular.ttf",
+     "600": "NunitoSans-SemiBold.ttf",
+     "700": "NunitoSans-Bold.ttf",
+     "800": "NunitoSans-ExtraBold.ttf"
+    },
+    "sha256": {
+     "400": "a4591b8197c3606b891dbc0fa6b1075e5abef0d7614c62a5ab3b1aef523d3fd6",
+     "600": "585931b02451771fbfbb0c7121257ad96dc3ac5801b8bddb558c3ffbb69ff8bf",
+     "700": "9a09d236cb3aa42fdd03cdce5b17dfc5adbbaf61686f74c1a6a28048c87cc16c",
+     "800": "79d61a64c7b33c0d92fd2ca876453713ca71ca446bf2b566fad36f6addbbe12e"
+    },
+    "license": "SIL OFL 1.1 (fonts/OFL.txt)"
+   },
+   "computed_sheet_status": "LAYOUT PROOF - NOT FINAL: 6 provisional slot(s)"
+  }
+ }
+}

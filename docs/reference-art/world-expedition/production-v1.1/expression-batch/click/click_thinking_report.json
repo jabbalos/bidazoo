@@ -1,0 +1,42 @@
+{
+ "name": "click_thinking",
+ "box": [
+  497,
+  641,
+  666,
+  805
+ ],
+ "mode": "parchment",
+ "bg_rgb": [
+  253,
+  238,
+  207
+ ],
+ "clip_left": 0.0,
+ "clip_right": 0.0,
+ "clip_top": 0.009861932938856016,
+ "clip_bottom": 0.1992110453648915,
+ "clipping": false,
+ "extra_components": [
+  260
+ ],
+ "contamination": true,
+ "halo_fraction": 0.0,
+ "halo": false,
+ "outline_missing_px": 21,
+ "outline_missing": false,
+ "pass": false,
+ "size": [
+  165,
+  164
+ ],
+ "composite_default_ring_rects": [
+  [
+   640,
+   685,
+   666,
+   720
+  ]
+ ],
+ "post_cleanup": "ear-tip band (top 28 rows): removed semi-transparent dark (lum<150, alpha 0.02-0.9) fringe pixels"
+}

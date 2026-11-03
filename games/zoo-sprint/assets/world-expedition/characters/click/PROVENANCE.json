@@ -1,0 +1,134 @@
+{
+  "schemaVersion": 1,
+  "purpose": "Provenance for the curated runtime Click expression PNGs (Checkpoint F4). Machine-readable authority; verified by tests/integration/character-runtime-assets.test.ts.",
+  "character": "click",
+  "runtimeDirectory": "games/zoo-sprint/assets/world-expedition/characters/click",
+  "canonicalLibrary": "docs/reference-art/world-expedition/production-v1.1",
+  "canonicalManifest": "docs/reference-art/world-expedition/production-v1.1/renderer/final-manifests/click.json",
+  "storage": "normal Git blobs (no Git LFS rule matches the runtime directory)",
+  "derivation": "byte-for-byte copy of the canonical M4 file: no re-encode, no crop, no resize, no recolor, no metadata edit",
+  "headScale": 0.5923,
+  "expressions": {
+    "idle": {
+      "runtimeFile": "click_idle.png",
+      "runtimeSha256": "71432a630f4346e7bc7fd1298a8c6a6a788736c5ccaf05d3da7e489beb20e726",
+      "runtimeBytes": 51241,
+      "width": 190,
+      "height": 149,
+      "canonicalSourcePath": "docs/reference-art/world-expedition/production-v1.1/expression-batch/click/click_idle.png",
+      "canonicalSha256": "71432a630f4346e7bc7fd1298a8c6a6a788736c5ccaf05d3da7e489beb20e726",
+      "derivation": "byte-for-byte copy",
+      "anchor": {
+        "eyeLineSrcY": 93,
+        "coreBox": [
+          3,
+          0,
+          187,
+          144
+        ],
+        "cropKind": "bust"
+      }
+    },
+    "happy": {
+      "runtimeFile": "click_happy.png",
+      "runtimeSha256": "366b9d8c4b54d79e19010c55169003414fb7308ba254313606cd3d017fb5e99c",
+      "runtimeBytes": 43847,
+      "width": 155,
+      "height": 150,
+      "canonicalSourcePath": "docs/reference-art/world-expedition/production-v1.1/expression-batch/click/click_happy.png",
+      "canonicalSha256": "366b9d8c4b54d79e19010c55169003414fb7308ba254313606cd3d017fb5e99c",
+      "derivation": "byte-for-byte copy",
+      "anchor": {
+        "eyeLineSrcY": 76,
+        "coreBox": [
+          4,
+          8,
+          148,
+          113
+        ],
+        "cropKind": "bust"
+      }
+    },
+    "thinking": {
+      "runtimeFile": "click_thinking.png",
+      "runtimeSha256": "4a925455b2d98db9659a5838b0c04b9b79ef6c7cd7c4e89b3e613670a5f50eaf",
+      "runtimeBytes": 44668,
+      "width": 165,
+      "height": 164,
+      "canonicalSourcePath": "docs/reference-art/world-expedition/production-v1.1/expression-batch/click/click_thinking.png",
+      "canonicalSha256": "4a925455b2d98db9659a5838b0c04b9b79ef6c7cd7c4e89b3e613670a5f50eaf",
+      "derivation": "byte-for-byte copy",
+      "anchor": {
+        "eyeLineSrcY": 81,
+        "coreBox": [
+          3,
+          5,
+          143,
+          123
+        ],
+        "cropKind": "bust"
+      }
+    },
+    "cheer": {
+      "runtimeFile": "click_cheer.png",
+      "runtimeSha256": "527ff537b065c2f322b1614313baafb55730b539dffd5a7a8cf8e63c3c9252d1",
+      "runtimeBytes": 57042,
+      "width": 198,
+      "height": 157,
+      "canonicalSourcePath": "docs/reference-art/world-expedition/production-v1.1/expression-batch/click/click_cheer.png",
+      "canonicalSha256": "527ff537b065c2f322b1614313baafb55730b539dffd5a7a8cf8e63c3c9252d1",
+      "derivation": "byte-for-byte copy",
+      "anchor": {
+        "eyeLineSrcY": 67,
+        "coreBox": [
+          17,
+          8,
+          176,
+          99
+        ],
+        "cropKind": "bust"
+      }
+    },
+    "discover": {
+      "runtimeFile": "click_discover.png",
+      "runtimeSha256": "ac4934d60798393b5f0c225e3d23ddc4a73322d22bf02687feb510dfc7c05d2c",
+      "runtimeBytes": 46058,
+      "width": 141,
+      "height": 160,
+      "canonicalSourcePath": "docs/reference-art/world-expedition/production-v1.1/expression-batch/click/click_discover.png",
+      "canonicalSha256": "ac4934d60798393b5f0c225e3d23ddc4a73322d22bf02687feb510dfc7c05d2c",
+      "derivation": "byte-for-byte copy",
+      "anchor": {
+        "eyeLineSrcY": 88,
+        "coreBox": [
+          2,
+          1,
+          138,
+          136
+        ],
+        "cropKind": "bust"
+      }
+    },
+    "tryAgain": {
+      "runtimeFile": "click_tryAgain.png",
+      "runtimeSha256": "253a2b6ce7cf7136ca77a9003a3d8fbecdc716a16cea4184a9e16e97a6bb955b",
+      "runtimeBytes": 48746,
+      "width": 162,
+      "height": 154,
+      "canonicalSourcePath": "docs/reference-art/world-expedition/production-v1.1/expression-batch/click/click_tryAgain.png",
+      "canonicalSha256": "253a2b6ce7cf7136ca77a9003a3d8fbecdc716a16cea4184a9e16e97a6bb955b",
+      "derivation": "byte-for-byte copy",
+      "anchor": {
+        "eyeLineSrcY": 77,
+        "coreBox": [
+          3,
+          2,
+          141,
+          118
+        ],
+        "cropKind": "bust"
+      }
+    }
+  },
+  "totalRuntimeBytes": 291602
+}

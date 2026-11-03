@@ -1,9 +1,9 @@
 # Family identity: operator runbooks (Checkpoint E)
 
-Last updated: October 12, 2026.
+Last updated: October 15, 2026 (status line reconciled; the runbooks are unchanged since October 12, 2026).
 
-**Status: Checkpoint E is COMPLETE and Studio-validated (`a283c24`), NOT deployed.** Nothing in this file
-has been run against the live beta. The live beta (`play.bidazoo.com`) is on its pre-Checkpoint-E
+**Status: Checkpoint E is COMPLETE and Studio-validated (`a283c24`), on `main` (`856d012`), NOT
+deployed and NOT enabled in production.** Nothing in this file has been run against the live beta. The live beta (`play.bidazoo.com`) is on its pre-Checkpoint-E
 deployment and identity is **not enabled** there. Everything below is procedure for a future release
 and for the future Identity Release Gate. Architecture and behavior are in
 [IDENTITY.md](IDENTITY.md); design history is in

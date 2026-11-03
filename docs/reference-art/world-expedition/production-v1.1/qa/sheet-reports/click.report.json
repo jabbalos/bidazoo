@@ -1,0 +1,996 @@
+{
+  "renderer_version": "1.0.0",
+  "placeholders": [],
+  "overflows": [],
+  "placements": [
+    {
+      "zone": "header",
+      "slot": "LOGO_ASSET",
+      "asset": "logo/BidaZoo_World_Expedition_logo_master.png",
+      "bbox": {
+        "x": 79,
+        "y": 36,
+        "w": 226,
+        "h": 96
+      }
+    },
+    {
+      "zone": "turnaround",
+      "slot": "front",
+      "asset": "asset-library/click/click_turnaround_front.png",
+      "status": "READY WITH CROP/MATTING",
+      "scale_px_per_source_px": 0.584,
+      "cast": {
+        "s0": 0.184,
+        "k": 0.92,
+        "units_per_source_px": 3.448
+      },
+      "image_origin": [
+        145,
+        229
+      ],
+      "matted_bbox": {
+        "x": 147.171,
+        "y": 230.72,
+        "w": 112.659,
+        "h": 169.28
+      },
+      "baseline_y": 400,
+      "cell_center_x": 203.5,
+      "height_above_baseline_px": 169.28,
+      "limits": {
+        "max_height": 184,
+        "max_width": 335
+      },
+      "overflow": false
+    },
+    {
+      "zone": "turnaround",
+      "slot": "threeQuarter",
+      "asset": "asset-library/click/click_turnaround_34.png",
+      "status": "READY WITH CROP/MATTING",
+      "scale_px_per_source_px": 0.584,
+      "cast": {
+        "s0": 0.184,
+        "k": 0.92,
+        "units_per_source_px": 3.448
+      },
+      "image_origin": [
+        490,
+        229
+      ],
+      "matted_bbox": {
+        "x": 490.96,
+        "y": 230.72,
+        "w": 119.08,
+        "h": 169.28
+      },
+      "baseline_y": 400,
+      "cell_center_x": 550.5,
+      "height_above_baseline_px": 169.28,
+      "limits": {
+        "max_height": 184,
+        "max_width": 335
+      },
+      "overflow": false
+    },
+    {
+      "zone": "turnaround",
+      "slot": "side",
+      "asset": "asset-library/click/click_turnaround_side.png",
+      "status": "READY WITH CROP/MATTING",
+      "scale_px_per_source_px": 0.584,
+      "cast": {
+        "s0": 0.184,
+        "k": 0.92,
+        "units_per_source_px": 3.448
+      },
+      "image_origin": [
+        843,
+        237
+      ],
+      "matted_bbox": {
+        "x": 844.965,
+        "y": 238.892,
+        "w": 105.07,
+        "h": 161.108
+      },
+      "baseline_y": 400,
+      "cell_center_x": 897.5,
+      "height_above_baseline_px": 161.108,
+      "limits": {
+        "max_height": 184,
+        "max_width": 335
+      },
+      "overflow": false
+    },
+    {
+      "zone": "turnaround",
+      "slot": "back",
+      "asset": "asset-library/click/click_turnaround_back.png",
+      "status": "READY WITH CROP/MATTING",
+      "scale_px_per_source_px": 0.584,
+      "cast": {
+        "s0": 0.184,
+        "k": 0.92,
+        "units_per_source_px": 3.448
+      },
+      "image_origin": [
+        1188,
+        239
+      ],
+      "matted_bbox": {
+        "x": 1189.63,
+        "y": 241.227,
+        "w": 109.74,
+        "h": 158.773
+      },
+      "baseline_y": 400,
+      "cell_center_x": 1244.5,
+      "height_above_baseline_px": 158.773,
+      "limits": {
+        "max_height": 184,
+        "max_width": 335
+      },
+      "overflow": false
+    },
+    {
+      "zone": "hero",
+      "slot": "hero",
+      "asset": "asset-library/click/click_hero.png",
+      "status": "READY WITH CROP/MATTING",
+      "mode": "fit",
+      "scale_px_per_source_px": 0.579,
+      "image_origin": [
+        102,
+        535
+      ],
+      "matted_bbox": {
+        "x": 103.816,
+        "y": 536.0,
+        "w": 160.368,
+        "h": 198.0
+      },
+      "clearance_px": 24.0,
+      "overflow": false
+    },
+    {
+      "zone": "head",
+      "slot": "head",
+      "asset": "asset-library/click/click_head.png",
+      "status": "READY WITH CROP/MATTING",
+      "scale_px_per_source_px": 0.713,
+      "image_origin": [
+        377,
+        543
+      ],
+      "matted_bbox": {
+        "x": 378.0,
+        "y": 545.085,
+        "w": 176.0,
+        "h": 210.915
+      },
+      "head_width_px": 176.0,
+      "eye_line_y": 654.105,
+      "cropped_by_box": false,
+      "bleed_shift_px": 0.0,
+      "bottom_y": 756.0,
+      "bottom_gap_to_box_px": 0.0,
+      "note": "crop-to-fill is allowed in the head close-up"
+    },
+    {
+      "zone": "expressions",
+      "slot": "idle",
+      "asset": "expression-batch/click/click_idle.png",
+      "status": "READY WITH CROP/MATTING",
+      "scale_px_per_source_px": 0.592,
+      "head_scale": 0.5923,
+      "units_per_source_px": 1.0,
+      "fit_down_factor": 1.0,
+      "effective_head_scale": 0.592,
+      "width_excess_before_fit_px": 0.0,
+      "width_tolerance_px": 1.0,
+      "image_origin": [
+        607,
+        543
+      ],
+      "anchor": "eye_line",
+      "crop_kind": "bust",
+      "core_source": "core_box",
+      "core_box_src": [
+        3.0,
+        0.0,
+        187.0,
+        144.0
+      ],
+      "core_px": {
+        "x": 609.008,
+        "y": 542.916,
+        "w": 108.983,
+        "h": 85.291
+      },
+      "matted_bbox": {
+        "x": 609.008,
+        "y": 542.916,
+        "w": 108.983,
+        "h": 87.66
+      },
+      "eye_line_y": 598.0,
+      "bottom_y": 630.577,
+      "allowance_shift_dx": 0.0,
+      "overflow": false,
+      "limits": {
+        "core_safe_width": 109,
+        "core_nominal_width": 100,
+        "crown_min_y": 520,
+        "allowance_x": [
+          595,
+          732
+        ],
+        "allowance_note": "cell +/- 6 px (gutter midpoint)",
+        "cell_bottom_y": 726
+      }
+    },
+    {
+      "zone": "expressions",
+      "slot": "happy",
+      "asset": "expression-batch/click/click_happy.png",
+      "status": "READY WITH CROP/MATTING",
+      "scale_px_per_source_px": 0.592,
+      "head_scale": 0.5923,
+      "units_per_source_px": 1.0,
+      "fit_down_factor": 1.0,
+      "effective_head_scale": 0.592,
+      "width_excess_before_fit_px": 0.0,
+      "width_tolerance_px": 1.0,
+      "image_origin": [
+        755,
+        553
+      ],
+      "anchor": "eye_line",
+      "crop_kind": "bust",
+      "core_source": "core_box",
+      "core_box_src": [
+        4.0,
+        8.0,
+        148.0,
+        113.0
+      ],
+      "core_px": {
+        "x": 757.854,
+        "y": 557.724,
+        "w": 85.291,
+        "h": 62.192
+      },
+      "matted_bbox": {
+        "x": 757.854,
+        "y": 557.724,
+        "w": 85.291,
+        "h": 83.514
+      },
+      "eye_line_y": 598.0,
+      "bottom_y": 641.238,
+      "allowance_shift_dx": 0.0,
+      "overflow": false,
+      "limits": {
+        "core_safe_width": 109,
+        "core_nominal_width": 100,
+        "crown_min_y": 520,
+        "allowance_x": [
+          732,
+          869
+        ],
+        "allowance_note": "cell +/- 6 px (gutter midpoint)",
+        "cell_bottom_y": 726
+      }
+    },
+    {
+      "zone": "expressions",
+      "slot": "thinking",
+      "asset": "expression-batch/click/click_thinking.png",
+      "status": "READY WITH CROP/MATTING",
+      "scale_px_per_source_px": 0.592,
+      "head_scale": 0.5923,
+      "units_per_source_px": 1.0,
+      "fit_down_factor": 1.0,
+      "effective_head_scale": 0.592,
+      "width_excess_before_fit_px": 0.0,
+      "width_tolerance_px": 1.0,
+      "image_origin": [
+        894,
+        550
+      ],
+      "anchor": "eye_line",
+      "crop_kind": "bust",
+      "core_source": "core_box",
+      "core_box_src": [
+        3.0,
+        5.0,
+        143.0,
+        123.0
+      ],
+      "core_px": {
+        "x": 896.039,
+        "y": 552.985,
+        "w": 82.922,
+        "h": 69.891
+      },
+      "matted_bbox": {
+        "x": 896.039,
+        "y": 552.985,
+        "w": 94.176,
+        "h": 93.583
+      },
+      "eye_line_y": 598.0,
+      "bottom_y": 646.569,
+      "allowance_shift_dx": 0.0,
+      "overflow": false,
+      "limits": {
+        "core_safe_width": 109,
+        "core_nominal_width": 100,
+        "crown_min_y": 520,
+        "allowance_x": [
+          869,
+          1006
+        ],
+        "allowance_note": "cell +/- 6 px (gutter midpoint)",
+        "cell_bottom_y": 726
+      }
+    },
+    {
+      "zone": "expressions",
+      "slot": "cheer",
+      "asset": "expression-batch/click/click_cheer.png",
+      "status": "READY WITH CROP/MATTING",
+      "scale_px_per_source_px": 0.592,
+      "head_scale": 0.5923,
+      "units_per_source_px": 1.0,
+      "fit_down_factor": 1.0,
+      "effective_head_scale": 0.592,
+      "width_excess_before_fit_px": 0.0,
+      "width_tolerance_px": 1.0,
+      "image_origin": [
+        1017,
+        558
+      ],
+      "anchor": "eye_line",
+      "crop_kind": "bust",
+      "core_source": "core_box",
+      "core_box_src": [
+        17.0,
+        8.0,
+        176.0,
+        99.0
+      ],
+      "core_px": {
+        "x": 1027.412,
+        "y": 563.054,
+        "w": 94.176,
+        "h": 53.899
+      },
+      "matted_bbox": {
+        "x": 1019.12,
+        "y": 563.054,
+        "w": 113.722,
+        "h": 87.66
+      },
+      "eye_line_y": 598.0,
+      "bottom_y": 650.715,
+      "allowance_shift_dx": 0.0,
+      "overflow": false,
+      "limits": {
+        "core_safe_width": 109,
+        "core_nominal_width": 100,
+        "crown_min_y": 520,
+        "allowance_x": [
+          1006,
+          1143
+        ],
+        "allowance_note": "cell +/- 6 px (gutter midpoint)",
+        "cell_bottom_y": 726
+      }
+    },
+    {
+      "zone": "expressions",
+      "slot": "discover",
+      "asset": "expression-batch/click/click_discover.png",
+      "status": "READY WITH CROP/MATTING",
+      "scale_px_per_source_px": 0.592,
+      "head_scale": 0.5923,
+      "units_per_source_px": 1.0,
+      "fit_down_factor": 1.0,
+      "effective_head_scale": 0.592,
+      "width_excess_before_fit_px": 0.0,
+      "width_tolerance_px": 1.0,
+      "image_origin": [
+        1170,
+        546
+      ],
+      "anchor": "eye_line",
+      "crop_kind": "bust",
+      "core_source": "core_box",
+      "core_box_src": [
+        2.0,
+        1.0,
+        138.0,
+        136.0
+      ],
+      "core_px": {
+        "x": 1171.224,
+        "y": 546.47,
+        "w": 80.553,
+        "h": 79.961
+      },
+      "matted_bbox": {
+        "x": 1171.224,
+        "y": 546.47,
+        "w": 80.553,
+        "h": 93.583
+      },
+      "eye_line_y": 598.0,
+      "bottom_y": 640.053,
+      "allowance_shift_dx": 0.0,
+      "overflow": false,
+      "limits": {
+        "core_safe_width": 109,
+        "core_nominal_width": 100,
+        "crown_min_y": 520,
+        "allowance_x": [
+          1143,
+          1280
+        ],
+        "allowance_note": "cell +/- 6 px (gutter midpoint)",
+        "cell_bottom_y": 726
+      }
+    },
+    {
+      "zone": "expressions",
+      "slot": "tryAgain",
+      "asset": "expression-batch/click/click_tryAgain.png",
+      "status": "READY WITH CROP/MATTING",
+      "scale_px_per_source_px": 0.592,
+      "head_scale": 0.5923,
+      "units_per_source_px": 1.0,
+      "fit_down_factor": 1.0,
+      "effective_head_scale": 0.592,
+      "width_excess_before_fit_px": 0.0,
+      "width_tolerance_px": 1.0,
+      "image_origin": [
+        1306,
+        552
+      ],
+      "anchor": "eye_line",
+      "crop_kind": "bust",
+      "core_source": "core_box",
+      "core_box_src": [
+        3.0,
+        2.0,
+        141.0,
+        118.0
+      ],
+      "core_px": {
+        "x": 1307.631,
+        "y": 553.578,
+        "w": 81.737,
+        "h": 68.707
+      },
+      "matted_bbox": {
+        "x": 1307.631,
+        "y": 553.578,
+        "w": 91.806,
+        "h": 89.437
+      },
+      "eye_line_y": 598.0,
+      "bottom_y": 643.015,
+      "allowance_shift_dx": 0.0,
+      "overflow": false,
+      "limits": {
+        "core_safe_width": 109,
+        "core_nominal_width": 100,
+        "crown_min_y": 520,
+        "allowance_x": [
+          1280,
+          1417
+        ],
+        "allowance_note": "cell +/- 6 px (gutter midpoint)",
+        "cell_bottom_y": 726
+      }
+    },
+    {
+      "zone": "silhouettes",
+      "slot": "front",
+      "asset": "asset-library/click/click_silhouette_front.png",
+      "status": "READY WITH CROP/MATTING",
+      "source": "explicit",
+      "fit_box": [
+        36,
+        824,
+        72,
+        182
+      ],
+      "fit_scale": 0.379,
+      "bbox": {
+        "x": 36,
+        "y": 897,
+        "w": 72,
+        "h": 109
+      },
+      "baseline_y": 1006,
+      "note": "fit scale is for recognition only; not a cast-size authority"
+    },
+    {
+      "zone": "silhouettes",
+      "slot": "threeQuarter",
+      "asset": "asset-library/click/click_silhouette_34.png",
+      "status": "READY WITH CROP/MATTING",
+      "source": "explicit",
+      "fit_box": [
+        116,
+        824,
+        72,
+        182
+      ],
+      "fit_scale": 0.362,
+      "bbox": {
+        "x": 116,
+        "y": 903,
+        "w": 72,
+        "h": 103
+      },
+      "baseline_y": 1006,
+      "note": "fit scale is for recognition only; not a cast-size authority"
+    },
+    {
+      "zone": "silhouettes",
+      "slot": "side",
+      "asset": "asset-library/click/click_silhouette_side.png",
+      "status": "READY WITH CROP/MATTING",
+      "source": "explicit",
+      "fit_box": [
+        196,
+        824,
+        72,
+        182
+      ],
+      "fit_scale": 0.409,
+      "bbox": {
+        "x": 196,
+        "y": 895,
+        "w": 72,
+        "h": 111
+      },
+      "baseline_y": 1006,
+      "note": "fit scale is for recognition only; not a cast-size authority"
+    },
+    {
+      "zone": "silhouettes",
+      "slot": "back",
+      "asset": "asset-library/click/click_silhouette_back.png",
+      "status": "READY WITH CROP/MATTING",
+      "source": "explicit",
+      "fit_box": [
+        276,
+        824,
+        72,
+        182
+      ],
+      "fit_scale": 0.396,
+      "bbox": {
+        "x": 276,
+        "y": 900,
+        "w": 72,
+        "h": 106
+      },
+      "baseline_y": 1006,
+      "note": "fit scale is for recognition only; not a cast-size authority"
+    },
+    {
+      "zone": "silhouettes",
+      "slot": "action",
+      "asset": "asset-library/click/click_silhouette_action.png",
+      "status": "READY WITH CROP/MATTING",
+      "source": "explicit",
+      "fit_box": [
+        356,
+        824,
+        108,
+        182
+      ],
+      "fit_scale": 0.39,
+      "bbox": {
+        "x": 356,
+        "y": 873,
+        "w": 108,
+        "h": 133
+      },
+      "baseline_y": 1006,
+      "note": "fit scale is for recognition only; not a cast-size authority"
+    },
+    {
+      "zone": "details",
+      "slot": "detail1",
+      "asset": "asset-library/click/click_detail_harness_backpack.png",
+      "status": "READY WITH CROP/MATTING",
+      "fit_scale": 0.6,
+      "bbox": {
+        "x": 522,
+        "y": 832,
+        "w": 98,
+        "h": 66
+      }
+    },
+    {
+      "zone": "details",
+      "slot": "detail2",
+      "asset": "asset-library/click/click_detail_c_emblem.png",
+      "status": "READY WITH CROP/MATTING",
+      "fit_scale": 0.6,
+      "bbox": {
+        "x": 677,
+        "y": 832,
+        "w": 88,
+        "h": 66
+      }
+    },
+    {
+      "zone": "details",
+      "slot": "detail3",
+      "asset": "asset-library/click/click_detail_strap_buckle.png",
+      "status": "READY WITH CROP/MATTING",
+      "fit_scale": 0.6,
+      "bbox": {
+        "x": 531,
+        "y": 946,
+        "w": 80,
+        "h": 66
+      }
+    },
+    {
+      "zone": "details",
+      "slot": "detail4",
+      "asset": "asset-library/click/click_detail_back_pack.png",
+      "status": "READY WITH CROP/MATTING",
+      "fit_scale": 0.6,
+      "bbox": {
+        "x": 680,
+        "y": 946,
+        "w": 82,
+        "h": 66
+      }
+    },
+    {
+      "zone": "proportion",
+      "slot": "front_reference",
+      "asset": "asset-library/click/click_turnaround_front.png",
+      "status": "READY WITH CROP/MATTING",
+      "scale_px_per_source_px": 0.533,
+      "R_px": 168,
+      "k": 0.92,
+      "image_origin": [
+        1251,
+        850
+      ],
+      "matted_bbox": {
+        "x": 1252.569,
+        "y": 851.44,
+        "w": 102.862,
+        "h": 154.56
+      },
+      "box": [
+        1196,
+        824,
+        216,
+        196
+      ],
+      "overflow": false
+    }
+  ],
+  "provisional": [
+    {
+      "zone": "palette",
+      "slot": "slot1",
+      "path": "#E77B2C"
+    },
+    {
+      "zone": "palette",
+      "slot": "slot2",
+      "path": "#FDDCA5"
+    },
+    {
+      "zone": "palette",
+      "slot": "slot3",
+      "path": "#0153D9"
+    },
+    {
+      "zone": "palette",
+      "slot": "slot4",
+      "path": "#341D10"
+    },
+    {
+      "zone": "palette",
+      "slot": "slot5",
+      "path": "#FA664F"
+    },
+    {
+      "zone": "palette",
+      "slot": "slot6",
+      "path": "#FAC718"
+    }
+  ],
+  "template_defects": [],
+  "text_adjustments": [
+    {
+      "zone": "details",
+      "slot": "detail1",
+      "what": "2-line caption is 26px; caption box is 20px (see README open question)"
+    }
+  ],
+  "warnings": [],
+  "assets": [
+    {
+      "path": "logo/BidaZoo_World_Expedition_logo_master.png",
+      "sha256": "944915d0f0522c2714b47a9eab4840bf0790d4900709a8c5d13d0a57f4e0f21c",
+      "bytes": 1089662,
+      "size_px": [
+        1467,
+        633
+      ]
+    },
+    {
+      "path": "asset-library/click/click_turnaround_front.png",
+      "sha256": "b6fa5165d8b6559071fe571c3b9604fecc535d6986e9acaa9b1f0aecd292d91e",
+      "bytes": 107963,
+      "size_px": [
+        199,
+        296
+      ]
+    },
+    {
+      "path": "asset-library/click/click_turnaround_34.png",
+      "sha256": "0ba115ffe9ef705f6590f79935e26b63762ab4fb7afcdca38c85600ebacbb59d",
+      "bytes": 103205,
+      "size_px": [
+        208,
+        296
+      ]
+    },
+    {
+      "path": "asset-library/click/click_turnaround_side.png",
+      "sha256": "8c3c8f580518652a0c95259273b2809598b4d099b26c2e2ad5b5393c38ef8bd0",
+      "bytes": 90663,
+      "size_px": [
+        186,
+        282
+      ]
+    },
+    {
+      "path": "asset-library/click/click_turnaround_back.png",
+      "sha256": "0b6555a231c46ef48461010599ac23e0886c0c91cf10ed868790f53f6a221aca",
+      "bytes": 92714,
+      "size_px": [
+        194,
+        278
+      ]
+    },
+    {
+      "path": "asset-library/click/click_hero.png",
+      "sha256": "b48303a661a9fa88e0938e8f5162cda22fb968269348b4a99fd1528f77511e2b",
+      "bytes": 121191,
+      "size_px": [
+        283,
+        347
+      ]
+    },
+    {
+      "path": "asset-library/click/click_head.png",
+      "sha256": "d938f7a11a78af009558430e63fd809773bc0614205d1f08fc61e6ea243b141e",
+      "bytes": 121382,
+      "size_px": [
+        252,
+        301
+      ]
+    },
+    {
+      "path": "expression-batch/click/click_idle.png",
+      "sha256": "71432a630f4346e7bc7fd1298a8c6a6a788736c5ccaf05d3da7e489beb20e726",
+      "bytes": 51241,
+      "size_px": [
+        190,
+        149
+      ]
+    },
+    {
+      "path": "expression-batch/click/click_happy.png",
+      "sha256": "366b9d8c4b54d79e19010c55169003414fb7308ba254313606cd3d017fb5e99c",
+      "bytes": 43847,
+      "size_px": [
+        155,
+        150
+      ]
+    },
+    {
+      "path": "expression-batch/click/click_thinking.png",
+      "sha256": "4a925455b2d98db9659a5838b0c04b9b79ef6c7cd7c4e89b3e613670a5f50eaf",
+      "bytes": 44668,
+      "size_px": [
+        165,
+        164
+      ]
+    },
+    {
+      "path": "expression-batch/click/click_cheer.png",
+      "sha256": "527ff537b065c2f322b1614313baafb55730b539dffd5a7a8cf8e63c3c9252d1",
+      "bytes": 57042,
+      "size_px": [
+        198,
+        157
+      ]
+    },
+    {
+      "path": "expression-batch/click/click_discover.png",
+      "sha256": "ac4934d60798393b5f0c225e3d23ddc4a73322d22bf02687feb510dfc7c05d2c",
+      "bytes": 46058,
+      "size_px": [
+        141,
+        160
+      ]
+    },
+    {
+      "path": "expression-batch/click/click_tryAgain.png",
+      "sha256": "253a2b6ce7cf7136ca77a9003a3d8fbecdc716a16cea4184a9e16e97a6bb955b",
+      "bytes": 48746,
+      "size_px": [
+        162,
+        154
+      ]
+    },
+    {
+      "path": "asset-library/click/click_silhouette_front.png",
+      "sha256": "88a7f970ce31efd3a1e76b41e0aa2accf3d81e9759b577be1f83eeb934b84d58",
+      "bytes": 11011,
+      "size_px": [
+        190,
+        288
+      ]
+    },
+    {
+      "path": "asset-library/click/click_silhouette_34.png",
+      "sha256": "c0843aa680efefbc24001dc7c059a0c2b7a983d09fd6632bbda15e2f51310638",
+      "bytes": 10501,
+      "size_px": [
+        199,
+        286
+      ]
+    },
+    {
+      "path": "asset-library/click/click_silhouette_side.png",
+      "sha256": "cf990f48b96c9cc9a8a0ae8ff2d787160caf9365e77b4166bc363450040d3d25",
+      "bytes": 10142,
+      "size_px": [
+        176,
+        272
+      ]
+    },
+    {
+      "path": "asset-library/click/click_silhouette_back.png",
+      "sha256": "471401734e147153f894f2b10d20c86d57c34fb1452da8481f2077cee13e5521",
+      "bytes": 10941,
+      "size_px": [
+        182,
+        267
+      ]
+    },
+    {
+      "path": "asset-library/click/click_silhouette_action.png",
+      "sha256": "a5b1493d48bccc2ccf06c5165876f07585f7b19d106499d1456e364039dd5a38",
+      "bytes": 12301,
+      "size_px": [
+        277,
+        342
+      ]
+    },
+    {
+      "path": "asset-library/click/click_detail_harness_backpack.png",
+      "sha256": "b929419caedc7ed8df1d46c8994cc59314530c5670343c631dda39be123f8794",
+      "bytes": 44667,
+      "size_px": [
+        164,
+        110
+      ]
+    },
+    {
+      "path": "asset-library/click/click_detail_c_emblem.png",
+      "sha256": "4ecac139477d0898ffb9b28a960a37842970df0c9963dce5caea1f19abc5ec23",
+      "bytes": 43801,
+      "size_px": [
+        146,
+        110
+      ]
+    },
+    {
+      "path": "asset-library/click/click_detail_strap_buckle.png",
+      "sha256": "75639f4165c6a4452694a1c7c19e0c7094f879fdba2ed24de1106ebb4d8d2df9",
+      "bytes": 42465,
+      "size_px": [
+        134,
+        110
+      ]
+    },
+    {
+      "path": "asset-library/click/click_detail_back_pack.png",
+      "sha256": "3af48e23bfab5da1a17a6820c7df414efe26b4d95da17e49fefb27d4ee29d476",
+      "bytes": 38923,
+      "size_px": [
+        136,
+        110
+      ]
+    }
+  ],
+  "expression_widest_core": {
+    "slot": "idle",
+    "width_px": 108.983,
+    "safe_width": 109
+  },
+  "expression_fit_down": {
+    "idle": 1.0,
+    "happy": 1.0,
+    "thinking": 1.0,
+    "cheer": 1.0,
+    "discover": 1.0,
+    "tryAgain": 1.0
+  },
+  "proportion_comparison": {
+    "tag": "TAR",
+    "k": 0.57,
+    "tick_y": 910.24
+  },
+  "proportion_marker": {
+    "k": 0.92,
+    "marker_y": 851.44,
+    "reference_tick_y": 838,
+    "baseline_y": 1006,
+    "R_px": 168
+  },
+  "character": {
+    "id": "click",
+    "name": "Click",
+    "k": 0.92
+  },
+  "canvas": [
+    1448,
+    1086
+  ],
+  "fonts": {
+    "family": "Nunito Sans",
+    "files": {
+      "400": "NunitoSans-Regular.ttf",
+      "600": "NunitoSans-SemiBold.ttf",
+      "700": "NunitoSans-Bold.ttf",
+      "800": "NunitoSans-ExtraBold.ttf"
+    },
+    "sha256": {
+      "400": "a4591b8197c3606b891dbc0fa6b1075e5abef0d7614c62a5ab3b1aef523d3fd6",
+      "600": "585931b02451771fbfbb0c7121257ad96dc3ac5801b8bddb558c3ffbb69ff8bf",
+      "700": "9a09d236cb3aa42fdd03cdce5b17dfc5adbbaf61686f74c1a6a28048c87cc16c",
+      "800": "79d61a64c7b33c0d92fd2ca876453713ca71ca446bf2b566fad36f6addbbe12e"
+    },
+    "license": "SIL OFL 1.1 (fonts/OFL.txt)"
+  },
+  "manifest_sheet_status_line": "M4 BUILD - LOGO_ASSET logo/BidaZoo_World_Expedition_logo_master.png (READY WITH CROP/MATTING); palette 63ec00673ac0 PROVISIONAL (docs); cast scale PROVISIONAL",
+  "computed_sheet_status": "LAYOUT PROOF - NOT FINAL: 6 provisional slot(s)",
+  "counts": {
+    "placeholders": 0,
+    "overflows": 0,
+    "provisional": 6,
+    "template_defects": 0
+  },
+  "output": {
+    "file": "click_sheet_v2.png",
+    "sha256": "78fd1d7337cf8fb59794b100e50541ae16c83eb62baa13e40d4069623ed19526",
+    "size_px": [
+      1448,
+      1086
+    ]
+  },
+  "manifest_file": "click.json"
+}

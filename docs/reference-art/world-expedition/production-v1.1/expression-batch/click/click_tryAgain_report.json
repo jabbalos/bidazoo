@@ -1,0 +1,43 @@
+{
+ "name": "click_tryagain_candidate_encouraging",
+ "box": [
+  177,
+  645,
+  350,
+  805
+ ],
+ "mode": "parchment",
+ "bg_rgb": [
+  253,
+  239,
+  209
+ ],
+ "clip_left": 0.0,
+ "clip_right": 0.0,
+ "clip_top": 0.0,
+ "clip_bottom": 0.1926782273603083,
+ "clipping": false,
+ "extra_components": [
+  179,
+  144
+ ],
+ "contamination": true,
+ "halo_fraction": 0.0007067137809187279,
+ "halo": false,
+ "outline_missing_px": 22,
+ "outline_missing": false,
+ "pass": false,
+ "size": [
+  162,
+  154
+ ],
+ "composite_default_ring_rects": [
+  [
+   312,
+   698,
+   350,
+   742
+  ]
+ ],
+ "post_cleanup": "ear-tip band + generic dark semi-transparent fringe removed; specks<60px dropped; alpha edge smoothed sigma 1.1"
+}

@@ -1,0 +1,116 @@
+PASS click: manifest sha matches combined
+PASS click: 18 manifest sha256 entries match disk []
+PASS click: 15 canonical assets, 15 unique slots
+PASS click: no supplemental file in canonical slots
+PASS click: all manifest silhouettes are canonical derived ones
+PASS click: 5 silhouettes READY WITH CROP/MATTING with derived_from sha == source asset sha
+PASS click: historical files not in canonical/supplemental list
+PASS click: no stray old silhouette names at top level
+PASS click_silhouette_front: re-derivation pixel-identical to disk
+PASS click_silhouette_front: RGBA, all RGB == #1E3A5F
+PASS click_silhouette_34: re-derivation pixel-identical to disk
+PASS click_silhouette_34: RGBA, all RGB == #1E3A5F
+PASS click_silhouette_side: re-derivation pixel-identical to disk
+PASS click_silhouette_side: RGBA, all RGB == #1E3A5F
+PASS click_silhouette_back: re-derivation pixel-identical to disk
+PASS click_silhouette_back: RGBA, all RGB == #1E3A5F
+PASS click_silhouette_action: re-derivation pixel-identical to disk
+PASS click_silhouette_action: RGBA, all RGB == #1E3A5F
+PASS dino: manifest sha matches combined
+PASS dino: 23 manifest sha256 entries match disk []
+PASS dino: 15 canonical assets, 15 unique slots
+PASS dino: no supplemental file in canonical slots
+PASS dino: all manifest silhouettes are canonical derived ones
+PASS dino: 5 silhouettes READY WITH CROP/MATTING with derived_from sha == source asset sha
+PASS dino: historical files not in canonical/supplemental list
+PASS dino: no stray old silhouette names at top level
+PASS dino_silhouette_front: re-derivation pixel-identical to disk
+PASS dino_silhouette_front: RGBA, all RGB == #1E3A5F
+PASS dino_silhouette_34: re-derivation pixel-identical to disk
+PASS dino_silhouette_34: RGBA, all RGB == #1E3A5F
+PASS dino_silhouette_side: re-derivation pixel-identical to disk
+PASS dino_silhouette_side: RGBA, all RGB == #1E3A5F
+PASS dino_silhouette_back: re-derivation pixel-identical to disk
+PASS dino_silhouette_back: RGBA, all RGB == #1E3A5F
+PASS dino_silhouette_action: re-derivation pixel-identical to disk
+PASS dino_silhouette_action: RGBA, all RGB == #1E3A5F
+PASS koala: manifest sha matches combined
+PASS koala: 27 manifest sha256 entries match disk []
+PASS koala: 15 canonical assets, 15 unique slots
+PASS koala: no supplemental file in canonical slots
+PASS koala: all manifest silhouettes are canonical derived ones
+PASS koala: 5 silhouettes READY WITH CROP/MATTING with derived_from sha == source asset sha
+PASS koala: historical files not in canonical/supplemental list
+PASS koala: no stray old silhouette names at top level
+PASS koala_silhouette_front: re-derivation pixel-identical to disk
+PASS koala_silhouette_front: RGBA, all RGB == #1E3A5F
+PASS koala_silhouette_34: re-derivation pixel-identical to disk
+PASS koala_silhouette_34: RGBA, all RGB == #1E3A5F
+PASS koala_silhouette_side: re-derivation pixel-identical to disk
+PASS koala_silhouette_side: RGBA, all RGB == #1E3A5F
+PASS koala_silhouette_back: re-derivation pixel-identical to disk
+PASS koala_silhouette_back: RGBA, all RGB == #1E3A5F
+PASS koala_silhouette_reading: re-derivation pixel-identical to disk
+PASS koala_silhouette_reading: RGBA, all RGB == #1E3A5F
+PASS tarsier: manifest sha matches combined
+PASS tarsier: 23 manifest sha256 entries match disk []
+PASS tarsier: 15 canonical assets, 15 unique slots
+PASS tarsier: no supplemental file in canonical slots
+PASS tarsier: all manifest silhouettes are canonical derived ones
+PASS tarsier: 5 silhouettes READY WITH CROP/MATTING with derived_from sha == source asset sha
+PASS tarsier: historical files not in canonical/supplemental list
+PASS tarsier: no stray old silhouette names at top level
+PASS tarsier_silhouette_front: re-derivation pixel-identical to disk
+PASS tarsier_silhouette_front: RGBA, all RGB == #1E3A5F
+PASS tarsier_silhouette_34: re-derivation pixel-identical to disk
+PASS tarsier_silhouette_34: RGBA, all RGB == #1E3A5F
+PASS tarsier_silhouette_side: re-derivation pixel-identical to disk
+PASS tarsier_silhouette_side: RGBA, all RGB == #1E3A5F
+PASS tarsier_silhouette_back: re-derivation pixel-identical to disk
+PASS tarsier_silhouette_back: RGBA, all RGB == #1E3A5F
+PASS tarsier_silhouette_action: re-derivation pixel-identical to disk
+PASS tarsier_silhouette_action: RGBA, all RGB == #1E3A5F
+PASS eagle: manifest sha matches combined
+PASS eagle: 23 manifest sha256 entries match disk []
+PASS eagle: 15 canonical assets, 15 unique slots
+PASS eagle: no supplemental file in canonical slots
+PASS eagle: all manifest silhouettes are canonical derived ones
+PASS eagle: 5 silhouettes READY WITH CROP/MATTING with derived_from sha == source asset sha
+PASS eagle: historical files not in canonical/supplemental list
+PASS eagle: no stray old silhouette names at top level
+PASS eagle_silhouette_front: re-derivation pixel-identical to disk
+PASS eagle_silhouette_front: RGBA, all RGB == #1E3A5F
+PASS eagle_silhouette_34: re-derivation pixel-identical to disk
+PASS eagle_silhouette_34: RGBA, all RGB == #1E3A5F
+PASS eagle_silhouette_side: re-derivation pixel-identical to disk
+PASS eagle_silhouette_side: RGBA, all RGB == #1E3A5F
+PASS eagle_silhouette_back: re-derivation pixel-identical to disk
+PASS eagle_silhouette_back: RGBA, all RGB == #1E3A5F
+PASS eagle_silhouette_action: re-derivation pixel-identical to disk
+PASS eagle_silhouette_action: RGBA, all RGB == #1E3A5F
+PASS bronco: manifest sha matches combined
+PASS bronco: 24 manifest sha256 entries match disk []
+PASS bronco: 15 canonical assets, 15 unique slots
+PASS bronco: no supplemental file in canonical slots
+PASS bronco: all manifest silhouettes are canonical derived ones
+PASS bronco: 5 silhouettes READY WITH CROP/MATTING with derived_from sha == source asset sha
+PASS bronco: historical files not in canonical/supplemental list
+PASS bronco: no stray old silhouette names at top level
+PASS bronco_silhouette_front: re-derivation pixel-identical to disk
+PASS bronco_silhouette_front: RGBA, all RGB == #1E3A5F
+PASS bronco_silhouette_34: re-derivation pixel-identical to disk
+PASS bronco_silhouette_34: RGBA, all RGB == #1E3A5F
+PASS bronco_silhouette_side: re-derivation pixel-identical to disk
+PASS bronco_silhouette_side: RGBA, all RGB == #1E3A5F
+PASS bronco_silhouette_back: re-derivation pixel-identical to disk
+PASS bronco_silhouette_back: RGBA, all RGB == #1E3A5F
+PASS bronco_silhouette_action: re-derivation pixel-identical to disk
+PASS bronco_silhouette_action: RGBA, all RGB == #1E3A5F
+PASS only koala_detail_glasses.png (+ its 4bg preview) differs from original (of 214 PNGs; changed=['koala/koala_detail_glasses.png', 'koala/koala_detail_glasses_4bg.png'])
+PASS asset-library originals unchanged (hashes equal the pre-work record)
+PASS koala_detail_glasses: alpha channel and size identical to original
+PASS pre-M4 glasses copy == original bytes
+PASS koala_hero_overview: supplemental, NOT repaired (bytes unchanged)
+PASS no canonical slot references koala_hero_overview
+
+FAILS: 0

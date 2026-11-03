@@ -1,0 +1,19 @@
+{
+  "size": [
+    1467,
+    633
+  ],
+  "edge_rows_cols_opaque_pixels": 0,
+  "alpha_components": 2,
+  "largest_components_px": [
+    672399,
+    2102
+  ],
+  "main_component_share": 0.9968836221147189,
+  "semi_transparent_px": 65326,
+  "semi_px_parchment_tinted_dE<12": 92,
+  "semi_px_parchment_tinted_share": 0.0014083213421914704,
+  "interior_px_compared": 57105,
+  "interior_mean_abs_diff_0_255": 0.6448849617700786,
+  "interior_PSNR_dB_vs_source": 44.89829920055689
+}

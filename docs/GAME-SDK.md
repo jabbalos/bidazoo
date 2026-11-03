@@ -98,6 +98,11 @@ vertical scroll allowed, more columns on larger screens). The game also exposes 
 mirror (`#bz-a11y`) and data attributes on `#game` so that browser tests and screen readers can
 read state; they never contain anything that is not already on screen.
 
+This section describes `main`, where the starters are code-drawn. On the runtime branch (Checkpoints
+F1 to F6, closed) they use the production art with six expressions each, and Click is a
+non-selectable host. That is presentation only and does not change the SDK boundary: no character or
+expression value crosses it.
+
 ## Open design questions (not decided)
 
 - How a game declares required skills, difficulty, and session length (today the server fixes
