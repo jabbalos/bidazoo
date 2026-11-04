@@ -2,6 +2,15 @@
 
 All notable changes, by checkpoint. Dates use US format.
 
+## Production deploy of the release candidate (November 4, 2026)
+
+- `play.bidazoo.com` now runs `c0fdbaf6935fc9048cc8aa3a8fcdd77218a7c467` (deployed 7:09 AM CST). The owner chose
+  to skip the rehearsal kit; a pre-cutover `pg_dump` was taken, the build and client scan passed on the live tree,
+  migrations were already present (5 of 5), identity stays OFF, and the public URL answered with the expected
+  headers. The live tree before the deploy was `46fe5eb`, not `1a106bc` as the docs said; corrected.
+- Owner direction: the next checkpoint is World / Explore / Basecamp (walkable basecamp, buddy, portal into Zoo
+  Sprint), ahead of roadmap G.
+
 ## Official Studio validation of the release candidate (November 3, 2026)
 
 - `main` at `c0fdbaf6935fc9048cc8aa3a8fcdd77218a7c467` **passed** the final release-candidate validation on
