@@ -54,6 +54,12 @@ Notes from the run:
 - This record is a documentation-only commit. The commit that carries it is **not** the validated SHA; the
   validated SHA is exactly `c0fdbaf6935fc9048cc8aa3a8fcdd77218a7c467`.
 
+### Next candidate: Checkpoint W1 (counts changed)
+
+Since November 4, 2026 (branch `feature/w1-basecamp-walk`) the validator expects **51 unit, 724 integration + 3 todo
+and 272 Playwright in 4 projects** (the Basecamp added 39 integration tests and 7 browser tests per project). The
+W1 merge commit on `main` will be the next release candidate and needs its own official run on its exact SHA.
+
 ### How the candidate run is started (procedure)
 
 Run on the Studio PC, as a normal user, from a clean checkout of the exact candidate SHA (the owner supplies the

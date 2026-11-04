@@ -1,5 +1,6 @@
 import { type Page } from '@playwright/test';
 import { expect, test } from './fixtures';
+import { enterGate } from './basecamp-helpers';
 
 /**
  * Drives the REAL stack: Phaser in the browser -> Vite preview proxy -> Fastify API -> PostgreSQL.
@@ -325,6 +326,7 @@ test('full run: 10 real taps through the real API; server totals match; a miss t
   await tap(page, 'character-eagle');
   await expect(page.locator('#game')).toHaveAttribute('data-character', 'eagle');
   await tap(page, 'start-run');
+  await enterGate(page);
 
   let sawIncorrectFeedback = false;
   for (let i = 1; i <= 10; i++) {
@@ -383,6 +385,7 @@ test('refresh mid-run restores the same question, progress, and server timer', a
   await bootToMenu(page);
   await recordFeedback(page);
   await tap(page, 'start-run');
+  await enterGate(page);
   for (let i = 1; i <= 3; i++) {
     const q = await waitForQuestion(page);
     await tap(page, `answer-${q.choices.indexOf(q.a * q.b)}`);
@@ -399,6 +402,7 @@ test('refresh mid-run restores the same question, progress, and server timer', a
   await page.reload();
   await expect.poll(() => scene(page)).toBe('menu');
   await tap(page, 'start-run'); // resumes the active session
+  await enterGate(page);
   const restored = await waitForQuestion(page);
   expect(restored.id).toBe(fourth.id);
   expect(restored.choices).toEqual(fourth.choices);

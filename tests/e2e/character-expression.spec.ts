@@ -1,5 +1,6 @@
 import { type BrowserContext, type Page } from '@playwright/test';
 import { expect, test } from './fixtures';
+import { enterGate } from './basecamp-helpers';
 
 /**
  * F5: the starter's expression reacts to what the server already decided. These tests drive the REAL
@@ -294,6 +295,7 @@ for (const starter of STARTERS) {
     await expect(page.locator('#game')).toHaveAttribute('data-character', starter.id);
     await recordExpressions(page);
     await tap(page, 'start-run');
+    await enterGate(page);
 
     // Question 1: waiting rests at idle, submitting thinks, a right answer is happy.
     const q1 = await waitForQuestion(page);
@@ -359,6 +361,8 @@ test('expressions: thinking is held while the answer is out, survives a resize, 
   });
 
   await tap(page, 'start-run');
+
+  await enterGate(page);
   const q = await waitForQuestion(page);
   await tap(page, `answer-${q.choices.indexOf(q.a * q.b)}`);
   await expect(page.locator('#game')).toHaveAttribute('data-phase', 'submitting');
@@ -415,6 +419,8 @@ test('expressions: an error rests at idle, and the retry thinks again and then r
   });
 
   await tap(page, 'start-run');
+
+  await enterGate(page);
   const q = await waitForQuestion(page);
   await tap(page, `answer-${q.choices.indexOf(q.a * q.b)}`);
   await expect(page.locator('#game')).toHaveAttribute('data-phase', 'error');
@@ -449,6 +455,8 @@ test('expressions: a finished run cheers, keeps cheering through a resize, and c
   await recordExpressions(page);
 
   await tap(page, 'start-run'); // resumes the run at question 10
+
+  await enterGate(page);
   await expect(page.locator('#game')).toHaveAttribute('data-progress', '9/10', { timeout: 90_000 });
   const q10 = await waitForQuestion(page);
   const wrong = q10.choices.find((c) => c !== q10.a * q10.b)!;
@@ -479,7 +487,8 @@ test('expressions: a finished run cheers, keeps cheering through a resize, and c
   expect(finished.session.results.newlyMastered).toEqual([]);
 
   // Play again: the new run starts from a resting starter, not from the cheer.
-  await tap(page, 'play-again');
+  await tap(page, 'play-again'); // "Back to Basecamp" since W1
+  await enterGate(page);
   await expect.poll(() => scene(page)).toBe('run');
   await waitForQuestion(page);
   await expect(page.locator('#game')).toHaveAttribute('data-expression', 'discover');
@@ -520,6 +529,8 @@ test('expressions: a newly mastered fact is a discovery, not a cheer, and the se
   });
 
   await tap(page, 'start-run');
+
+  await enterGate(page);
   const q10 = await waitForQuestion(page);
   const wrong = q10.choices.find((c) => c !== q10.a * q10.b)!;
   await tap(page, `answer-${q10.choices.indexOf(wrong)}`);

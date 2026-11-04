@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
-import { loadProductionCharacterArt, loadedProductionTextureCount } from '../character-art';
+import { loadProductionCharacterArt, loadedProductionTextureCount, productionArtCast } from '../character-art';
+import { loadWalkArt } from '../walk-art';
 import { getContext } from '../context';
 import { bakeEnvironment } from '../presentation/environment';
 import { EXP, EXP_CSS, FONT } from '../theme';
@@ -65,9 +66,13 @@ export class BootScene extends Phaser.Scene {
     // Production character art loads while the splash shows, in parallel with the guest check.
     // It can never fail the boot: if it is late or broken, characters use their code-drawn art.
     const art = loadProductionCharacterArt(this).catch(() => undefined);
+    // The whole-body walking pictures (W1) load now too, so Basecamp opens with no pop-in and the
+    // game requests no picture after the splash. Missing files fall back to the expression art.
+    const walk = art.then(() => loadWalkArt(this, productionArtCast())).catch(() => undefined);
     try {
       const guest = await ctx.platform.ensureGuest();
       await art;
+      await walk;
       await ensureFonts();
       // Lets automated tests see how many production textures are ready ("0" means fallback art).
       ctx.parent.setAttribute('data-production-art', String(loadedProductionTextureCount(this)));

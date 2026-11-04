@@ -1,0 +1,107 @@
+{
+  "schemaVersion": 1,
+  "purpose": "Provenance for the curated runtime full-body side-view PNGs used by the walkable Basecamp (Checkpoint W1). Machine-readable authority; verified by tests/integration/walk-runtime-assets.test.ts.",
+  "runtimeDirectory": "games/zoo-sprint/assets/world-expedition/walk",
+  "canonicalLibrary": "docs/reference-art/world-expedition/production-v1.1/asset-library",
+  "storage": "normal Git blobs (no Git LFS rule matches the runtime directory)",
+  "derivation": "byte-for-byte copy of the canonical M4 asset-library turnaround side view: no re-encode, no crop, no resize, no recolor, no metadata edit",
+  "facing": "right (every canonical side view faces +x; the game flips horizontally to walk left)",
+  "characters": {
+    "click": {
+      "runtimeFile": "click_walk_side.png",
+      "runtimeSha256": "8c3c8f580518652a0c95259273b2809598b4d099b26c2e2ad5b5393c38ef8bd0",
+      "runtimeBytes": 90663,
+      "width": 186,
+      "height": 282,
+      "canonicalSourcePath": "docs/reference-art/world-expedition/production-v1.1/asset-library/click/click_turnaround_side.png",
+      "canonicalSha256": "8c3c8f580518652a0c95259273b2809598b4d099b26c2e2ad5b5393c38ef8bd0",
+      "derivation": "byte-for-byte copy",
+      "opaqueBox": [
+        3,
+        3,
+        183,
+        279
+      ]
+    },
+    "dino": {
+      "runtimeFile": "dino_walk_side.png",
+      "runtimeSha256": "6c4ea533a75544b43bf53e54a491707ff11e1294c5f6bb629c2c72652483a209",
+      "runtimeBytes": 104801,
+      "width": 224,
+      "height": 277,
+      "canonicalSourcePath": "docs/reference-art/world-expedition/production-v1.1/asset-library/dino/dino_turnaround_side.png",
+      "canonicalSha256": "6c4ea533a75544b43bf53e54a491707ff11e1294c5f6bb629c2c72652483a209",
+      "derivation": "byte-for-byte copy",
+      "opaqueBox": [
+        3,
+        3,
+        221,
+        275
+      ]
+    },
+    "koala": {
+      "runtimeFile": "koala_walk_side.png",
+      "runtimeSha256": "855dac579ea760022a4f8d62cb92df86be4bc58f36d8a11a45d3c8b165e51962",
+      "runtimeBytes": 80903,
+      "width": 174,
+      "height": 261,
+      "canonicalSourcePath": "docs/reference-art/world-expedition/production-v1.1/asset-library/koala/koala_turnaround_side.png",
+      "canonicalSha256": "855dac579ea760022a4f8d62cb92df86be4bc58f36d8a11a45d3c8b165e51962",
+      "derivation": "byte-for-byte copy",
+      "opaqueBox": [
+        7,
+        2,
+        163,
+        258
+      ]
+    },
+    "tarsier": {
+      "runtimeFile": "tarsier_walk_side.png",
+      "runtimeSha256": "3f6041cb79a6a49a869a3f47bd6b8053daa50796c8f054a102ea45f01a997b45",
+      "runtimeBytes": 100276,
+      "width": 249,
+      "height": 229,
+      "canonicalSourcePath": "docs/reference-art/world-expedition/production-v1.1/asset-library/tarsier/tarsier_turnaround_side.png",
+      "canonicalSha256": "3f6041cb79a6a49a869a3f47bd6b8053daa50796c8f054a102ea45f01a997b45",
+      "derivation": "byte-for-byte copy",
+      "opaqueBox": [
+        3,
+        3,
+        246,
+        227
+      ]
+    },
+    "eagle": {
+      "runtimeFile": "eagle_walk_side.png",
+      "runtimeSha256": "1842de278e305a589eeddf673a9c634fe76a423d5e331787ddb92bfc22dcc097",
+      "runtimeBytes": 106912,
+      "width": 217,
+      "height": 289,
+      "canonicalSourcePath": "docs/reference-art/world-expedition/production-v1.1/asset-library/eagle/eagle_turnaround_side.png",
+      "canonicalSha256": "1842de278e305a589eeddf673a9c634fe76a423d5e331787ddb92bfc22dcc097",
+      "derivation": "byte-for-byte copy",
+      "opaqueBox": [
+        3,
+        2,
+        214,
+        286
+      ]
+    },
+    "bronco": {
+      "runtimeFile": "bronco_walk_side.png",
+      "runtimeSha256": "68e5d0fdc765eca9e05d329995d08dea0c29f57aed7f92356759b0f175e3b045",
+      "runtimeBytes": 128025,
+      "width": 269,
+      "height": 279,
+      "canonicalSourcePath": "docs/reference-art/world-expedition/production-v1.1/asset-library/bronco/bronco_turnaround_side.png",
+      "canonicalSha256": "68e5d0fdc765eca9e05d329995d08dea0c29f57aed7f92356759b0f175e3b045",
+      "derivation": "byte-for-byte copy",
+      "opaqueBox": [
+        0,
+        3,
+        266,
+        276
+      ]
+    }
+  }
+}

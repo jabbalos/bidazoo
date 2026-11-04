@@ -10,14 +10,14 @@ import { STARTERS, characterName, saveCharacter, type CharacterId } from '../ros
 import { EXP, EXP_CSS } from '../theme';
 import { BUTTON_STYLES, TapButton, publishSurface, text, type HitTarget } from '../ui';
 
-/** How long the celebration after "Choose [Name]" plays before the run starts. */
+/** How long the celebration after "Choose [Name]" plays before Basecamp opens. */
 const CELEBRATION_MS = 1000;
 
 /**
  * "Choose Your Buddy". One large hero card shows the highlighted buddy (default Dino) with its role
  * and three traits; five round medallions browse the starters; Click, the host, speaks from the
  * side and is NOT selectable; a full-width "Choose [Name]" button confirms, celebrates for about a
- * second, then starts the run.
+ * second, then opens Expedition Basecamp (W1), where walking into the gate starts the run.
  *
  * Which buddy is chosen is presentation only: it is saved locally as before, never sent to the
  * API, and never changes questions, grading, mastery, XP or coins. Nothing here touches the server.
@@ -54,7 +54,7 @@ export class MenuScene extends Phaser.Scene {
     this.render();
   }
 
-  /** "Choose [Name]": a short celebration, then the run. */
+  /** "Choose [Name]": a short celebration, then Basecamp. */
   private start(): void {
     if (this.starting) return;
     this.starting = true;
@@ -64,7 +64,7 @@ export class MenuScene extends Phaser.Scene {
       hero.celebrate('cheer', 'cheer');
       this.pulseRing();
     }
-    this.time.delayedCall(CELEBRATION_MS, () => this.scene.start('RunScene'));
+    this.time.delayedCall(CELEBRATION_MS, () => this.scene.start('BasecampScene', { from: 'trailhead' }));
   }
 
   /** One soft ring that grows and fades behind the buddy while it celebrates. */

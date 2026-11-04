@@ -204,7 +204,7 @@ export class ResultsScene extends Phaser.Scene {
       L.cta.y + L.cta.h / 2,
       L.cta.w,
       L.cta.h,
-      'Play Again',
+      'Back to Basecamp',
       BUTTON_STYLES.primary,
       () => this.playAgain(),
       0.42,
@@ -224,11 +224,12 @@ export class ResultsScene extends Phaser.Scene {
       results
         ? `Run complete. ${results.correct} of ${results.total} correct. Plus ${results.xpEarned} XP and ${results.coinsEarned} coins. ${results.newlyMastered.length > 0 ? `Mastered ${results.newlyMastered.join(', ')}.` : ''}`
         : 'Run complete.',
-      [{ id: 'play-again', label: 'Play Again', onClick: () => this.playAgain() }],
+      [{ id: 'play-again', label: 'Back to Basecamp', onClick: () => this.playAgain() }],
     );
   }
 
+  /** Back to Basecamp, just outside the gate: one step re-enters for another run. */
   private playAgain(): void {
-    this.scene.start('RunScene');
+    this.scene.start('BasecampScene', { from: 'gate' });
   }
 }
