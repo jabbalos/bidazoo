@@ -335,8 +335,10 @@ test.describe('Cast production art in the real game', () => {
   test('a run with Dino reaches the results screen, with Dino on every screen', async ({ page }) => {
     // Ten real taps through the real API, software-rendered. The visual recovery's larger desktop scenes make each
     // frame slower under software GL, and the game's feedback timer counts frames, so this test gets 10 minutes
-    // (it took 6.8 min at 1440x900 in a cloud sandbox; it passes in about 2 min on phone sizes). Assertions unchanged.
-    test.setTimeout(600_000);
+    // (it took 6.8 min at 1440x900 in a cloud sandbox; it passes in about 2 min on phone sizes). Since Checkpoint W1
+    // the run is entered from Basecamp, one more software-rendered scene, and the same sandbox ran past 10 min, so the
+    // budget is 15 min. Assertions unchanged.
+    test.setTimeout(900_000);
     await page.goto('/');
     await expect.poll(() => scene(page)).toBe('menu');
     await tap(page, 'character-dino');
