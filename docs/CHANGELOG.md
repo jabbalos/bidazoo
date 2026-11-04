@@ -2,6 +2,16 @@
 
 All notable changes, by checkpoint. Dates use US format.
 
+## Official Studio validation of the release candidate (November 3, 2026)
+
+- `main` at `c0fdbaf6935fc9048cc8aa3a8fcdd77218a7c467` **passed** the final release-candidate validation on
+  the Studio PC (pinned Chromium 156.0.8078.4, Playwright 1.64.0, portable PostgreSQL 16.15): 51 unit,
+  685 integration + 3 todo, Playwright 244/244 in 4 projects (0 failed, 0 flaky, 0 skipped, no retries),
+  build, client scan CLEAN, live API playthrough ALL CHECKS PASSED, exit 0. Run folder
+  `.validation-logs\20261103-214204`; record in STUDIO-VALIDATION.md. Documentation-only commit; the
+  validated SHA is `c0fdbaf`, not this commit.
+- Not deployed. Next: release rehearsal (needs the owner's go).
+
 ## Release candidate merged into `main` + product direction (November 3, 2026)
 
 - `main` fast-forwarded (no conflicts) to `release/founding-family-beta` (`46fe5eb`) and then the World

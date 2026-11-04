@@ -34,7 +34,7 @@ Hop Quest site becomes a trial that leads into BidaZoo; first release is math on
 | Checkpoint F6 (final integrated runtime / release-candidate QA) | **CLOSED: PASS WITH MINOR ITEMS.** F6 made zero repository changes. Runtime ready for final release-candidate integration: **YES**. |
 | Production character art | **COMPLETE.** All six cast members have six production expressions. Integrated on the runtime branch; `main` still carries the code-drawn transitional art until release-candidate integration. |
 | Closed-beta deployment (`play.bidazoo.com`) | **LIVE, guest-only** (Studio PC; commit `1a106bc`; see "Closed-beta deployment and backups"). A closed-beta architecture, not necessarily the final production architecture. |
-| Release work (release-candidate integration through founding-family beta) | **IN PROGRESS.** Step 1 (integration) is done and **merged into `main`** (November 3, 2026, with the visual recovery). Official Studio validation of the exact `main` SHA is next and is **not yet done**. See "Remaining work". |
+| Release work (release-candidate integration through founding-family beta) | **IN PROGRESS.** Step 1 (integration) is done and **merged into `main`** (November 3, 2026, with the visual recovery). Step 2 is **DONE**: official Studio validation of the exact `main` SHA `c0fdbaf6935fc9048cc8aa3a8fcdd77218a7c467` **passed** on November 3, 2026 (51 unit, 685 integration + 3 todo, Playwright 244/244 in 4 projects, Chromium 156.0.8078.4, Playwright 1.64.0, PostgreSQL 16.15, build, scan CLEAN, playthrough ALL CHECKS PASSED, exit 0; run folder `.validation-logs\20261103-214204`; see [STUDIO-VALIDATION.md](STUDIO-VALIDATION.md)). `c0fdbaf` is the validated release candidate. **Not deployed**; the release rehearsal (step 3) is next and needs the owner's go. See "Remaining work". |
 | World Expedition visual recovery (Choose Your Buddy, gameplay and results rebuilt on a shared presentation layer) | **On `main`** (`6cedf93`). Presentation only. Sandbox: unit 51, integration 685 + 3 todo, build, client scan CLEAN. Owner decisions still open: trait copy, `PRESENCE_EXPONENT`, higher-resolution art. See [visual/18](visual/18-world-expedition-visual-recovery.md). |
 | World / Explore / Basecamp | Future product phase. **Not authorized**, and **not** part of the current runtime closure. |
 
@@ -392,16 +392,17 @@ Unfinished **release** work is different from unfinished **game** work.
   BidaZoo's APIs.
 - Then reading (content and screens), and later World / Explore / Basecamp.
 
-### Release work (all OPEN; none of it has been done)
+### Release work (steps 1 and 2 done; the rest OPEN)
 
 The remaining release path:
 
 1. Final release-candidate integration (bringing the closed runtime branch and the release tooling
    into one candidate). **DONE and merged into `main`** (November 3, 2026), together with the visual recovery.
-2. Exact-SHA validation of that candidate on the Studio PC with the pinned Chromium (**next**; the
-   validator now requires `-CandidateSha` and fails on any baseline deviation, see
-   [STUDIO-VALIDATION.md](STUDIO-VALIDATION.md)).
-3. Release rehearsal (non-production; starts only after step 2 passes).
+2. Exact-SHA validation of that candidate on the Studio PC with the pinned Chromium. **DONE and PASSED**
+   (November 3, 2026) for `c0fdbaf6935fc9048cc8aa3a8fcdd77218a7c467`: every baseline count and version
+   matched exactly, exit 0 (record in [STUDIO-VALIDATION.md](STUDIO-VALIDATION.md)). Any new commit on
+   `main` is a new candidate and needs its own run.
+3. Release rehearsal (non-production; **next**, needs the owner's go; `-CandidateSha c0fdbaf6935fc9048cc8aa3a8fcdd77218a7c467`).
 4. Backup and rollback verification.
 5. Production application deployment (with the M6 header gate confirmed first: `09-m6-release-headers.ps1`
    in rehearsal and `tools/m6-headers.mjs` against the origin and the public URL in the window).

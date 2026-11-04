@@ -10,12 +10,51 @@ Checkpoint C game implementation is `7042f8f`; the Checkpoint D exact validated 
 then Checkpoint D, then Checkpoint C, then Checkpoint B. The earlier records are historical and are
 kept as written, including their own counts.
 
-**Final release candidate (October 15, 2026).** The combined candidate on `release/founding-family-beta`
-(main + post-F6 documentation + the F1-F6 runtime + the release rehearsal tooling) needs its own
-official Studio validation on its exact SHA. That result is **not recorded yet**; see
-[Final release candidate validation](#final-release-candidate-validation-required-pending) below.
+**Final release candidate (validated November 3, 2026).** The release candidate is `main` at
+`c0fdbaf6935fc9048cc8aa3a8fcdd77218a7c467` (merge of PR #1: the F1-F6 runtime, the release rehearsal
+tooling, the World Expedition visual recovery, the tab icon and the longer desktop test allowances). Its
+official Studio validation **passed** on its exact SHA; see
+[Final release candidate validation](#final-release-candidate-validation-official-run-passed) below.
 
-## Final release candidate validation (required, pending)
+## Final release candidate validation (official run, passed)
+
+Source: the local run folder `.validation-logs\20261103-214204` on the Studio PC (git-ignored, so the
+evidence is recorded here; the runner's `SUMMARY.txt` is also copied to `Documents\BidaZoo-release\logs\`).
+Command: `scripts\validate-studio.ps1 -PortablePostgres -NoPrompt -CandidateSha c0fdbaf6935fc9048cc8aa3a8fcdd77218a7c467`,
+launched by a small wrapper outside the repository (fetch, `git checkout --detach`, start the portable
+cluster, drop the two throwaway databases) as the normal user `jonat` on Tuesday, November 3, 2026,
+9:42 PM to 10:21 PM CST (40 minutes).
+
+| Item | Result |
+| --- | --- |
+| Git commit tested (exact validated commit) | `c0fdbaf6935fc9048cc8aa3a8fcdd77218a7c467` ("Merge release candidate + World Expedition visual recovery into main (#1)"), `main`; HEAD verified exact, working tree clean, contains `01b7d41` and `f3b5483` |
+| Vitest (unit) | 51 passed (51) |
+| Vitest (integration, real PostgreSQL) | 685 passed + 3 todo (688) |
+| Playwright | 244 passed of 244, 0 failed, 0 flaky, 0 skipped; 4 projects; no retries |
+| Playwright / Chromium | 1.64.0 / 156.0.8078.4 (official pinned build) |
+| PostgreSQL | 16.15, portable mode (127.0.0.1:54329, loopback only, trust) |
+| Production build | PASS |
+| Client bundle scan (`npm run scan:client`) | **CLEAN** (47 files, 1,398,325 bytes, 29 forbidden markers checked) |
+| Live API playthrough (`npm run playthrough`) | **ALL CHECKS PASSED** (39 PASS lines) |
+| Validator exit code | 0 |
+| Overall | **PASS** |
+
+Notes from the run:
+
+- `npm run typecheck` is not a validator step and was not run on the Studio PC for this record; the cloud
+  sandbox typecheck on the same merged code passed (supplementary).
+- The validator's November 3 PowerShell edits (counts 685 / 244) ran for the first time on this run and
+  behaved as written. No desktop (1440x900) test needed its raised allowance badly enough to time out; the
+  longest desktop test was about 22 seconds. The new tab icon passed the image-counting tests on the
+  pinned headless Chromium.
+- `-NoPrompt` was added only because the wrapper has no keyboard; it suppresses the password and cleanup
+  questions and changes nothing that is tested. The two throwaway databases were kept.
+- The portable server was started and stopped by the wrapper, not by the validator; the validator reused
+  it ("already running") and reported that in its summary.
+- This record is a documentation-only commit. The commit that carries it is **not** the validated SHA; the
+  validated SHA is exactly `c0fdbaf6935fc9048cc8aa3a8fcdd77218a7c467`.
+
+### How the candidate run is started (procedure)
 
 Run on the Studio PC, as a normal user, from a clean checkout of the exact candidate SHA (the owner supplies the
 40-character SHA; it is never stored in the repository):
