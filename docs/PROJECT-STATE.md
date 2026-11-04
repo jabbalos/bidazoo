@@ -40,21 +40,19 @@ Hop Quest site becomes a trial that leads into BidaZoo; first release is math on
 
 ## Baselines and commits
 
-- **`main`:** `856d012` ("docs: close Checkpoint E after Studio validation"). It contains the
-  Checkpoint E implementation (`87f1411` through `a283c24`, the validated commit) and the Checkpoint E
-  closure documentation. It does **not** contain the World Expedition runtime branch.
-- **Runtime branch:** `feature/world-expedition-runtime-integration` at
-  `f3b5483c2b253f0ccb0ee9b62060379b7575fb08` ("test(play): make expression wiring scan CRLF-safe").
-  As of October 15, 2026 it is 12 commits ahead of `main` and 0 behind (`main` is its merge base).
-- **Release-rehearsal branch:** `release/identity-beta` at `d90f572`, 4 commits ahead of `main` and 0
-  behind. It adds only `infrastructure/deployment/identity-release/` (see "Remaining work"). Its tip is
-  contained in the release-candidate branch below; the branch itself is unchanged.
-- **Release-candidate branch:** `release/founding-family-beta`, created from `main`, then merged (in this
-  order) with `docs/reconcile-project-state-after-f6` (`bb8e14d`), the runtime branch (`f3b5483`) and
-  `release/identity-beta` (`d90f572`). Three narrow release-only commits follow the merges: the rehearsal
-  tooling retarget, the Studio validator hardening, and this documentation update. Application code is byte-identical to the
-  Studio-validated runtime (`f3b5483`); only documentation, deployment tooling and the validator differ.
-  Not merged into `main`.
+- **`main`:** `c0fdbaf6935fc9048cc8aa3a8fcdd77218a7c467` ("Merge release candidate + World Expedition visual
+  recovery into main (#1)", November 3, 2026). This is the **validated release candidate** (official Studio
+  run passed November 3, 2026; see [STUDIO-VALIDATION.md](STUDIO-VALIDATION.md)). It contains Checkpoints A-E,
+  the F1-F6 runtime (`f3b5483`), the release rehearsal tooling, the World Expedition visual recovery
+  (`6cedf93`), the tab icon and the desktop test allowances (`0e7d563`, the rehearsal application baseline).
+  Documentation-only commits may follow it on `main`; they are not the validated SHA, and any commit that
+  changes application code, tooling or the validator is a new candidate that needs its own run.
+- **Historical branches (merged into `main`, kept for lineage only):**
+  `feature/world-expedition-runtime-integration` (`f3b5483`, the F5 validated runtime);
+  `release/identity-beta` (`d90f572`, rehearsal tooling); `release/founding-family-beta` (`46fe5eb`, the
+  October 15 candidate: runtime + tooling retarget + validator hardening);
+  `feature/world-expedition-visual-recovery` (`6cedf93`). Before the merge, `main` was `856d012` (Checkpoint E closure).
+- **Not merged:** `spike/world-hub-exploration` (unfinished, not authorized).
 - **Deployed in the live closed beta:** commit `1a106bc` (Checkpoint D), per
   [DEPLOYMENT-CLOSED-BETA.md](DEPLOYMENT-CLOSED-BETA.md) section 9.
 - **Accepted application baseline:** `01b7d41` (Checkpoint B).
