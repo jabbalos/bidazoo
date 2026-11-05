@@ -56,13 +56,17 @@ const files = [];
 
 // Character art: every PNG in the build must be byte-identical to a curated runtime file listed in
 // a character's PROVENANCE.json (so no QA sheet, silhouette, logo, library asset, or Git LFS pointer
-// text can ship), and all 36 curated files (six cast members x six expressions) must be present.
+// text can ship), and all 42 curated files must be present: 36 expression crops (six cast members x
+// six expressions) plus, since Checkpoint W1, one whole-body side-view walking picture per cast member
+// (games/zoo-sprint/assets/world-expedition/walk/PROVENANCE.json, verified by walk-runtime-assets.test.ts).
 const CAST = ['dino', 'koala', 'tarsier', 'eagle', 'bronco', 'click'];
 const allowedPngs = new Map();
 for (const id of CAST) {
   const provenance = JSON.parse(readFileSync(`games/zoo-sprint/assets/world-expedition/characters/${id}/PROVENANCE.json`, 'utf8'));
   for (const [state, e] of Object.entries(provenance.expressions)) allowedPngs.set(e.runtimeSha256, `${id}/${state}`);
 }
+const walkProvenance = JSON.parse(readFileSync('games/zoo-sprint/assets/world-expedition/walk/PROVENANCE.json', 'utf8'));
+for (const id of CAST) allowedPngs.set(walkProvenance.characters[id].runtimeSha256, `${id}/walk_side`);
 const pngs = files.filter((f) => f.endsWith('.png'));
 const seenPngs = new Set();
 let hits = 0;
