@@ -1,5 +1,6 @@
 import { type Page } from '@playwright/test';
 import { expect, test } from './fixtures';
+import { enterGate } from './basecamp-helpers';
 
 /**
  * Checkpoints F3 + F4: the cast's production art inside the REAL game (the normal build, real API).
@@ -26,6 +27,8 @@ const PNG_SIGNATURE = '89504e470d0a1a0a';
 const STARTER_IDS = ['dino', 'koala', 'tarsier', 'eagle', 'bronco'] as const;
 const CAST_IDS = [...STARTER_IDS, 'click'] as const;
 const PNG_PATH = /^\/assets\/(dino|koala|tarsier|eagle|bronco|click)_(idle|happy|thinking|cheer|discover|tryAgain)-[\w-]+\.png$/;
+/** The whole-body walking pictures (W1), one per cast member, loaded at boot for Basecamp. */
+const WALK_PATH = /^\/assets\/(dino|koala|tarsier|eagle|bronco|click)_walk_side-[\w-]+\.png$/;
 /** Aborts every cast PNG (the art cannot be loaded). */
 const ALL_ART = '**/assets/{dino,koala,tarsier,eagle,bronco,click}_*.png';
 
@@ -166,7 +169,7 @@ async function openMenu(page: Page, expectedArt: string): Promise<void> {
 }
 
 test.describe('Cast production art in the real game', () => {
-  test('boot loads the 36 production textures once, and the menu draws the starters from them', async ({ page }) => {
+  test('boot loads the 36 production textures (and the 6 walking pictures) once, and the menu draws the starters from them', async ({ page }) => {
     const pngRequests: string[] = [];
     const apiUrls: string[] = [];
     const pngResponses: Array<{ url: string; status: number; type: string; signature: string }> = [];
@@ -185,13 +188,19 @@ test.describe('Cast production art in the real game', () => {
     await expect.poll(() => scene(page)).toBe('menu');
     await expect(page.locator('#game')).toHaveAttribute('data-production-art', '36');
 
-    // 36 distinct cast PNGs (6 characters x 6 expressions), one request each, all real PNG bytes. No other PNG is fetched.
-    expect(pngRequests).toHaveLength(36);
-    expect(new Set(pngRequests).size).toBe(36);
-    for (const path of pngRequests) expect(path).toMatch(PNG_PATH);
-    const pairs = pngRequests.map((path) => path.replace(PNG_PATH, '$1_$2')).sort();
+    // 36 distinct expression PNGs (6 characters x 6 expressions) plus, since W1, the 6 whole-body
+    // walking pictures for Basecamp: one request each, all real PNG bytes. No other PNG is fetched.
+    expect(pngRequests).toHaveLength(42);
+    expect(new Set(pngRequests).size).toBe(42);
+    const expressionRequests = pngRequests.filter((path) => PNG_PATH.test(path));
+    const walkRequests = pngRequests.filter((path) => WALK_PATH.test(path));
+    expect(expressionRequests).toHaveLength(36);
+    expect(walkRequests).toHaveLength(6);
+    expect(expressionRequests.length + walkRequests.length).toBe(pngRequests.length);
+    const pairs = expressionRequests.map((path) => path.replace(PNG_PATH, '$1_$2')).sort();
     expect(pairs).toEqual(CAST_IDS.flatMap((id) => ['idle', 'happy', 'thinking', 'cheer', 'discover', 'tryAgain'].map((state) => `${id}_${state}`)).sort());
-    await expect.poll(() => pngResponses.length).toBe(36);
+    expect(walkRequests.map((path) => path.replace(WALK_PATH, '$1')).sort()).toEqual([...CAST_IDS].sort());
+    await expect.poll(() => pngResponses.length).toBe(42);
     for (const response of pngResponses) {
       expect(response.status, response.url).toBe(200);
       expect(response.type, response.url).toBe('image/png');
@@ -309,6 +318,7 @@ test.describe('Cast production art in the real game', () => {
       await tap(page, `character-${id}`);
       await expect(page.locator('#game')).toHaveAttribute('data-character', id);
       await tap(page, 'start-run');
+      await enterGate(page);
       await expect.poll(() => scene(page), { timeout: 60_000 }).toBe('run'); // the 1 s celebration is slow under software GL
       await expect(page.locator('#game[data-phase="question"]')).toBeAttached({ timeout: 60_000 });
       expect(await page.locator('#game').getAttribute('data-production-art')).toBe('36');
@@ -325,13 +335,16 @@ test.describe('Cast production art in the real game', () => {
   test('a run with Dino reaches the results screen, with Dino on every screen', async ({ page }) => {
     // Ten real taps through the real API, software-rendered. The visual recovery's larger desktop scenes make each
     // frame slower under software GL, and the game's feedback timer counts frames, so this test gets 10 minutes
-    // (it took 6.8 min at 1440x900 in a cloud sandbox; it passes in about 2 min on phone sizes). Assertions unchanged.
-    test.setTimeout(600_000);
+    // (it took 6.8 min at 1440x900 in a cloud sandbox; it passes in about 2 min on phone sizes). Since Checkpoint W1
+    // the run is entered from Basecamp, one more software-rendered scene, and the same sandbox ran past 10 min, so the
+    // budget is 15 min. Assertions unchanged.
+    test.setTimeout(900_000);
     await page.goto('/');
     await expect.poll(() => scene(page)).toBe('menu');
     await tap(page, 'character-dino');
     await expect(page.locator('#game')).toHaveAttribute('data-character', 'dino');
     await tap(page, 'start-run');
+    await enterGate(page);
     await expect.poll(() => scene(page), { timeout: 60_000 }).toBe('run'); // the 1 s celebration is slow under software GL
     await page.waitForTimeout(500);
     expect(await productionOrangePixels(page), 'Dino on the run screen is production art').toBeGreaterThan(20);

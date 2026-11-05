@@ -4,6 +4,7 @@ import { A11yMirror } from './a11y';
 import type { GameContext } from './context';
 import { loadCharacter } from './roster';
 import { COLORS, hex } from './theme';
+import { BasecampScene } from './scenes/BasecampScene';
 import { BootScene } from './scenes/BootScene';
 import { MenuScene } from './scenes/MenuScene';
 import { ResultsScene } from './scenes/ResultsScene';
@@ -41,7 +42,8 @@ function createGame(
 }
 
 /**
- * Zoo Sprint: ten multiplication questions per run, drawn with Phaser.
+ * Zoo Sprint: ten multiplication questions per run, drawn with Phaser. Since Checkpoint W1 the buddy
+ * walks through Expedition Basecamp and enters the gate to start that run.
  *
  * Trust model reminder: this game only presents state. It never decides answers, rewards, XP,
  * coins, mastery, or inventory; the server does, and the game animates the result.
@@ -74,7 +76,7 @@ function mount({ parent, platform }: MountOptions): MountedGame {
     };
   }
 
-  const game = createGame(parent, context, [BootScene, MenuScene, RunScene, ResultsScene]);
+  const game = createGame(parent, context, [BootScene, MenuScene, BasecampScene, RunScene, ResultsScene]);
 
   return {
     destroy() {

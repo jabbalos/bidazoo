@@ -2,6 +2,22 @@
 
 All notable changes, by checkpoint. Dates use US format.
 
+## Checkpoint W1: Expedition Basecamp, the walkable home screen (November 4, 2026; branch `feature/w1-basecamp-walk`)
+
+- After "Choose Your Buddy" the buddy now stands, whole body, in Expedition Basecamp and walks left or
+  right (hold either half of the screen, or the arrow keys) through parallax World Expedition scenery.
+  Click waits beside the Basecamp Gate. Walking into the gate opening is the portal that starts the same
+  server-owned run as before; results end with "Back to Basecamp" (just outside the gate).
+- Art: one canonical side-view turnaround per cast member, copied byte for byte into
+  `games/zoo-sprint/assets/world-expedition/walk/` with provenance; expression crops unchanged. Motion is a
+  procedural puppet (bob, lean, footfall squash, dust, breathing), off under reduced motion.
+- New: `scenes/BasecampScene.ts`, `walk-art.ts`, `presentation/explore-model.ts` (pure, tested) and
+  `presentation/world-layers.ts` (from the exploration spike, with its handoff fixes), `tests/e2e/basecamp.spec.ts`
+  (7 tests x 4 viewports), `tests/integration/basecamp-model.test.ts`, `tests/integration/walk-runtime-assets.test.ts`.
+- Existing run tests enter the run through the Basecamp's accessible "Enter the gate" action.
+- Validator baseline: integration 724 (was 685), Playwright 272 (was 244). Presentation only: no API,
+  schema, grading, XP, coin or progression change. Not yet Studio-validated or deployed.
+
 ## Production deploy of the release candidate (November 4, 2026)
 
 - `play.bidazoo.com` now runs `c0fdbaf6935fc9048cc8aa3a8fcdd77218a7c467` (deployed 7:09 AM CST). The owner chose

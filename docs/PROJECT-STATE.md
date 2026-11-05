@@ -36,7 +36,7 @@ Hop Quest site becomes a trial that leads into BidaZoo; first release is math on
 | Closed-beta deployment (`play.bidazoo.com`) | **LIVE, guest-only, running the validated candidate `c0fdbaf6935fc9048cc8aa3a8fcdd77218a7c467`** (deployed Wednesday, November 4, 2026, 7:09 AM CST by the owner's decision to skip the rehearsal kit; pre-cutover `pg_dump` kept in `C:\BidaZoo-beta\backups-release\`; identity OFF; no data changed). Before this the live tree was `46fe5eb` (the October 15 candidate), not `1a106bc` as previously recorded. Same closed-beta architecture (Studio PC, own Caddy :8480, own tunnel). |
 | Release work (release-candidate integration through founding-family beta) | **IN PROGRESS.** Step 1 (integration) is done and **merged into `main`** (November 3, 2026, with the visual recovery). Step 2 is **DONE**: official Studio validation of the exact `main` SHA `c0fdbaf6935fc9048cc8aa3a8fcdd77218a7c467` **passed** on November 3, 2026 (51 unit, 685 integration + 3 todo, Playwright 244/244 in 4 projects, Chromium 156.0.8078.4, Playwright 1.64.0, PostgreSQL 16.15, build, scan CLEAN, playthrough ALL CHECKS PASSED, exit 0; run folder `.validation-logs\20261103-214204`; see [STUDIO-VALIDATION.md](STUDIO-VALIDATION.md)). `c0fdbaf` is the validated release candidate. **Not deployed**; the release rehearsal (step 3) is next and needs the owner's go. See "Remaining work". |
 | World Expedition visual recovery (Choose Your Buddy, gameplay and results rebuilt on a shared presentation layer) | **On `main`** (`6cedf93`). Presentation only. Sandbox: unit 51, integration 685 + 3 todo, build, client scan CLEAN. Owner decisions still open: trait copy, `PRESENCE_EXPONENT`, higher-resolution art. See [visual/18](visual/18-world-expedition-visual-recovery.md). |
-| World / Explore / Basecamp | **Authorized as the next checkpoint by the owner on November 4, 2026** (ahead of roadmap G): a first walkable basecamp with the player's buddy and a portal that launches Zoo Sprint. Scope to be written and approved before code. |
+| Checkpoint W1 (Expedition Basecamp: walkable home screen, whole-body buddy, Basecamp Gate portal into Zoo Sprint) | **BUILT, look accepted by the owner (November 4, 2026)** on `feature/w1-basecamp-walk`; presentation only (no API, database or progression change). Sandbox: typecheck, unit 51, integration 724 + 3 todo, build, client scan CLEAN; Playwright on all four projects (supplementary Chromium). **Not Studio-validated, not merged, not deployed.** See [visual/20](visual/20-basecamp-walk.md). The validator now expects 724 integration and 272 Playwright. |
 
 ## Baselines and commits
 
@@ -371,8 +371,9 @@ Unfinished **release** work is different from unfinished **game** work.
 
 - Nothing remains for runtime closure: F1 to F6 are closed.
 - The F6 minor items above are finite follow-ups for the owner to schedule. They do not reopen F6.
-- **World / Explore / Basecamp** is a future product phase. It is not authorized and is not part of
-  the current runtime closure.
+- **World / Explore / Basecamp** started on November 4, 2026 with Checkpoint W1 (owner decision, ahead of
+  roadmap G): the walkable Basecamp with the gate portal. Destinations, the map room and anything the
+  world might unlock or reward remain unauthorized (see [visual/20](visual/20-basecamp-walk.md)).
 
 ### Roadmap (owner direction, November 3, 2026; each checkpoint still needs the owner's go)
 
@@ -387,7 +388,7 @@ Unfinished **release** work is different from unfinished **game** work.
 - **J. Hop Quest trial and migration.** The Hop Quest site becomes a trial that leads into a BidaZoo family
   account; existing Hop Quest families claim their accounts (Checkpoint E legacy claim); Boss Hop moves to
   BidaZoo's APIs.
-- Then reading (content and screens), and later World / Explore / Basecamp.
+- Then reading (content and screens). World / Explore / Basecamp: W1 (Basecamp walk) was pulled ahead and built on November 4, 2026; later world phases still need their own go.
 
 ### Release work (steps 1 and 2 done; the rest OPEN)
 
@@ -423,6 +424,12 @@ documentation, tooling and the validator. `1a106bc` (the live beta) remains the 
 `a283c24` and `856d012` are kept only as lineage references. Production identity stays OFF by default. It is
 **still untested on the Studio PC**: no checklist has been executed (scripts were parsed and their pure
 helpers exercised in a Linux sandbox only; see its README).
+
+**Next candidate (W1).** When W1 is merged, that merge commit is a new release candidate: it changes game
+code, so `infrastructure/deployment/identity-release/` (`$ShaApp = 0e7d563`) would refuse it until its
+application baseline is moved; the Studio validator already expects the W1 counts (51 / 724 / 3 / 272).
+Studio validation of the exact merge SHA, then a deploy with a pre-cutover dump (rollback target
+`c0fdbaf`), is the path.
 
 ## Rules for future sessions
 
