@@ -33,10 +33,10 @@ Hop Quest site becomes a trial that leads into BidaZoo; first release is math on
 | Checkpoints F1 to F5 (World Expedition production character art and runtime integration) | **CLOSED** by the project owner. Official Studio-PC validation passed at `f3b5483c2b253f0ccb0ee9b62060379b7575fb08`. On the runtime branch; **not yet merged into `main`**. |
 | Checkpoint F6 (final integrated runtime / release-candidate QA) | **CLOSED: PASS WITH MINOR ITEMS.** F6 made zero repository changes. Runtime ready for final release-candidate integration: **YES**. |
 | Production character art | **COMPLETE.** All six cast members have six production expressions. Integrated on the runtime branch; `main` still carries the code-drawn transitional art until release-candidate integration. |
-| Closed-beta deployment (`play.bidazoo.com`) | **LIVE, guest-only** (Studio PC; commit `1a106bc`; see "Closed-beta deployment and backups"). A closed-beta architecture, not necessarily the final production architecture. |
+| Closed-beta deployment (`play.bidazoo.com`) | **LIVE, guest-only, running the validated candidate `c0fdbaf6935fc9048cc8aa3a8fcdd77218a7c467`** (deployed Wednesday, November 4, 2026, 7:09 AM CST by the owner's decision to skip the rehearsal kit; pre-cutover `pg_dump` kept in `C:\BidaZoo-beta\backups-release\`; identity OFF; no data changed). Before this the live tree was `46fe5eb` (the October 15 candidate), not `1a106bc` as previously recorded. Same closed-beta architecture (Studio PC, own Caddy :8480, own tunnel). |
 | Release work (release-candidate integration through founding-family beta) | **IN PROGRESS.** Step 1 (integration) is done and **merged into `main`** (November 3, 2026, with the visual recovery). Step 2 is **DONE**: official Studio validation of the exact `main` SHA `c0fdbaf6935fc9048cc8aa3a8fcdd77218a7c467` **passed** on November 3, 2026 (51 unit, 685 integration + 3 todo, Playwright 244/244 in 4 projects, Chromium 156.0.8078.4, Playwright 1.64.0, PostgreSQL 16.15, build, scan CLEAN, playthrough ALL CHECKS PASSED, exit 0; run folder `.validation-logs\20261103-214204`; see [STUDIO-VALIDATION.md](STUDIO-VALIDATION.md)). `c0fdbaf` is the validated release candidate. **Not deployed**; the release rehearsal (step 3) is next and needs the owner's go. See "Remaining work". |
 | World Expedition visual recovery (Choose Your Buddy, gameplay and results rebuilt on a shared presentation layer) | **On `main`** (`6cedf93`). Presentation only. Sandbox: unit 51, integration 685 + 3 todo, build, client scan CLEAN. Owner decisions still open: trait copy, `PRESENCE_EXPONENT`, higher-resolution art. See [visual/18](visual/18-world-expedition-visual-recovery.md). |
-| World / Explore / Basecamp | Future product phase. **Not authorized**, and **not** part of the current runtime closure. |
+| World / Explore / Basecamp | **Authorized as the next checkpoint by the owner on November 4, 2026** (ahead of roadmap G): a first walkable basecamp with the player's buddy and a portal that launches Zoo Sprint. Scope to be written and approved before code. |
 
 ## Baselines and commits
 
@@ -53,8 +53,7 @@ Hop Quest site becomes a trial that leads into BidaZoo; first release is math on
   October 15 candidate: runtime + tooling retarget + validator hardening);
   `feature/world-expedition-visual-recovery` (`6cedf93`). Before the merge, `main` was `856d012` (Checkpoint E closure).
 - **Not merged:** `spike/world-hub-exploration` (unfinished, not authorized).
-- **Deployed in the live closed beta:** commit `1a106bc` (Checkpoint D), per
-  [DEPLOYMENT-CLOSED-BETA.md](DEPLOYMENT-CLOSED-BETA.md) section 9.
+- **Deployed in the live closed beta:** `c0fdbaf6935fc9048cc8aa3a8fcdd77218a7c467` since November 4, 2026 (see the Status table). Rollback target for the next release: this commit. `1a106bc` (Checkpoint D) is the original closed-beta deploy, per [DEPLOYMENT-CLOSED-BETA.md](DEPLOYMENT-CLOSED-BETA.md) section 9.
 - **Accepted application baseline:** `01b7d41` (Checkpoint B).
 - **Accepted Checkpoint C game implementation:** `7042f8f` ("feat(zoo-sprint): Checkpoint C - five
   locked starters, presentation only"). Presentation-only: no change to `apps/api`, `database`,
@@ -400,10 +399,9 @@ The remaining release path:
    (November 3, 2026) for `c0fdbaf6935fc9048cc8aa3a8fcdd77218a7c467`: every baseline count and version
    matched exactly, exit 0 (record in [STUDIO-VALIDATION.md](STUDIO-VALIDATION.md)). Any new commit on
    `main` is a new candidate and needs its own run.
-3. Release rehearsal (non-production; **next**, needs the owner's go; `-CandidateSha c0fdbaf6935fc9048cc8aa3a8fcdd77218a7c467`).
-4. Backup and rollback verification.
-5. Production application deployment (with the M6 header gate confirmed first: `09-m6-release-headers.ps1`
-   in rehearsal and `tools/m6-headers.mjs` against the origin and the public URL in the window).
+3. Release rehearsal: **skipped by owner decision** (November 4, 2026). The rehearsal kit remains unexecuted.
+4. Backup and rollback verification: a pre-cutover `pg_dump -Fc` (164 TOC entries, SHA-256 recorded in the deploy log) was taken; a scratch restore was **not** performed.
+5. Production application deployment: **DONE** (November 4, 2026; `c0fdbaf` live; identity OFF; M6 headers observed on the public URL: HTML `no-cache`, hashed assets `max-age=31536000, immutable`, CSP present).
 6. SMTP provider and DNS setup (the `notify.bidazoo.com` sending domain with SPF, DKIM and DMARC).
 7. Production identity enablement (`IDENTITY_SECRET`, production mail). Identity stays OFF until then
    ([IDENTITY-OPERATIONS.md](IDENTITY-OPERATIONS.md) section 10).
