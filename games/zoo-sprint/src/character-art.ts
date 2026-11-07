@@ -72,6 +72,49 @@ const ART_URLS: Readonly<Record<CastId, Readonly<Record<ExpressionState, string>
   },
 };
 
+/**
+ * PAINTED expressions (drop-in folder, November 2026): `assets/world-expedition/characters-painted/<id>/
+ * <id>_<state>.webp|png`, head-and-bust pictures in the painted Basecamp style with a flat bottom edge
+ * and the same framing for all six states of one character (see that folder's PROVENANCE.json). A
+ * character switches to them only when ALL SIX of its files exist and loaded; otherwise it keeps the
+ * approved production expressions above (which are never edited and still load, as the fallback).
+ * `import.meta.glob` emits exactly the files present, content-hashed, never inlined.
+ */
+const PAINTED_EXPRESSION_FILES = import.meta.glob<string>('../assets/world-expedition/characters-painted/*/*.{png,webp}', { eager: true, query: '?url', import: 'default' });
+
+/** `<id>_<state>` -> URL, for files whose folder matches their name and whose state is canonical. */
+const paintedExpressionUrls = new Map<string, string>();
+for (const [path, url] of Object.entries(PAINTED_EXPRESSION_FILES)) {
+  const m = /\/characters-painted\/([a-z]+)\/([a-z]+)_([A-Za-z]+)\.(png|webp)$/.exec(path);
+  if (m && m[1] === m[2] && (EXPRESSION_STATES as readonly string[]).includes(m[3]!)) paintedExpressionUrls.set(`${m[1]}_${m[3]}`, url);
+}
+
+export function paintedExpressionKey(id: CastId, state: ExpressionState): string {
+  return `bz-we-painted-${id}-${state}`;
+}
+
+/** The characters whose six painted expression files are all in this build. */
+export function paintedExpressionCast(): CastId[] {
+  return (Object.keys(ART_URLS) as CastId[]).filter((id) => EXPRESSION_STATES.every((state) => paintedExpressionUrls.has(`${id}_${state}`)));
+}
+
+/** The URL of one painted expression, or undefined when the file is not in this build. */
+export function paintedExpressionUrl(id: CastId, state: ExpressionState): string | undefined {
+  return paintedExpressionUrls.get(`${id}_${state}`);
+}
+
+/** True only when ALL six painted expressions of `id` are loaded (never half painted). */
+export function hasPaintedExpressions(scene: Phaser.Scene, id: CastId): boolean {
+  return EXPRESSION_STATES.every((state) => scene.textures.exists(paintedExpressionKey(id, state)));
+}
+
+/** How many painted expression textures are loaded right now (for the page hook and tests). */
+export function loadedPaintedTextureCount(scene: Phaser.Scene): number {
+  let count = 0;
+  for (const id of Object.keys(ART_URLS) as CastId[]) for (const state of EXPRESSION_STATES) if (scene.textures.exists(paintedExpressionKey(id, state))) count += 1;
+  return count;
+}
+
 /** The characters this build ships production art for. */
 export function productionArtCast(): CastId[] {
   return (Object.keys(ART_URLS) as CastId[]).filter(hasRuntimeArt);
@@ -110,6 +153,8 @@ export const ART_LOAD_TIMEOUT_MS = 6000;
  * prepared. The approved PNGs on disk are never edited and nothing is redrawn: this only keeps a few
  * stray backpack pixels, which sit just above the lower edge of one crop, from peeking out above a
  * card or ledge. Dino's tryAgain crop shows the top corner of his backpack at the lower left.
+ * These polygons belong to the approved production PNGs only: painted expressions use their own
+ * texture keys (paintedExpressionKey) and are never masked.
  */
 const HIDDEN_REGIONS: ReadonlyArray<{ id: CastId; state: ExpressionState; polygon: ReadonlyArray<readonly [number, number]> }> = [
   { id: 'dino', state: 'tryAgain', polygon: [[0, 0.6], [0.215, 0.6], [0.235, 0.66], [0.27, 0.69], [0.3, 0.7], [0.3, 1], [0, 1]] },
@@ -156,6 +201,15 @@ export function loadProductionCharacterArt(scene: Phaser.Scene): Promise<void> {
       const url = ART_URLS[id]?.[state];
       if (url && !scene.textures.exists(key)) {
         loader.image(key, url);
+        queued += 1;
+      }
+    }
+  }
+  for (const id of paintedExpressionCast()) {
+    for (const state of EXPRESSION_STATES) {
+      const key = paintedExpressionKey(id, state);
+      if (!scene.textures.exists(key)) {
+        loader.image(key, paintedExpressionUrls.get(`${id}_${state}`)!);
         queued += 1;
       }
     }

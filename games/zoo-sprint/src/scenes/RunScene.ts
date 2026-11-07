@@ -10,10 +10,11 @@ import { expressionForRun } from '../character-expression';
 import { castPresence, type CastId } from '../character-definitions';
 import { characterName } from '../roster';
 import { bakeEnvironment } from '../presentation/environment';
+import { addPaintedBackdrop } from '../painted-backdrop';
 import { buildMedallion, clipBelow, maskRounded, spotlight } from '../presentation/hero-stage';
 import { clampNumber, runLayout } from '../presentation/layout';
 import { prefersReducedMotion } from '../presentation/motion';
-import { coinIcon, grassLedge, parchmentPanel, pill, softShadow, starIcon, timberSign } from '../presentation/surfaces';
+import { coinIcon, grassLedge, parchmentPanel, pill, softShadow, starIcon, timberDeck, timberSign } from '../presentation/surfaces';
 import { getContext } from '../context';
 import { EXP, EXP_CSS } from '../theme';
 import { BUTTON_STYLES, TapButton, makeAttemptId, publishSurface, text, type ButtonBadge, type ButtonStyle, type HitTarget } from '../ui';
@@ -225,12 +226,28 @@ export class RunScene extends Phaser.Scene {
     const total = session?.total ?? 10;
     const open = this.phase === 'question' || this.phase === 'submitting' || this.phase === 'feedback';
 
-    // --- the expedition scene: the trail the buddy is walking ---
-    const pageKey = bakeEnvironment(this, 'run-page', 'trail', w, h);
-    this.layer.add(this.add.image(0, 0, pageKey).setOrigin(0, 0));
+    // --- the expedition scene: the painted Basecamp plaza (a calm crop of the lantern canopy) behind
+    // the question; on a wide screen the page is the plaza out of focus and the sharp crop is in the
+    // scene panel. Without the painting, the code-drawn trail as before. ---
+    const painted = addPaintedBackdrop(this, this.layer, { x: 0, y: 0, w, h }, split ? 'select' : 'run');
+    if (!painted) this.layer.add(this.add.image(0, 0, bakeEnvironment(this, 'run-page', 'trail', w, h)).setOrigin(0, 0));
     const veil = this.add.graphics();
-    veil.fillStyle(0x0d2d4a, split ? 0.4 : 0.16);
-    veil.fillRect(0, 0, w, h);
+    if (painted) {
+      // warm dusk over the soft page (wide), or a gentle shade at the very top and bottom (portrait),
+      // so the HUD and the answers read on the painting
+      if (split) {
+        veil.fillStyle(0x2a1606, 0.34);
+        veil.fillRect(0, 0, w, h);
+      } else {
+        veil.fillGradientStyle(0x2a1606, 0x2a1606, 0x2a1606, 0x2a1606, 0.32, 0.32, 0, 0);
+        veil.fillRect(0, 0, w, Math.round(h * 0.16));
+        veil.fillGradientStyle(0x2a1606, 0x2a1606, 0x2a1606, 0x2a1606, 0, 0, 0.42, 0.42);
+        veil.fillRect(0, L.card.y - 20, w, h - L.card.y + 20);
+      }
+    } else {
+      veil.fillStyle(0x0d2d4a, split ? 0.4 : 0.16);
+      veil.fillRect(0, 0, w, h);
+    }
     this.layer.add(veil);
     if (split) {
       const panel = L.scene;
@@ -243,10 +260,12 @@ export class RunScene extends Phaser.Scene {
       frame.fillRoundedRect(panel.x - 4, panel.y - 4, panel.w + 8, panel.h + 6, radius + 3);
       this.layer.add(frame);
       const inner = this.add.container(0, 0);
-      const key = bakeEnvironment(this, 'run-scene', 'basecamp', Math.round(panel.w), Math.round(panel.h));
-      inner.add(this.add.image(panel.x, panel.y, key).setOrigin(0, 0));
+      if (!(painted && addPaintedBackdrop(this, inner, panel, 'runPanel', 0, false))) {
+        const key = bakeEnvironment(this, 'run-scene', 'basecamp', Math.round(panel.w), Math.round(panel.h));
+        inner.add(this.add.image(panel.x, panel.y, key).setOrigin(0, 0));
+      }
       const light = this.add.graphics();
-      spotlight(light, panel.x + panel.w / 2, panel.y + panel.h * 0.4, Math.min(panel.w * 0.5, panel.h * 0.4));
+      spotlight(light, panel.x + panel.w / 2, panel.y + panel.h * 0.4, Math.min(panel.w * 0.5, panel.h * 0.4), painted ? 0.6 : 1);
       inner.add(light);
       this.layer.add(inner);
       maskRounded(this, inner, panel, radius);
@@ -274,7 +293,7 @@ export class RunScene extends Phaser.Scene {
     if (split) {
       const ledgeH = L.scene.y + L.scene.h - (L.buddyBox.y + L.buddyBox.h);
       const ledge = this.add.graphics();
-      grassLedge(ledge, { x: L.scene.x, y: L.scene.y + L.scene.h - ledgeH, w: L.scene.w, h: ledgeH });
+      (painted ? timberDeck : grassLedge)(ledge, { x: L.scene.x, y: L.scene.y + L.scene.h - ledgeH, w: L.scene.w, h: ledgeH });
       const clip = this.add.container(0, 0, [ledge]);
       maskRounded(this, clip, L.scene, Math.min(30, L.scene.w * 0.07));
       this.layer.add(clip);
@@ -284,7 +303,7 @@ export class RunScene extends Phaser.Scene {
     const hud = L.hud;
     const hg = this.add.graphics();
     softShadow(hg, hud, hud.h / 2, 8, 0.3);
-    pill(hg, hud, EXP.navy, EXP.brass, 0.94);
+    pill(hg, hud, painted ? EXP.timberDeep : EXP.navy, EXP.brass, 0.94);
     this.layer.add(hg);
     const av = hud.h - 8;
     this.layer.add(buildMedallion(this, { id: ctx.character, cx: hud.x + 4 + av / 2, cy: hud.y + hud.h / 2, d: av, selected: false }).container);
@@ -315,7 +334,8 @@ export class RunScene extends Phaser.Scene {
     const left = route.x + 16;
     const right = route.x + route.w - 16;
     const ry = route.y + route.h / 2;
-    rg.lineStyle(Math.max(5, route.h * 0.22), 0x0d2d4a, 0.55);
+    const routeInk = painted ? 0x3a210c : 0x0d2d4a;
+    rg.lineStyle(Math.max(5, route.h * 0.22), routeInk, 0.55);
     rg.lineBetween(left, ry, right, ry);
     rg.lineStyle(Math.max(3, route.h * 0.12), EXP.brass, 1);
     rg.lineBetween(left, ry, left + ((right - left) * answered) / total, ry);
@@ -324,9 +344,9 @@ export class RunScene extends Phaser.Scene {
       const done = i <= answered;
       const current = i === Math.min(answered + (open ? 1 : 0), total) && i > 0 && i <= total && !done;
       const r = i === total ? route.h * 0.42 : route.h * 0.26;
-      rg.fillStyle(0x0d2d4a, 0.9);
+      rg.fillStyle(routeInk, 0.9);
       rg.fillCircle(x, ry, r + 2.5);
-      rg.fillStyle(done ? EXP.brass : current ? EXP.orange : 0xe8f0f4, 1);
+      rg.fillStyle(done ? EXP.brass : current ? EXP.orange : painted ? EXP.canvas : 0xe8f0f4, 1);
       rg.fillCircle(x, ry, r);
       if (i === total) starIcon(rg, x, ry, r * 0.95, done ? 0xffffff : EXP.brassDeep);
     }
@@ -360,14 +380,14 @@ export class RunScene extends Phaser.Scene {
     }
 
     // --- the feedback pill ---
-    this.drawFeedback(L.feedback);
+    this.drawFeedback(L.feedback, painted);
 
     // --- four glossy answer buttons (2x2) ---
     const choices = this.question && open ? this.question.choices : [];
     choices.forEach((choice, index) => {
       const r = L.answers[index];
       if (!r) return;
-      let style: ButtonStyle = BUTTON_STYLES.answer;
+      let style: ButtonStyle = painted ? BUTTON_STYLES.answerTimber : BUTTON_STYLES.answer;
       let badge: ButtonBadge = null;
       if (this.phase === 'feedback' && this.feedback) {
         const { result, chosen } = this.feedback;
@@ -399,9 +419,9 @@ export class RunScene extends Phaser.Scene {
     this.publish(targets, choices);
   }
 
-  private drawFeedback(r: { x: number; y: number; w: number; h: number }): void {
+  private drawFeedback(r: { x: number; y: number; w: number; h: number }, painted = false): void {
     let label = '';
-    let fill: number = EXP.navy;
+    let fill: number = painted ? EXP.timberDeep : EXP.navy;
     let edge: number = EXP.brass;
     let color: string = EXP_CSS.white;
     if (this.phase === 'feedback' && this.feedback) {
@@ -466,6 +486,7 @@ export class RunScene extends Phaser.Scene {
       'question-id': this.question?.id ?? '',
       streak: String(this.streak),
       'buddy-rect': this.buddyRect(),
+      'buddy-art': this.character?.artKind ?? '',
       'buddy-upscale': this.heroFit ? this.heroFit.upscale.toFixed(2) : '',
       'last-correct': this.feedback ? String(this.feedback.result.correct) : '',
     };

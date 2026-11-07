@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import { loadProductionCharacterArt, loadedProductionTextureCount, productionArtCast } from '../character-art';
+import { loadProductionCharacterArt, loadedPaintedTextureCount, loadedProductionTextureCount, productionArtCast } from '../character-art';
 import { loadBasecampArt } from '../basecamp-art';
 import { getContext } from '../context';
 import { bakeEnvironment } from '../presentation/environment';
@@ -78,6 +78,8 @@ export class BootScene extends Phaser.Scene {
       await ensureFonts();
       // Lets automated tests see how many production textures are ready ("0" means fallback art).
       ctx.parent.setAttribute('data-production-art', String(loadedProductionTextureCount(this)));
+      // ...and how many PAINTED expression textures (six per painted character; "0" means none).
+      ctx.parent.setAttribute('data-painted-art', String(loadedPaintedTextureCount(this)));
       ctx.totals = guest.totals;
       ctx.activeSessionId = guest.activeSessionId;
       this.scene.start('MenuScene');

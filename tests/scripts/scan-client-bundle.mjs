@@ -74,6 +74,9 @@ const backdropProvenance = JSON.parse(readFileSync('games/zoo-sprint/assets/worl
 for (const [file, e] of Object.entries(backdropProvenance.files)) allowedPngs.set(e.runtimeSha256, `basecamp/${file}`);
 const paintedWalkProvenance = JSON.parse(readFileSync('games/zoo-sprint/assets/world-expedition/walk-painted/PROVENANCE.json', 'utf8'));
 for (const [file, e] of Object.entries(paintedWalkProvenance.files)) allowedPngs.set(e.runtimeSha256, `walk-painted/${file}`);
+// Painted expressions (drop-in folder, <id>/<id>_<state>): every listed picture is allowed and required.
+const paintedExpressionProvenance = JSON.parse(readFileSync('games/zoo-sprint/assets/world-expedition/characters-painted/PROVENANCE.json', 'utf8'));
+for (const [file, e] of Object.entries(paintedExpressionProvenance.files)) allowedPngs.set(e.runtimeSha256, `characters-painted/${file}`);
 // Every picture in the build (not only PNGs) must be curated.
 const pngs = files.filter((f) => /\.(png|jpe?g|webp)$/i.test(f));
 const seenPngs = new Set();

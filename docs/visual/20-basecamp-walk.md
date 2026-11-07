@@ -81,6 +81,34 @@ it instead (presentation only; `src/basecamp-art.ts`, `src/presentation/backdrop
 - Not done: rendering the canvas at device pixel ratio (a game-wide change to every scene's
   coordinates and hit targets); on a 2x phone the painting is upscaled by the browser.
 
+## Painted screens: Choose Your Buddy, the run, Results (November 7, 2026)
+
+The other screens now happen in the same painted place (presentation only; no API, database, grading,
+XP, coin or mastery change):
+
+- **Backdrops** (`src/painted-backdrop.ts`, crops in `PAINTED_VIEWS` in `src/presentation/backdrop-model.ts`):
+  the Basecamp layers, already loaded at boot, cropped per screen. Choose Your Buddy: the whole plaza out of
+  focus (a small flattened copy drawn scaled up) behind the menu, and a sharp crop of the lodge porch inside
+  the hero card. Run: the lantern canopy and tables (portrait, full screen) or the observatory (landscape
+  scene panel, with the plaza soft behind the page). Results: the paw-banner gate in warm light. Without the
+  painted layers every screen draws its code-drawn backdrop as before. A soft dark gradient sits behind the
+  HUD and the answers on portrait; the code-drawn grass ledge becomes a timber deck on painted screens.
+- **Hero card:** the painted whole-body front pose (`walk-painted/<id>_idle_front`, all six cast members),
+  feet on the name plate, with a contact shadow. It is one picture, so "Choose" plays the hop and ring only.
+- **Painted expressions** (`assets/world-expedition/characters-painted/<id>/<id>_<state>.webp|png`, own
+  PROVENANCE.json): used everywhere a bust is drawn (run, Results, medallions, Click's chip, the HUD avatar)
+  when ALL SIX files of that character exist and loaded (`paintedExpressionCast`, `hasPaintedExpressions`);
+  else the approved production expressions (unchanged, still loaded at boot) and then the code-drawn busts.
+  One canvas per character, bottom-aligned on the flat chest cut: `computePaintedFit` gives one scale per
+  character, the cut sits `overlap` px below the box under the card, deck or plate, and the whole picture is
+  never wider than its box. The M4 eye-line/head-core numbers, the Dino tryAgain hidden-bounds polygon and
+  the production `maxScale` apply to the production PNGs only (the polygon is keyed to their texture keys).
+  Swapping a painted expression: replace the file, `node tests/scripts/refresh-painted-provenance.mjs`.
+- **Palette:** answers are polished timber (`BUTTON_STYLES.answerTimber`), the HUD pill, route and neutral
+  feedback pill timber brown, medallion backs canvas cream; right stays green, a miss stays amber.
+- **QA hooks:** `data-painted-art` (painted expression textures loaded), `data-hero-art` (menu) and
+  `data-buddy-art` (run, Results): `front`, `painted`, `production` or `fallback`.
+
 ## Not in W1 (open)
 
 Destinations beyond the signpost ("Rice Terraces: coming soon"), the map room and plaza of doc 12,

@@ -25,6 +25,8 @@ export const BUTTON_STYLES = {
   good: { fill: EXP.green, top: EXP.greenTop, shade: EXP.greenDeep, text: EXP_CSS.white, textStroke: '#0c4a28' } as ButtonStyle,
   bad: { fill: EXP.amber, top: EXP.amberTop, shade: EXP.amberDeep, text: '#4a2504' } as ButtonStyle,
   dim: { fill: EXP.dim, top: 0xe6e0cb, shade: EXP.dimDeep, text: EXP_CSS.muted } as ButtonStyle,
+  /** Answers on the painted Basecamp: polished timber, like the lodge's signboards. */
+  answerTimber: { fill: EXP.timber, top: EXP.timberLight, shade: EXP.timberDeep, text: EXP_CSS.white, textStroke: '#3a210c' } as ButtonStyle,
 };
 
 /** A small badge on an answer button: a check for the right answer, a circular arrow for "try again". */

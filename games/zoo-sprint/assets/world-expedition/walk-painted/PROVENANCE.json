@@ -1,18 +1,23 @@
 {
   "schemaVersion": 1,
-  "purpose": "Provenance for the PAINTED whole-body pictures: <id>_walk_side (side view, faces right) replaces walk/<id>_walk_side.png for the Basecamp walker; <id>_idle_front (optional) is a standing pose, used by Click at the lodge door. Verified by tests/integration/basecamp-painted-assets.test.ts and the client bundle scan. Refresh after adding or replacing a picture: node tests/scripts/refresh-painted-provenance.mjs",
+  "purpose": "Provenance for the PAINTED whole-body pictures: <id>_walk_side (side view, faces right) replaces walk/<id>_walk_side.png for the Basecamp walker; <id>_idle_front (optional) is a standing front pose: Click at the lodge door, and the starter on the Choose Your Buddy hero card. Verified by tests/integration/basecamp-painted-assets.test.ts and the client bundle scan. Refresh after adding or replacing a picture: node tests/scripts/refresh-painted-provenance.mjs",
   "runtimeDirectory": "games/zoo-sprint/assets/world-expedition/walk-painted",
   "source": "OpenArt nano-banana-2 image2image, owner-approved selection on November 7, 2026",
   "storage": "normal Git blobs (no Git LFS rule matches the runtime directory)",
   "facing": "right (the game flips horizontally to walk left)",
-  "idleFrontApprovedNotShipped": {
-    "dino": "coeV5zYenWJ4BXQGsoXb",
-    "eagle": "BWZ3VMXK7ZRAwFmMgaiw",
-    "bronco": "0O0defSCNxRgHs2lMlsd",
-    "koala": "M6swWFiOXVNTYt6VD8o4",
-    "tarsier": "5X7fl4I3rGIWXyaCvjFI"
-  },
   "files": {
+    "bronco_idle_front.webp": {
+      "role": "bronco painted front standing pose (Choose Your Buddy hero card)",
+      "openArtHistoryId": "0O0defSCNxRgHs2lMlsd",
+      "derivation": "RGBA PNG resized (Lanczos) to 900 px tall, WebP with alpha quality 85",
+      "runtimeFile": "bronco_idle_front.webp",
+      "runtimeSha256": "87048c5da18f4f7c61818eb3c5ec8b0aa94a52ab3d017ebc46814485f5cc125e",
+      "runtimeBytes": 96094,
+      "format": "webp",
+      "width": 664,
+      "height": 900,
+      "status": "FINAL"
+    },
     "bronco_walk_side.webp": {
       "role": "bronco painted side view (walking), faces right",
       "openArtHistoryId": "2Po1m0DpfADVO2Uk8Lp0",
@@ -49,6 +54,18 @@
       "height": 700,
       "status": "FINAL"
     },
+    "dino_idle_front.webp": {
+      "role": "dino painted front standing pose (Choose Your Buddy hero card)",
+      "openArtHistoryId": "coeV5zYenWJ4BXQGsoXb",
+      "derivation": "RGBA PNG resized (Lanczos) to 900 px tall, WebP with alpha quality 85",
+      "runtimeFile": "dino_idle_front.webp",
+      "runtimeSha256": "694757327f6787e458159eac7970499ec73b420b3ba1f30428642609b79c6c4e",
+      "runtimeBytes": 73550,
+      "format": "webp",
+      "width": 646,
+      "height": 900,
+      "status": "FINAL"
+    },
     "dino_walk_side.webp": {
       "role": "dino painted side view (walking), faces right",
       "openArtHistoryId": "EixlzJAnZIWsolop6dbc",
@@ -59,6 +76,18 @@
       "format": "webp",
       "width": 526,
       "height": 700,
+      "status": "FINAL"
+    },
+    "eagle_idle_front.webp": {
+      "role": "eagle painted front standing pose (Choose Your Buddy hero card)",
+      "openArtHistoryId": "BWZ3VMXK7ZRAwFmMgaiw",
+      "derivation": "RGBA PNG resized (Lanczos) to 900 px tall, WebP with alpha quality 85",
+      "runtimeFile": "eagle_idle_front.webp",
+      "runtimeSha256": "fb65f5aad7cdbcab57b511a35280f9b44895e2947916aaacda1d05c646ff568b",
+      "runtimeBytes": 88002,
+      "format": "webp",
+      "width": 748,
+      "height": 900,
       "status": "FINAL"
     },
     "eagle_walk_side.webp": {
@@ -73,6 +102,18 @@
       "height": 700,
       "status": "FINAL"
     },
+    "koala_idle_front.webp": {
+      "role": "koala painted front standing pose (Choose Your Buddy hero card)",
+      "openArtHistoryId": "M6swWFiOXVNTYt6VD8o4",
+      "derivation": "RGBA PNG resized (Lanczos) to 900 px tall, WebP with alpha quality 85",
+      "runtimeFile": "koala_idle_front.webp",
+      "runtimeSha256": "5e075ae79ddc67c312ef4a6858db863bd958b238db50ffdd6f93a52cef6e685a",
+      "runtimeBytes": 77184,
+      "format": "webp",
+      "width": 691,
+      "height": 900,
+      "status": "FINAL"
+    },
     "koala_walk_side.webp": {
       "role": "koala painted side view (walking), faces right",
       "openArtHistoryId": "dyWrt0SHkHqLo5gqKYVd",
@@ -83,6 +124,18 @@
       "format": "webp",
       "width": 429,
       "height": 700,
+      "status": "FINAL"
+    },
+    "tarsier_idle_front.webp": {
+      "role": "tarsier painted front standing pose (Choose Your Buddy hero card)",
+      "openArtHistoryId": "5X7fl4I3rGIWXyaCvjFI",
+      "derivation": "RGBA PNG resized (Lanczos) to 900 px tall, WebP with alpha quality 85",
+      "runtimeFile": "tarsier_idle_front.webp",
+      "runtimeSha256": "ad6a204337830668326c7554121f0bee0094cd6a3c1a205a0728534c83008997",
+      "runtimeBytes": 113852,
+      "format": "webp",
+      "width": 806,
+      "height": 900,
       "status": "FINAL"
     },
     "tarsier_walk_side.webp": {

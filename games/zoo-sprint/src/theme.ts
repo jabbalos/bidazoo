@@ -79,6 +79,11 @@ export const EXP = {
   amberDeep: 0xc4660f,
   dim: 0xd7d0b9,
   dimDeep: 0xb5ad92,
+  // painted Basecamp (November 2026): canvas cream of the tents, the jungle green of its foliage
+  canvas: 0xf6ead0,
+  canvasShade: 0xe6d3ab,
+  jungleGreen: 0x2f6b3a,
+  jungleGreenDeep: 0x1f4a28,
 } as const;
 
 export const EXP_CSS = {
@@ -93,6 +98,8 @@ export const EXP_CSS = {
   greenDeep: '#14653a',
   amberDeep: '#8a4708',
   muted: '#4a5d73',
+  timberDeep: '#4a2c12',
+  timber: '#6b4320',
 } as const;
 
 /**

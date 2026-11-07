@@ -3,6 +3,7 @@ import type { Character } from '../characters';
 import { HOST_DEFINITION } from '../character-definitions';
 import { getContext } from '../context';
 import { bakeEnvironment } from '../presentation/environment';
+import { addPaintedBackdrop } from '../painted-backdrop';
 import { buildGuideChip, buildHeroStage, buildMedallion } from '../presentation/hero-stage';
 import { selectLayout } from '../presentation/layout';
 import { GUIDE_LINE } from '../presentation/traits';
@@ -92,11 +93,12 @@ export class MenuScene extends Phaser.Scene {
     const id = ctx.character;
     const name = characterName(id);
 
-    // calm, cool backdrop for the whole screen (the warm scene lives inside the hero card)
-    const bgKey = bakeEnvironment(this, 'select-page', 'trail', w, h);
-    this.layer.add(this.add.image(0, 0, bgKey).setOrigin(0, 0));
+    // The painted Basecamp, out of focus, behind the whole screen (the sharp painting lives inside the
+    // hero card); the code-drawn trail when the painting is not loaded.
+    const painted = addPaintedBackdrop(this, this.layer, { x: 0, y: 0, w, h }, 'select');
+    if (!painted) this.layer.add(this.add.image(0, 0, bakeEnvironment(this, 'select-page', 'trail', w, h)).setOrigin(0, 0));
     const veil = this.add.graphics();
-    veil.fillStyle(0x0d2d4a, 0.34);
+    veil.fillStyle(painted ? 0x2a1606 : 0x0d2d4a, painted ? 0.3 : 0.34);
     veil.fillRect(0, 0, w, h);
     this.layer.add(veil);
 
@@ -104,11 +106,11 @@ export class MenuScene extends Phaser.Scene {
     const title = text(this, 'Choose Your Buddy', '#ffffff', {
       weight: 800,
       size: layout.titleSize,
-      stroke: EXP_CSS.navy,
+      stroke: painted ? EXP_CSS.timberDeep : EXP_CSS.navy,
       strokeWidth: Math.max(5, Math.round(layout.titleSize * 0.2)),
     }).setOrigin(0.5);
     title.setPosition(layout.title.x + layout.title.w / 2, layout.title.y + layout.title.h / 2);
-    title.setShadow(0, Math.max(3, layout.titleSize * 0.08), '#08203a', 4, false, true);
+    title.setShadow(0, Math.max(3, layout.titleSize * 0.08), painted ? '#2a1606' : '#08203a', 4, false, true);
     this.layer.add(title);
 
     // Click: host and guide, never selectable (no hit target below belongs to it)
@@ -192,6 +194,7 @@ export class MenuScene extends Phaser.Scene {
       'hero-rect': rect ? JSON.stringify({ x: Math.round(rect.x), y: Math.round(rect.y), w: Math.round(rect.w), h: Math.round(rect.h) }) : '',
       'hero-stage': JSON.stringify({ x: Math.round(layout.stage.x), y: Math.round(layout.stage.y), w: Math.round(layout.stage.w), h: Math.round(layout.stage.h) }),
       'hero-upscale': fit ? fit.upscale.toFixed(2) : '',
+      'hero-art': this.hero?.artKind ?? '',
     });
   }
 }

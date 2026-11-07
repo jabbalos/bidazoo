@@ -67,7 +67,7 @@ export interface WalkPicture {
 
 const boxCache = new Map<string, WalkPicture['box']>();
 /** The bounding box of the non-transparent pixels, so painted art with padding still stands on the ground. */
-function opaqueBox(scene: Phaser.Scene, key: string): WalkPicture['box'] {
+export function opaqueBox(scene: Phaser.Scene, key: string): WalkPicture['box'] {
   const cached = boxCache.get(key);
   if (cached) return cached;
   const src = scene.textures.get(key).getSourceImage() as HTMLImageElement;

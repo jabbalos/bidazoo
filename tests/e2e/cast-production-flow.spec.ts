@@ -42,8 +42,15 @@ const PAINTED_OTHER_PNGS = Object.keys(readProvenance('walk-painted')['files']!)
 const BACKDROP_PNGS = [...Object.keys(readProvenance('basecamp')['files']!).filter((f) => f.endsWith('.png')), ...PAINTED_OTHER_PNGS];
 const BACKDROP_PATH = /^\/assets\/[\w-]+\.png$/;
 const EXPECTED_PNGS = 42 + PAINTED_WALK_IDS.length + BACKDROP_PNGS.length;
-/** Aborts every cast PNG (the art cannot be loaded). */
-const ALL_ART = '**/assets/{dino,koala,tarsier,eagle,bronco,click}_*.png';
+/**
+ * Painted expressions (drop-in folder characters-painted/<id>/<id>_<state>, see character-art.ts):
+ * when a character has all six, they replace its production expressions on screen (the production
+ * PNGs still load, as the fallback). Their number comes from the folder's PROVENANCE.json.
+ */
+const PAINTED_EXPRESSIONS = Object.keys(readProvenance('characters-painted')['files']!);
+const PAINTED_IDS = [...new Set(PAINTED_EXPRESSIONS.map((f) => f.split('/')[0]!))];
+/** Aborts every cast picture, production PNGs and painted WebP/PNG alike (the art cannot be loaded). */
+const ALL_ART = /\/assets\/(dino|koala|tarsier|eagle|bronco|click)_[^/]*\.(png|webp)$/;
 
 async function targets(page: Page): Promise<Target[]> {
   return JSON.parse((await page.locator('#game').getAttribute('data-hit-targets')) ?? '[]') as Target[];
@@ -223,11 +230,18 @@ test.describe('Cast production art in the real game', () => {
       expect(response.signature, `${response.url} is a real PNG, not LFS pointer text`).toBe(PNG_SIGNATURE);
     }
 
-    // The menu's Dino card is drawn from production art (spike orange is present).
+    // The painted expressions load too, all of them (six per painted character) and only once.
+    await expect(page.locator('#game')).toHaveAttribute('data-painted-art', String(PAINTED_EXPRESSIONS.length));
     await page.waitForTimeout(400);
-    const orange = await productionOrangePixels(page);
-    test.info().annotations.push({ type: 'production-orange-pixels', description: String(orange) });
-    expect(orange, 'production Dino spikes are visible on the menu').toBeGreaterThan(40);
+    if (PAINTED_IDS.includes('dino')) {
+      // Dino is drawn from painted art: the hero card shows the painted whole-body front pose.
+      await expect(page.locator('#game')).toHaveAttribute('data-hero-art', 'front');
+    } else {
+      // The menu's Dino card is drawn from production art (spike orange is present).
+      const orange = await productionOrangePixels(page);
+      test.info().annotations.push({ type: 'production-orange-pixels', description: String(orange) });
+      expect(orange, 'production Dino spikes are visible on the menu').toBeGreaterThan(40);
+    }
     await shot(page, 'menu');
 
     // Art selection is presentation only: nothing about it is sent to the API.
@@ -285,6 +299,8 @@ test.describe('Cast production art in the real game', () => {
     await expect.poll(() => scene(page)).toBe('menu');
     await expect(page.locator('#game')).toHaveAttribute('data-production-art', '0');
     await page.waitForTimeout(400);
+    await expect(page.locator('#game')).toHaveAttribute('data-painted-art', '0');
+    await expect(page.locator('#game')).toHaveAttribute('data-hero-art', 'fallback');
     const orange = await productionOrangePixels(page);
     test.info().annotations.push({ type: 'fallback-orange-pixels', description: String(orange) });
     expect(orange, 'no production art on screen').toBeLessThan(10);
@@ -301,7 +317,8 @@ test.describe('Cast production art in the real game', () => {
 
     const partial = await page.context().newPage();
     try {
-      await partial.route('**/assets/koala_cheer-*.png', (route) => route.abort());
+      // the production AND the painted cheer: Koala has neither complete set, so it is code-drawn
+      await partial.route(/\/assets\/koala_cheer-[\w-]+\.(png|webp)$/, (route) => route.abort());
       await openMenu(partial, '35');
       const withoutKoala = await canvasShot(partial);
       const diff = await cardDifference(page, production, withoutKoala, cards);
@@ -311,6 +328,26 @@ test.describe('Cast production art in the real game', () => {
       // The game works with a mixed cast.
       await tap(partial, 'character-koala');
       await expect(partial.locator('#game')).toHaveAttribute('data-character', 'koala');
+    } finally {
+      await partial.close();
+    }
+  });
+
+  test('a character is never drawn half painted: one missing painted file sends it back to its production expressions', async ({ page }) => {
+    test.skip(!PAINTED_IDS.includes('koala'), 'Koala has no painted expressions in this build');
+    await openMenu(page, '36');
+    const cards = await starterCards(page);
+    const painted = await canvasShot(page);
+    const partial = await page.context().newPage();
+    try {
+      await partial.route(/\/assets\/koala_cheer-[\w-]+\.webp$/, (route) => route.abort());
+      await openMenu(partial, '36');
+      await expect(partial.locator('#game')).toHaveAttribute('data-painted-art', String(PAINTED_EXPRESSIONS.length - 1));
+      const withoutPaintedKoala = await canvasShot(partial);
+      const diff = await cardDifference(page, painted, withoutPaintedKoala, cards);
+      test.info().annotations.push({ type: 'card-difference', description: JSON.stringify(diff) });
+      expect(diff['koala'], 'Koala falls back to its production art as a whole').toBeGreaterThan(0.08);
+      for (const id of ['dino', 'tarsier', 'eagle', 'bronco'] as const) expect(diff[id], `${id} is unaffected`).toBeLessThan(0.02);
     } finally {
       await partial.close();
     }
@@ -363,7 +400,8 @@ test.describe('Cast production art in the real game', () => {
     await enterGate(page);
     await expect.poll(() => scene(page), { timeout: 60_000 }).toBe('run'); // the 1 s celebration is slow under software GL
     await page.waitForTimeout(500);
-    expect(await productionOrangePixels(page), 'Dino on the run screen is production art').toBeGreaterThan(20);
+    if (PAINTED_IDS.includes('dino')) await expect(page.locator('#game')).toHaveAttribute('data-buddy-art', 'painted');
+    else expect(await productionOrangePixels(page), 'Dino on the run screen is production art').toBeGreaterThan(20);
     await shot(page, 'run');
 
     for (let i = 0; i < 10; i++) {
@@ -383,7 +421,8 @@ test.describe('Cast production art in the real game', () => {
     }
     await expect.poll(() => scene(page), { timeout: 120_000 }).toBe('results');
     await page.waitForTimeout(500);
-    expect(await productionOrangePixels(page), 'Dino on the results screen is production art').toBeGreaterThan(20);
+    if (PAINTED_IDS.includes('dino')) await expect(page.locator('#game')).toHaveAttribute('data-buddy-art', 'painted');
+    else expect(await productionOrangePixels(page), 'Dino on the results screen is production art').toBeGreaterThan(20);
     await shot(page, 'results');
   });
 });

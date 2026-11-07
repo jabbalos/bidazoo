@@ -118,3 +118,45 @@ export function backdropX(layout: BackdropLayout, fx: number): number {
 export function backdropY(layout: BackdropLayout, fy: number): number {
   return Math.round(layout.front.y + fy * layout.front.h);
 }
+
+// ---------------------------------------------------------------------------
+// The painted Basecamp behind the other screens (painted-backdrop.ts draws it)
+// ---------------------------------------------------------------------------
+
+/** Which screen the painting sits behind. */
+export type PaintedView = 'select' | 'stage' | 'run' | 'runPanel' | 'results';
+
+export interface PaintedCrop {
+  /** Point of the front picture (fractions) kept as central as the picture's edges allow. */
+  focusX: number;
+  focusY: number;
+  /** 1 covers the box; above 1 shows a closer detail of the painting. */
+  zoom: number;
+  /** The softened (out-of-focus) copy instead of the sharp layers. */
+  soft: boolean;
+  /** A color wash over the crop (warmth for Results); none when absent. */
+  tint?: { color: number; alpha: number };
+}
+
+/**
+ * The crop each screen uses, as fractions of the painted Basecamp front picture (3771 x 1600; the
+ * lodge with the compass is at about x 0.3, the lantern canopy and tables 0.55, the map pavilion
+ * 0.78, the paw-banner gate 0.92; the path runs along y 0.84 to 0.96). Re-aim a screen by editing a
+ * number here; a crop that runs past an edge of the painting is pushed back inside it.
+ */
+export const PAINTED_VIEWS: Readonly<Record<PaintedView, PaintedCrop>> = Object.freeze({
+  // the whole plaza, out of focus, behind the menu
+  select: { focusX: 0.42, focusY: 0.55, zoom: 1, soft: true },
+  // the hero card: the lodge porch, sharp, so the buddy stands in Basecamp
+  stage: { focusX: 0.34, focusY: 0.6, zoom: 1, soft: false },
+  // the question screen (portrait, full screen): the quiet lantern canopy and tables
+  run: { focusX: 0.55, focusY: 0.62, zoom: 1, soft: false },
+  // the question screen's scene panel (landscape): the observatory and the canopy
+  runPanel: { focusX: 0.6, focusY: 0.62, zoom: 1, soft: false },
+  // Results: home through the paw-banner gate, in warm late light
+  results: { focusX: 0.86, focusY: 0.6, zoom: 1, soft: false, tint: { color: 0xff9a3c, alpha: 0.16 } },
+});
+
+export function paintedCrop(view: PaintedView): PaintedCrop {
+  return PAINTED_VIEWS[view];
+}

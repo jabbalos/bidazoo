@@ -175,3 +175,29 @@ export function grassLedge(g: G, b: Box): void {
     g.fillTriangle(x, b.y + 2, x + step * 0.3, b.y - b.h * 0.22, x + step * 0.6, b.y + 2);
   }
 }
+
+/**
+ * A timber deck (painted Basecamp screens): the foreground plank edge that hides the flat cut of a
+ * painted bust, in the lodge's timber browns instead of the code-drawn grass ledge.
+ */
+export function timberDeck(g: G, b: Box): void {
+  g.fillStyle(EXP.timberDeep, 1);
+  g.fillRect(b.x, b.y + b.h * 0.18, b.w, b.h * 0.82);
+  g.fillStyle(EXP.timber, 1);
+  g.fillRect(b.x, b.y + b.h * 0.18, b.w, b.h * 0.26);
+  // the top board, with a highlight along its edge
+  g.fillStyle(EXP.timberLight, 1);
+  g.fillRoundedRect(b.x - 4, b.y, b.w + 8, Math.max(8, b.h * 0.22), Math.min(8, b.h * 0.1));
+  g.fillStyle(0xffffff, 0.18);
+  g.fillRect(b.x, b.y + 2, b.w, Math.max(2, b.h * 0.04));
+  // plank seams and pegs
+  const step = Math.max(40, b.w / 7);
+  g.lineStyle(2, EXP.timberDeep, 0.55);
+  for (let x = b.x + step * 0.6; x < b.x + b.w; x += step) {
+    g.lineBetween(x, b.y + b.h * 0.24, x, b.y + b.h);
+    g.fillStyle(EXP.brass, 0.9);
+    g.fillCircle(x - step * 0.5, b.y + b.h * 0.11, Math.max(2, b.h * 0.035));
+  }
+  g.lineStyle(2, EXP.timberDeep, 0.4);
+  g.lineBetween(b.x, b.y + b.h * 0.6, b.x + b.w, b.y + b.h * 0.6);
+}

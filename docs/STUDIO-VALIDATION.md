@@ -60,6 +60,11 @@ Since November 4, 2026 (branch `feature/w1-basecamp-walk`) the validator expects
 and 272 Playwright in 4 projects** (the Basecamp added 39 integration tests and 7 browser tests per project). The
 W1 merge commit on `main` will be the next release candidate and needs its own official run on its exact SHA.
 
+Since November 7, 2026 (branch `claude/loving-noether-e40ung`: the painted Basecamp, then the painted Menu, run and
+Results screens with painted expressions) the validator expects **51 unit, 747 integration + 3 todo and 276
+Playwright in 4 projects** (painted Basecamp assets +17 integration; painted expressions +6 integration and 1
+browser test per project).
+
 ### How the candidate run is started (procedure)
 
 Run on the Studio PC, as a normal user, from a clean checkout of the exact candidate SHA (the owner supplies the

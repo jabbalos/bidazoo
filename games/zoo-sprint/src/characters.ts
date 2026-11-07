@@ -1,6 +1,8 @@
 import Phaser from 'phaser';
-import { EYE_LINE_Y_FRACTION, computeExpressionPlacement, computeHeroFit, expressionTextureKey, type HeroFit, type HeroFitOptions } from './character-assets';
-import { hasProductionArt } from './character-art';
+import { EYE_LINE_Y_FRACTION, computeExpressionPlacement, computeHeroFit, computePaintedFit, expressionTextureKey, type HeroFit, type HeroFitOptions } from './character-assets';
+import { hasPaintedExpressions, hasProductionArt, paintedExpressionKey } from './character-art';
+import { EXPRESSION_STATES } from './character-definitions';
+import { hasPaintedWalk, opaqueBox, paintedWalkKey } from './basecamp-art';
 import type { CastId, ExpressionState } from './character-definitions';
 import type { CharacterId } from './roster';
 
@@ -511,6 +513,8 @@ export interface CharacterLook {
   readonly id: CastId;
   readonly expression: ExpressionState;
   readonly production: boolean;
+  /** True when the picture is painted art (the painted expressions, or the painted full-body front pose). */
+  readonly painted: boolean;
   readonly textureKey: string;
   readonly displayWidth: number;
   readonly displayHeight: number;
@@ -529,11 +533,24 @@ export interface CharacterLook {
  *  - placeInBox(): sizes the character to the SPACE a scene gives it (computeHeroFit), which is how
  *    every large presentation (hero stage, gameplay buddy, results podium) places it.
  */
+/**
+ * 'bust' (default): the six expressions. 'front': the painted whole-body standing picture
+ * (walk-painted/<id>_idle_front), used by the Choose Your Buddy hero card; it has ONE picture, so an
+ * expression change keeps it (the hop still plays). Without that picture 'front' behaves as 'bust'.
+ */
+export type CharacterPose = 'bust' | 'front';
+
 export class Character extends Phaser.GameObjects.Container {
   /** Holds the picture so the idle loop can breathe without fighting the hop and wobble on this container. */
   private readonly bob: Phaser.GameObjects.Container;
   private readonly image: Phaser.GameObjects.Image;
   private readonly production: boolean;
+  /** All six painted expressions are loaded: they replace the production expressions. */
+  private readonly painted: boolean;
+  /** The painted whole-body front picture is shown instead of any expression. */
+  private readonly front: boolean;
+  /** Display px per source px for painted pictures (one value for all six expressions). */
+  private paintedScale = 1;
   private expression: ExpressionState = 'idle';
   private size = 0;
   private hopPx: number | null = null;
@@ -541,9 +558,11 @@ export class Character extends Phaser.GameObjects.Container {
   private fit: HeroFit | null = null;
   private idleTween: Phaser.Tweens.Tween | null = null;
 
-  constructor(scene: Phaser.Scene, x: number, y: number, readonly id: CastId, size: number) {
+  constructor(scene: Phaser.Scene, x: number, y: number, readonly id: CastId, size: number, pose: CharacterPose = 'bust') {
     super(scene, x, y);
     this.production = hasProductionArt(scene, id);
+    this.painted = hasPaintedExpressions(scene, id);
+    this.front = pose === 'front' && hasPaintedWalk(scene, id, 'idle_front');
     this.image = scene.add.image(0, 0, this.textureFor('idle'));
     this.bob = scene.add.container(0, 0, [this.image]);
     this.add(this.bob);
@@ -554,6 +573,21 @@ export class Character extends Phaser.GameObjects.Container {
   /** Whether this instance is drawn from production art (false means the code-drawn fallback). */
   get usesProductionArt(): boolean {
     return this.production;
+  }
+
+  /** True when this instance shows the painted whole-body front picture (pose 'front' and the picture loaded). */
+  get isFrontPose(): boolean {
+    return this.front;
+  }
+
+  /** Which art is on screen: the painted front pose, painted expressions, production expressions, or the code-drawn fallback. For QA hooks. */
+  get artKind(): 'front' | 'painted' | 'production' | 'fallback' {
+    return this.front ? 'front' : this.painted ? 'painted' : this.production ? 'production' : 'fallback';
+  }
+
+  /** Whether this instance is drawn from painted art (painted expressions or the painted front pose). */
+  get usesPaintedArt(): boolean {
+    return this.painted || this.front;
   }
 
   setBustSize(size: number): this {
@@ -569,6 +603,21 @@ export class Character extends Phaser.GameObjects.Container {
    * crop. Without production art the code-drawn bust is centered in the box instead.
    */
   placeInBox(x: number, y: number, width: number, height: number, options: HeroFitOptions = {}): HeroFit | null {
+    if (this.front) return this.placeFront(x, y, width, height, options);
+    if (this.painted) {
+      const sizes = EXPRESSION_STATES.map((state) => this.sourceSize(paintedExpressionKey(this.id, state)));
+      const painted = computePaintedFit(sizes, { width, height }, options);
+      if (painted) {
+        this.fit = painted;
+        this.paintedScale = painted.scale;
+        this.size = painted.size;
+        this.applyLook();
+        this.setPosition(x + painted.anchorX, y + painted.anchorY);
+        this.hopPx = Math.max(6, height * 0.04);
+        this.hopScale = 1.04;
+        return painted;
+      }
+    }
     const fit = this.production ? computeHeroFit(this.id, { width, height }, options) : undefined;
     if (!fit) {
       this.fit = null;
@@ -583,6 +632,32 @@ export class Character extends Phaser.GameObjects.Container {
     this.hopPx = Math.max(6, height * 0.04);
     this.hopScale = 1.05;
     return fit;
+  }
+
+  /**
+   * The whole-body front picture standing in the box: its feet (the bottom of its opaque pixels) on
+   * the box bottom, centered, as tall as `visibleHeight` (or `fillHeight` of the box) allows, and no
+   * wider than `fillWidth` of the box.
+   */
+  private placeFront(x: number, y: number, width: number, height: number, options: HeroFitOptions): HeroFit {
+    const key = paintedWalkKey(this.id, 'idle_front');
+    const box = opaqueBox(this.scene, key);
+    const tall = options.visibleHeight ?? (options.fillHeight ?? 0.94) * height;
+    const scale = Math.min(tall / box.h, ((options.fillWidth ?? 0.9) * width) / box.w, 1.5);
+    this.paintedScale = scale;
+    this.size = box.h * scale;
+    this.applyLook();
+    this.setPosition(x + width / 2, y + height);
+    this.hopPx = Math.max(8, height * 0.05);
+    this.hopScale = 1.04;
+    const fit: HeroFit = Object.freeze({ scale, size: this.size, anchorX: width / 2, anchorY: height, topY: height - this.size, cutY: height, upscale: scale });
+    this.fit = fit;
+    return fit;
+  }
+
+  private sourceSize(key: string): { width: number; height: number } {
+    const src = this.scene.textures.get(key).getSourceImage() as { width: number; height: number };
+    return { width: src.width, height: src.height };
   }
 
   /** A slow breathing loop for a resting hero. Static when the player prefers reduced motion. */
@@ -623,6 +698,7 @@ export class Character extends Phaser.GameObjects.Container {
       id: this.id,
       expression: this.expression,
       production: this.production,
+      painted: this.usesPaintedArt,
       textureKey: this.image.texture.key,
       displayWidth: this.image.displayWidth,
       displayHeight: this.image.displayHeight,
@@ -645,6 +721,8 @@ export class Character extends Phaser.GameObjects.Container {
   }
 
   private textureFor(state: ExpressionState): string {
+    if (this.front) return paintedWalkKey(this.id, 'idle_front');
+    if (this.painted) return paintedExpressionKey(this.id, state);
     if (this.production) return expressionTextureKey(this.id, state);
     // Click (the host and guide) has no code-drawn art: if his production art is missing he is simply
     // not drawn, rather than being drawn as a different character. The five starters fall back to
@@ -655,6 +733,18 @@ export class Character extends Phaser.GameObjects.Container {
   private applyLook(): void {
     const image = this.image;
     image.setTexture(this.textureFor(this.expression));
+    if (this.front || this.painted) {
+      // Bottom-anchored painted art: the feet (front pose) or the flat chest cut (busts) sit on the
+      // container's origin, which placeInBox puts on the box bottom. Without a fit, the picture is
+      // sized to the plain `size` box and centered in it.
+      const src = this.sourceSize(image.texture.key);
+      const box = this.front ? opaqueBox(this.scene, image.texture.key) : { x: 0, y: 0, w: src.width, h: src.height };
+      const scale = this.fit ? this.paintedScale : (this.size * 0.92) / box.h;
+      image.setScale(scale);
+      image.setOrigin((box.x + box.w / 2) / src.width, (box.y + box.h) / src.height);
+      image.setPosition(0, this.fit ? 0 : this.size / 2);
+      return;
+    }
     const placement = this.production ? computeExpressionPlacement(this.id, this.expression, this.size) : undefined;
     if (placement) {
       image.setDisplaySize(placement.displayWidth, placement.displayHeight);

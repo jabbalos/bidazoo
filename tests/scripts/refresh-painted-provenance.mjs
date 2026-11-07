@@ -1,13 +1,14 @@
-// Refreshes the PROVENANCE.json of the two drop-in painted-art folders after pictures are replaced:
-//   games/zoo-sprint/assets/world-expedition/basecamp/      (backdrop layers, named by basecamp.json)
-//   games/zoo-sprint/assets/world-expedition/walk-painted/  (<id>_walk_side / <id>_idle_front, .webp or .png)
+// Refreshes the PROVENANCE.json of the drop-in painted-art folders after pictures are replaced:
+//   games/zoo-sprint/assets/world-expedition/basecamp/            (backdrop layers, named by basecamp.json)
+//   games/zoo-sprint/assets/world-expedition/walk-painted/        (<id>_walk_side / <id>_idle_front, .webp or .png)
+//   games/zoo-sprint/assets/world-expedition/characters-painted/  (<id>/<id>_<state>, the six painted expressions)
 // Usage: node tests/scripts/refresh-painted-provenance.mjs [--status=FINAL|PLACEHOLDER]
 // Records size, bytes and SHA-256 of every picture present (the client bundle scan and
 // tests/integration/basecamp-painted-assets.test.ts check them), drops entries for removed files,
 // and stamps --status (default FINAL) on files that are new or changed (a changed file loses its `note`,
 // which described the old picture; edit role/openArtHistoryId/derivation by hand when they change).
 import { createHash } from 'node:crypto';
-import { readdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 
 const status = (process.argv.find((a) => a.startsWith('--status=')) ?? '--status=FINAL').slice(9);
@@ -36,12 +37,21 @@ export function imageSize(b) {
   throw new Error('not a PNG, JPEG or WebP');
 }
 
-function refresh(dir, key, pattern) {
+/** Files directly in `dir`, or (nested) `<sub>/<file>` one level down. */
+function listFiles(dir, nested) {
+  if (!nested) return readdirSync(dir);
+  return readdirSync(dir)
+    .filter((d) => statSync(join(dir, d)).isDirectory())
+    .flatMap((d) => readdirSync(join(dir, d)).map((f) => `${d}/${f}`));
+}
+
+function refresh(dir, key, pattern, nested = false) {
   const path = join(dir, 'PROVENANCE.json');
+  if (!existsSync(path)) return;
   const prov = JSON.parse(readFileSync(path, 'utf8'));
   const old = prov[key] ?? {};
   const next = {};
-  for (const file of readdirSync(dir).filter((f) => pattern.test(f)).sort()) {
+  for (const file of listFiles(dir, nested).filter((f) => pattern.test(f)).sort()) {
     const bytes = readFileSync(join(dir, file));
     const sha256 = createHash('sha256').update(bytes).digest('hex');
     const id = file;
@@ -60,3 +70,4 @@ function refresh(dir, key, pattern) {
 const ROOT = 'games/zoo-sprint/assets/world-expedition';
 refresh(`${ROOT}/basecamp`, 'files', /\.(jpe?g|webp|png)$/);
 refresh(`${ROOT}/walk-painted`, 'files', /^[a-z]+_(walk_side|idle_front)\.(png|webp)$/);
+refresh(`${ROOT}/characters-painted`, 'files', /^([a-z]+)\/\1_(idle|happy|thinking|cheer|discover|tryAgain)\.(png|webp)$/, true);
