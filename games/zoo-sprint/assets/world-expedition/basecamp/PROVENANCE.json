@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "purpose": "Provenance for the painted Expedition Basecamp backdrop (layers named by basecamp.json). Machine-readable authority; verified by tests/integration/basecamp-painted-assets.test.ts and the client bundle scan. Refresh after replacing a picture: node tests/scripts/refresh-painted-provenance.mjs",
+  "runtimeDirectory": "games/zoo-sprint/assets/world-expedition/basecamp",
+  "source": "OpenArt nano-banana-2 image2image, owner-approved selection on November 7, 2026",
+  "storage": "normal Git blobs (no Git LFS rule matches the runtime directory)",
+  "formats": "JPEG or WebP for opaque layers; PNG or WebP with alpha for layers with transparency",
+  "measurements": "basecamp.json fractions measured on the single-layer full image (6336x2688, OpenArt historyId Ds9G8dslCXUxiQyLHEj5): groundY 0.900 is the middle of the path band (top surface 0.84 to 0.956). signpostX measured by eye on the same image.",
+  "files": {
+    "basecamp-far.jpg": {
+      "role": "far layer (sky, mountains, waterfall), parallax 0.4",
+      "openArtHistoryId": "bRPxzUAvJuC6WS2fr5U7",
+      "derivation": "6336x2688 RGB PNG resized (Lanczos) to 1600 px tall, JPEG quality 82, progressive",
+      "runtimeFile": "basecamp-far.jpg",
+      "runtimeSha256": "ccb58dfb056841895a367bd6d8da8237290164cf859c3f87700a7808cf5ec152",
+      "runtimeBytes": 217537,
+      "format": "jpeg",
+      "width": 3771,
+      "height": 1600,
+      "status": "FINAL"
+    },
+    "basecamp-mid.webp": {
+      "role": "front layer (buildings, trees, gate, path; transparent sky), parallax 1",
+      "openArtHistoryId": "4x8bUVkzQRaWkKQDf5I9",
+      "derivation": "6336x2688 RGBA PNG resized (Lanczos) to 1600 px tall, WebP with alpha quality 82",
+      "runtimeFile": "basecamp-mid.webp",
+      "runtimeSha256": "6db64192e71ff013a84f6087c257159f3d3498ea456b47129cf33d3eb20776e8",
+      "runtimeBytes": 568520,
+      "format": "webp",
+      "width": 3771,
+      "height": 1600,
+      "status": "FINAL"
+    }
+  }
+}

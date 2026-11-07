@@ -56,7 +56,7 @@ const files = [];
 
 // Character art: every PNG in the build must be byte-identical to a curated runtime file listed in
 // a character's PROVENANCE.json (so no QA sheet, silhouette, logo, library asset, or Git LFS pointer
-// text can ship), and all 42 curated files must be present: 36 expression crops (six cast members x
+// text can ship), and all curated files must be present: 36 expression crops (six cast members x
 // six expressions) plus, since Checkpoint W1, one whole-body side-view walking picture per cast member
 // (games/zoo-sprint/assets/world-expedition/walk/PROVENANCE.json, verified by walk-runtime-assets.test.ts).
 const CAST = ['dino', 'koala', 'tarsier', 'eagle', 'bronco', 'click'];
@@ -67,7 +67,18 @@ for (const id of CAST) {
 }
 const walkProvenance = JSON.parse(readFileSync('games/zoo-sprint/assets/world-expedition/walk/PROVENANCE.json', 'utf8'));
 for (const id of CAST) allowedPngs.set(walkProvenance.characters[id].runtimeSha256, `${id}/walk_side`);
-const pngs = files.filter((f) => f.endsWith('.png'));
+// Painted Basecamp art (drop-in folders): every picture each PROVENANCE.json lists is allowed and
+// required, PNG, JPEG or WebP alike (tests/integration/basecamp-painted-assets.test.ts checks the
+// records match the files).
+const backdropProvenance = JSON.parse(readFileSync('games/zoo-sprint/assets/world-expedition/basecamp/PROVENANCE.json', 'utf8'));
+for (const [file, e] of Object.entries(backdropProvenance.files)) allowedPngs.set(e.runtimeSha256, `basecamp/${file}`);
+const paintedWalkProvenance = JSON.parse(readFileSync('games/zoo-sprint/assets/world-expedition/walk-painted/PROVENANCE.json', 'utf8'));
+for (const [file, e] of Object.entries(paintedWalkProvenance.files)) allowedPngs.set(e.runtimeSha256, `walk-painted/${file}`);
+// Painted expressions (drop-in folder, <id>/<id>_<state>): every listed picture is allowed and required.
+const paintedExpressionProvenance = JSON.parse(readFileSync('games/zoo-sprint/assets/world-expedition/characters-painted/PROVENANCE.json', 'utf8'));
+for (const [file, e] of Object.entries(paintedExpressionProvenance.files)) allowedPngs.set(e.runtimeSha256, `characters-painted/${file}`);
+// Every picture in the build (not only PNGs) must be curated.
+const pngs = files.filter((f) => /\.(png|jpe?g|webp)$/i.test(f));
 const seenPngs = new Set();
 let hits = 0;
 for (const file of pngs) {
@@ -76,7 +87,7 @@ for (const file of pngs) {
   const known = allowedPngs.get(sha);
   if (!known) {
     hits += 1;
-    console.log(`LEAK  ${relative('.', file)} is a PNG that is not a curated runtime asset (sha256 ${sha})`);
+    console.log(`LEAK  ${relative('.', file)} is a picture that is not a curated runtime asset (sha256 ${sha})`);
   } else seenPngs.add(known);
 }
 for (const known of allowedPngs.values()) {
@@ -85,11 +96,11 @@ for (const known of allowedPngs.values()) {
     console.log(`MISSING  curated runtime art ${known} is not in the build`);
   }
 }
-console.log(`PNGs in build: ${pngs.length} of ${allowedPngs.size} curated (${seenPngs.size} matched).`);
+console.log(`Pictures in build: ${pngs.length} of ${allowedPngs.size} curated (${seenPngs.size} matched).`);
 
 let bytes = 0;
 for (const file of files) {
-  if (file.endsWith('.png')) continue;
+  if (/\.(png|jpe?g|webp)$/i.test(file)) continue;
   const text = readFileSync(file, 'utf8');
   bytes += text.length;
   for (const [needle, why] of FORBIDDEN) {

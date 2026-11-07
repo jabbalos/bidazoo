@@ -57,6 +57,40 @@ export function worldSpec(viewW: number, viewH: number): WorldSpec {
   };
 }
 
+/**
+ * The same world rules laid over a PAINTED backdrop (backdrop-model.ts): the width, ground line,
+ * gate, signpost, Click and walking limits come from the painting (already in world px); speed,
+ * the portal and every radius still scale with `unit`, exactly as in `worldSpec`.
+ */
+export function paintedWorldSpec(
+  viewW: number,
+  viewH: number,
+  painted: { width: number; groundY: number; gateX: number; signpostX: number | null; clickX: number; minX: number; maxX: number },
+): WorldSpec {
+  const unit = Math.min(viewH, viewW * 1.4);
+  const gateRadius = Math.round(unit * 0.28);
+  const minX = Math.max(0, Math.round(painted.minX));
+  const maxX = Math.min(painted.width, Math.round(painted.maxX));
+  const gateX = Math.round(painted.gateX);
+  const landmarks: Landmark[] = [];
+  if (painted.signpostX !== null) landmarks.push({ id: 'signpost', label: 'Rice Terraces', x: Math.round(painted.signpostX), radius: Math.round(unit * 0.22) });
+  landmarks.push({ id: 'gate', label: 'Basecamp Gate', x: gateX, radius: gateRadius });
+  // start on the left, but never already at the gate on a short painting
+  const startX = Math.max(minX, Math.min(Math.round(Math.max(viewW * 0.3, unit * 0.25)), gateX - gateRadius - Math.round(unit * 0.2)));
+  return {
+    width: painted.width,
+    height: viewH,
+    groundY: Math.round(painted.groundY),
+    startX,
+    minX,
+    maxX,
+    landmarks,
+    clickX: Math.round(painted.clickX),
+    gateCoreRadius: Math.round(unit * 0.09),
+    unit,
+  };
+}
+
 /** Where a buddy coming back from a run stands: just outside the gate, facing it, so one step re-enters. */
 export function returnSpawnX(world: WorldSpec): number {
   const gate = world.landmarks.find((l) => l.id === 'gate');

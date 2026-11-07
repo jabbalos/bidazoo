@@ -4,10 +4,11 @@ import { Character } from '../characters';
 import { expressionForResults } from '../character-expression';
 import { getContext } from '../context';
 import { bakeEnvironment } from '../presentation/environment';
+import { addPaintedBackdrop } from '../painted-backdrop';
 import { clipBelow, maskRounded, spotlight } from '../presentation/hero-stage';
 import { clampNumber, resultsLayout } from '../presentation/layout';
 import { prefersReducedMotion } from '../presentation/motion';
-import { grassLedge, parchmentPanel, ribbon, softShadow } from '../presentation/surfaces';
+import { grassLedge, parchmentPanel, ribbon, softShadow, timberDeck } from '../presentation/surfaces';
 import { EXP, EXP_CSS } from '../theme';
 import { BUTTON_STYLES, TapButton, publishSurface, text, type HitTarget } from '../ui';
 
@@ -15,12 +16,12 @@ import { BUTTON_STYLES, TapButton, publishSurface, text, type HitTarget } from '
 const CONFETTI = [EXP.orange, EXP.amber, 0xffffff, 0x3fbf7f, 0x38b6c8];
 
 /** Soft sun rays and scattered confetti around (cx, cy). Static, cheap, and the same on every run. */
-function celebrationBurst(g: Phaser.GameObjects.Graphics, cx: number, cy: number, r: number, area: { x: number; y: number; w: number; h: number }): void {
+function celebrationBurst(g: Phaser.GameObjects.Graphics, cx: number, cy: number, r: number, area: { x: number; y: number; w: number; h: number }, rayAlpha = 0.14): void {
   const rays = 14;
   for (let i = 0; i < rays; i++) {
     const a0 = (i / rays) * Math.PI * 2;
     const a1 = a0 + (Math.PI * 2) / rays / 2;
-    g.fillStyle(0xffffff, 0.14);
+    g.fillStyle(0xffffff, rayAlpha);
     g.beginPath();
     g.moveTo(cx, cy);
     g.lineTo(cx + Math.cos(a0) * r * 2, cy + Math.sin(a0) * r * 2);
@@ -92,12 +93,23 @@ export class ResultsScene extends Phaser.Scene {
     const split = L.frame.composition === 'split';
     const targets: HitTarget[] = [];
 
-    // --- summit scene ---
-    const pageKey = bakeEnvironment(this, 'results-page', 'summit', w, h);
-    this.layer.add(this.add.image(0, 0, pageKey).setOrigin(0, 0));
+    // --- the scene: the painted Basecamp gate in warm light (home from the run), out of focus behind a
+    // wide screen with the sharp crop in the scene panel; the code-drawn summit without the painting ---
+    const painted = addPaintedBackdrop(this, this.layer, { x: 0, y: 0, w, h }, split ? 'select' : 'results');
+    if (!painted) this.layer.add(this.add.image(0, 0, bakeEnvironment(this, 'results-page', 'summit', w, h)).setOrigin(0, 0));
     const veil = this.add.graphics();
-    veil.fillStyle(0x0d2d4a, split ? 0.4 : 0.1);
-    veil.fillRect(0, 0, w, h);
+    if (painted) {
+      veil.fillStyle(split ? 0x3a1c06 : 0x2a1606, split ? 0.3 : 0.08);
+      veil.fillRect(0, 0, w, h);
+      if (!split) {
+        // a soft shade under the summary panel and the button
+        veil.fillGradientStyle(0x2a1606, 0x2a1606, 0x2a1606, 0x2a1606, 0, 0, 0.4, 0.4);
+        veil.fillRect(0, L.panel.y - 30, w, h - L.panel.y + 30);
+      }
+    } else {
+      veil.fillStyle(0x0d2d4a, split ? 0.4 : 0.1);
+      veil.fillRect(0, 0, w, h);
+    }
     this.layer.add(veil);
     if (split) {
       const radius = Math.min(30, L.scene.w * 0.07);
@@ -109,8 +121,10 @@ export class ResultsScene extends Phaser.Scene {
       frame.fillRoundedRect(L.scene.x - 4, L.scene.y - 4, L.scene.w + 8, L.scene.h + 6, radius + 3);
       this.layer.add(frame);
       const inner = this.add.container(0, 0);
-      const key = bakeEnvironment(this, 'results-scene', 'summit', Math.round(L.scene.w), Math.round(L.scene.h));
-      inner.add(this.add.image(L.scene.x, L.scene.y, key).setOrigin(0, 0));
+      if (!(painted && addPaintedBackdrop(this, inner, L.scene, 'results', 0, false))) {
+        const key = bakeEnvironment(this, 'results-scene', 'summit', Math.round(L.scene.w), Math.round(L.scene.h));
+        inner.add(this.add.image(L.scene.x, L.scene.y, key).setOrigin(0, 0));
+      }
       const light = this.add.graphics();
       spotlight(light, L.scene.x + L.scene.w / 2, L.scene.y + L.scene.h * 0.4, Math.min(L.scene.w * 0.5, L.scene.h * 0.4));
       inner.add(light);
@@ -120,7 +134,7 @@ export class ResultsScene extends Phaser.Scene {
 
     // --- a still celebration burst behind the buddy: soft sun rays and confetti, in the palette ---
     const burst = this.add.graphics();
-    celebrationBurst(burst, L.scene.x + L.scene.w / 2, L.scene.y + L.scene.h * (split ? 0.42 : 0.4), Math.min(L.scene.w * 0.62, L.scene.h * 0.55), L.scene);
+    celebrationBurst(burst, L.scene.x + L.scene.w / 2, L.scene.y + L.scene.h * (split ? 0.42 : 0.4), Math.min(L.scene.w * 0.62, L.scene.h * 0.55), L.scene, painted ? 0.07 : 0.14);
     const burstLayer = this.add.container(0, 0, [burst]);
     if (split) maskRounded(this, burstLayer, L.scene, Math.min(30, L.scene.w * 0.07));
     this.layer.add(burstLayer);
@@ -141,7 +155,9 @@ export class ResultsScene extends Phaser.Scene {
     clipBelow(this, hero, 0, w, L.scene.y + L.scene.h - 2);
     const ledgeH = L.scene.y + L.scene.h - (L.buddyBox.y + L.buddyBox.h);
     const ledge = this.add.graphics();
-    grassLedge(ledge, { x: L.scene.x, y: L.scene.y + L.scene.h - ledgeH, w: L.scene.w, h: ledgeH });
+    // on a portrait screen the painted deck runs edge to edge, like the plaza's boardwalk
+    const deckX = painted && !split ? 0 : L.scene.x;
+    (painted ? timberDeck : grassLedge)(ledge, { x: deckX, y: L.scene.y + L.scene.h - ledgeH, w: painted && !split ? w : L.scene.w, h: ledgeH });
     const clip = this.add.container(0, 0, [ledge]);
     if (split) maskRounded(this, clip, L.scene, Math.min(30, L.scene.w * 0.07));
     this.layer.add(clip);
@@ -218,6 +234,7 @@ export class ResultsScene extends Phaser.Scene {
       expression: hero.inspect().expression, // client-only page state, for tests and debugging
       correct: String(results?.correct ?? 0),
       'xp-earned': String(results?.xpEarned ?? 0),
+      'buddy-art': hero.artKind,
       'buddy-rect': r ? JSON.stringify({ x: Math.round(r.x), y: Math.round(r.y), w: Math.round(r.w), h: Math.round(r.h) }) : '',
     });
     ctx.a11y.set(

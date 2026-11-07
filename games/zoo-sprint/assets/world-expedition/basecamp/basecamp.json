@@ -1,0 +1,14 @@
+{
+  "layers": [
+    { "file": "basecamp-far.jpg", "parallax": 0.4 },
+    { "file": "basecamp-mid.webp", "parallax": 1 }
+  ],
+  "groundY": 0.9,
+  "gateX": 0.923,
+  "gateTopY": 0.484,
+  "lodgeDoorX": 0.359,
+  "signpostX": 0.688,
+  "walkMinX": 0.03,
+  "walkMaxX": 0.97,
+  "walkerHeight": 0.3
+}

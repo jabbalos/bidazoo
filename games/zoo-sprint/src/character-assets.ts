@@ -393,3 +393,50 @@ export function computeHeroFit(id: CastId, box: HeroBox, options: HeroFitOptions
     upscale: scale,
   });
 }
+
+// ---------------------------------------------------------------------------
+// Painted expressions (November 2026): bottom-anchored busts, no per-file metadata.
+// ---------------------------------------------------------------------------
+
+/**
+ * The painted head-and-bust pictures (assets/world-expedition/characters-painted) share one canvas
+ * per character, bottom-aligned on a flat chest cut and centered on the chest, so they need none of
+ * the M4 numbers above (eye line, head core): ONE scale per character, the bottom center of the picture
+ * on the box's bottom center, `overlap` px below the box so the foreground element hides the cut.
+ *
+ * The head is about this fraction of a painted picture's width (the rest is shoulders, arms and
+ * props); `fillWidth` keeps the same meaning as for the production art (the head may use that much
+ * of the box width).
+ */
+export const PAINTED_HEAD_WIDTH = 0.72;
+
+/** Fits a painted character (the sizes of its six pictures) into `box`; the options mean what they mean for computeHeroFit. */
+export function computePaintedFit(sizes: ReadonlyArray<{ width: number; height: number }>, box: HeroBox, options: HeroFitOptions = {}): HeroFit | undefined {
+  if (sizes.length === 0 || box.width <= 0 || box.height <= 0) return undefined;
+  const fillWidth = options.fillWidth ?? 0.78;
+  const fillHeight = options.fillHeight ?? 1;
+  const presence = options.presence ?? 1;
+  const overlap = options.overlap ?? 6;
+  const W = Math.max(...sizes.map((s) => s.width));
+  const H = Math.max(...sizes.map((s) => s.height));
+  // the head may use `fillWidth` of the box, and the whole picture (shoulders, wings) never more than the box
+  const byWidth = Math.min((fillWidth * box.width) / (PAINTED_HEAD_WIDTH * W), box.width / W);
+  const byHeight = (fillHeight * (box.height + overlap)) / H;
+  // The painted pictures are 3 to 5 times the resolution of the production crops, so the production
+  // `maxScale` (display px per source px) does not apply; never enlarge a painting past 1.5x.
+  const cap = 1.5;
+  const scale =
+    options.visibleHeight !== undefined
+      ? Math.min(cap, (options.visibleHeight + overlap) / H, byWidth, byHeight)
+      : Math.min(cap, Math.min(byWidth, byHeight) * presence);
+  const anchorY = box.height + overlap;
+  return Object.freeze({
+    scale,
+    size: H * scale,
+    anchorX: box.width / 2,
+    anchorY,
+    topY: anchorY - H * scale,
+    cutY: anchorY,
+    upscale: scale,
+  });
+}

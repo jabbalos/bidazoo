@@ -8,6 +8,7 @@ import { bakeEnvironment, type EnvVariant } from './environment';
 import { drawGlyph } from './icons';
 import { prefersReducedMotion } from './motion';
 import { BUDDY_PROFILES } from './traits';
+import { addPaintedBackdrop } from '../painted-backdrop';
 import { parchmentPanel, pill, softShadow, type Box } from './surfaces';
 
 /**
@@ -97,18 +98,30 @@ export function buildHeroStage(scene: Phaser.Scene, o: HeroStageOptions): HeroSt
   // the scene inside the card
   const inner: Box = { x: stage.x + border, y: stage.y + border, w: stage.w - border * 2, h: stage.h - border * 2 - border * 0.5 };
   const clipped = scene.add.container(0, 0);
-  const envKey = bakeEnvironment(scene, 'select-stage', o.variant ?? 'basecamp', inner.w, inner.h);
-  clipped.add(scene.add.image(inner.x, inner.y, envKey).setOrigin(0, 0));
+  // The painted Basecamp (the lodge porch) when it is loaded, else the code-drawn scene.
+  const painted = addPaintedBackdrop(scene, clipped, inner, 'stage', 0, false);
+  if (!painted) {
+    const envKey = bakeEnvironment(scene, 'select-stage', o.variant ?? 'basecamp', inner.w, inner.h);
+    clipped.add(scene.add.image(inner.x, inner.y, envKey).setOrigin(0, 0));
+  }
   const light = scene.add.graphics();
-  spotlight(light, stage.x + stage.w / 2, o.charBox.y + o.charBox.h * 0.45, Math.min(stage.w * 0.52, o.charBox.h * 0.75));
+  spotlight(light, stage.x + stage.w / 2, o.charBox.y + o.charBox.h * 0.45, Math.min(stage.w * 0.52, o.charBox.h * 0.75), painted ? 0.7 : 1);
   clipped.add(light);
 
-  const hero = new Character(scene, 0, 0, o.id, 100);
+  // The painted whole-body front pose when it exists (it stands on the plaque), else the bust.
+  const hero = new Character(scene, 0, 0, o.id, 100, 'front');
+  if (hero.isFrontPose) {
+    // a soft contact shadow where the feet stand
+    const shadow = scene.add.graphics();
+    shadow.fillStyle(0x2a1a0c, 0.28);
+    shadow.fillEllipse(o.charBox.x + o.charBox.w / 2, o.charBox.y + o.charBox.h - 2, Math.min(o.charBox.w * 0.5, o.charBox.h * 0.42), Math.max(10, o.charBox.h * 0.05));
+    clipped.add(shadow);
+  }
   const fit = hero.placeInBox(o.charBox.x, o.charBox.y, o.charBox.w, o.charBox.h, {
-    // Normalized: all five starters get the same visible bust height; Tarsier's wide ears are the
-    // only thing allowed to limit it (width guard).
-    visibleHeight: o.charBox.h * 0.8,
-    fillWidth: 0.92,
+    // Normalized: all five starters get the same visible height; Tarsier's wide ears (or, painted,
+    // Eagle's wings) are the only thing allowed to limit it (width guard).
+    visibleHeight: o.charBox.h * (hero.isFrontPose ? 0.9 : 0.8),
+    fillWidth: hero.isFrontPose ? 0.86 : 0.92,
     maxScale: 3.0,
     overlap: 8,
   });
@@ -196,9 +209,10 @@ export function buildMedallion(scene: Phaser.Scene, o: MedallionOptions): { cont
   }
   g.fillStyle(o.selected ? 0xffffff : EXP.parchmentEdge, 1);
   g.fillCircle(o.cx, o.cy, r + ring * (o.selected ? 0.5 : 0.8));
-  g.fillStyle(0xcdeaf5, 1);
+  // warm canvas light, like the Basecamp tents, so painted heads sit in the same place
+  g.fillStyle(0xf3dfb4, 1);
   g.fillCircle(o.cx, o.cy, r);
-  g.fillStyle(0xfff0cf, 1);
+  g.fillStyle(0xfff3d9, 1);
   g.fillEllipse(o.cx, o.cy + r * 0.55, o.d * 1.2, r * 1.1);
   c.add(g);
 

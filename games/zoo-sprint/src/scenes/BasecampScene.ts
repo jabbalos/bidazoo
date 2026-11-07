@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 import { Character } from '../characters';
-import { HOST_DEFINITION } from '../character-definitions';
+import { HOST_DEFINITION, castPresence } from '../character-definitions';
 import { getContext } from '../context';
 import {
   PORTAL_DWELL_MS,
@@ -8,6 +8,7 @@ import {
   easeCamera,
   inputDirection,
   nearLandmark,
+  paintedWorldSpec,
   returnSpawnX,
   stepPlayer,
   stepPortal,
@@ -23,7 +24,9 @@ import { LEDGE_MARGIN, bakeGate, bakeSignpost, bakeWorldLayers } from '../presen
 import { characterName, type CharacterId } from '../roster';
 import { EXP, EXP_CSS } from '../theme';
 import { publishSurface, text, type HitTarget } from '../ui';
-import { hasWalkArt, loadWalkArt, walkTextureKey } from '../walk-art';
+import { backdropManifest, backdropTextureKey, hasPaintedBackdrop, loadBasecampArt, walkPicture, type PaintedPose } from '../basecamp-art';
+import { backdropX, backdropY, layoutBackdrop, DEFAULT_WALKER_HEIGHT } from '../presentation/backdrop-model';
+import { hasWalkArt } from '../walk-art';
 
 /**
  * Expedition Basecamp (Checkpoint W1): the home of the game after "Choose Your Buddy".
@@ -41,8 +44,18 @@ import { hasWalkArt, loadWalkArt, walkTextureKey } from '../walk-art';
 const PARALLAX = { ridgeFar: 0.08, ridgeNear: 0.16, terraceFar: 0.32, lanterns: 0.55, terraceMid: 0.7 } as const;
 const CANOPY_FACTOR = 1.25;
 /** Walking picture height as a share of the screen height, capped by width and by source sharpness. */
-const WALKER_HEIGHT = 0.3;
+const WALKER_HEIGHT = DEFAULT_WALKER_HEIGHT;
 const WALKER_MAX_UPSCALE = 1.3;
+/** Painted walking pictures are made large; past 2x they would only get blurrier. */
+const PAINTED_MAX_UPSCALE = 2;
+
+interface PaintedStage {
+  layout: ReturnType<typeof layoutBackdrop>;
+  world: WorldSpec;
+  keys: string[];
+  gateTopY: number;
+  walkerHeight: number;
+}
 
 export interface BasecampEntry {
   /** Where the buddy appears: the trailhead (first visit) or just outside the gate (back from a run). */
@@ -56,6 +69,7 @@ export interface BasecampEntry {
  */
 class Walker extends Phaser.GameObjects.Container {
   readonly id: CharacterId | 'click';
+  readonly painted: boolean;
   private readonly figure: Phaser.GameObjects.Image | Character;
   private readonly shadow: Phaser.GameObjects.Ellipse;
   readonly bodyH: number;
@@ -66,18 +80,25 @@ class Walker extends Phaser.GameObjects.Container {
   private lastStepSign = 1;
   private idleClock = Math.random() * 10;
 
-  constructor(scene: Phaser.Scene, id: CharacterId | 'click', targetH: number, maxW: number) {
+  constructor(scene: Phaser.Scene, id: CharacterId | 'click', targetH: number, maxW: number, pose: PaintedPose = 'walk_side') {
     super(scene, 0, 0);
     this.id = id;
-    if (hasWalkArt(scene, id)) {
-      const img = scene.add.image(0, 0, walkTextureKey(id)).setOrigin(0.5, 1);
-      const src = scene.textures.get(walkTextureKey(id)).getSourceImage() as { width: number; height: number };
-      const scale = Math.min(targetH / src.height, maxW / src.width, WALKER_MAX_UPSCALE);
+    const pic = walkPicture(scene, id, pose);
+    this.painted = !!pic?.painted;
+    if (pic) {
+      // anchored at the feet: the bottom-center of the opaque body (painted art may carry padding)
+      const { box } = pic;
+      const img = scene.add.image(0, 0, pic.key).setOrigin((box.x + box.w / 2) / pic.width, (box.y + box.h) / pic.height);
+      // painted pictures are all trimmed to one height, so the approved cast-relative presence
+      // (Eagle largest ... Tarsier smallest, castPresence) is applied here; the canonical side views
+      // keep their W1 sizing unchanged
+      const h = pic.painted ? targetH * castPresence(id) : targetH;
+      const scale = Math.min(h / box.h, maxW / box.w, pic.painted ? PAINTED_MAX_UPSCALE : WALKER_MAX_UPSCALE);
       img.setScale(scale);
       this.figure = img;
       this.baseScale = scale;
-      this.bodyH = src.height * scale;
-      this.bodyW = src.width * scale;
+      this.bodyH = box.h * scale;
+      this.bodyW = box.w * scale;
     } else {
       // No walking picture: the head-and-shoulders art stands in, sized the same way.
       const c = new Character(scene, 0, 0, id, 100);
@@ -153,6 +174,8 @@ export class BasecampScene extends Phaser.Scene {
   private bubbleW = 0;
   private gateGlow: Phaser.GameObjects.Ellipse | null = null;
   private gateX = 0;
+  /** Painted backdrop layers on screen (0 = the code-drawn fallback). */
+  private backdropLayers = 0;
   private uiCam!: Phaser.Cameras.Scene2D.Camera;
   private keys: { left: Phaser.Input.Keyboard.Key[]; right: Phaser.Input.Keyboard.Key[] } = { left: [], right: [] };
   private heldX: number | null = null;
@@ -202,7 +225,11 @@ export class BasecampScene extends Phaser.Scene {
     this.input.on('gameout', release);
 
     const ctx = getContext(this);
-    void loadWalkArt(this, [ctx.character, HOST_DEFINITION.id])
+    // painted art that arrives after the timeout (slow network) replaces the code-drawn stand-in
+    const late = (): void => {
+      if (this.sys.isActive() && this.ready && !this.leaving) this.build(false);
+    };
+    void loadBasecampArt(this, [ctx.character, HOST_DEFINITION.id], late)
       .catch(() => undefined)
       .then(() => {
         if (!this.sys.isActive()) return;
@@ -231,6 +258,7 @@ export class BasecampScene extends Phaser.Scene {
     for (const o of this.objs) o.destroy();
     this.objs = [];
     this.tiles = [];
+    this.backdropLayers = 0;
     this.hud?.destroy();
     this.hud = null;
     this.chip = null;
@@ -239,7 +267,8 @@ export class BasecampScene extends Phaser.Scene {
     this.gateGlow = null;
     const ctx = getContext(this);
     const keepX = this.player.x;
-    this.world = worldSpec(w, h);
+    const painted = this.paintedLayout(w, h);
+    this.world = painted ? painted.world : worldSpec(w, h);
     if (initial) {
       const x = this.entry.from === 'gate' ? returnSpawnX(this.world) : this.world.startX;
       this.player = { x, vx: 0, facing: 1 };
@@ -247,11 +276,88 @@ export class BasecampScene extends Phaser.Scene {
       this.player = { ...this.player, x: Math.min(this.world.maxX, Math.max(this.world.minX, keepX)) };
     }
     const unit = this.world.unit;
+    const cam = this.cameras.main;
+    cam.setBackgroundColor(0xfff0cf);
+    // the walker is sized from the screen height (capped by width and by the art's sharpness)
+    const walkerH = Math.round(Math.min(h * (painted?.walkerHeight ?? WALKER_HEIGHT), w * 0.55));
+    this.gateX = this.world.landmarks.find((l) => l.id === 'gate')!.x;
+    const stage = painted ? this.buildPainted(painted) : this.buildCodeDrawn(w, h, walkerH);
+
+    // --- characters ---
+    const targetH = walkerH;
+    const feetY = stage.feetY;
+    // Click stands at the lodge door on the painted backdrop: the painted standing pose when present
+    const click = new Walker(this, HOST_DEFINITION.id, targetH, w * 0.5, painted ? 'idle_front' : 'walk_side');
+    click.setPosition(this.world.clickX, feetY).setDepth(9);
+    click.face(-1);
+    this.click = this.keep(click);
+    this.bubble = this.keep(this.buildBubble(unit, ctx.activeSessionId ? 'Your run is waiting!' : 'Walk into the gate!'));
+    // code-drawn: above the gate's lintel, so it never covers the name board; painted: above Click.
+    // Clamped on screen in update().
+    this.bubble.setPosition(this.world.clickX, stage.bubbleY ?? feetY - click.bodyH - unit * 0.03).setDepth(11).setAlpha(0);
+    this.bubbleW = this.bubble.getBounds().width;
+
+    const buddy = new Walker(this, ctx.character, targetH, w * 0.55);
+    buddy.setPosition(this.player.x, feetY).setDepth(10);
+    buddy.face(this.player.facing);
+    this.buddy = this.keep(buddy);
+
+    // --- HUD on its own camera, so it never scrolls ---
+    this.buildHud(w, h, ctx.character);
+    cam.ignore(this.hud!);
+    this.uiCam.ignore(this.objs);
+    this.camX = cameraTargetScroll(this.player.x, this.player.facing, w, this.world.width);
+    cam.setScroll(this.camX, 0);
+    const name = characterName(ctx.character);
+    const clickAt = painted ? 'Click is waiting by the lodge.' : 'Click is waiting by the Basecamp Gate.';
+    ctx.a11y.set(
+      `Expedition Basecamp. ${name} is here. Walk with the arrow keys, or hold the left or right side of the screen. ${clickAt} Enter the gate to ${ctx.activeSessionId ? 'continue your run' : 'start a run'}.`,
+      [{ id: 'enter-gate', label: ctx.activeSessionId ? 'Enter the gate and continue your run' : 'Enter the gate and start a run', onClick: () => this.enterGate() }],
+    );
+    this.lastPublish = '';
+    this.publish(true);
+  }
+
+  /** The painted backdrop laid out for this view, or null when it is not available (code-drawn fallback). */
+  private paintedLayout(w: number, h: number): PaintedStage | null {
+    const m = backdropManifest();
+    if (!m || !hasPaintedBackdrop(this)) return null;
+    const sizes = m.layers.map((l) => {
+      const src = this.textures.get(backdropTextureKey(l.file)).getSourceImage() as { width: number; height: number };
+      return { width: src.width, height: src.height };
+    });
+    const layout = layoutBackdrop(w, h, sizes, m.layers.map((l) => l.parallax));
+    const world = paintedWorldSpec(w, h, {
+      width: layout.worldW,
+      groundY: backdropY(layout, m.groundY),
+      gateX: backdropX(layout, m.gateX),
+      signpostX: m.signpostX === null ? null : backdropX(layout, m.signpostX),
+      clickX: backdropX(layout, m.lodgeDoorX),
+      minX: backdropX(layout, m.walkMinX),
+      maxX: backdropX(layout, m.walkMaxX),
+    });
+    return { layout, world, keys: m.layers.map((l) => backdropTextureKey(l.file)), gateTopY: backdropY(layout, m.gateTopY), walkerHeight: m.walkerHeight };
+  }
+
+  /** Painted backdrop: the pictures, back to front, and a warm glow inside the PAINTED gate opening. */
+  private buildPainted(p: PaintedStage): { feetY: number; bubbleY: number | null } {
+    p.layout.layers.forEach((l, i) => {
+      const img = this.add.image(Math.round(l.x), Math.round(l.y), p.keys[i]!).setOrigin(0, 0).setScale(l.scale).setScrollFactor(l.parallax, 1).setDepth(i);
+      this.keep(img);
+    });
+    this.backdropLayers = p.layout.layers.length;
+    const g = this.world.groundY;
+    const openingH = Math.max(1, g - p.gateTopY);
+    this.gateGlow = this.keep(this.add.ellipse(this.gateX, g - openingH * 0.45, Math.max(this.world.gateCoreRadius * 2.4, openingH * 0.45), openingH * 0.85, EXP.lanternGlow, 0).setDepth(7));
+    return { feetY: g, bubbleY: null };
+  }
+
+  /** The code-drawn W1 Basecamp (the fallback): parallax layers, signpost, gate, ledge and fronds. */
+  private buildCodeDrawn(w: number, h: number, walkerH: number): { feetY: number; bubbleY: number | null } {
+    const unit = this.world.unit;
     const lu = Math.round(Math.min(unit * 0.95, w));
     const g = this.world.groundY;
     const tex = bakeWorldLayers(this, w, h, g);
-    const cam = this.cameras.main;
-    cam.setBackgroundColor(0xfff0cf);
 
     // --- distance: sky, ridges, terraces, lanterns (each its own speed) ---
     this.keep(this.add.image(0, 0, tex.sky).setOrigin(0, 0).setScrollFactor(0).setDepth(0));
@@ -273,35 +379,16 @@ export class BasecampScene extends Phaser.Scene {
     const signImg = this.keep(this.add.image(signLm.x, g + 6, sign.key).setOrigin(0.5, 1).setDepth(8));
     const signText = this.keep(text(this, 'Terraces', EXP_CSS.parchment, { weight: 800, size: lu * 0.034, stroke: '#3b2410', strokeWidth: 3 })).setOrigin(0.5).setDepth(9);
     signText.setPosition(signLm.x - sign.w * 0.04, signImg.y - sign.h + sign.h * 0.14 + lu * 0.05);
-    const gateLm = this.world.landmarks.find((l) => l.id === 'gate')!;
-    this.gateX = gateLm.x;
     // the gate towers over the buddy: about 1.75 buddy heights tall, never wider than the screen
-    const walkerH = Math.round(Math.min(h * WALKER_HEIGHT, w * 0.55));
     const gateH = Math.round(walkerH * 1.75);
     const gateW = Math.round(Math.min(w * 0.92, gateH * 1.15));
     const gate = bakeGate(this, lu, gateW, gateH);
     // a warm glow inside the gate opening that breathes when the buddy is close
-    this.gateGlow = this.keep(this.add.ellipse(gateLm.x, g - gate.h * 0.45, gate.w * 0.55, gate.h * 0.85, EXP.lanternGlow, 0.0).setDepth(7));
-    const gateImg = this.keep(this.add.image(gateLm.x, g + 6, gate.key).setOrigin(0.5, 1).setDepth(8));
+    this.gateGlow = this.keep(this.add.ellipse(this.gateX, g - gate.h * 0.45, gate.w * 0.55, gate.h * 0.85, EXP.lanternGlow, 0.0).setDepth(7));
+    const gateImg = this.keep(this.add.image(this.gateX, g + 6, gate.key).setOrigin(0.5, 1).setDepth(8));
     const gateText = this.keep(text(this, 'Basecamp', EXP_CSS.parchment, { weight: 800, size: lu * 0.05, stroke: '#3b2410', strokeWidth: 4 })).setOrigin(0.5).setDepth(9);
-    gateText.setPosition(gateLm.x, gateImg.y - gate.h + gate.h * 0.2 + lu * 0.05);
-
-    // --- characters: sized from the screen height, capped by width and by the art's sharpness ---
-    const targetH = walkerH;
+    gateText.setPosition(this.gateX, gateImg.y - gate.h + gate.h * 0.2 + lu * 0.05);
     const feetY = g + 10; // toes in the grass tufts of the ledge
-    const click = new Walker(this, HOST_DEFINITION.id, targetH, w * 0.5);
-    click.setPosition(this.world.clickX, feetY).setDepth(9);
-    click.face(-1);
-    this.click = this.keep(click);
-    this.bubble = this.keep(this.buildBubble(unit, ctx.activeSessionId ? 'Your run is waiting!' : 'Walk into the gate!'));
-    // above the gate's lintel, so it never covers the name board; clamped on screen in update()
-    this.bubble.setPosition(this.world.clickX, feetY - gate.h - unit * 0.02).setDepth(11).setAlpha(0);
-    this.bubbleW = this.bubble.getBounds().width;
-
-    const buddy = new Walker(this, ctx.character, targetH, w * 0.55);
-    buddy.setPosition(this.player.x, feetY).setDepth(10);
-    buddy.face(this.player.facing);
-    this.buddy = this.keep(buddy);
 
     // --- foreground: the grass-topped ledge, then fronds passing in front of everything ---
     const ledge = this.keep(this.add.tileSprite(0, g - LEDGE_MARGIN, w, tex.ledgeH, tex.ledge).setOrigin(0, 0).setScrollFactor(0).setDepth(12));
@@ -310,20 +397,7 @@ export class BasecampScene extends Phaser.Scene {
     for (let x = -100, i = 0; x < span; x += 1500, i++) {
       this.keep(this.add.image(x, -unit * 0.03, tex.canopy).setOrigin(0, 0).setScrollFactor(CANOPY_FACTOR).setDepth(14).setFlipX(i % 2 === 1).setAlpha(0.96));
     }
-
-    // --- HUD on its own camera, so it never scrolls ---
-    this.buildHud(w, h, ctx.character);
-    cam.ignore(this.hud!);
-    this.uiCam.ignore(this.objs);
-    this.camX = cameraTargetScroll(this.player.x, this.player.facing, w, this.world.width);
-    cam.setScroll(this.camX, 0);
-    const name = characterName(ctx.character);
-    ctx.a11y.set(
-      `Expedition Basecamp. ${name} is here. Walk with the arrow keys, or hold the left or right side of the screen. Click is waiting by the Basecamp Gate. Enter the gate to ${ctx.activeSessionId ? 'continue your run' : 'start a run'}.`,
-      [{ id: 'enter-gate', label: ctx.activeSessionId ? 'Enter the gate and continue your run' : 'Enter the gate and start a run', onClick: () => this.enterGate() }],
-    );
-    this.lastPublish = '';
-    this.publish(true);
+    return { feetY, bubbleY: feetY - gate.h - unit * 0.02 };
   }
 
   private layer(key: string, y: number, h: number, w: number, factor: number, depth: number): void {
@@ -491,7 +565,9 @@ export class BasecampScene extends Phaser.Scene {
     const ctx = getContext(this);
     const near = nearLandmark(this.player.x, this.world.landmarks);
     const nearId = near?.id ?? null;
-    const clickNear = Math.abs(this.player.x - this.world.clickX) < this.world.unit * 0.6;
+    let clickNear = Math.abs(this.player.x - this.world.clickX) < this.world.unit * 0.6;
+    // on the painted backdrop Click is far from the gate: the bubble only speaks while Click is in view
+    if (this.backdropLayers > 0 && this.click) clickNear &&= Math.abs(this.click.x - (cam.scrollX + w / 2)) < w / 2 + this.click.bodyW * 0.1;
     if (nearId !== this.lastNear) {
       this.lastNear = nearId;
       if (near?.id === 'gate') this.setChip(ctx.activeSessionId ? 'Continue your run' : 'Start your run', 'gate');
@@ -539,9 +615,11 @@ export class BasecampScene extends Phaser.Scene {
       facing: String(this.player.facing),
       portal: this.portal.toFixed(2),
       'walk-art': String(this.buddy ? hasWalkArt(this, ctx.character) : false),
+      'walk-art-painted': String(this.buddy?.painted ?? false),
+      backdrop: this.backdropLayers > 0 ? 'painted' : 'code',
       'buddy-rect': screenRect(this.buddy?.rect()),
       'click-rect': screenRect(this.click?.rect()),
-      layers: String(this.tiles.length),
+      layers: String(this.backdropLayers > 0 ? this.backdropLayers : this.tiles.length),
     });
   }
 }

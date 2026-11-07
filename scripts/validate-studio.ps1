@@ -2,7 +2,7 @@
 .SYNOPSIS
   One-click Studio PC validation for BidaZoo: the FINAL RELEASE CANDIDATE validator (Checkpoint B baseline
   01b7d41 and later). It validates ONE exact, immutable commit, supplied with -CandidateSha, against the approved
-  baseline: 51 unit, 724 integration + 3 todo, 272 Playwright in 4 projects, Chromium 156.0.8078.4,
+  baseline: 51 unit, 747 integration + 3 todo, 276 Playwright in 4 projects, Chromium 156.0.8078.4,
   Playwright 1.64.0, PostgreSQL 16.15. Any deviation from that baseline is a FAILURE, not a warning.
 
 .DESCRIPTION
@@ -89,9 +89,9 @@ $TestDb = 'bidazoo_test'
 $E2eDb = 'bidazoo_e2e'
 $Ports = @(3001, 4173)
 $ExpectedUnit = 51
-$ExpectedIntegration = 724
+$ExpectedIntegration = 747
 $ExpectedTodo = 3
-$ExpectedPlaywright = 272
+$ExpectedPlaywright = 276
 $ExpectedProjects = 4
 $ExpectedChromium = '156.0.8078.4'
 $ExpectedPlaywrightVersion = '1.64.0'
