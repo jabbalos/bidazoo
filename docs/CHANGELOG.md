@@ -2,6 +2,16 @@
 
 All notable changes, by checkpoint. Dates use US format.
 
+## Validator: e2e ports can move off 3001/4173 (November 7, 2026; tooling only)
+
+- `tests/e2e/ports.ts` is the one place the e2e loopback ports are defined; `E2E_API_PORT` /
+  `E2E_PLAY_PORT` move the whole stack (identity-ON stack = +1, character lab = play +2). Defaults are
+  unchanged, so nothing moves unless asked.
+- `scripts\validate-studio.ps1` gained `-ApiPort` / `-PlayPort`. When a default port is held by another
+  local service and no port was passed, it picks the next free block, warns, and records the ports in
+  `SUMMARY.txt` instead of stopping. It now checks all five ports (before: only 3001 and 4173). It still
+  never stops another process. No API, client, grading, XP or coin change.
+
 ## Checkpoint W1: Expedition Basecamp, the walkable home screen (November 4, 2026; branch `feature/w1-basecamp-walk`)
 
 - After "Choose Your Buddy" the buddy now stands, whole body, in Expedition Basecamp and walks left or

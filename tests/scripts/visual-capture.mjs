@@ -29,7 +29,7 @@ const arg = (name, fallback) => {
   const i = argv.indexOf(`--${name}`);
   return i >= 0 && argv[i + 1] ? argv[i + 1] : fallback;
 };
-const BASE = arg('base', 'http://127.0.0.1:4173');
+const BASE = arg('base', `http://127.0.0.1:${process.env.E2E_PLAY_PORT || '4173'}`);
 const OUT = resolve(arg('out', 'visual-qa'));
 const LABEL = arg('label', 'after');
 const ONLY = arg('only', '')

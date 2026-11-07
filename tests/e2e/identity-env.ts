@@ -3,13 +3,14 @@ import { join } from 'node:path';
 
 /**
  * A second, identity-ENABLED stack for the account-page tests. The default stack (API 3001, play
- * 4173) keeps identity OFF, which is also what proves the guest-only fallback.
+ * 4173 unless E2E_API_PORT / E2E_PLAY_PORT say otherwise; see ports.ts) keeps identity OFF, which
+ * is also what proves the guest-only fallback.
  *
  * Every value here is a throwaway test value: it protects nothing and is only ever used against
  * the disposable e2e database. Real secrets never appear in the repository.
  */
-export const ID_API_PORT = 3002;
-export const ID_PLAY_PORT = 4174;
+import { ID_API_PORT, ID_PLAY_PORT } from './ports';
+export { ID_API_PORT, ID_PLAY_PORT };
 export const ID_BASE_URL = `http://127.0.0.1:${ID_PLAY_PORT}`;
 export const OUTBOX_DIR = join(tmpdir(), 'bidazoo-e2e-outbox');
 export const OUTBOX_FILE = join(OUTBOX_DIR, 'outbox.jsonl');

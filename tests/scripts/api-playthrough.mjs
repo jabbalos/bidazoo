@@ -8,7 +8,7 @@
 // the answer before grading. Exit code 0 only if every check passed.
 import pg from 'pg';
 
-const API = process.env.API_URL ?? 'http://127.0.0.1:3001';
+const API = process.env.API_URL ?? `http://127.0.0.1:${process.env.E2E_API_PORT || '3001'}`;
 const DATABASE_URL = process.env.DATABASE_URL;
 if (!DATABASE_URL) {
   console.error('DATABASE_URL is required to verify database records');

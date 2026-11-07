@@ -1,2 +1,2 @@
-/** The developer character-lab build (apps/play/dist-character-lab) is served on its own port. */
-export const LAB_PORT = 4175;
+/** The developer character-lab build (apps/play/dist-character-lab) is served on its own port (see ports.ts). */
+export { LAB_PORT } from './ports';

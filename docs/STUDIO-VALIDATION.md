@@ -374,6 +374,21 @@ Everything below (switches, steps, exit codes) applies to both modes unless note
 and forwards every argument unchanged. It performs steps 0 to 7 below automatically. Paths are
 quoted, so a repository path with spaces is fine.
 
+### Loopback ports (changed November 7, 2026; validator and test wiring only, no application behavior)
+
+The e2e stacks bind five loopback ports: the API port and the next one (identity-ON API), and the
+play port and the next two (identity-ON play, character lab). Defaults: `3001`/`3002` and
+`4173`/`4174`/`4175`, read by the tests from `E2E_API_PORT` / `E2E_PLAY_PORT` (`tests/e2e/ports.ts`).
+
+- If a **default** port is already taken by another local service (the Studio PC keeps its own
+  things on some of these) and you did not pass `-ApiPort` / `-PlayPort`, the runner picks the next
+  free block above the defaults, warns, and records the ports used on the `e2e ports:` line of
+  `SUMMARY.txt`. The verdict then reads `PASS (with warnings)`; the warning only names the moved
+  ports and the process that held the default. Nothing is ever stopped or killed by the runner.
+- Ports you pass **explicitly** (`-ApiPort 3011 -PlayPort 4183`) must be free, or the run stops
+  before anything starts, exactly as before.
+- The live API playthrough uses the same API port as the Playwright run.
+
 ```text
 Double-click:      scripts\validate-studio.bat          (prompts for the PostgreSQL password)
 

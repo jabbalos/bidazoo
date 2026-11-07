@@ -1,9 +1,7 @@
 import { defineConfig } from '@playwright/test';
-import { ID_API_PORT, ID_PLAY_PORT, identityEnv } from './identity-env';
-import { LAB_PORT } from './lab-env';
+import { identityEnv } from './identity-env';
+import { API_PORT, ID_API_PORT, ID_PLAY_PORT, LAB_PORT, PLAY_PORT } from './ports';
 
-const PLAY_PORT = 4173;
-const API_PORT = 3001;
 const executablePath = process.env['PW_CHROMIUM_EXECUTABLE'];
 
 /**
@@ -15,6 +13,7 @@ const executablePath = process.env['PW_CHROMIUM_EXECUTABLE'];
  * NOT the official validation and must be reported as "supplementary".
  *
  * Required environment for the API web server: DATABASE_URL (a migrated, throwaway database).
+ * Ports: E2E_API_PORT / E2E_PLAY_PORT (optional, see ports.ts) move the whole stack off 3001/4173.
  * COOKIE_SECURE is left unset, so the guest cookie is issued without `Secure` over http://127.0.0.1.
  */
 export default defineConfig({
@@ -75,6 +74,7 @@ export default defineConfig({
       command: `npm run build -w @bidazoo/play && npm run preview -w @bidazoo/play -- --port ${PLAY_PORT} --strictPort`,
       url: `http://127.0.0.1:${PLAY_PORT}`,
       cwd: '../..',
+      env: { API_PROXY_TARGET: `http://127.0.0.1:${API_PORT}` },
       reuseExistingServer: !process.env['CI'],
       timeout: 120_000,
     },
@@ -83,6 +83,7 @@ export default defineConfig({
       command: `npm run build:character-lab -w @bidazoo/play && npm run preview:character-lab -w @bidazoo/play -- --port ${LAB_PORT} --strictPort`,
       url: `http://127.0.0.1:${LAB_PORT}`,
       cwd: '../..',
+      env: { API_PROXY_TARGET: `http://127.0.0.1:${API_PORT}` },
       reuseExistingServer: !process.env['CI'],
       timeout: 120_000,
     },

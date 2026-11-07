@@ -10,8 +10,8 @@
   two throwaway PostgreSQL databases (bidazoo_test, bidazoo_e2e), migrations, the full Vitest suite
   against bidazoo_test, the full Playwright suite against bidazoo_e2e, a production build
   (npm run build), the client bundle leak scan (npm run scan:client; must report CLEAN), and the
-  live API playthrough (npm run playthrough) against a fresh API instance this run starts on port
-  3001 with bidazoo_e2e and stops again, even if the step fails. Process exit codes are
+  live API playthrough (npm run playthrough) against a fresh API instance this run starts on the
+  e2e API port (3001 by default) with bidazoo_e2e and stops again, even if the step fails. Process exit codes are
   authoritative, AND the approved baseline is enforced: a different unit/integration/todo/Playwright count,
   a different number of viewport projects, any skipped or flaky Playwright test, an unreadable Playwright
   report, a different Chromium / Playwright / PostgreSQL version, a dirty tree, or a HEAD that is not exactly
@@ -20,6 +20,13 @@
   Safety: it only ever creates, migrates, and (when you ask) drops databases named exactly
   bidazoo_test and bidazoo_e2e. It never touches any other database, never changes configuration
   files, and never deletes failure evidence (logs, traces, screenshots, videos).
+
+  Ports: the e2e stacks bind five loopback ports: the API port and the next one (identity-ON API),
+  the play port and the next two (identity-ON play, character lab). Defaults 3001/3002 and
+  4173/4174/4175. If any default is already taken by something else on this PC and you did not pass
+  -ApiPort / -PlayPort, the script picks the next free block above the defaults, says so, and records
+  the ports in SUMMARY.txt (the tests read them from E2E_API_PORT / E2E_PLAY_PORT). It never stops
+  whatever owns the busy port. Ports you pass explicitly must be free, or the run stops.
 
   Privileges: everything runs as the CURRENT user. The script never elevates itself and never
   relaunches anything as Administrator, because npm package scripts and test code should not run
@@ -55,11 +62,18 @@
                        -PgPort to change it; 5432 is refused). No password is needed or asked for.
 .PARAMETER PortableRoot
                        Folder for the portable binaries and cluster. Default: %USERPROFILE%\BidaZoo-pg.
+.PARAMETER ApiPort     First e2e API port (the identity-ON API uses ApiPort+1). Default: 3001, or the
+                       next free pair above it when 3001/3002 are busy and this parameter is not given.
+.PARAMETER PlayPort    First e2e play port (identity-ON play = PlayPort+1, character lab = PlayPort+2).
+                       Default: 4173, or the next free triple above it when any of 4173-4175 is busy
+                       and this parameter is not given.
 
 .EXAMPLE
   .\scripts\validate-studio.ps1 -CandidateSha <40-hex> -PortablePostgres
 .EXAMPLE
   .\scripts\validate-studio.ps1 -CandidateSha <40-hex> -PortablePostgres -Recreate -Cleanup
+.EXAMPLE
+  .\scripts\validate-studio.ps1 -CandidateSha <40-hex> -PortablePostgres -ApiPort 3011 -PlayPort 4183
 #>
 [CmdletBinding()]
 param(
@@ -71,7 +85,9 @@ param(
   [switch]$Cleanup,
   [switch]$NoPrompt,
   [switch]$PortablePostgres,
-  [string]$PortableRoot = ''
+  [string]$PortableRoot = '',
+  [int]$ApiPort = 3001,
+  [int]$PlayPort = 4173
 )
 
 Set-StrictMode -Version 1.0
@@ -87,7 +103,12 @@ $ErrorActionPreference = 'Continue'
 $BaselineCommit = '01b7d41'
 $TestDb = 'bidazoo_test'
 $E2eDb = 'bidazoo_e2e'
-$Ports = @(3001, 4173)
+# The five loopback ports the e2e stacks bind (see tests/e2e/ports.ts). Resolved for real in
+# step 4 (Ports); until then these are the requested/default values.
+function Get-E2ePorts([int]$Api, [int]$Play) { return @($Api, ($Api + 1), $Play, ($Play + 1), ($Play + 2)) }
+$PortsExplicit = $PSBoundParameters.ContainsKey('ApiPort') -or $PSBoundParameters.ContainsKey('PlayPort')
+$Ports = Get-E2ePorts $ApiPort $PlayPort
+$PortsNote = ''
 $ExpectedUnit = 51
 $ExpectedIntegration = 747
 $ExpectedTodo = 3
@@ -566,7 +587,7 @@ if ($PortablePostgres) {
   $PgUser = 'postgres'
   $PgPort = $(if ($PSBoundParameters.ContainsKey('PgPort')) { $PgPort } else { 54329 })
   if ($PgPort -lt 1024 -or $PgPort -gt 65535 -or $PgPort -eq 5432 -or $Ports -contains $PgPort) {
-    Stop-Precondition "-PgPort $PgPort is not allowed for the portable server (use 1024-65535; 5432 is reserved for a normal PostgreSQL, and 3001/4173 are used by the tests)."
+    Stop-Precondition "-PgPort $PgPort is not allowed for the portable server (use 1024-65535; 5432 is reserved for a normal PostgreSQL, and $($Ports -join '/') are used by the tests)."
   }
   $portableRoot = $PortableRoot
   if (-not $portableRoot) {
@@ -681,22 +702,51 @@ if ($PortablePostgres) {
 # ---------------------------------------------------------------------------------------------
 # 4. Ports
 # ---------------------------------------------------------------------------------------------
-Write-Step ('Confirming ports {0} are free' -f ($Ports -join ' and '))
-$busy = @()
-foreach ($p in $Ports) {
-  $conn = Get-NetTCPConnection -LocalPort $p -State Listen -ErrorAction SilentlyContinue
-  if ($conn) {
-    foreach ($c in $conn) {
-      $proc = Get-Process -Id $c.OwningProcess -ErrorAction SilentlyContinue
-      $busy += ('port {0} is in use by PID {1} ({2})' -f $p, $c.OwningProcess, $(if ($proc) { $proc.ProcessName } else { 'unknown' }))
-    }
+# The e2e stacks need five free loopback ports. Nothing is ever killed: a busy DEFAULT port moves
+# the block up to the next free one (and the summary records it); a busy EXPLICIT port stops the run.
+function Get-BusyPorts([int[]]$Candidates) {
+  $busyList = @()
+  foreach ($p in $Candidates) {
+    $owner = Get-PortOwner $p
+    if ($owner) { $busyList += ('port {0} is in use by {1}' -f $p, $owner); continue }
+    if (-not (Test-PortFree $p)) { $busyList += ('port {0} cannot be bound' -f $p) }
   }
+  return ,$busyList
+}
+# First base >= $From whose $Count consecutive ports are all free; 0 when none below $Max.
+function Find-FreeBlock([int]$From, [int]$Count, [int]$Max) {
+  for ($base = $From; ($base + $Count - 1) -le $Max; $base++) {
+    $allFree = $true
+    for ($i = 0; $i -lt $Count; $i++) { if (-not (Test-PortFree ($base + $i))) { $allFree = $false; break } }
+    if ($allFree) { return $base }
+  }
+  return 0
+}
+foreach ($p in $Ports) {
+  if ($p -lt 1024 -or $p -gt 65533) { Stop-Precondition "e2e port $p is out of range (1024-65533). Check -ApiPort / -PlayPort." }
+}
+if ($ApiPort -eq $PgPort -or ($ApiPort + 1) -eq $PgPort -or ($PlayPort -le $PgPort -and $PgPort -le ($PlayPort + 2))) { Stop-Precondition "The e2e ports ($($Ports -join '/')) overlap the PostgreSQL port $PgPort." }
+if (($PlayPort -le ($ApiPort + 1) -and $ApiPort -le ($PlayPort + 2))) { Stop-Precondition "-ApiPort $ApiPort and -PlayPort $PlayPort overlap (API uses 2 ports, play uses 3)." }
+Write-Step ('Confirming e2e ports {0} are free' -f ($Ports -join ', '))
+$busy = @(Get-BusyPorts $Ports)
+if ($busy.Count -gt 0 -and -not $PortsExplicit) {
+  $busy | ForEach-Object { Write-Warn $_ }
+  $newApi = Find-FreeBlock ($ApiPort + 2) 2 3999
+  $newPlay = Find-FreeBlock ($PlayPort + 3) 3 4999
+  $apiBusy = @(Get-BusyPorts @($ApiPort, ($ApiPort + 1))).Count -gt 0
+  $playBusy = @(Get-BusyPorts @($PlayPort, ($PlayPort + 1), ($PlayPort + 2))).Count -gt 0
+  if ($apiBusy) { if ($newApi -eq 0) { Stop-Precondition 'No free pair of e2e API ports found between 3003 and 3999. Pass -ApiPort explicitly.' }; $ApiPort = $newApi }
+  if ($playBusy) { if ($newPlay -eq 0) { Stop-Precondition 'No free triple of e2e play ports found between 4176 and 4999. Pass -PlayPort explicitly.' }; $PlayPort = $newPlay }
+  $Ports = Get-E2ePorts $ApiPort $PlayPort
+  $PortsNote = ('moved off the defaults because another local service holds a default port (nothing was stopped): ' + ($busy -join '; '))
+  Write-Warn ('e2e ports moved to API {0}/{1}, play {2}/{3}/{4}. The tests read E2E_API_PORT / E2E_PLAY_PORT.' -f $Ports[0], $Ports[1], $Ports[2], $Ports[3], $Ports[4])
+  $busy = @(Get-BusyPorts $Ports)
 }
 if ($busy.Count -gt 0) {
   $busy | ForEach-Object { Write-Bad $_ }
-  Stop-Precondition 'Ports 3001 and/or 4173 are in use. The e2e run would collide with whatever is listening there, so it was NOT started. Stop that process yourself (this script will not).'
+  Stop-Precondition ('e2e ports {0} are not all free. The run would collide with whatever is listening there, so it was NOT started. Stop that process yourself (this script will not), or pass different -ApiPort / -PlayPort values.' -f ($Ports -join ', '))
 }
-Write-Ok 'ports 3001 and 4173 are free'
+Write-Ok ('e2e ports {0} are free (API {1}, play {2})' -f ($Ports -join ', '), $ApiPort, $PlayPort)
 
 # ---------------------------------------------------------------------------------------------
 # Environment hygiene (process-scope only; nothing is written to disk or the system)
@@ -911,10 +961,14 @@ if ($Result.Install -eq 'ok') {
 if ($Failures.Count -eq 0) {
   Write-Step "Playwright e2e (CI=1) against $E2eDb"
   $env:DATABASE_URL = New-DbUrl $E2eDb
+  $env:E2E_API_PORT = [string]$ApiPort
+  $env:E2E_PLAY_PORT = [string]$PlayPort
   $jsonFile = Join-Path $LogDir 'playwright-results.json'
   $env:PLAYWRIGHT_JSON_OUTPUT_NAME = $jsonFile
   $code = Invoke-Logged 'npm' @('run', 'test:e2e', '-w', '@bidazoo/tests', '--', '--reporter=list,json') (Join-Path $LogDir '05-playwright.log')
   $env:DATABASE_URL = $null
+  Remove-Item Env:E2E_API_PORT -ErrorAction SilentlyContinue
+  Remove-Item Env:E2E_PLAY_PORT -ErrorAction SilentlyContinue
   Remove-Item Env:PLAYWRIGHT_JSON_OUTPUT_NAME -ErrorAction SilentlyContinue
   if ($code -eq 0) { $Result.Playwright = 'ok'; Write-Ok 'Playwright exited 0' } else { Fail-Step 'Playwright' "Playwright failed (exit $code)" }
 
@@ -997,7 +1051,7 @@ if ($Result.Build -eq 'ok') {
 # against it, and stops it again in all cases (finally block, plus the outer safety net).
 if ($Result.Build -eq 'ok' -and $Result.Migrate -eq 'ok') {
   Write-Step "Live API playthrough (npm run playthrough) against $E2eDb"
-  $apiPort = 3001
+  $apiPort = $ApiPort
   $apiOutLog = Join-Path $LogDir '14-api-server.out.log'
   $apiErrLog = Join-Path $LogDir '14-api-server.err.log'
   $playLog = Join-Path $LogDir '15-playthrough.log'
@@ -1103,6 +1157,7 @@ $summary.Add('Build:       ' + $buildText)
 $summary.Add('Bundle scan: ' + $scanText2)
 $summary.Add('Playthrough: ' + $playText2)
 $summary.Add('Chromium:    ' + $chromiumVersion + '   (' + $chromiumPath + ')')
+$summary.Add('e2e ports:   API ' + $ApiPort + '/' + ($ApiPort + 1) + ', play ' + $PlayPort + '/' + ($PlayPort + 1) + '/' + ($PlayPort + 2) + $(if ($PortsNote) { '   (' + $PortsNote + ')' } else { '   (defaults)' }))
 if ($PortablePostgres) {
   $summary.Add('PostgreSQL mode: Portable (isolated, BidaZoo-owned; no system PostgreSQL used)')
   $summary.Add('PostgreSQL version: ' + $script:PgVersionText)

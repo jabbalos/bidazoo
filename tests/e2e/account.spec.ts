@@ -7,6 +7,7 @@ import { join } from 'node:path';
 import type { Browser, BrowserContext, Page } from '@playwright/test';
 import { test, expect } from './fixtures';
 import { E2E_IDENTITY_SECRET, E2E_LEGACY_PEPPER, ID_BASE_URL, OUTBOX_FILE } from './identity-env';
+import { PLAY_PORT } from './ports';
 
 /**
  * The family/account page, end to end: real browser, real API, real PostgreSQL, real emailed link
@@ -551,7 +552,7 @@ test('mobile: every screen fits the viewport with practical touch targets', asyn
 // --- Identity switched off: this runs on the DEFAULT stack, where identity is not configured -----
 
 test.describe('identity disabled', () => {
-  test.use({ baseURL: 'http://127.0.0.1:4173' });
+  test.use({ baseURL: `http://127.0.0.1:${PLAY_PORT}` });
 
   test('guest play stays usable; no family entry point; the account page degrades without an error', async ({ page }) => {
     expect((await page.request.get('/api/v1/device')).status()).toBe(404);
