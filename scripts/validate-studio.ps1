@@ -711,7 +711,8 @@ function Get-BusyPorts([int[]]$Candidates) {
     if ($owner) { $busyList += ('port {0} is in use by {1}' -f $p, $owner); continue }
     if (-not (Test-PortFree $p)) { $busyList += ('port {0} cannot be bound' -f $p) }
   }
-  return ,$busyList
+  # No unary comma here: an empty list must come back as nothing, so @(Get-BusyPorts ...).Count is 0.
+  return $busyList
 }
 # First base >= $From whose $Count consecutive ports are all free; 0 when none below $Max.
 function Find-FreeBlock([int]$From, [int]$Count, [int]$Max) {
