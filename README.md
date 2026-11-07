@@ -100,6 +100,6 @@ See [docs/SECURITY.md](docs/SECURITY.md).
 
 The jonabalos.com Accounts integration, subscriptions, purchases, stores, inventory, multiplayer,
 QR controllers, classrooms, teacher and parent dashboards, AI-generated lessons, chat, friends,
-user-generated content, real-time 3D, and world maps (World / Explore / Basecamp is a future
-product phase). Guardian accounts exist in Checkpoint E but are not enabled in production, and the
+user-generated content, real-time 3D, and world maps beyond the Basecamp (Checkpoint W1 added the
+walkable Expedition Basecamp on November 4, 2026; destinations and the map room are a later phase). Guardian accounts exist in Checkpoint E but are not enabled in production, and the
 final production deployment is not done (only the guest-only closed beta is live).

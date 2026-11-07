@@ -33,30 +33,27 @@ Hop Quest site becomes a trial that leads into BidaZoo; first release is math on
 | Checkpoints F1 to F5 (World Expedition production character art and runtime integration) | **CLOSED** by the project owner. Official Studio-PC validation passed at `f3b5483c2b253f0ccb0ee9b62060379b7575fb08`. On the runtime branch; **not yet merged into `main`**. |
 | Checkpoint F6 (final integrated runtime / release-candidate QA) | **CLOSED: PASS WITH MINOR ITEMS.** F6 made zero repository changes. Runtime ready for final release-candidate integration: **YES**. |
 | Production character art | **COMPLETE.** All six cast members have six production expressions. Integrated on the runtime branch; `main` still carries the code-drawn transitional art until release-candidate integration. |
-| Closed-beta deployment (`play.bidazoo.com`) | **LIVE, guest-only** (Studio PC; commit `1a106bc`; see "Closed-beta deployment and backups"). A closed-beta architecture, not necessarily the final production architecture. |
-| Release work (release-candidate integration through founding-family beta) | **IN PROGRESS.** Step 1 (integration) is done and **merged into `main`** (November 3, 2026, with the visual recovery). Official Studio validation of the exact `main` SHA is next and is **not yet done**. See "Remaining work". |
+| Closed-beta deployment (`play.bidazoo.com`) | **LIVE, guest-only, running the validated candidate `c0fdbaf6935fc9048cc8aa3a8fcdd77218a7c467`** (deployed Wednesday, November 4, 2026, 7:09 AM CST by the owner's decision to skip the rehearsal kit; pre-cutover `pg_dump` kept in `C:\BidaZoo-beta\backups-release\`; identity OFF; no data changed). Before this the live tree was `46fe5eb` (the October 15 candidate), not `1a106bc` as previously recorded. Same closed-beta architecture (Studio PC, own Caddy :8480, own tunnel). |
+| Release work (release-candidate integration through founding-family beta) | **IN PROGRESS.** Step 1 (integration) is done and **merged into `main`** (November 3, 2026, with the visual recovery). Step 2 is **DONE**: official Studio validation of the exact `main` SHA `c0fdbaf6935fc9048cc8aa3a8fcdd77218a7c467` **passed** on November 3, 2026 (51 unit, 685 integration + 3 todo, Playwright 244/244 in 4 projects, Chromium 156.0.8078.4, Playwright 1.64.0, PostgreSQL 16.15, build, scan CLEAN, playthrough ALL CHECKS PASSED, exit 0; run folder `.validation-logs\20261103-214204`; see [STUDIO-VALIDATION.md](STUDIO-VALIDATION.md)). `c0fdbaf` is the validated release candidate. **Not deployed**; the release rehearsal (step 3) is next and needs the owner's go. See "Remaining work". |
 | World Expedition visual recovery (Choose Your Buddy, gameplay and results rebuilt on a shared presentation layer) | **On `main`** (`6cedf93`). Presentation only. Sandbox: unit 51, integration 685 + 3 todo, build, client scan CLEAN. Owner decisions still open: trait copy, `PRESENCE_EXPONENT`, higher-resolution art. See [visual/18](visual/18-world-expedition-visual-recovery.md). |
-| World / Explore / Basecamp | Future product phase. **Not authorized**, and **not** part of the current runtime closure. |
+| Checkpoint W1 (Expedition Basecamp: walkable home screen, whole-body buddy, Basecamp Gate portal into Zoo Sprint) | **BUILT, look accepted by the owner (November 4, 2026)** on `feature/w1-basecamp-walk`; presentation only (no API, database or progression change). Sandbox: typecheck, unit 51, integration 724 + 3 todo, build, client scan CLEAN; Playwright on all four projects (supplementary Chromium). **Not Studio-validated, not merged, not deployed.** See [visual/20](visual/20-basecamp-walk.md). The validator now expects 724 integration and 272 Playwright. |
 
 ## Baselines and commits
 
-- **`main`:** `856d012` ("docs: close Checkpoint E after Studio validation"). It contains the
-  Checkpoint E implementation (`87f1411` through `a283c24`, the validated commit) and the Checkpoint E
-  closure documentation. It does **not** contain the World Expedition runtime branch.
-- **Runtime branch:** `feature/world-expedition-runtime-integration` at
-  `f3b5483c2b253f0ccb0ee9b62060379b7575fb08` ("test(play): make expression wiring scan CRLF-safe").
-  As of October 15, 2026 it is 12 commits ahead of `main` and 0 behind (`main` is its merge base).
-- **Release-rehearsal branch:** `release/identity-beta` at `d90f572`, 4 commits ahead of `main` and 0
-  behind. It adds only `infrastructure/deployment/identity-release/` (see "Remaining work"). Its tip is
-  contained in the release-candidate branch below; the branch itself is unchanged.
-- **Release-candidate branch:** `release/founding-family-beta`, created from `main`, then merged (in this
-  order) with `docs/reconcile-project-state-after-f6` (`bb8e14d`), the runtime branch (`f3b5483`) and
-  `release/identity-beta` (`d90f572`). Three narrow release-only commits follow the merges: the rehearsal
-  tooling retarget, the Studio validator hardening, and this documentation update. Application code is byte-identical to the
-  Studio-validated runtime (`f3b5483`); only documentation, deployment tooling and the validator differ.
-  Not merged into `main`.
-- **Deployed in the live closed beta:** commit `1a106bc` (Checkpoint D), per
-  [DEPLOYMENT-CLOSED-BETA.md](DEPLOYMENT-CLOSED-BETA.md) section 9.
+- **`main`:** `c0fdbaf6935fc9048cc8aa3a8fcdd77218a7c467` ("Merge release candidate + World Expedition visual
+  recovery into main (#1)", November 3, 2026). This is the **validated release candidate** (official Studio
+  run passed November 3, 2026; see [STUDIO-VALIDATION.md](STUDIO-VALIDATION.md)). It contains Checkpoints A-E,
+  the F1-F6 runtime (`f3b5483`), the release rehearsal tooling, the World Expedition visual recovery
+  (`6cedf93`), the tab icon and the desktop test allowances (`0e7d563`, the rehearsal application baseline).
+  Documentation-only commits may follow it on `main`; they are not the validated SHA, and any commit that
+  changes application code, tooling or the validator is a new candidate that needs its own run.
+- **Historical branches (merged into `main`, kept for lineage only):**
+  `feature/world-expedition-runtime-integration` (`f3b5483`, the F5 validated runtime);
+  `release/identity-beta` (`d90f572`, rehearsal tooling); `release/founding-family-beta` (`46fe5eb`, the
+  October 15 candidate: runtime + tooling retarget + validator hardening);
+  `feature/world-expedition-visual-recovery` (`6cedf93`). Before the merge, `main` was `856d012` (Checkpoint E closure).
+- **Not merged:** `spike/world-hub-exploration` (unfinished, not authorized).
+- **Deployed in the live closed beta:** `c0fdbaf6935fc9048cc8aa3a8fcdd77218a7c467` since November 4, 2026 (see the Status table). Rollback target for the next release: this commit. `1a106bc` (Checkpoint D) is the original closed-beta deploy, per [DEPLOYMENT-CLOSED-BETA.md](DEPLOYMENT-CLOSED-BETA.md) section 9.
 - **Accepted application baseline:** `01b7d41` (Checkpoint B).
 - **Accepted Checkpoint C game implementation:** `7042f8f` ("feat(zoo-sprint): Checkpoint C - five
   locked starters, presentation only"). Presentation-only: no change to `apps/api`, `database`,
@@ -374,8 +371,9 @@ Unfinished **release** work is different from unfinished **game** work.
 
 - Nothing remains for runtime closure: F1 to F6 are closed.
 - The F6 minor items above are finite follow-ups for the owner to schedule. They do not reopen F6.
-- **World / Explore / Basecamp** is a future product phase. It is not authorized and is not part of
-  the current runtime closure.
+- **World / Explore / Basecamp** started on November 4, 2026 with Checkpoint W1 (owner decision, ahead of
+  roadmap G): the walkable Basecamp with the gate portal. Destinations, the map room and anything the
+  world might unlock or reward remain unauthorized (see [visual/20](visual/20-basecamp-walk.md)).
 
 ### Roadmap (owner direction, November 3, 2026; each checkpoint still needs the owner's go)
 
@@ -390,21 +388,21 @@ Unfinished **release** work is different from unfinished **game** work.
 - **J. Hop Quest trial and migration.** The Hop Quest site becomes a trial that leads into a BidaZoo family
   account; existing Hop Quest families claim their accounts (Checkpoint E legacy claim); Boss Hop moves to
   BidaZoo's APIs.
-- Then reading (content and screens), and later World / Explore / Basecamp.
+- Then reading (content and screens). World / Explore / Basecamp: W1 (Basecamp walk) was pulled ahead and built on November 4, 2026; later world phases still need their own go.
 
-### Release work (all OPEN; none of it has been done)
+### Release work (steps 1 and 2 done; the rest OPEN)
 
 The remaining release path:
 
 1. Final release-candidate integration (bringing the closed runtime branch and the release tooling
    into one candidate). **DONE and merged into `main`** (November 3, 2026), together with the visual recovery.
-2. Exact-SHA validation of that candidate on the Studio PC with the pinned Chromium (**next**; the
-   validator now requires `-CandidateSha` and fails on any baseline deviation, see
-   [STUDIO-VALIDATION.md](STUDIO-VALIDATION.md)).
-3. Release rehearsal (non-production; starts only after step 2 passes).
-4. Backup and rollback verification.
-5. Production application deployment (with the M6 header gate confirmed first: `09-m6-release-headers.ps1`
-   in rehearsal and `tools/m6-headers.mjs` against the origin and the public URL in the window).
+2. Exact-SHA validation of that candidate on the Studio PC with the pinned Chromium. **DONE and PASSED**
+   (November 3, 2026) for `c0fdbaf6935fc9048cc8aa3a8fcdd77218a7c467`: every baseline count and version
+   matched exactly, exit 0 (record in [STUDIO-VALIDATION.md](STUDIO-VALIDATION.md)). Any new commit on
+   `main` is a new candidate and needs its own run.
+3. Release rehearsal: **skipped by owner decision** (November 4, 2026). The rehearsal kit remains unexecuted.
+4. Backup and rollback verification: a pre-cutover `pg_dump -Fc` (164 TOC entries, SHA-256 recorded in the deploy log) was taken; a scratch restore was **not** performed.
+5. Production application deployment: **DONE** (November 4, 2026; `c0fdbaf` live; identity OFF; M6 headers observed on the public URL: HTML `no-cache`, hashed assets `max-age=31536000, immutable`, CSP present).
 6. SMTP provider and DNS setup (the `notify.bidazoo.com` sending domain with SPF, DKIM and DMARC).
 7. Production identity enablement (`IDENTITY_SECRET`, production mail). Identity stays OFF until then
    ([IDENTITY-OPERATIONS.md](IDENTITY-OPERATIONS.md) section 10).
@@ -426,6 +424,12 @@ documentation, tooling and the validator. `1a106bc` (the live beta) remains the 
 `a283c24` and `856d012` are kept only as lineage references. Production identity stays OFF by default. It is
 **still untested on the Studio PC**: no checklist has been executed (scripts were parsed and their pure
 helpers exercised in a Linux sandbox only; see its README).
+
+**Next candidate (W1).** When W1 is merged, that merge commit is a new release candidate: it changes game
+code, so `infrastructure/deployment/identity-release/` (`$ShaApp = 0e7d563`) would refuse it until its
+application baseline is moved; the Studio validator already expects the W1 counts (51 / 724 / 3 / 272).
+Studio validation of the exact merge SHA, then a deploy with a pre-cutover dump (rollback target
+`c0fdbaf`), is the path.
 
 ## Rules for future sessions
 
