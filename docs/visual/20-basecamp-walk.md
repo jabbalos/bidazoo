@@ -59,6 +59,28 @@ shadow that shrinks as the body rises, dust puffs on each footfall, idle breathi
   `gate-x`, `gate-core`, `near`, `moved`, `facing`, `portal`, `walk-art`, `buddy-rect`,
   `click-rect`, `layers`; the "enter-gate" hit target while near the gate.
 
+## Painted Basecamp (November 7, 2026)
+
+The code-drawn scenery above is now the FALLBACK. When the painted art is present the Basecamp shows
+it instead (presentation only; `src/basecamp-art.ts`, `src/presentation/backdrop-model.ts`):
+
+- **Backdrop:** `games/zoo-sprint/assets/world-expedition/basecamp/basecamp.json` names the layers,
+  back to front (`basecamp-far.jpg` parallax 0.4, `basecamp-mid.webp` with transparent sky, parallax
+  1), each scaled to fill the view height, bottom-aligned; the front layer sets the world width. The
+  other fields are fractions of the picture: `groundY` (feet), `gateX`/`gateTopY` (the PAINTED gate is
+  the portal: same core radius, dwell and prompt), `lodgeDoorX` (Click), optional `signpostX` (the
+  "coming soon" signpost), `walkMinX`/`walkMaxX`, optional `walkerHeight` (default 0.3 of the view).
+  The code-drawn layers, gate, signpost, ledge and fronds are not drawn. A missing or invalid manifest
+  or a layer that fails to load gives the code-drawn Basecamp unchanged (`data-backdrop="code"`).
+- **Painted cast:** `walk-painted/<id>_walk_side.webp|png` (faces right) replaces the canonical side
+  view for the walker, anchored at the feet of its opaque pixels and sized with `castPresence`;
+  `click_idle_front` is Click's standing pose at the lodge door. Missing files fall back to `walk/`.
+- **Swapping art** is a file replacement, then `node tests/scripts/refresh-painted-provenance.mjs`
+  (records size and SHA-256 in each folder's `PROVENANCE.json`, which the client bundle scan and
+  `tests/integration/basecamp-painted-assets.test.ts` require) and re-measuring `basecamp.json`.
+- Not done: rendering the canvas at device pixel ratio (a game-wide change to every scene's
+  coordinates and hit targets); on a 2x phone the painting is upscaled by the browser.
+
 ## Not in W1 (open)
 
 Destinations beyond the signpost ("Rice Terraces: coming soon"), the map room and plaza of doc 12,

@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 import { loadProductionCharacterArt, loadedProductionTextureCount, productionArtCast } from '../character-art';
-import { loadWalkArt } from '../walk-art';
+import { loadBasecampArt } from '../basecamp-art';
 import { getContext } from '../context';
 import { bakeEnvironment } from '../presentation/environment';
 import { EXP, EXP_CSS, FONT } from '../theme';
@@ -68,7 +68,9 @@ export class BootScene extends Phaser.Scene {
     const art = loadProductionCharacterArt(this).catch(() => undefined);
     // The whole-body walking pictures (W1) load now too, so Basecamp opens with no pop-in and the
     // game requests no picture after the splash. Missing files fall back to the expression art.
-    const walk = art.then(() => loadWalkArt(this, productionArtCast())).catch(() => undefined);
+    // The painted Basecamp backdrop and any painted walking pictures come with them; missing or
+    // broken ones fall back to the code-drawn Basecamp.
+    const walk = art.then(() => loadBasecampArt(this, productionArtCast(), () => undefined)).catch(() => undefined);
     try {
       const guest = await ctx.platform.ensureGuest();
       await art;

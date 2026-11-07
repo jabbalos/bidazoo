@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs';
 import { type Page } from '@playwright/test';
 import { expect, test } from './fixtures';
 import { enterGate } from './basecamp-helpers';
@@ -29,6 +30,18 @@ const CAST_IDS = [...STARTER_IDS, 'click'] as const;
 const PNG_PATH = /^\/assets\/(dino|koala|tarsier|eagle|bronco|click)_(idle|happy|thinking|cheer|discover|tryAgain)-[\w-]+\.png$/;
 /** The whole-body walking pictures (W1), one per cast member, loaded at boot for Basecamp. */
 const WALK_PATH = /^\/assets\/(dino|koala|tarsier|eagle|bronco|click)_walk_side-[\w-]+\.png$/;
+/**
+ * Optional painted art (drop-in folders, see basecamp-art.ts): painted walking pictures and PNG
+ * backdrop layers are loaded at boot too. Their number comes from the folders' PROVENANCE.json.
+ */
+const readProvenance = (dir: string): Record<string, Record<string, unknown>> =>
+  JSON.parse(readFileSync(new URL(`../../games/zoo-sprint/assets/world-expedition/${dir}/PROVENANCE.json`, import.meta.url), 'utf8')) as Record<string, Record<string, unknown>>;
+// only PNGs count here (WebP and JPEG pictures are not PNG requests)
+const PAINTED_WALK_IDS = Object.keys(readProvenance('walk-painted')['files']!).filter((f) => /_walk_side\.png$/.test(f)).map((f) => f.replace(/_walk_side\.png$/, ''));
+const PAINTED_OTHER_PNGS = Object.keys(readProvenance('walk-painted')['files']!).filter((f) => f.endsWith('.png') && !/_walk_side\.png$/.test(f));
+const BACKDROP_PNGS = [...Object.keys(readProvenance('basecamp')['files']!).filter((f) => f.endsWith('.png')), ...PAINTED_OTHER_PNGS];
+const BACKDROP_PATH = /^\/assets\/[\w-]+\.png$/;
+const EXPECTED_PNGS = 42 + PAINTED_WALK_IDS.length + BACKDROP_PNGS.length;
 /** Aborts every cast PNG (the art cannot be loaded). */
 const ALL_ART = '**/assets/{dino,koala,tarsier,eagle,bronco,click}_*.png';
 
@@ -189,18 +202,21 @@ test.describe('Cast production art in the real game', () => {
     await expect(page.locator('#game')).toHaveAttribute('data-production-art', '36');
 
     // 36 distinct expression PNGs (6 characters x 6 expressions) plus, since W1, the 6 whole-body
-    // walking pictures for Basecamp: one request each, all real PNG bytes. No other PNG is fetched.
-    expect(pngRequests).toHaveLength(42);
-    expect(new Set(pngRequests).size).toBe(42);
+    // walking pictures for Basecamp: one request each, all real PNG bytes. No other PNG is fetched
+    // (except optional painted walking pictures and PNG backdrop layers, counted from provenance).
+    expect(pngRequests).toHaveLength(EXPECTED_PNGS);
+    expect(new Set(pngRequests).size).toBe(EXPECTED_PNGS);
     const expressionRequests = pngRequests.filter((path) => PNG_PATH.test(path));
     const walkRequests = pngRequests.filter((path) => WALK_PATH.test(path));
+    const backdropRequests = pngRequests.filter((path) => !PNG_PATH.test(path) && !WALK_PATH.test(path) && BACKDROP_PATH.test(path));
     expect(expressionRequests).toHaveLength(36);
-    expect(walkRequests).toHaveLength(6);
-    expect(expressionRequests.length + walkRequests.length).toBe(pngRequests.length);
+    expect(walkRequests).toHaveLength(6 + PAINTED_WALK_IDS.length);
+    expect(backdropRequests).toHaveLength(BACKDROP_PNGS.length);
+    expect(expressionRequests.length + walkRequests.length + backdropRequests.length).toBe(pngRequests.length);
     const pairs = expressionRequests.map((path) => path.replace(PNG_PATH, '$1_$2')).sort();
     expect(pairs).toEqual(CAST_IDS.flatMap((id) => ['idle', 'happy', 'thinking', 'cheer', 'discover', 'tryAgain'].map((state) => `${id}_${state}`)).sort());
-    expect(walkRequests.map((path) => path.replace(WALK_PATH, '$1')).sort()).toEqual([...CAST_IDS].sort());
-    await expect.poll(() => pngResponses.length).toBe(42);
+    expect(walkRequests.map((path) => path.replace(WALK_PATH, '$1')).sort()).toEqual([...CAST_IDS, ...PAINTED_WALK_IDS].sort());
+    await expect.poll(() => pngResponses.length).toBe(EXPECTED_PNGS);
     for (const response of pngResponses) {
       expect(response.status, response.url).toBe(200);
       expect(response.type, response.url).toBe('image/png');

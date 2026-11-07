@@ -87,15 +87,20 @@ test('after Choose, the buddy stands in Basecamp as a whole body, on screen, wit
   await bootToBasecamp(page);
   const vp = await viewport(page);
   await expect(game(page)).toHaveAttribute('data-walk-art', 'true');
-  expect(await num(page, 'layers')).toBeGreaterThanOrEqual(6);
+  // scenery: the painted backdrop (its layers) or the code-drawn fallback (six parallax bands at least)
+  const backdrop = await game(page).getAttribute('data-backdrop');
+  expect(['painted', 'code']).toContain(backdrop);
+  expect(await num(page, 'layers')).toBeGreaterThanOrEqual(backdrop === 'painted' ? 1 : 6);
   const buddy = await rect(page, 'buddy-rect');
   expect(buddy.x).toBeGreaterThanOrEqual(0);
   expect(buddy.x + buddy.w).toBeLessThanOrEqual(vp.w);
   expect(buddy.y + buddy.h).toBeLessThanOrEqual(vp.h);
   // sized from the screen height, capped by the source art's sharpness (never a blurry giant)
   expect(buddy.h).toBeGreaterThanOrEqual(vp.h * 0.18);
-  expect(buddy.h).toBeLessThanOrEqual(Math.min(vp.h * 0.32, 289 * 1.3 + 2));
-  // Click is in the world, further along, standing on the same ground
+  const paintedBuddy = (await game(page).getAttribute('data-walk-art-painted')) === 'true';
+  expect(buddy.h).toBeLessThanOrEqual(paintedBuddy ? vp.h * 0.42 : Math.min(vp.h * 0.32, 289 * 1.3 + 2));
+  // Click is in the world, further along (by the lodge door on the painted backdrop, beside the
+  // gate on the code-drawn one), standing on the same ground
   const click = await rect(page, 'click-rect');
   expect(click.y + click.h).toBe(buddy.y + buddy.h);
   expect(await num(page, 'gate-x')).toBeGreaterThan(await num(page, 'player-x'));
@@ -143,9 +148,9 @@ test('arrow keys walk too, the world has edges, and the signpost is announced', 
   await page.waitForTimeout(600);
   expect(await num(page, 'player-x')).toBe(atEdge);
   await page.keyboard.up('ArrowLeft');
-  await page.keyboard.down('ArrowRight');
-  await expect.poll(() => game(page).getAttribute('data-near'), { timeout: 60_000 }).toBe('signpost');
-  await page.keyboard.up('ArrowRight');
+  // short pulses, so a slow poll cannot miss the signpost band (the painted backdrop's signpost
+  // band is about half a second of walking wide)
+  await walkUntilNear(page, 'signpost');
   expect(await num(page, 'camera-x')).toBeGreaterThanOrEqual(0);
   expect(await num(page, 'camera-x')).toBeLessThanOrEqual((await num(page, 'world-w')) - vp.w + 1);
 });
@@ -172,8 +177,9 @@ test('walking into the Basecamp Gate is the portal: the prompt appears, standing
   // walk on, into the opening: the portal fills and the run begins without any tap
   await page.keyboard.down('ArrowRight');
   await expect.poll(async () => (await num(page, 'portal')) > 0 || (await sceneOf(page)) !== 'basecamp', { timeout: 60_000 }).toBe(true);
-  // standing in the opening, Click is on screen beside the gate
-  if ((await sceneOf(page)) === 'basecamp') {
+  // standing in the opening, Click is on screen beside the gate (code-drawn Basecamp; on the
+  // painted backdrop Click waits at the lodge door instead)
+  if ((await sceneOf(page)) === 'basecamp' && (await game(page).getAttribute('data-backdrop')) === 'code') {
     const vp = await viewport(page);
     const click = await rect(page, 'click-rect');
     expect(click.x).toBeLessThan(vp.w);

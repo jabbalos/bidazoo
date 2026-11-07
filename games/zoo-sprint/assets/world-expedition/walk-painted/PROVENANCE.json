@@ -1,0 +1,101 @@
+{
+  "schemaVersion": 1,
+  "purpose": "Provenance for the PAINTED whole-body pictures: <id>_walk_side (side view, faces right) replaces walk/<id>_walk_side.png for the Basecamp walker; <id>_idle_front (optional) is a standing pose, used by Click at the lodge door. Verified by tests/integration/basecamp-painted-assets.test.ts and the client bundle scan. Refresh after adding or replacing a picture: node tests/scripts/refresh-painted-provenance.mjs",
+  "runtimeDirectory": "games/zoo-sprint/assets/world-expedition/walk-painted",
+  "source": "OpenArt nano-banana-2 image2image, owner-approved selection on November 7, 2026",
+  "storage": "normal Git blobs (no Git LFS rule matches the runtime directory)",
+  "facing": "right (the game flips horizontally to walk left)",
+  "idleFrontApprovedNotShipped": {
+    "dino": "coeV5zYenWJ4BXQGsoXb",
+    "eagle": "BWZ3VMXK7ZRAwFmMgaiw",
+    "bronco": "0O0defSCNxRgHs2lMlsd",
+    "koala": "M6swWFiOXVNTYt6VD8o4",
+    "tarsier": "5X7fl4I3rGIWXyaCvjFI"
+  },
+  "files": {
+    "bronco_walk_side.webp": {
+      "role": "bronco painted side view (walking), faces right",
+      "openArtHistoryId": "2Po1m0DpfADVO2Uk8Lp0",
+      "derivation": "RGBA PNG (trimmed, feet at the bottom) resized (Lanczos) to 700 px tall, WebP with alpha quality 85",
+      "runtimeFile": "bronco_walk_side.webp",
+      "runtimeSha256": "315aacb6bb3dc5984765e3facbbd28eeb9808810d2ce5b91df92796b3739248e",
+      "runtimeBytes": 72138,
+      "format": "webp",
+      "width": 615,
+      "height": 700,
+      "status": "FINAL"
+    },
+    "click_idle_front.webp": {
+      "role": "click painted front standing pose (Click at the lodge door)",
+      "openArtHistoryId": "0M0xVZvyfrCnsAVCbwoQ",
+      "derivation": "RGBA PNG resized (Lanczos) to 700 px tall, WebP with alpha quality 85",
+      "runtimeFile": "click_idle_front.webp",
+      "runtimeSha256": "c1ba310f751b18df419733891879da6f7aa4872a8a8da0bfde6da7ba19f400ef",
+      "runtimeBytes": 61244,
+      "format": "webp",
+      "width": 509,
+      "height": 700,
+      "status": "FINAL"
+    },
+    "click_walk_side.webp": {
+      "role": "click painted side view (walking), faces right",
+      "openArtHistoryId": "3ZlkbpXe6rfjbLF8arv7",
+      "derivation": "RGBA PNG (trimmed, feet at the bottom) resized (Lanczos) to 700 px tall, WebP with alpha quality 85",
+      "runtimeFile": "click_walk_side.webp",
+      "runtimeSha256": "3374a746430672ce02bfae9fca4f18a89763f5d45695392c07f00e00c2386e46",
+      "runtimeBytes": 52468,
+      "format": "webp",
+      "width": 487,
+      "height": 700,
+      "status": "FINAL"
+    },
+    "dino_walk_side.webp": {
+      "role": "dino painted side view (walking), faces right",
+      "openArtHistoryId": "EixlzJAnZIWsolop6dbc",
+      "derivation": "RGBA PNG (trimmed, feet at the bottom) resized (Lanczos) to 700 px tall, WebP with alpha quality 85",
+      "runtimeFile": "dino_walk_side.webp",
+      "runtimeSha256": "16377e2f92d72eb7d91064f8249b7520c687fae664b9906ac0bdf1edc96d1d95",
+      "runtimeBytes": 59250,
+      "format": "webp",
+      "width": 526,
+      "height": 700,
+      "status": "FINAL"
+    },
+    "eagle_walk_side.webp": {
+      "role": "eagle painted side view (walking), faces right",
+      "openArtHistoryId": "rPnKg12uJCnUd47k0NPF",
+      "derivation": "RGBA PNG (trimmed, feet at the bottom) resized (Lanczos) to 700 px tall, WebP with alpha quality 85",
+      "runtimeFile": "eagle_walk_side.webp",
+      "runtimeSha256": "aa44a84caff840beb554fd4f075acd9ee5a912c3e3f0c2488cff467707989516",
+      "runtimeBytes": 57420,
+      "format": "webp",
+      "width": 526,
+      "height": 700,
+      "status": "FINAL"
+    },
+    "koala_walk_side.webp": {
+      "role": "koala painted side view (walking), faces right",
+      "openArtHistoryId": "dyWrt0SHkHqLo5gqKYVd",
+      "derivation": "RGBA PNG (trimmed, feet at the bottom) resized (Lanczos) to 700 px tall, WebP with alpha quality 85",
+      "runtimeFile": "koala_walk_side.webp",
+      "runtimeSha256": "d7a70f20eee01539c4668778479358ca5fe4ea73710e4f747cbc230ce6f01c35",
+      "runtimeBytes": 46384,
+      "format": "webp",
+      "width": 429,
+      "height": 700,
+      "status": "FINAL"
+    },
+    "tarsier_walk_side.webp": {
+      "role": "tarsier painted side view (walking), faces right",
+      "openArtHistoryId": "F7ymMQwXKtUKJrAgLR34",
+      "derivation": "RGBA PNG (trimmed, feet at the bottom) resized (Lanczos) to 700 px tall, WebP with alpha quality 85",
+      "runtimeFile": "tarsier_walk_side.webp",
+      "runtimeSha256": "6e726c51e1a48df58a671c25c67c60fdf2da63b81d35b52089fdb72a5bdcab5d",
+      "runtimeBytes": 74040,
+      "format": "webp",
+      "width": 565,
+      "height": 700,
+      "status": "FINAL"
+    }
+  }
+}
