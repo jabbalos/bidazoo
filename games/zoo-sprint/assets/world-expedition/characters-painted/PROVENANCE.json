@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "purpose": "Provenance for the PAINTED expressions: <id>/<id>_<state> (idle, happy, thinking, cheer, discover, tryAgain), head-and-bust in the painted Basecamp style, flat bottom edge, one shared canvas per character (bottom-aligned, same framing in all six). A character uses them only when all six exist (character-art.ts paintedExpressionCast); otherwise the approved production expressions in ../characters (never edited) are used. Verified by tests/integration/painted-expression-assets.test.ts and the client bundle scan. Refresh after adding or replacing a picture: node tests/scripts/refresh-painted-provenance.mjs",
   "runtimeDirectory": "games/zoo-sprint/assets/world-expedition/characters-painted",
-  "source": "OpenArt nano-banana-2 image2image, owner-directed November 7, 2026; ids in scratchpad expr reports",
+  "source": "OpenArt nano-banana-2 image2image (1K, 1:1), owner-directed November 7, 2026; per-file openartHistoryId below. Dino happy was locally eye-patched after generation.",
   "storage": "normal Git blobs (no Git LFS rule matches the runtime directory)",
   "files": {
     "bronco/bronco_cheer.webp": {
@@ -14,7 +14,8 @@
       "format": "webp",
       "width": 483,
       "height": 512,
-      "status": "FINAL"
+      "status": "FINAL",
+      "openartHistoryId": "sIsWcJX1dtJiutmvem6b"
     },
     "bronco/bronco_discover.webp": {
       "role": "bronco painted expression: discover",
@@ -25,7 +26,8 @@
       "format": "webp",
       "width": 483,
       "height": 512,
-      "status": "FINAL"
+      "status": "FINAL",
+      "openartHistoryId": "92COiQ1UtdhXPxbTUnqx"
     },
     "bronco/bronco_happy.webp": {
       "role": "bronco painted expression: happy",
@@ -36,7 +38,8 @@
       "format": "webp",
       "width": 483,
       "height": 512,
-      "status": "FINAL"
+      "status": "FINAL",
+      "openartHistoryId": "3ydb0GqmZgQrQySMzTlz"
     },
     "bronco/bronco_idle.webp": {
       "role": "bronco painted expression: idle",
@@ -47,7 +50,8 @@
       "format": "webp",
       "width": 483,
       "height": 512,
-      "status": "FINAL"
+      "status": "FINAL",
+      "openartHistoryId": "oroXr0T5ArHYOLjaYVAq"
     },
     "bronco/bronco_thinking.webp": {
       "role": "bronco painted expression: thinking",
@@ -58,7 +62,8 @@
       "format": "webp",
       "width": 483,
       "height": 512,
-      "status": "FINAL"
+      "status": "FINAL",
+      "openartHistoryId": "9zzwXAHpQuHxVHbyX8CG"
     },
     "bronco/bronco_tryAgain.webp": {
       "role": "bronco painted expression: tryAgain",
@@ -69,7 +74,8 @@
       "format": "webp",
       "width": 483,
       "height": 512,
-      "status": "FINAL"
+      "status": "FINAL",
+      "openartHistoryId": "aBMNwQWaNXA1CqVJBmUD"
     },
     "click/click_cheer.webp": {
       "role": "click painted expression: cheer",
@@ -80,7 +86,8 @@
       "format": "webp",
       "width": 415,
       "height": 512,
-      "status": "FINAL"
+      "status": "FINAL",
+      "openartHistoryId": "x28d5XBLzd6kB4IG6Et3"
     },
     "click/click_discover.webp": {
       "role": "click painted expression: discover",
@@ -91,7 +98,8 @@
       "format": "webp",
       "width": 415,
       "height": 512,
-      "status": "FINAL"
+      "status": "FINAL",
+      "openartHistoryId": "qCmiYO2YqXNJ6sDVfAHv"
     },
     "click/click_happy.webp": {
       "role": "click painted expression: happy",
@@ -102,7 +110,8 @@
       "format": "webp",
       "width": 415,
       "height": 512,
-      "status": "FINAL"
+      "status": "FINAL",
+      "openartHistoryId": "zk2zCLq7GnEUBsRBEIww"
     },
     "click/click_idle.webp": {
       "role": "click painted expression: idle",
@@ -113,7 +122,8 @@
       "format": "webp",
       "width": 415,
       "height": 512,
-      "status": "FINAL"
+      "status": "FINAL",
+      "openartHistoryId": "yIUXQdTh77c7R168a0hP"
     },
     "click/click_thinking.webp": {
       "role": "click painted expression: thinking",
@@ -124,7 +134,8 @@
       "format": "webp",
       "width": 415,
       "height": 512,
-      "status": "FINAL"
+      "status": "FINAL",
+      "openartHistoryId": "r2lOQwARWygImhGXAeBi"
     },
     "click/click_tryAgain.webp": {
       "role": "click painted expression: tryAgain",
@@ -135,7 +146,8 @@
       "format": "webp",
       "width": 415,
       "height": 512,
-      "status": "FINAL"
+      "status": "FINAL",
+      "openartHistoryId": "SGo2RW1CQNE7lftiIcHV"
     },
     "dino/dino_cheer.webp": {
       "role": "dino painted expression: cheer",
@@ -147,7 +159,8 @@
       "width": 455,
       "height": 512,
       "status": "FINAL",
-      "openArtHistoryId": "djOMRrUh3pAEC6KhA6QC"
+      "openArtHistoryId": "djOMRrUh3pAEC6KhA6QC",
+      "openartHistoryId": "djOMRrUh3pAEC6KhA6QC"
     },
     "dino/dino_discover.webp": {
       "role": "dino painted expression: discover",
@@ -159,7 +172,8 @@
       "width": 455,
       "height": 512,
       "status": "FINAL",
-      "openArtHistoryId": "K0OBUqHoEL8GDqfChjUW"
+      "openArtHistoryId": "K0OBUqHoEL8GDqfChjUW",
+      "openartHistoryId": "K0OBUqHoEL8GDqfChjUW"
     },
     "dino/dino_happy.webp": {
       "role": "dino painted expression: happy",
@@ -172,7 +186,8 @@
       "height": 512,
       "status": "FINAL",
       "openArtHistoryId": "2qdyVgLxT1KN7yuKAAW3",
-      "note": "eyes locally patched to purple after generation"
+      "note": "eyes locally patched to purple after generation",
+      "openartHistoryId": "2qdyVgLxT1KN7yuKAAW3"
     },
     "dino/dino_idle.webp": {
       "role": "dino painted expression: idle",
@@ -184,7 +199,8 @@
       "width": 455,
       "height": 512,
       "status": "FINAL",
-      "openArtHistoryId": "0paIvID5blZaGcuxoMnr"
+      "openArtHistoryId": "0paIvID5blZaGcuxoMnr",
+      "openartHistoryId": "0paIvID5blZaGcuxoMnr"
     },
     "dino/dino_thinking.webp": {
       "role": "dino painted expression: thinking",
@@ -196,7 +212,8 @@
       "width": 455,
       "height": 512,
       "status": "FINAL",
-      "openArtHistoryId": "m7heWdl9t6zAypvGhKo4"
+      "openArtHistoryId": "m7heWdl9t6zAypvGhKo4",
+      "openartHistoryId": "m7heWdl9t6zAypvGhKo4"
     },
     "dino/dino_tryAgain.webp": {
       "role": "dino painted expression: tryAgain",
@@ -208,7 +225,8 @@
       "width": 455,
       "height": 512,
       "status": "FINAL",
-      "openArtHistoryId": "XeFpzHsIr2EGJSltx2sK"
+      "openArtHistoryId": "XeFpzHsIr2EGJSltx2sK",
+      "openartHistoryId": "XeFpzHsIr2EGJSltx2sK"
     },
     "eagle/eagle_cheer.webp": {
       "role": "eagle painted expression: cheer",
@@ -219,7 +237,8 @@
       "format": "webp",
       "width": 511,
       "height": 512,
-      "status": "FINAL"
+      "status": "FINAL",
+      "openartHistoryId": "6Y3RuoBsH8m39zZQ6ZBM"
     },
     "eagle/eagle_discover.webp": {
       "role": "eagle painted expression: discover",
@@ -230,7 +249,8 @@
       "format": "webp",
       "width": 511,
       "height": 512,
-      "status": "FINAL"
+      "status": "FINAL",
+      "openartHistoryId": "u9VjlAsTBftSgSzQWMJA"
     },
     "eagle/eagle_happy.webp": {
       "role": "eagle painted expression: happy",
@@ -241,7 +261,8 @@
       "format": "webp",
       "width": 511,
       "height": 512,
-      "status": "FINAL"
+      "status": "FINAL",
+      "openartHistoryId": "S8hSHR8IqN4Kn7DMzyB6"
     },
     "eagle/eagle_idle.webp": {
       "role": "eagle painted expression: idle",
@@ -252,7 +273,8 @@
       "format": "webp",
       "width": 511,
       "height": 512,
-      "status": "FINAL"
+      "status": "FINAL",
+      "openartHistoryId": "KIF8cmmCElUDkEeXGOzK"
     },
     "eagle/eagle_thinking.webp": {
       "role": "eagle painted expression: thinking",
@@ -263,7 +285,8 @@
       "format": "webp",
       "width": 511,
       "height": 512,
-      "status": "FINAL"
+      "status": "FINAL",
+      "openartHistoryId": "zt2tXgPBI1POBFDPICJe"
     },
     "eagle/eagle_tryAgain.webp": {
       "role": "eagle painted expression: tryAgain",
@@ -274,7 +297,8 @@
       "format": "webp",
       "width": 511,
       "height": 512,
-      "status": "FINAL"
+      "status": "FINAL",
+      "openartHistoryId": "YHL3nh8fzulSD66biBOZ"
     },
     "koala/koala_cheer.webp": {
       "role": "koala painted expression: cheer",
@@ -285,7 +309,8 @@
       "format": "webp",
       "width": 543,
       "height": 512,
-      "status": "FINAL"
+      "status": "FINAL",
+      "openartHistoryId": "UZp12ELJYNPewxcHERZq"
     },
     "koala/koala_discover.webp": {
       "role": "koala painted expression: discover",
@@ -296,7 +321,8 @@
       "format": "webp",
       "width": 543,
       "height": 512,
-      "status": "FINAL"
+      "status": "FINAL",
+      "openartHistoryId": "FpB9Rv31o48ynCl0pKli"
     },
     "koala/koala_happy.webp": {
       "role": "koala painted expression: happy",
@@ -307,7 +333,8 @@
       "format": "webp",
       "width": 543,
       "height": 512,
-      "status": "FINAL"
+      "status": "FINAL",
+      "openartHistoryId": "78rv3D4r2tDaji648XHA"
     },
     "koala/koala_idle.webp": {
       "role": "koala painted expression: idle",
@@ -318,7 +345,8 @@
       "format": "webp",
       "width": 543,
       "height": 512,
-      "status": "FINAL"
+      "status": "FINAL",
+      "openartHistoryId": "wwunS2sgwCuBOMcZfCcK"
     },
     "koala/koala_thinking.webp": {
       "role": "koala painted expression: thinking",
@@ -329,7 +357,8 @@
       "format": "webp",
       "width": 543,
       "height": 512,
-      "status": "FINAL"
+      "status": "FINAL",
+      "openartHistoryId": "I549NTyKCYdflhFkdlnz"
     },
     "koala/koala_tryAgain.webp": {
       "role": "koala painted expression: tryAgain",
@@ -340,7 +369,8 @@
       "format": "webp",
       "width": 543,
       "height": 512,
-      "status": "FINAL"
+      "status": "FINAL",
+      "openartHistoryId": "NNuneJI4FcaCoA3sIVBX"
     },
     "tarsier/tarsier_cheer.webp": {
       "role": "tarsier painted expression: cheer",
@@ -351,7 +381,8 @@
       "format": "webp",
       "width": 522,
       "height": 512,
-      "status": "FINAL"
+      "status": "FINAL",
+      "openartHistoryId": "l1X3vga1NBPFYpoOghvV"
     },
     "tarsier/tarsier_discover.webp": {
       "role": "tarsier painted expression: discover",
@@ -362,7 +393,8 @@
       "format": "webp",
       "width": 522,
       "height": 512,
-      "status": "FINAL"
+      "status": "FINAL",
+      "openartHistoryId": "25t30uHWJguQ9PwTzCgH"
     },
     "tarsier/tarsier_happy.webp": {
       "role": "tarsier painted expression: happy",
@@ -373,7 +405,8 @@
       "format": "webp",
       "width": 522,
       "height": 512,
-      "status": "FINAL"
+      "status": "FINAL",
+      "openartHistoryId": "t8MnmAai4qva8fXRsroR"
     },
     "tarsier/tarsier_idle.webp": {
       "role": "tarsier painted expression: idle",
@@ -384,7 +417,8 @@
       "format": "webp",
       "width": 522,
       "height": 512,
-      "status": "FINAL"
+      "status": "FINAL",
+      "openartHistoryId": "oVAKqvgRk3ze5P5SQVJ4"
     },
     "tarsier/tarsier_thinking.webp": {
       "role": "tarsier painted expression: thinking",
@@ -395,7 +429,8 @@
       "format": "webp",
       "width": 522,
       "height": 512,
-      "status": "FINAL"
+      "status": "FINAL",
+      "openartHistoryId": "5hbnPKHk2MVkHmg5RTs9"
     },
     "tarsier/tarsier_tryAgain.webp": {
       "role": "tarsier painted expression: tryAgain",
@@ -406,7 +441,8 @@
       "format": "webp",
       "width": 522,
       "height": 512,
-      "status": "FINAL"
+      "status": "FINAL",
+      "openartHistoryId": "e6PCiIJ71YBNRxFSoeh4"
     }
   }
 }
