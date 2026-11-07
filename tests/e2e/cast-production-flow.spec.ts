@@ -295,6 +295,8 @@ test.describe('Cast production art in the real game', () => {
 
   test('if the art cannot be loaded the game still starts, with the code-drawn fallback', async ({ page }) => {
     await page.route(ALL_ART, (route) => route.abort());
+    // the painted Basecamp layers too (their lanterns and paw banner hold a few spike-orange pixels)
+    await page.route(/\/assets\/basecamp-[\w-]+\.(jpe?g|webp|png)$/, (route) => route.abort());
     await page.goto('/');
     await expect.poll(() => scene(page)).toBe('menu');
     await expect(page.locator('#game')).toHaveAttribute('data-production-art', '0');
