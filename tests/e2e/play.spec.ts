@@ -153,6 +153,11 @@ async function recordFeedback(page: Page): Promise<void> {
     const capture = () => {
       if (game.dataset['phase'] !== 'feedback') return;
       const id = game.dataset['questionId'] ?? '';
+      // Keep the FIRST snapshot that carries the feedback sentence. The live region is rewritten
+      // again while phase is still 'feedback' (on the last question, with "Run complete ..."), and
+      // a late mutation must not replace the feedback this question produced.
+      const have = w.__feedback[id];
+      if (have && /\b(Correct\.|The answer is)\b/.test(have.status)) return;
       w.__feedback[id] = {
         correct: game.dataset['lastCorrect'] ?? '',
         status: status.textContent ?? '',

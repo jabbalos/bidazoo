@@ -13,6 +13,13 @@ import { LAB_PORT } from './lab-env';
  * Uses the developer-only lab build (`npm run build:character-lab -w @bidazoo/play`, served on its
  * own port). The lab has no platform access, so nothing here can touch questions, XP, or coins.
  * The shared fixture still fails every test on a CSP violation, console error, or page error.
+ *
+ * Painted look pass (November 7, 2026): when all six PAINTED expressions of a character are in the
+ * build (characters-painted/<id>/, see character-art.ts), the Character shows them everywhere, the lab
+ * included, and the production PNGs stay loaded as the fallback. So each check below reads
+ * `look.painted` and expects the art that is actually on screen: the painted texture key and the
+ * painted bust rule (one bottom-anchored scale for all six, never half painted), or the production key
+ * and the production placement contract. The 36 production PNGs must still load either way.
  */
 test.use({ baseURL: `http://127.0.0.1:${LAB_PORT}` });
 
@@ -25,6 +32,8 @@ interface Geometry {
   id: string;
   expression: ExpressionState;
   production: boolean;
+  /** Painted expressions on screen (all six of this character shipped and loaded). */
+  painted: boolean;
   textureKey: string;
   displayWidth: number;
   displayHeight: number;
@@ -71,6 +80,18 @@ async function tap(page: Page, id: string): Promise<void> {
   if (test.info().project.use.hasTouch === true) await page.touchscreen.tap(x, y);
   else await page.mouse.click(x, y);
 }
+/** The texture key the art on screen must come from: painted when the lab shows painted, else production. */
+function expectedTextureKey(look: Geometry): string {
+  return look.painted ? `bz-we-painted-${look.id}-${look.expression}` : `bz-we-character-${look.id}-${look.expression}`;
+}
+/**
+ * Painted busts in the plain `size` box (no placeInBox fit): bottom-anchored, scaled so the picture
+ * is a fixed fraction of the box height (characters.ts applyLook). Width follows the source aspect.
+ * Returns the display size the six expressions must share.
+ */
+function paintedBustHeight(size: number): number {
+  return size * 0.92;
+}
 async function shot(page: Page, name: string): Promise<void> {
   const dir = process.env['BZ_SHOTS_DIR'];
   if (!dir) return;
@@ -101,19 +122,30 @@ test.describe('Cast production expressions (lab build)', () => {
         expect(look!.expression).toBe(state);
         expect(look!.production, `${state} uses production art`).toBe(true);
         expect(look!.id).toBe(id);
-        expect(look!.textureKey).toBe(`bz-we-character-${id}-${state}`);
+        expect(look!.textureKey).toBe(expectedTextureKey(look!));
         seen.push(look!);
         await shot(page, `${id}-${state}`);
       }
 
-      // The placement the scene actually produced equals the contract's rule, at the real bust size.
+      // Never half painted: all six states show the same kind of art.
+      expect(new Set(seen.map((look) => look.painted)).size, 'one kind of art for all six').toBe(1);
+      const painted = seen[0]!.painted;
+
+      // The placement the scene actually produced equals the rule for that art, at the real bust size.
       for (const look of seen) {
-        const placement = computeExpressionPlacement(id, look.expression, look.size)!;
-        expect(Math.abs(look.displayWidth - placement.displayWidth), `${look.expression} width`).toBeLessThan(0.5);
-        expect(Math.abs(look.displayHeight - placement.displayHeight), `${look.expression} height`).toBeLessThan(0.5);
+        if (painted) {
+          expect(Math.abs(look.displayHeight - paintedBustHeight(look.size)), `${look.expression} height`).toBeLessThan(0.5);
+          expect(look.displayWidth, `${look.expression} width fits the box`).toBeLessThanOrEqual(look.size + 0.5);
+        } else {
+          const placement = computeExpressionPlacement(id, look.expression, look.size)!;
+          expect(Math.abs(look.displayWidth - placement.displayWidth), `${look.expression} width`).toBeLessThan(0.5);
+          expect(Math.abs(look.displayHeight - placement.displayHeight), `${look.expression} height`).toBeLessThan(0.5);
+        }
       }
       // One scale for all six (no head-size jump) and the eye line and head center never move.
-      const scales = seen.map((look) => look.displayWidth / computeExpressionPlacement(id, look.expression, look.size)!.displayWidth);
+      const scales = painted
+        ? seen.map((look) => look.displayHeight / paintedBustHeight(look.size))
+        : seen.map((look) => look.displayWidth / computeExpressionPlacement(id, look.expression, look.size)!.displayWidth);
       expect(Math.max(...scales) - Math.min(...scales)).toBeLessThan(0.005);
       const eyes = seen.map((look) => look.worldEyeY);
       const columns = seen.map((look) => look.worldX);
@@ -207,13 +239,22 @@ test.describe('Cast production expressions (lab build)', () => {
       expect(await attr(page, 'data-lab-view')).toBe('strip');
       const looks = await geometry(page);
       expect(looks.map((look) => look.expression)).toEqual([...EXPRESSION_STATES]);
+      expect(new Set(looks.map((look) => look.painted)).size, 'one kind of art for all six').toBe(1);
       for (const look of looks) {
         expect(look.production).toBe(true);
-        const placement = computeExpressionPlacement(id, look.expression, look.size)!;
-        expect(Math.abs(look.displayWidth - placement.displayWidth)).toBeLessThan(0.5);
-        expect(Math.abs(look.displayHeight - placement.displayHeight)).toBeLessThan(0.5);
-        // Local anchor is the same fraction of the bust box in every cell.
-        expect(look.anchorY / look.size).toBeCloseTo(computeExpressionPlacement(id, look.expression, look.size)!.y / look.size, 5);
+        expect(look.textureKey).toBe(expectedTextureKey(look));
+        if (look.painted) {
+          expect(Math.abs(look.displayHeight - paintedBustHeight(look.size))).toBeLessThan(0.5);
+          expect(look.displayWidth).toBeLessThanOrEqual(look.size + 0.5);
+          // Bottom-anchored: the picture's base sits on the bust box's bottom edge in every cell.
+          expect(look.anchorY / look.size).toBeCloseTo(0.5, 5);
+        } else {
+          const placement = computeExpressionPlacement(id, look.expression, look.size)!;
+          expect(Math.abs(look.displayWidth - placement.displayWidth)).toBeLessThan(0.5);
+          expect(Math.abs(look.displayHeight - placement.displayHeight)).toBeLessThan(0.5);
+          // Local anchor is the same fraction of the bust box in every cell.
+          expect(look.anchorY / look.size).toBeCloseTo(placement.y / look.size, 5);
+        }
       }
       expect(new Set(looks.map((look) => look.size)).size).toBe(1);
       for (const look of looks) expect(look.id).toBe(id);
