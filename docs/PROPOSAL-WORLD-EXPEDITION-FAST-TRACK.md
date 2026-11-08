@@ -1,4 +1,4 @@
-# BidaZoo World Expedition: build proposal (four parallel lanes; critical path 7 days, planned 9)
+# BidaZoo World Expedition: build proposal (five workspaces, continuous integration; four-day critical path)
 
 Written Sunday, November 8, 2026. Adopted by the project owner as the plan of record. It is written to be
 executed by any capable coding agent without further conversation with its author. Everything referenced
@@ -68,6 +68,36 @@ Math and reading content for grades K to 8 comes from the owner's Hop Quest bank
 
 Everything above is additive. The existing tests keep passing; new tests are added beside them.
 
+### 2.6 Interfaces fixed before any lane starts (so lanes never wait on each other)
+
+These five contracts are written into the repository by the integration workspace in the first hour of day 1,
+each as a file with the signatures below and a stub implementation. Lanes code against them; a lane may add to
+its own side but may not change a signature without the integration workspace's merge.
+
+1. **Encounter overlay** (owned by Lane A; called by Lane B). `games/zoo-sprint/src/encounter/index.ts`:
+   `startEncounter(scene: Phaser.Scene, opts: { session: SessionClient; questions: number; kind: 'node' | 'boss';
+   challenger: ChallengerId; buddy: CharacterId }): Promise<EncounterOutcome>` where
+   `EncounterOutcome = { won: boolean; correct: number; asked: number; bestStreak: number; heartsLeft: number }`.
+   Day-1 stub: runs the existing question UI for `questions` questions and resolves with counts.
+2. **Session client** (owned by Lane A; used by RunScene, the encounter and Lane B's summit).
+   `games/zoo-sprint/src/session-client.ts`: `startSession(req: StartPlaySessionRequest & { destination?: DestinationId })`,
+   `nextQuestion()`, `submitAnswer(choice)`, `results()`, wrapping the calls RunScene makes today.
+3. **Basecamp overlay registry** (owned by Lane B; used by Lanes B and C). `games/zoo-sprint/src/basecamp/overlays.ts`:
+   `registerOverlay(id: 'map' | 'outfitter' | 'passport' | 'daily', def: { hotspot: 'map-board' | 'lodge-door' |
+   'banner'; open(scene: BasecampScene): Phaser.GameObjects.Container })`. `BasecampScene` owns the hotspots and
+   calls `open`; nothing else in `BasecampScene.ts` is edited by A or C.
+4. **Progress contracts** (owned by Lane C). New file `packages/contracts/src/progress.ts` exporting
+   `ExpeditionProgressSchema`, `StampSchema`, `GearSchema`, `DailySchema` and the `/api/v1/me/*` paths added to
+   `ApiPaths`. Lane C does not edit `packages/contracts/src/index.ts` except to add `export * from './progress'`.
+5. **Question kind** (owned by Lane D; consumed by Lane A's tile layout). In `packages/contracts/src/index.ts`,
+   `PublicQuestionSchema` gains `kind: Type.Optional(Type.Union([Type.Literal('number'), Type.Literal('text')]))` and
+   `choices` becomes a union of four integers or four strings; absent `kind` means `number` (today's behavior).
+   Lane A lays out `text` tiles against this shape on day 1 with a fixture; no server change is needed for that.
+
+Shared-file ownership: `BasecampScene.ts` Lane B; `packages/contracts/src/index.ts` Lane D (one edit, item 5);
+`apps/api/src/modules/sessions/service.ts` Lane C (one hook at session completion, item C2); `tests/e2e/
+playwright.config.ts` and `scripts/validate-studio.ps1` the integration workspace only.
+
 ## 3. Work breakdown: four lanes, run in parallel
 
 Each lane is a branch off `main` (after `main` is fast-forwarded to `390e0b4`), in its own git worktree on the
@@ -133,84 +163,72 @@ Owner: the strongest agent available for days 1 to 3, then any.
   `/api/v1/family/children` + the new routes: per child, minutes played this week, skills practiced,
   fluency, streak, stamps.
 
-## 4. Schedule, derived from estimates (critical path 7 days; planned 9)
+## 4. Schedule: four-day critical path with tiered, continuously integrated agents
 
-Method: every work item below has an estimate in agent-hours, based on measured velocity on this codebase
-(November 7 to 8: a verified 15-line scene change with a sandbox Playwright pass took about 2.5 hours;
-a full Studio validation takes 60 to 80 minutes; a deploy takes about 3 minutes). Items are grouped into lanes
-by code area so lanes never edit the same files; lanes run in parallel. The calendar is the longest lane plus
-the serialized integration cycles, with owner decisions assumed to arrive the same day. One agent-day is
-taken as 10 productive agent-hours (agents wait on builds, tests and art generation).
+### 4.1 Dependency check (what can and cannot run in parallel on day 1)
 
-### 4.1 Work items and estimates
+Hard dependencies between lanes, and how each is removed:
 
-Lane A, Encounters (`games/zoo-sprint/src/encounter/`, `session-client.ts`): A1 encounter model + unit tests 3h;
-A2 overlay (code art) 4h; A3 session-client extraction shared with RunScene 2h; A4 charge, special move, timer,
-lose state 3h; A5 boss node 2h; A6 challenger definitions, code-art fallbacks, painted loading 3h; A7 Playwright
-encounter spec 2h; A8 pacing from `fluent`/`responseMs` 2h; A9 text-choice tile layout 2h. **Total 23h.**
+| Dependency | Blocks day-1 parallel start? | Resolution |
+| --- | --- | --- |
+| Lane B's nodes call Lane A's encounter overlay | No, once the interface (2.6 item 1) and its stub exist | Integration workspace writes the stub in hour 1; A replaces the body |
+| RunScene, the encounter and the summit share one session client | No | Interface 2.6 item 2; A extracts it first (A3 before A2) |
+| Lanes A and C add overlays to `BasecampScene` | No, once the registry exists | B lands `overlays.ts` (2.6 item 3) in hour 1 of day 1, before anything else |
+| Lanes C and D both touch `packages/contracts` | No | C adds `progress.ts`; D makes the one edit to `index.ts` |
+| C2 (stamps) hooks session completion in `sessions/service.ts` | No | C owns that one hook; nobody else edits the file |
+| A9 (text tiles) needs D3's question shape | No | Shape fixed in 2.6 item 5; A codes against a fixture |
+| D1 needs the Hop Quest bank files | **Yes, for Lane D only** | Owner provides the bank folder before day 1 starts; otherwise D1 slips a day and nothing else moves |
+| A7, A8, C9, C10 need an integrated build | Yes, by nature | Scheduled on days 2 to 3 |
+| B7 needs painted layers | Yes, by nature | ComfyUI pipeline runs from day 1 in parallel; gradient fallbacks ship until each layer lands |
+| Full `validate-studio` runs are serialized | Yes, for release validation only | Continuous integration runs typecheck, Vitest and the sharded Playwright per merge; the full validator runs once per day and once more on the release candidate. Two full validator runs cannot overlap on one PC: the portable cluster and the fixed database names `bidazoo_test`/`bidazoo_e2e` are shared |
 
-Lane B, Expedition (`ExpeditionScene`, `SummitScene`, `basecamp/overlays.ts`, manifests, audio): B1 scene over a
-manifest + extraction of Basecamp walker/parallax/input into `presentation/` 5h; B2 map board + overlay registry
-3h; B3 artifacts + HUD 2h; B4 summit card + trailhead 3h; B5 gradient-fallback layers and six more manifests 3h;
-B6 audio system + CC0 set 3h; B7 painted layer integration, 1h per destination, 7h. **Total 26h.**
+Conclusion: no code dependency blocks day-1 parallel execution across the four lanes, provided the five
+interfaces in 2.6 are committed in the first hour and the Hop Quest bank files are available for Lane D.
 
-Lane D, Content (`packages/content-import`, `packages/contracts` question kind, learning-core selection): D1
-Hop Quest bank reader + math strand mapping + tests 6h; D2 reading strands 4h; D3 `PublicQuestion.kind: 'text'`
-through contracts, API, grading tests 3h. **Total 13h.** Starts after D3's contract shape is agreed with Lane A
-(A9) on day 1; otherwise independent.
+### 4.2 Work items and estimates (unchanged from the derivation)
 
-Lane C, Progression (migrations, `/api/v1/me/*`, outfitter, passport, daily, identity, parent page): C1 migration
-+ progress routes + integration tests 4h; C2 stamps written on session completion 2h; C3 gear catalog, routes,
-outfitter overlay, gear on walker/bust 5h; C4 level curve + level-up moment 2h; C5 daily route + streak 4h; C6
-passport overlay 3h; C7 identity ON config + deploy-check change + guest regression 2h; C8 parent progress page
-5h; C9 Playwright for the whole loop 3h; C10 iPad Safari / low-end Android performance pass 4h. **Total 34h.**
+Lane A 23h (A1 to A9), Lane B 26h (B1 to B7), Lane C 34h (C1 to C10), Lane D 13h (D1 to D3); itemized in the
+previous revision of this section and reproduced in Appendix A. Playwright sharding across three worktrees:
+2h, day 1, integration workspace (ports are already configurable per worktree via `E2E_API_PORT`/`E2E_PLAY_PORT`;
+each shard needs its own throwaway database name, which the shard script passes in `DATABASE_URL`). Art: about
+1 hour of pipeline time per destination plus review, on the local ComfyUI workstation, from day 1.
 
-Integration (serialized on the Studio PC): merge the lanes + resolve conflicts 1h, validation 1.2h, deploy 0.1h.
-**About 2.5h per cycle; one cycle per day, seven cycles planned.**
+### 4.3 Capacity check for four days
 
-Art generation (owner's OpenArt pipeline, asynchronous, not on the critical path for code): 7 destinations x
-3 layers, 7 challengers, 1 boss variant each, gear sprites, passport and stamp art. Roughly 1 hour of pipeline
-time per destination plus review; it lands into B7 as it is produced; gradient fallbacks ship until then.
+Lane loads against the proposed allocation, assuming agents run continuously (20 productive agent-hours per
+workspace-day; the earlier derivation assumed 10):
 
-### 4.2 Lane loads and the critical path
-
-| Lane | Hours | Agent-days | Hard dependencies |
+| Workspace | Lanes | Hours | Earliest code-complete |
 | --- | --- | --- | --- |
-| A Encounters | 23 | 2.5 | none to start; A7 after B1 (the overlay runs inside the expedition) |
-| B Expedition | 26 | 3 | B1 needs A2's overlay interface (a stub on day 1); B7 needs art as it lands |
-| C Progression | 34 | 3.5 | C2 needs the session-completion hook (exists); C7 before C8; C9 after A, B integrate |
-| D Content | 13 | 1.5 | D3 shape agreed day 1; D1 needs the Hop Quest bank files from the owner on day 1 |
+| Argon 1 | A (23h) | 23 | mid day 2 |
+| Argon 2 | B (26h) | 26 | mid day 2 (B7 continues as art lands) |
+| Pro 1 | C (34h) | 34 | end of day 2 |
+| Pro 2 | D (13h) | 13 | mid day 1 of work, i.e., day 2 if the bank arrives day 1 |
+| Antigravity CI | sharding 2h; merges; CI runs | continuous | |
 
-Longest lane: C at 3.5 agent-days. Items that can only run after everything integrates: C9 (loop test), C10
-(performance), A8 (pacing against real sessions). Those sit after integration day 4. Critical path:
-days 1 to 4 build (lanes in parallel, nightly integration), day 5 integrate the tail (A8, C9, C10), days 6 to 7
-fix what the owner's play and the validator find. **Seven days.** Two days of buffer are planned for the two
-unknowns in section 9 (Hop Quest bank format; device performance). **Planned: nine days.**
+If one Gemini Pro workspace carries both C and D (47h), it is code-complete late on day 3 at 20h/day or day 5 at
+10h/day; the four-day plan therefore needs C and D in separate workspaces (five workspaces as proposed, with
+the fifth as CI). If only four workspaces exist, CI runs inside Lane D's workspace after D is complete.
 
-### 4.3 Day by day
+Items that cannot be finished before an integrated build exists (A7, A8, C9, C10: 11h) fall on days 2 to 3 after
+the first full merge. Day 4 is the release candidate.
 
-| Day | A | B | C | D | Live that night |
-| --- | --- | --- | --- | --- | --- |
-| 1 | A1, A2, A3 | B1, B2 (registry first, so C can add overlays) | C1, C2 | D3 agreed; D1 started | Great Wall path, five encounters, placeholder art, stamps recorded |
-| 2 | A4, A5, A6 | B3, B4, B5 | C3, C4 | D1 | Boss, summit card, level, outfitter; three destinations as gradient |
-| 3 | A7, A9 | B6, B7 (Great Wall painted as it lands) | C5, C6, C7 | D2 | Painted Great Wall, audio, daily + streak, passport; identity ON for the owner's family; real K-8 math |
-| 4 | fixes from integration | B7 (next destinations) | C8 | D2 done | Reading encounters; parent progress page; five destinations |
-| 5 | A8 | B7 (remaining) | C9, C10 | tests | Seven destinations; whole-loop Playwright; performance pass |
-| 6 | fix list from owner play and validation | | | | Fix build |
-| 7 | fix list | | | | **Release candidate; Studio validation; deploy** |
-| 8 to 9 | buffer for section 9 unknowns; otherwise early finish | | | | Founding-family beta |
+### 4.4 Day by day
 
-If a lane finishes early its agent takes B7 or C10, the two items that absorb extra hands without conflicts.
+| Day | Code | Integration and validation | Art (ComfyUI, RTX 3090) | Live that night |
+| --- | --- | --- | --- | --- |
+| 1 | Hour 1: integration workspace commits the five interfaces (2.6) and B's overlay registry. Then A1 to A6, B1 to B5, C1 to C4, D3 then D1. | Shard Playwright (2h). From then on every merge: typecheck, Vitest, sharded e2e. One full validator run at end of day. | Great Wall 3 layers, Great Wall challenger and boss; prompts from the destination brief in visual/12 | Playable loop: map board, Great Wall path, five encounters and a boss with hearts/strikes/charge, summit card with stamp and level, gradient art |
+| 2 | A7, A9, B6, B7 (Great Wall), C5 to C8, D2; conflicts in `BasecampScene` hotspots resolved by B | Continuous; full validator at end of day | Petra, Andes layers and challengers; gear sprites | Painted Great Wall, audio, outfitter, daily + streak, passport, parent progress page, reading questions. **Owner's 10-minute phone playtest** |
+| 3 | A8 (pacing from day-2 sessions), C9, C10, B7 (Petra, Andes), remaining manifests, fix list from the playtest | Continuous; full validator at end of day | Remaining four destinations as capacity allows | Five to seven destinations, whole-loop Playwright, performance pass |
+| 4 | Fix list only | One clean, unsharded `validate-studio.bat -PortablePostgres -Recreate -CandidateSha <sha>` on the release candidate; deploy on PASS | Any late layers land as data-only commits after the beta | **Founding-family beta** |
 
-### 4.4 What would change the number
+### 4.5 What moves the number
 
-- Fewer than four agents: with three, D folds into B and the plan is 10 to 11 days; with two, 14 days.
-- Validation time: sharding Playwright across the three worktrees (2h of tooling) brings a cycle from 2.5h
-  to about 1.5h and allows two integrations a day; it is worth doing on day 1 by whichever lane is waiting.
-- Art: if painted layers lag, the calendar does not move; destinations ship on gradient fallbacks and are
-  repainted as art lands.
-- Scope: dropping the parent progress page (C8) and reading content (D2) saves about a day; dropping gear (C3)
-  saves half a day. Nothing else is separable without changing what the game is.
+- Lane D without the bank files on day 1: reading/math import slips one day; the beta ships on multiplication
+  content with the import landing as a data-only follow-up. The calendar does not move.
+- One workspace for C and D: day 4 becomes day 5.
+- Agents at 10 productive hours per day instead of 20: the plan is the earlier 7-day derivation.
+- A full validator FAIL on day 4 adds one cycle (about 1.5 hours) per round of fixes.
 
 ## 5. Rules for every agent on this repository
 
@@ -231,44 +249,92 @@ If a lane finishes early its agent takes B7 or C10, the two items that absorb ex
 - Day 0: `main` is already at `390e0b4`; pull the docs commits (`git merge --ff-only
   origin/tooling/validator-e2e-ports`), create four worktrees, start the agents with the briefs in section 7,
   and give Lane D the Hop Quest bank files.
-- Daily, 10 minutes: play the night's build on a phone; thumbs up or a list.
-- Day 3: generate painted Great Wall layers and the first challenger through the OpenArt pipeline from Lane B's
-  prompts (the pipeline and its prompts are in `docs/reference-art/world-expedition/painted-v1/README.md`).
-- Days 7 and 12: the two review sessions.
-- Approve the copy in `docs/COPY.md` before day 14.
+- Before day 1: provide the Hop Quest bank folder to Lane D's workspace; start the ComfyUI pipeline on Great
+  Wall (prompts and conventions in `docs/reference-art/world-expedition/painted-v1/README.md` and the destination
+  brief in `docs/visual/12-destination-worlds.md`).
+- Day 2: the 10-minute phone playtest; return a list.
+- Day 4: approve `docs/COPY.md`; run or authorize the release validation and deploy.
 
-## 7. One-line briefs to start the agents
+## 7. Workspaces and briefs
 
-- **A:** "Read docs/PROPOSAL-WORLD-EXPEDITION-FAST-TRACK.md. You are Lane A (Encounters). Branch
-  `lane/encounters` off `main`. Deliver day 1 (A1, A2, A3): encounter model, overlay, session-client extraction,
-  unit tests. Playable from the gate tonight."
-- **B:** "Read docs/PROPOSAL-WORLD-EXPEDITION-FAST-TRACK.md. You are Lane B (Expedition). Branch
-  `lane/expedition` off `main`. Deliver day 1 (B1, B2): ExpeditionScene over a Great Wall manifest with gradient
-  layers, the overlay registry, the map board; nodes call the encounter overlay interface (stub until Lane A lands)."
-- **C:** "Read docs/PROPOSAL-WORLD-EXPEDITION-FAST-TRACK.md. You are Lane C (Progression). Branch
-  `lane/progression` off `main`. Deliver day 1 (C1, C2): migration, `/api/v1/me/expedition`, stamps written on
-  session completion, integration tests."
-- **D:** "Read docs/PROPOSAL-WORLD-EXPEDITION-FAST-TRACK.md. You are Lane D (Content). Branch `lane/content`
-  off `main`. Day 1: agree the `PublicQuestion.kind` shape with Lane A, then start the Hop Quest bank reader
-  (D1) from the files the owner provides."
-- **Integration (nightly):** "Merge the lane branches into `integration/world-expedition`, run
-  `scripts\validate-studio.bat -PortablePostgres -Recreate -CandidateSha <sha>`, on PASS deploy with a copy of
-  `Documents\BidaZoo-release\deploy-390e0b4.ps1` retargeted to `<sha>`, record the SHA in
-  `docs/PROJECT-STATE.md`. On FAIL, write the failure to `docs/NIGHTLY.md` and stop."
+Five isolated workspaces, each a git worktree on its own branch off `main`, with file boundaries as in 2.6.
+
+- **Antigravity: Integration workspace** (branch `integration/world-expedition`). Hour 1 of day 1: commit the five
+  interface files with stubs (2.6), confirm `lane/expedition` has `basecamp/overlays.ts`, shard Playwright across
+  three worktrees (`E2E_API_PORT`/`E2E_PLAY_PORT` and a distinct `DATABASE_URL` per shard; wire `npm run
+  test:e2e:sharded`). Then continuously: merge each lane branch as it passes its own checks; on every merge run
+  typecheck, Vitest and the sharded e2e; on failure, revert the merge and hand the failure back to the lane with
+  the log. Once per day and on the release candidate: `scripts\validate-studio.bat -PortablePostgres -Recreate
+  -CandidateSha <sha>` (never two at once), then the deploy script retargeted to that SHA. Record each deployed
+  SHA in `docs/PROJECT-STATE.md`; write failures to `docs/NIGHTLY.md`. Owns `tests/e2e/playwright.config.ts` and
+  `scripts/validate-studio.ps1`.
+- **Gemini Argon: Lane A, Encounters** (branch `lane/encounters`). Order: A3 session client, A1 model with tests,
+  A2 overlay (code art), A4, A5, A6, then A9 against the fixed question shape, A7 after the first integrated
+  build, A8 after day-2 sessions exist. Files: `games/zoo-sprint/src/encounter/**`, `session-client.ts`, RunScene
+  only to switch it onto the session client. Done means: every item has tests, typecheck clean, `play.spec.ts`
+  passes in the worktree.
+- **Gemini Argon: Lane B, Expedition** (branch `lane/expedition`). Order: `basecamp/overlays.ts` first (hour 1),
+  B1, B2, B5 (Great Wall manifest with gradient layers, then the six others), B3, B4, B6, B7 as layers land.
+  Files: `ExpeditionScene.ts`, `SummitScene.ts`, `basecamp/**`, `BasecampScene.ts` (sole owner), manifests,
+  `assets/audio/**`, shared `presentation/**` extractions. Done means: `basecamp.spec.ts` passes and a new
+  `expedition.spec.ts` drives path, nodes, artifacts and summit through QA hooks.
+- **Gemini Pro: Lane C, Progression** (branch `lane/progression`). Order: C1 (migration, `progress.ts` contracts,
+  `/api/v1/me/expedition`), C2 (stamp hook), C4, C3, C5, C6, C7, C8, then C9 and C10 after integration. Files:
+  `database/**` (new migration only), `apps/api/src/modules/progress/**` (new), the one hook in
+  `sessions/service.ts`, `packages/contracts/src/progress.ts`, Basecamp overlays via the registry, `account.html`
+  progress page. Done means: integration tests for every route, guests still work with identity OFF and ON.
+- **Gemini Pro: Lane D, Content** (branch `lane/content`). Order: D3 (the one `index.ts` edit plus API
+  serialization and grading tests for text choices), D1 math from the owner's bank folder, D2 reading. Files:
+  `packages/content-import/**` (new), `packages/learning-core/**` additions, `packages/contracts/src/index.ts`
+  (item 5 only). Done means: `npm run content:import -- <path>` produces question sets the adaptive selection
+  uses, with integration tests on a fixture bank.
+- **ComfyUI workstation (owner-run, parallel from day 1):** Great Wall first (three layers, challenger, boss),
+  then Petra, Andes, then the rest; outputs dropped into each destination folder with `PROVENANCE.json`, as
+  `basecamp/` was done. Lane B integrates each drop as data.
 
 ## 8. Basis of the estimate
 
-Section 4 derives the calendar from per-item estimates, lane loads and the serialized integration cycle, so the
-number can be checked item by item and re-derived if the team size or scope changes. The existing backend and
-art pipeline are what keep the items small: every lane is wiring and presentation over systems that already work.
+Section 4 derives the calendar from per-item estimates (Appendix A), the dependency check in 4.1, the capacity
+check in 4.3 (continuous agents, five workspaces, continuous integration with sharded e2e) and one serialized
+full validation per day. The number can be re-derived for a different team size, agent speed or scope with the
+same tables. The existing backend and art pipeline keep the items small: every lane is wiring and presentation
+over systems that already work.
 
 ## 9. What could still go wrong
 
 - The encounter must play well on day 1 with code-drawn art; layout and timing come before sprites.
 - Hop Quest import: the bank's format and skill tags are the owner's; if the mapping is unclear, import math
   first and ask once, with a filled example.
-- Agents merging daily will conflict in `BasecampScene.ts` (map board, outfitter door, daily banner).
-  Rule: Lane B owns `BasecampScene.ts`; A and C add overlays through a small `basecamp/overlays.ts` registry
-  that B creates on day 1.
+- Continuous merging will conflict in `BasecampScene.ts` (map board, outfitter door, daily banner) unless the
+  ownership rule in 2.6 holds: Lane B owns the file; A and C add overlays through `basecamp/overlays.ts`.
+- Continuous integration catches typecheck, unit and sharded e2e failures per merge, but the full validator (bundle
+  scan, live playthrough, unsharded Playwright on the pinned Chromium) runs once a day; a defect only it can see
+  surfaces at the end of the day, not at merge time. Budget the day-4 fix cycle for that.
 - Identity ON changes the deploy script's `identity absent` check; flip the expectation deliberately in the
-  same commit, or the nightly deploy will roll back correctly and nobody will understand why.
+  same commit, or the deploy will roll back correctly and nobody will understand why.
+- Model-specific tooling (Antigravity, Argon, Pro) is outside this repository's control; the plan depends only on
+  each workspace honoring the file boundaries in 2.6 and the done-criteria in section 7, which any agent can meet.
+
+## Appendix A: work items and estimates (agent-hours)
+
+Lane A, Encounters: A1 encounter model + unit tests 3; A2 overlay (code art) 4; A3 session-client extraction 2;
+A4 charge, special move, timer, lose state 3; A5 boss node 2; A6 challenger definitions, fallbacks, painted loading
+3; A7 Playwright encounter spec 2; A8 pacing from `fluent`/`responseMs` 2; A9 text-choice tile layout 2. Total 23.
+
+Lane B, Expedition: B1 scene over a manifest + extraction of walker/parallax/input 5; B2 map board + overlay
+registry 3; B3 artifacts + HUD 2; B4 summit card + trailhead 3; B5 gradient layers and six more manifests 3; B6
+audio system + CC0 set 3; B7 painted layer integration 1 per destination, 7. Total 26.
+
+Lane C, Progression: C1 migration + progress routes + tests 4; C2 stamps on completion 2; C3 gear catalog, routes,
+outfitter, gear on sprites 5; C4 level curve + level-up 2; C5 daily route + streak 4; C6 passport overlay 3; C7
+identity ON + deploy-check change + guest regression 2; C8 parent progress page 5; C9 whole-loop Playwright 3; C10
+performance pass 4. Total 34.
+
+Lane D, Content: D1 Hop Quest reader + math strands + tests 6; D2 reading strands 4; D3 question `kind` through
+contracts, API, grading tests 3. Total 13.
+
+Integration: Playwright sharding 2 (once); per merge, CI about 15 to 30 minutes with shards; full validator 60 to
+80 minutes, once per day and once on the release candidate; deploy about 3 minutes.
+
+Basis: measured on this codebase November 7 to 8, 2026 (a verified 15-line scene change with a Playwright pass
+took about 2.5 hours; full Studio validation 60 to 80 minutes).
