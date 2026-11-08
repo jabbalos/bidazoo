@@ -2,6 +2,17 @@
 
 All notable changes, by checkpoint. Dates use US format.
 
+## Studio validation of the painted look pass (November 7, 2026)
+
+- Official Studio run PASSED at `390e0b4` (`b2e5ef5` + 4 commits): 51 / 747 + 3 todo / 276 of 276, 0 flaky.
+  Record in `docs/STUDIO-VALIDATION.md`.
+- Basecamp (presentation only): a rebuild after a rotation or resize keeps the buddy's fraction of the walkable
+  span instead of its pixel x, and the walk limits are pulled in by half the buddy's body, so the buddy is never
+  clipped at a screen edge. Found by the validator on the rotated tablet (buddy 23 px off screen). QA hooks
+  `data-walk-min-x` / `data-walk-max-x` added.
+- Tests: `cast-lab.spec.ts` expects the art on screen (painted or production); `play.spec.ts` keeps the first
+  feedback snapshot (a race on the last question).
+
 ## Validator: e2e ports can move off 3001/4173 (November 7, 2026; tooling only)
 
 - `tests/e2e/ports.ts` is the one place the e2e loopback ports are defined; `E2E_API_PORT` /

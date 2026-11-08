@@ -16,7 +16,54 @@ tooling, the World Expedition visual recovery, the tab icon and the longer deskt
 official Studio validation **passed** on its exact SHA; see
 [Final release candidate validation](#final-release-candidate-validation-official-run-passed) below.
 
-## Final release candidate validation (official run, passed)
+## Painted look pass validation (official run, passed; November 7, 2026)
+
+Source: the local run folder `.validation-logs\20261107-220423` on the Studio PC (git-ignored, so the evidence is
+recorded here). Command: `scripts\validate-studio.bat -PortablePostgres -Recreate -CandidateSha
+390e0b43e710983b1caab8cd3c239edb525bd63e`, run by the owner as the normal user `jonat` on Saturday, November 7,
+2026, 10:04 PM CST; summary written 11:26 PM CST.
+
+| Item | Result |
+| --- | --- |
+| Git commit tested (exact validated commit) | `390e0b43e710983b1caab8cd3c239edb525bd63e` ("Basecamp: keep the buddy on screen and at its relative spot across a rotation or resize"), branch `tooling/validator-e2e-ports`, 4 commits on top of `main` `b2e5ef5` (the merged painted look pass); HEAD verified exact, working tree clean |
+| Vitest (unit) | 51 passed (51) |
+| Vitest (integration, real PostgreSQL) | 747 passed + 3 todo (750) |
+| Playwright | 276 passed of 276, 0 failed, 0 flaky, 0 skipped; 4 projects; no retries |
+| Playwright / Chromium | 1.64.0 / 156.0.8078.4 (official pinned build) |
+| PostgreSQL | 16.15, portable mode (127.0.0.1:54329, loopback only, trust); cluster started and stopped by this run |
+| Production build | PASS |
+| Client bundle scan (`npm run scan:client`) | **CLEAN** (103 files, 1,437,169 bytes, 29 forbidden markers checked) |
+| Live API playthrough (`npm run playthrough`) | **ALL CHECKS PASSED** (39 PASS lines) |
+| e2e ports | API 3003/3004, play 4173/4174/4175: moved off the defaults because port 3001 was held by another local service (a python process, the owner's LLM admin panel); nothing was stopped |
+| Validator exit code | 0 |
+| Overall | **PASS (with warnings)**: the port move and the `-Recreate` notice; no test warning |
+
+What the four commits on top of `b2e5ef5` are (the merged painted look pass itself was never run through the full
+validator before this record; its cloud sandbox checks were "Playwright subsets"):
+
+1. `0271755` + `61e9a8d`: validator and test wiring only. The e2e ports can move off 3001/4173 when another
+   local service holds a default (see "Loopback ports" below); the second commit fixed a PowerShell empty-array
+   return that made free ports read as busy.
+2. `2a5695d`: tests only. `cast-lab.spec.ts` asserted the original production expression art and placement
+   contract; since the painted pass the character lab shows the painted expressions, so all 12 lab tests failed
+   in every project (48 of 276 on the first Studio run). The lab tests now expect the art on screen (painted key
+   and painted bust rule, or production key and placement contract) and still require the 36 production PNGs to
+   load. `play.spec.ts` kept overwriting its feedback snapshot until "Run complete ..." appeared (1 flaky on the
+   same run); it now keeps the first snapshot carrying the feedback sentence.
+3. `390e0b4`: the one game-code change, Basecamp presentation only. On the rotated tablet (944x656) the second
+   Studio run (`.validation-logs\20261107-184133`, 275 of 276) found the buddy's right edge 23 px off screen:
+   the scene kept the buddy's pixel x across a rebuild while the painted world's pixel width changes with the
+   view height, and the painted walk limits (3% of the picture) were smaller than half the buddy's body. The
+   walk limits are now pulled in by half the body width, a rebuild keeps the buddy's fraction of the walkable
+   span, and the viewport-change test compares that fraction. No API, grading, XP or coin change.
+
+Run history for this candidate line on the Studio PC: `20261107-165935` and `20261107-170102` stopped before
+testing (ports; the empty-array bug), `20261107-184133` FAIL 275/276 (the Basecamp edge), `20261107-220423` PASS.
+
+This record is a documentation-only commit. The commit that carries it is **not** the validated SHA; the validated
+SHA is exactly `390e0b43e710983b1caab8cd3c239edb525bd63e`. Merge into `main` with `--ff-only` so `main` equals it.
+
+## Release candidate c0fdbaf validation (official run, passed; November 3, 2026)
 
 Source: the local run folder `.validation-logs\20261103-214204` on the Studio PC (git-ignored, so the
 evidence is recorded here; the runner's `SUMMARY.txt` is also copied to `Documents\BidaZoo-release\logs\`).
@@ -64,6 +111,8 @@ Since November 7, 2026 (branch `claude/loving-noether-e40ung`: the painted Basec
 Results screens with painted expressions) the validator expects **51 unit, 747 integration + 3 todo and 276
 Playwright in 4 projects** (painted Basecamp assets +17 integration; painted expressions +6 integration and 1
 browser test per project).
+
+Those counts were confirmed by the official run of `390e0b4` on November 7, 2026 (record at the top of this file).
 
 ### How the candidate run is started (procedure)
 
