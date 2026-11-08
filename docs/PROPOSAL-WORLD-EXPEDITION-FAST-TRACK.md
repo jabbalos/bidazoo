@@ -1,11 +1,11 @@
-# BidaZoo World Expedition: fast-track proposal (the game, in 14 days)
+# BidaZoo World Expedition: build proposal (14 days, three parallel tracks)
 
-Written Sunday, November 8, 2026, for the project owner, who will give this repository to whichever agents
-execute it. It is written to be executed by any capable coding agent without further conversation with its
-author. Everything referenced exists in this repository at `390e0b4` (live on play.bidazoo.com since
-November 8, 2026, 1:35 AM CST) unless marked NEW.
+Written Sunday, November 8, 2026. Adopted by the project owner as the plan of record. It is written to be
+executed by any capable coding agent without further conversation with its author. Everything referenced
+exists in this repository at `390e0b4` (live on play.bidazoo.com since November 8, 2026, 1:35 AM CST) unless
+marked NEW.
 
-## 0. The honest state of the project
+## 0. Current state
 
 - **Backend: done.** Fastify API, PostgreSQL, Drizzle, server-authoritative play sessions, grading, XP and
   coins, mastery, guest identity, full family identity (Checkpoint E, validated, never deployed), closed-beta
@@ -15,11 +15,11 @@ November 8, 2026, 1:35 AM CST) unless marked NEW.
   side-view walkers, provenance per file, code-drawn fallbacks, a character bible, palettes per destination.
 - **Game: a 10-question multiplication quiz.** `RunScene` shows a prompt and four integer choices; `ResultsScene`
   shows totals. Content is `packages/learning-core/multiplication.ts` only (single-digit products). The Basecamp
-  is a 1.5-screen walk to a gate that starts the quiz. There is no world, no encounter, no progression a kid can
-  see, no reason to return tomorrow.
+  is a 1.5-screen walk to a gate that starts the quiz. There is no world, no encounter, no visible progression,
+  and no daily reason to return.
 
-Six weeks were spent making it impossible to break and nothing was spent making it fun. This proposal inverts
-that: gameplay first, every day ends deployed, the existing safety net runs unchanged underneath.
+This proposal adds the game on top of the existing systems: gameplay work first, a deploy every day, the
+existing validation and deployment tooling unchanged underneath.
 
 ## 1. The game (definition of done for this proposal)
 
@@ -152,13 +152,13 @@ Owner: the strongest agent available for days 1 to 3, then any.
 | 13 | fixes | fixes | fixes | Release candidate. |
 | 14 | Studio validation on the candidate, deploy, update `STUDIO-VALIDATION.md`, `PROJECT-STATE.md` | | | **Founding-family beta.** |
 
-Day 1 cannot slip. If the encounter model is not playable by the end of day 1, the Encounters agent is
-replaced, not extended.
+Day 1 is the critical path: if the encounter model is not playable by the end of day 1, resolve that before
+any other track continues.
 
 ## 5. Rules for every agent on this repository
 
-1. A session that does not end with a kid-visible change deployed to play.bidazoo.com (or merged into the
-   integration branch for that night's deploy) is a failed session. Reports, checkpoints and plans do not count.
+1. Every session ends with a player-visible change deployed to play.bidazoo.com or merged into the
+   integration branch for that night's deploy. Reports and plans do not substitute for it.
 2. Do not touch grading, XP or coin formulas except in Track C's level curve and gear purchase, server-side.
 3. Character Bible LOCKED rules and painted-v1 art rules stand. No new starters. Click is host only.
 4. Never deploy without `validate-studio.bat` PASS on the exact SHA. Never skip it because it is slow; make it
@@ -197,17 +197,15 @@ replaced, not extended.
   `Documents\BidaZoo-release\deploy-390e0b4.ps1` retargeted to `<sha>`, record the SHA in
   `docs/PROJECT-STATE.md`. On FAIL, write the failure to `docs/NIGHTLY.md` and stop."
 
-## 8. Why 14 days and not 6 weeks
+## 8. Why 14 days
 
-Credits are not the constraint on an Ultra plan; serial human review was. Three agents in parallel on
-disjoint code, an integration run every night, and the owner reviewing on a phone instead of reading reports
-compresses the calendar roughly fourfold. The backend and art pipeline that already exist are what make it
-possible: every track above is wiring and presentation over systems that already work.
+Three agents in parallel on disjoint code areas, an integration run every night, and daily owner review of
+the deployed build. The existing backend and art pipeline make this possible: every track above is wiring and
+presentation over systems that already work.
 
 ## 9. What could still go wrong
 
-- The encounter has to feel good on day 1 with code-drawn art, or the owner will judge the art instead of
-  the loop. The overlay's layout and timing matter more than its sprites.
+- The encounter must play well on day 1 with code-drawn art; layout and timing come before sprites.
 - Hop Quest import: the bank's format and skill tags are the owner's; if the mapping is unclear, import math
   first and ask once, with a filled example.
 - Three agents merging daily will conflict in `BasecampScene.ts` (map board, outfitter door, daily banner).
