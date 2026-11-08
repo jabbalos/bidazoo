@@ -224,6 +224,11 @@ test('a viewport change (rotation, window resize) keeps the buddy where it was a
   await page.waitForTimeout(1500);
   await page.keyboard.up('ArrowRight');
   const before = await waitUntilStill(page);
+  // "Where it was" is the buddy's spot IN BASECAMP: the fraction of the walkable span. The world is
+  // laid out from the view, so its pixel width changes on a rotation (a painted backdrop scales with
+  // the view height); a pixel x kept from the tall view could land past the end of the short one.
+  const span0 = { min: await num(page, 'walk-min-x'), max: await num(page, 'walk-max-x') };
+  const frac0 = (before - span0.min) / (span0.max - span0.min);
   const vp0 = await viewport(page);
   await page.setViewportSize({ width: Math.round(vp0.h * 0.8), height: Math.round(vp0.w * 0.8) }); // a rotation-like change
   await page.waitForTimeout(600);
@@ -231,5 +236,7 @@ test('a viewport change (rotation, window resize) keeps the buddy where it was a
   const buddy = await rect(page, 'buddy-rect');
   expect(buddy.x).toBeGreaterThanOrEqual(0);
   expect(buddy.x + buddy.w).toBeLessThanOrEqual(vp.w);
-  expect(Math.abs((await num(page, 'player-x')) - before)).toBeLessThan(5);
+  const span = { min: await num(page, 'walk-min-x'), max: await num(page, 'walk-max-x') };
+  const frac = ((await num(page, 'player-x')) - span.min) / (span.max - span.min);
+  expect(Math.abs(frac - frac0), 'same relative spot in Basecamp').toBeLessThan(0.02);
 });

@@ -266,14 +266,17 @@ export class BasecampScene extends Phaser.Scene {
     this.bubble = null;
     this.gateGlow = null;
     const ctx = getContext(this);
-    const keepX = this.player.x;
+    // On a rebuild (rotation, window resize) the buddy keeps its RELATIVE spot in Basecamp: the world
+    // is laid out from the view size, so its pixel width changes, and a pixel x kept from a taller
+    // view can land past the end of a shorter, narrower one. The fraction is applied once the walk
+    // limits are final (below, after the buddy's body width is known).
+    const prev = this.world as WorldSpec | undefined;
+    const keepFrac = !initial && prev && prev.maxX > prev.minX ? (this.player.x - prev.minX) / (prev.maxX - prev.minX) : 0;
     const painted = this.paintedLayout(w, h);
     this.world = painted ? painted.world : worldSpec(w, h);
     if (initial) {
       const x = this.entry.from === 'gate' ? returnSpawnX(this.world) : this.world.startX;
       this.player = { x, vx: 0, facing: 1 };
-    } else {
-      this.player = { ...this.player, x: Math.min(this.world.maxX, Math.max(this.world.minX, keepX)) };
     }
     const unit = this.world.unit;
     const cam = this.cameras.main;
@@ -298,6 +301,20 @@ export class BasecampScene extends Phaser.Scene {
     this.bubbleW = this.bubble.getBounds().width;
 
     const buddy = new Walker(this, ctx.character, targetH, w * 0.55);
+    // The walking limits are feet positions. Pull them in by half the buddy's body so the buddy is
+    // never clipped at either end of the picture when the camera reaches its end stop (a painted
+    // backdrop barely wider than a landscape view; the code-drawn margins already cover this).
+    const halfBody = Math.ceil(buddy.bodyW / 2) + 2;
+    const minX = Math.min(this.world.maxX, Math.max(this.world.minX, halfBody));
+    const maxX = Math.max(minX, Math.min(this.world.maxX, this.world.width - halfBody));
+    if (minX !== this.world.minX || maxX !== this.world.maxX) {
+      this.world = { ...this.world, minX, maxX, startX: Math.min(maxX, Math.max(minX, this.world.startX)) };
+    }
+    if (initial) {
+      this.player = { ...this.player, x: Math.min(maxX, Math.max(minX, this.player.x)) };
+    } else {
+      this.player = { ...this.player, x: Math.round(minX + Math.min(1, Math.max(0, keepFrac)) * (maxX - minX)) };
+    }
     buddy.setPosition(this.player.x, feetY).setDepth(10);
     buddy.face(this.player.facing);
     this.buddy = this.keep(buddy);
@@ -597,7 +614,7 @@ export class BasecampScene extends Phaser.Scene {
   private publish(force: boolean): void {
     const ctx = getContext(this);
     const cam = this.cameras.main;
-    const key = `${Math.round(this.player.x / 8)}|${Math.round(cam.scrollX / 8)}|${this.lastNear}|${this.moved}|${Math.round(this.portal * 10)}`;
+    const key = `${Math.round(this.player.x / 8)}|${Math.round(cam.scrollX / 8)}|${this.lastNear}|${this.moved}|${Math.round(this.portal * 10)}|${this.world.width}`;
     if (!force && key === this.lastPublish) return;
     this.lastPublish = key;
     const screenRect = (r: { x: number; y: number; w: number; h: number } | undefined): string =>
@@ -608,6 +625,8 @@ export class BasecampScene extends Phaser.Scene {
       'player-x': String(Math.round(this.player.x)),
       'camera-x': String(Math.round(cam.scrollX)),
       'world-w': String(this.world.width),
+      'walk-min-x': String(this.world.minX),
+      'walk-max-x': String(this.world.maxX),
       'gate-x': String(this.gateX),
       'gate-core': String(this.world.gateCoreRadius),
       near: this.lastNear ?? '',
