@@ -26,17 +26,170 @@ from these references; no image file is generated, added or edited.
 | `docs/visual/13-phaser-asset-spec.md` | Size and format the challenger art requests ask for |
 | `docs/visual/14-do-dont-anti-drift.md` | Review checklist: 48 px silhouette test, static fallback, no red failure styling |
 
+## Items
+
+| Item | Status | Commit(s) |
+| --- | --- | --- |
+| 1. Gemini review, Low findings | done | `ff65722` |
+| 2. Art references (rule 13) | done (listed above; no owner confirmation received, so code-drawn art only) | `8bec346` |
+| 3. A2 overlay with code-drawn art | done | `34ffded` |
+| 4. A4 charge, special move, timer, lose state | done | `34ffded` |
+| 5. A5 boss node | done | `34ffded` |
+| 6. A6 challengers and art requests | done (painted loading has no files to load yet) | `b019b3d`, `2a167e5` |
+
+Times (Central): started 14:05; owner's stop order about 14:41; resumed about 15:0x; agent time about
+1.5 hours plus the check run. No STOP.md was needed.
+
+### 1. Gemini review (Low findings)
+
+The review named "unused exports and getter" without listing them, so I checked every export of the two
+files against the whole repository:
+
+- `SPECIAL_MOVE_STRIKES` and `EXPEDITION_NODES` (`encounter-model.ts`) were used only inside that file:
+  now module-local. The other exported constants and `specialMoveReady` are imported by
+  `encounter-model.test.ts`, so they stay (rule: keep anything a test uses).
+- The getters of `PlaySessionClient`: `session` is used by `RunScene` (and now by the encounter loop);
+  `destination` is read by `session-client.test.ts` ("keeps the destination on the client"). Both stay.
+  If the review meant `destination`, removing it would mean changing an existing test (rule 11), so it is
+  kept and listed under Open questions.
+- The other two Lows: no code change, as the brief says.
+
+### 3 to 5. Encounter overlay (A2, A4, A5)
+
+`startEncounter` (signature unchanged) now runs the real encounter:
+
+- `encounter/encounter-flow.ts` (no Phaser): the turn loop. Question from `session.nextQuestion()`, the
+  tapped value to `session.submitAnswer()`, then `applyAnswer` from `@bidazoo/learning-core` on the
+  server's `correct`. Hearts, strikes, charge and special moves are the model's; nothing is sent to the
+  server. One special move for a node, two for the boss. Hearts at 0 end the encounter at once (lost; no
+  other effect). The charge meter carries into the next encounter while the same session client is used
+  (a `WeakMap` keyed by the client, since the 2.6 signature has no charge input), matching
+  `replayExpedition`. A failed request shows Try again and repeats the same request (the session client
+  reuses the attempt id, so an answer is graded once). `session_not_active` or
+  `question_already_answered`: the client resyncs (`PlaySessionClient.refresh`) and the loop either ends
+  or asks the server's current question. If the session completes underneath, the encounter ends with
+  what was answered.
+- `encounter/encounter-layout.ts` (no Phaser): portrait stack and landscape split; status bar (hearts
+  left, the challenger's strike pips right), timer bar, face-off (buddy left, challenger right, charge
+  meter under the buddy), question card, feedback line, tiles. Tiles: 4 = 2 x 2, 3 numbers = one row (or a
+  column if too narrow), text = one per row (ready for A9). Every tile at least 44 px.
+- `encounter/EncounterOverlay.ts` (Phaser): draws it. Buddy = the existing `Character` (painted
+  expressions when loaded): thinking on a question, happy on a strike, cheer from a streak of 3, discover
+  on a special move, tryAgain (gentle wobble) on a miss, cheer or tryAgain at the end. Hearts are warm rose;
+  a lost heart is an empty outline (no red, no X). Meter: three teal segments, lantern-orange and pulsing
+  when the special move is ready, a star per special move left. Special move: rings and a streak in the
+  buddy's own LOCKED color (Dino orange, Koala lavender, Tarsier brass, Eagle green, Bronco maroon) from
+  the buddy to the challenger, the challenger flinches three times, two strike pips fill. Timer bar: 20
+  seconds, teal to amber; when it runs out it shows empty and nothing else happens (rule 16). Intro: the
+  challenger's taunt (tap to skip). End: "Beacon lit!" (and the beacon tower on the backdrop lights) or a
+  gentle line; the path continues. Boss: wider share of the face-off, drawn larger, five questions as
+  passed by the caller, two special moves. Reduced motion: no tweens, expressions still change.
+- QA hooks on the game's parent element while open: `data-scene="encounter"`, `data-hit-targets`,
+  `data-encounter` (intro, loading, question, submitting, feedback, error, won, lost), `data-node` (node
+  or boss), `data-hearts`, `data-charge`, plus `data-strikes`, `data-asked`, `data-questions`,
+  `data-special-moves`, `data-challenger`, `data-challenger-art`, `data-buddy-art`, `data-question-id`,
+  `data-last-correct`. On close they are removed, `data-encounter="closed"` and
+  `data-encounter-result` (won or lost) are set, and the previous `data-scene` and `data-hit-targets` are
+  restored. The accessibility mirror lists the answers, Continue or Try again.
+- `ctx.totals` takes the server's totals from each answer, as RunScene does.
+
+### 6. Challengers (A6)
+
+- `encounter/challengers.ts`: `great-wall-takin` (node) and `great-wall-snow-leopard` (boss), each with a
+  code-drawn picture (outlined shapes, facing left, three eye states, never angry), a PENDING name and
+  taunts. An unknown id gets the default node or boss challenger. Painted pictures load like the painted
+  expressions in `character-art.ts`: `import.meta.glob` on
+  `assets/world-expedition/destinations/<destination>/challengers/<id>.webp|png`, loaded on demand with a
+  4-second cap, never blocking; none exist yet, so the code-drawn pictures ship.
+- `docs/art-requests/great-wall/challenger.md` and `boss.md` per proposal section 11 (asset, runtime file,
+  sizes, framing, palette, references, fallback, Copy PENDING). The designs need owner approval
+  (proposal rule 13).
+
+## Tests added
+
+| File | Tests | What |
+| --- | --- | --- |
+| `tests/integration/encounter-flow.test.ts` | 12 | The turn loop against a scripted session client (Lane A's own interface, not another lane's) and a scripted view: wins, losses, hearts at 0 ends the boss after three misses, special move timing, charge carried across encounters, five nodes plus the boss over one client give the same beacons and boss result as `replayExpedition` for six sequences, failed request retried and graded once, resync on an answer from another tab, session ending underneath, a slow answer changes nothing |
+| `tests/integration/encounter-layout.test.ts` | 5 | 10 viewports (360x640 to 1920x1080, portrait and landscape) x 5 tile specs x node/boss: everything on screen, one tile per choice, tiles at least 44 px and not overlapping, face-off geometry, boss share, tile shapes |
+| `tests/integration/challengers.test.ts` | 5 | Definitions (Great Wall node and boss, none is a starter or Click), unknown-id fallback, every code-drawn picture in every pose inside its box, on the ground and facing left (recorded with a stand-in for Phaser's Graphics, which cannot load in Node), no painted files yet, no network/storage/reward words |
+
+No existing test was changed.
+
+## Other checks
+
+- Visual check: a throwaway harness in my scratchpad (outside the repository) served the real
+  `startEncounter` with a scripted session client under Vite and took Playwright screenshots of a node
+  (Koala, two misses) and the boss (Dino, four correct then a miss) at 390x844, 1280x720 and 360x640.
+  Fixed from it: the boss's tail touched the stage edge; the sky gradient drew a stripe at the rounded
+  corners; the stone ledge showed square corners below the rounded frame. One 1280x720 run stayed on the
+  opening screen; the same run afterwards (no code change to the hold logic) went through all five boss
+  questions at 1280x720. My assessment: the Vite dev server reloaded the page after a file save during the
+  run; not reproduced. These runs were stopped by the owner's outage order (about 14:41 CST); under the
+  added load rule no further harness runs were made, and the harness stays outside the repository.
+- Typecheck: the tests project failed once on `challengers.ts` (its type import of `./index` pulled the
+  Phaser overlay, and `import.meta.glob` types, into the Node test project). Fixed in the A6 commit:
+  `challengers.ts` declares the same `ChallengerId = string` locally and references `vite-glob.d.ts`.
+- Bundle: built an entry that imports `startEncounter` and searched the output: only the encounter model
+  of `learning-core` is included (no `generateQuestion`, `gradeAnswer`, `applyAttempt`,
+  `selectNextSkill` or their strings). The play build plus `scan-client-bundle.mjs`: CLEAN.
+
 ## Copy (PENDING)
 
-(filled in as strings are added)
+New strings a child reads. Reused unchanged from RunScene: "Getting your question…", "Checking…",
+"Can’t reach BidaZoo.", "Something went wrong.", "Try again", "Continue", "Not quite. The answer is {n}".
+
+| String | Where |
+| --- | --- |
+| `Strike!` | Feedback, correct answer |
+| `Quick strike!` | Feedback, correct and fluent (server's `fluent`) |
+| `Special move! Double strike!` | Feedback, special move |
+| `{Buddy name}’s special move!` | Banner over the face-off during a special move |
+| `Special move ready!` | Feedback line while the meter is full |
+| `Beacon lit!` | End banner, node won |
+| `Nice try! The path goes on.` | End banner, node lost |
+| `You beat the summit challenger!` | End banner, boss won |
+| `Good climb! Keep going.` | End banner, boss lost |
+| `Hearts {h} of 3. Strikes {s} of {n}. Charge {c} of 3.` | Screen-reader status line |
+| `Ridge Takin` | Node challenger name (status bar) |
+| `Can you climb past me?` / `These steps are mine to guard!` / `Show me your best math!` | Node challenger taunts |
+| `Summit Snow Leopard` | Boss name |
+| `Only the bravest reach the top!` / `Five questions stand between you and the summit.` | Boss taunts |
 
 ## Cross-lane change requests
 
-(none yet)
+1. **`packages/learning-core/src/index.ts`** (integration): add `CHARGE_FULL`, `ENCOUNTER_HEARTS`,
+   `NODE_SPECIAL_MOVES`, `BOSS_SPECIAL_MOVES` and `specialMoveReady` to the encounter re-export. Why: the
+   overlay keeps local copies (`CHARGE_SEGMENTS = 3`, `specialMovesFor`, hearts 3) because the package
+   exports only `.`; with the re-export they can read the model's values. Not required for correctness.
+2. **`games/zoo-sprint/package.json`** (integration): add `"@bidazoo/learning-core": "*"` to
+   `dependencies`. Why: the game now imports `applyAnswer`/`createEncounter` at runtime (proposal 2.1 says
+   it does); it resolves today through the workspace's hoisted `node_modules`, but the dependency is
+   undeclared.
+3. **Lane B (ExpeditionScene)**: call `startEncounter` with one session client for the whole run (the
+   charge meter carries per client), and pass `questions: 2` for nodes and `5` for the boss. After a lost
+   boss (hearts 0 after 3 misses) the session still has unanswered questions, so it is not completed and
+   has no results: the summit needs to either keep answering or handle an incomplete session (see Open
+   questions). The overlay restores `data-scene`/`data-hit-targets` on close, but not the accessibility
+   mirror's actions: the calling scene should republish its own after the promise resolves.
+4. **Lane C/D (session length)**: a destination run needs 15 questions (5 x 2 + 5); the session total is
+   10 today.
 
 ## Open questions
 
-(none yet)
+1. **Lost boss and session completion.** Hearts 0 ends the boss after as few as 3 answers (rule from A1),
+   leaving up to 2 questions of the 15 unanswered, so the server session does not complete and no stamp
+   or results are computed. Options: the summit answers the rest outside the encounter, the boss keeps
+   asking (hearts 0 would not end it), or the server completes a session early. Owner or integration
+   decision.
+2. **Which getter did the review mean?** Both getters are in use (`session` by RunScene, `destination` by
+   an existing test). Kept.
+3. **Challenger designs** (takin, snow leopard), names and taunts: need owner approval (proposal rule 13).
+4. **Hearts color**: warm rose `#f06a8a` with an empty outline when lost; not the rejected red failure
+   styling, but the owner may prefer amber.
+5. **`question_already_answered`** (another tab answered first): the client resyncs and asks the
+   server's current question; that lost answer is not counted by the overlay, while the server's replay
+   counts it, so the shown beacons can differ from the server's in that rare case.
+6. Timer length is 20 seconds (display only); A8 may tune it from `responseMs`.
 
 ---
 
