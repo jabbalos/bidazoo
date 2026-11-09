@@ -63,10 +63,10 @@ describe('the seven shipped destination manifests', () => {
     }
   });
 
-  it('keeps Great Wall always unlocked and the rest of the unlocks as data (two start unlocked, the choice is pending)', () => {
+  it('keeps Great Wall always unlocked and the rest of the unlocks as data (only Great Wall starts unlocked, owner decision)', () => {
     const all = manifests();
     expect(isUnlocked(all.find((m) => m.id === ALWAYS_UNLOCKED)!)).toBe(true);
-    expect(all.filter((m) => isUnlocked(m))).toHaveLength(2);
+    expect(all.filter((m) => isUnlocked(m)).map((m) => m.id)).toEqual(['great-wall']);
     // every locked one names a stamp it needs, and that destination exists
     for (const m of all.filter((x) => !x.unlock.startsUnlocked)) {
       expect(m.unlock.requires.length).toBeGreaterThan(0);
@@ -114,11 +114,11 @@ describe('manifest validation', () => {
 });
 
 describe('the map board tiles', () => {
-  it('lists seven tiles in board order, two open, five locked with their rule', () => {
+  it('lists seven tiles in board order, one open, six locked with their rule', () => {
     const tiles = mapTiles(manifests());
     expect(tiles).toHaveLength(7);
     expect(tiles.map((t) => t.order)).toEqual([1, 2, 3, 4, 5, 6, 7]);
-    expect(tiles.filter((t) => t.unlocked).map((t) => t.id)).toEqual(['great-wall', 'petra-rose-canyon']);
+    expect(tiles.filter((t) => t.unlocked).map((t) => t.id)).toEqual(['great-wall']);
     for (const t of tiles.filter((x) => !x.unlocked)) expect(t.rule.length).toBeGreaterThan(5);
   });
 

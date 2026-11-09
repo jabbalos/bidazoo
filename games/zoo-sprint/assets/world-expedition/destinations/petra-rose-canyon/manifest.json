@@ -163,9 +163,11 @@
     ]
   },
   "unlock": {
-    "startsUnlocked": true,
-    "requires": [],
-    "rule": "Open from the start."
+    "startsUnlocked": false,
+    "requires": [
+      "great-wall"
+    ],
+    "rule": "Earn the Great Wall stamp."
   },
   "audio": {
     "track": null

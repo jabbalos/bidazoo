@@ -54,11 +54,11 @@ async function openMap(page: Page): Promise<void> {
   await expect.poll(async () => (await tiles(page)).length).toBe(7);
 }
 
-test('the map board lists seven destinations: two open, five locked, every tile big enough to tap and on screen', async ({ page }) => {
+test('the map board lists seven destinations: one open, six locked, every tile big enough to tap and on screen', async ({ page }) => {
   await bootToBasecamp(page);
   await openMap(page);
   const all = await tiles(page);
-  expect(all.filter((t) => t.unlocked).map((t) => t.id).sort()).toEqual(['great-wall', 'petra-rose-canyon']);
+  expect(all.filter((t) => t.unlocked).map((t) => t.id).sort()).toEqual(['great-wall']);
   const vp = await page.evaluate(() => ({ w: window.innerWidth, h: window.innerHeight }));
   for (const t of all) {
     expect(t.w).toBeGreaterThanOrEqual(48);
