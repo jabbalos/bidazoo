@@ -6,8 +6,10 @@ in as each item lands.
 ## Art references
 
 Rule 13: the files used for the visual work in A2 (overlay), A4 (special move) and A6 (challengers).
-No owner confirmation has reached this lane. Until one does, all visual work is code-drawn only, built
-from these references; no image file is generated, added or edited.
+**Owner confirmation (relayed by the orchestrator, Monday, November 9, 2026, about 15:15 CST):
+CONFIRMED exactly as listed below; code-drawn art only, no new image files.** The visual work was built
+before the confirmation arrived, as code-drawn art only from these references, which is what was
+confirmed; no image file was generated, added or edited.
 
 | Reference | Used for |
 | --- | --- |
@@ -132,6 +134,14 @@ No existing test was changed.
 - Bundle: built an entry that imports `startEncounter` and searched the output: only the encounter model
   of `learning-core` is included (no `generateQuestion`, `gradeAnswer`, `applyAttempt`,
   `selectNextSkill` or their strings). The play build plus `scan-client-bundle.mjs`: CLEAN.
+
+## Check runs (`.bake\check.ps1`, one at a time, never timeout-wrapped)
+
+| Run | Started | Result |
+| --- | --- | --- |
+| 0 | 15:08 | Did not run: the path was passed unquoted through bash (`.bakecheck.ps1` not found). Not a check failure. |
+| 1 | 15:08 (logs `20261109-150820-*`) | typecheck PASS, databases PASS, **vitest FAIL** (34 of 784, all in identity, rate-limit and idempotency files; errors are `Connection terminated due to connection timeout` from PostgreSQL on 54330 and 500s caused by it), migrate-e2e PASS, **play-spec FAIL** (6 failed, 2 flaky, 16 passed, 55.1 min; the API log shows the same PostgreSQL connection timeouts on `POST /api/v1/guest`). No failure is in an encounter, challenger or session-client test. `pg_isready` on 54330 said "accepting connections" during the run: I read it as load on the shared database server, not my change. Under the timeout/connection-error rule it is rerun once and not counted toward the 3-failure stop. |
+| 2 | 16:51 | (see below) |
 
 ## Copy (PENDING)
 
