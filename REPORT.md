@@ -1,51 +1,94 @@
-# Report: section 2.6 interfaces with stubs (bake-off base, November 8, 2026)
+# Report: Lane D (Content), November 9, 2026
 
-One commit on `bakeoff/base` on top of `5832a7d`: "contracts: section 2.6 interfaces with stubs (bake-off base)".
-Not pushed.
+Branch `lane/content`. Base report (the section 2.6 stubs) is preserved in git history at `9ff9d70`; this file replaces it for this lane.
 
-**`packages/learning-core/src/encounter/encounter-model.ts` and `games/zoo-sprint/src/session-client.ts` are
-stubs.** They contain the interfaces only. Neither file contains game rules or session logic.
+## Status
 
-## Files changed and why
-
-| File | Change | Why |
-| --- | --- | --- |
-| `packages/learning-core/src/encounter/encounter-model.ts` (new) | `EncounterKind`, `EncounterPhase`, `EncounterState`, `createEncounter`, `applyAnswer`, `replayExpedition`. **Stubs:** `createEncounter` returns an initial state (phase `question`, every counter 0, `questions` and `specialMovesLeft` taken from `opts`); `applyAnswer` returns the state unchanged; `replayExpedition` returns `{ beaconsLit: 0, bossWon: false }`. Each body has the comment `// STUB: Lane A item A1 implements this.` | 2.6 item 6. Lane A (A1) implements the rules. |
-| `packages/learning-core/src/index.ts` | Exports the three functions and three types above. | So the game and the API can import item 6. |
-| `games/zoo-sprint/src/session-client.ts` (new) | `DestinationId`, `SessionClient`, `createSessionClient`. **Stubs:** every method throws `new Error('STUB: Lane A item A3 implements this')`. `submitAnswer(choice: number \| string)`. RunScene does not import it. | 2.6 item 2, and the owner's decision that a text answer sends the chosen value. |
-| `games/zoo-sprint/src/contracts.check.ts` (new) | Type-level assertions on every 2.6 signature, compiled by `npm run typecheck`. The `submitAnswer` assertion is now `(choice: number \| string) => Promise<AnswerResult>`. | Any signature change fails the typecheck. |
-| `games/zoo-sprint/src/encounter/index.ts` (new) | `startEncounter(scene, opts): Promise<EncounterOutcome>`, `EncounterOutcome`, `ChallengerId`. | 2.6 item 1 (unchanged from the earlier staged work). |
-| `games/zoo-sprint/src/basecamp/overlays.ts` (new) | `registerOverlay`, `overlaysAt`, `OverlayId`, `OverlayHotspot`, `OverlayDef`. | 2.6 item 3 (unchanged). |
-| `packages/contracts/src/progress.ts` (new), `packages/contracts/src/index.ts` | Progress schemas; `PublicQuestionSchema` gets `kind?: 'number' \| 'text'` and `choices: number[] \| string[]`. | 2.6 items 4 and 5 (unchanged). |
-| `packages/contracts/src/paths.ts` | `ApiPaths.meExpedition`, `meGear`, `meDaily`. | 2.6 item 4 (kept as is, per the owner). |
-| `apps/api/src/modules/sessions/service.ts`, `games/zoo-sprint/src/scenes/RunScene.ts` | The `number` casts that keep existing consumers compiling after item 5. | Kept as is, per the owner. |
-| `tests/integration/contracts-boundary.test.ts` | Three expectations describe the new `PublicQuestion` shape. | Approved by the owner; kept as is. |
-| `docs/PROPOSAL-WORLD-EXPEDITION-FAST-TRACK.md` | One row added to section 10: `Text answers`. Nothing else changed. | Owner decision. |
-| `REPORT.md` | This report. | |
-
-Removed from the earlier staged work:
-
-- All rule logic in `encounter-model.ts`: hearts, strikes, charge, special moves, the boss and the expedition
-  replay.
-- The exported constants `ENCOUNTER_HEARTS`, `CHARGE_FULL` and `EXPEDITION_SHAPE`, and their re-exports from the
-  learning-core index. These constants were game rules, not types or signatures, and nothing else used them.
-  If you want them back as part of the interface, they can be added again.
-- All session state, attempt-id and results logic in `session-client.ts`. Its `makeAttemptId` import is gone.
-- Tests: none had been added for the encounter model or the session client, so none were deleted.
-
-## Commands run
-
-| Command | Result |
+| Item | Status |
 | --- | --- |
-| `npm run typecheck` | Exit 0. Every workspace passes, including `contracts.check.ts`. |
-| `npm test` | Exit 0. learning-core: 6 files, 51/51 passed. tests: 17 files passed, 19 skipped; 459 passed, 288 skipped, 3 todo (750). These are the same counts as the baseline. The skipped files are the PostgreSQL-backed suites (no database here). |
+| D3 | done, except the API service (cross-lane change request 1) |
+| D1 | done, with one open question on the item count (372, not 196) |
+| Session mix | done in `packages/learning-core`; wiring into the session service is cross-lane change request 2 |
 
-No check failed, so there is no STOP.md.
+`.bake\check.ps1` could NOT be run: the auto-mode permission classifier denied it (twice). So `ALL CHECKS PASSED` was not
+obtained. What did run: `npm test` (no database): learning-core 8 files / 73 tests passed; tests workspace 19 files passed,
+19 skipped (database suites), 490 passed, 288 skipped, 3 todo. `npm run typecheck` fails in ONE place only:
+`apps/api/src/modules/sessions/service.ts(324,6)` (see change request 1). Everything in my files typechecks.
 
-## Notes for the lanes
+## D3
 
-- `encounter/index.ts` (item 1 stub) still throws on a text choice before it calls `submitAnswer`. The new
-  signature accepts strings, so Lane A can remove that guard when it builds the overlay.
-- The section 10 row was added verbatim. Its `number | string` contains an unescaped `|`, so Markdown renders
-  that row with an extra cell. Escaping it as `\|` would fix the rendering; I did not, because the row was
-  specified exactly.
+`PublicQuestionSchema` `kind`/`choices` was already in base commit `9ff9d70` (verified with `git show 9ff9d70 -- packages/contracts/src/index.ts`); not duplicated.
+
+Files: `packages/contracts/src/index.ts` (`SubmitAnswerRequestSchema.response` is now `Integer(0..100000) | String(1..200)`),
+`packages/learning-core/src/grading.ts` (`gradeAnswer` generic over number or string; same rule: response must be an offered
+choice of the same type, then equals the key; no formula change), new `packages/learning-core/src/grading-kinds.test.ts`,
+new `tests/integration/question-kinds.test.ts` (14 tests: Fastify with the real Ajv options of `apps/api/src/app.ts`;
+serialization of 3/4-choice number and text questions, key never serialized, bad choice counts/mixed arrays/unknown kind
+rejected; request validation; grading of right, wrong, never-offered; "56" is not 56).
+Existing tests untouched (`grading.test.ts` unchanged).
+
+Assumption: the tests exercise the real schemas and real grader; they do not go through `sessions/service.ts` (not my file).
+
+## D1
+
+`packages/content-import/**` (new): `src/import.ts` (parse as in Hop Quest `lib/bank.js`, convert, report), `src/load.ts`,
+`src/cli.ts`, `src/types.ts`, `src/index.ts`, `data/math-items.json` and `data/import-report.json` (generated by the real bank).
+Note: the brief names `apps/hop-quest/lib/bank.js`; the file is actually `Hop-Quest\lib\bank.js`. Read-only, same parse.
+
+- Filter: `type: "mc"`, no `figure` (also no `choiceFigures`), 3 or 4 `choices`, valid answer index, no duplicate choices.
+- Key: the correct choice VALUE. If every choice is a whole number 0..100000 (commas allowed) the item is `kind: number` with
+  integer choices; otherwise `kind: text` with trimmed strings.
+- Kept server-side: grade (0 = K), domain, skill, teks, difficulty, rationale, `needsTable`. Stimulus is prepended to the stem.
+- Command: `npm run content:import -w @bidazoo/content-import -- C:\Users\jonat\Documents\Hop-Quest\bank [--out f] [--report f]`
+  (the bare root form `npm run content:import -- <path>` needs change request 3).
+- Real run: 372 imported of 1869 math items. Per grade: K 9, 1 30, 2 28, 3 38, 4 62, 5 59, 6 47, 7 51, 8 48. 98 number, 274 text.
+  Rejects: type not mc 900, figure 516, choiceFigures/other 0 (the 3 or 4 choice rule rejected none). 56 imported items carry a
+  table the prompt cannot show: kept and flagged `needsTable`; selection skips them (296 usable).
+- Tests: `tests/integration/content-import.test.ts` (17 tests, fixture bank in `tests/integration/fixtures/bank`): filtering,
+  reasons, key conversion, report text, determinism, CLI run (and bank folder untouched), and the client-isolation proof:
+  no file in `apps/play` (src, dist if built, package.json), `games`, `packages/ui|game-sdk|contracts|assets` references
+  `content-import`, `math-items.json` or `ImportedItem`; none contains an imported rationale (first 40 chars of every rationale
+  of the real data); learning-core does not import content-import.
+
+## Session mix
+
+`packages/learning-core/src/session-mix.ts` (+ exports in `index.ts`, tests in `session-mix.test.ts`, 14 tests).
+`planSessionMix(length, seed)`: blocks of 10 = 6 generated + 4 imported, shuffled per block from the seed; a partial block keeps
+6:4 rounded (15 = 9 + 6). `selectImportedItems({items, grade, count, seed, excludeIds})`: grade is an input (0 = K), skips
+`needsTable`, no repeats, deterministic. `buildSessionMix(...)` returns one slot per question (`generated` or `imported` + `itemId`);
+if the grade has too few unseen items the slot becomes generated, so the session keeps its length. Pure; takes items as input.
+
+## Art references
+
+None (no visual work).
+
+## Copy (PENDING)
+
+No new strings a child reads. (Imported prompts, choices and rationales come from the Hop Quest bank; the owner already owns them.)
+
+## Cross-lane change requests
+
+1. `apps/api/src/modules/sessions/service.ts` + DB (REQUIRED for typecheck): the widened `response` breaks line 324,
+   `submittedResponse: body.response` (column `attempts.submitted_response` is integer, `database/schema/attempts.ts`).
+   Fix: migration making `submitted_response` text (store `String(response)`), compare `sameKey.submittedResponse !== String(body.response)`.
+   Also `PublicQuestion`/`views.ts`: `publicQuestionOf` drops `kind` and casts choices to `number[]`; `PrivateGrading.correctAnswer`
+   must allow string (`Number.isInteger` check in `readPrivateGrading`); `AnswerResultSchema.correctAnswer` is `Integer` in
+   `packages/contracts/src/index.ts` and must become `Integer | String` for text questions (contract line, outside "item 5 only", so left to you).
+2. `apps/api/src/modules/sessions/service.ts` `issueQuestion`: use `buildSessionMix({ length: session.totalQuestions, grade, items, seed: session.seed, excludeIds })`
+   from `@bidazoo/learning-core`; for an `imported` slot serve the item from `loadImportedItems(<data/math-items.json>)` (shuffle choices from the seed),
+   store `privateGradingData = { skillKey: 'imp:' + id, correctAnswer: item.key }` and `publicPayload` with `kind` and `choices`; mastery for imported
+   skill keys needs a decision (they are not multiplication facts, `labelForSkillKey` would not know them).
+3. Root `package.json`: add `"content:import": "npm run content:import -w @bidazoo/content-import --"`. Run `npm install` once on integration (new workspace, lockfile).
+4. `tests/scripts/scan-client-bundle.mjs`: add `content-import` and `math-items` to FORBIDDEN.
+
+## Open questions
+
+- The brief says 196 importable items (156 in grades 2-8, 40 in K and 1). The stated rule on the current bank files gives 372
+  (333 and 39). I could not reproduce 196 with any combination of stimulus/table/readAloud/variantOf/choiceFigures exclusions. Which rule did the proposal use? I followed the stated rule.
+- Which grade's items a player gets (PENDING with the owner): it is an input everywhere.
+- Imported items need a mastery/skill-key policy (see change request 2).
+
+## Commands and timing
+
+`npx vitest run` in learning-core, `npx vitest run integration/...` in tests, `npm test`, `npm run typecheck`, the CLI on the real bank. Not run: `.bake\check.ps1` (denied).
+Start about 13:50, end about 14:20 Central; about 0.5 agent-hours.
