@@ -1,4 +1,46 @@
-# Report: bake-off entry (claude), items A3 then A1
+# Report: Lane A (Encounters), day 1
+
+Branch `lane/encounters`, Monday, November 9, 2026. Not pushed. Work in progress; sections are filled
+in as each item lands.
+
+## Art references
+
+Rule 13: the files used for the visual work in A2 (overlay), A4 (special move) and A6 (challengers).
+No owner confirmation has reached this lane. Until one does, all visual work is code-drawn only, built
+from these references; no image file is generated, added or edited.
+
+| Reference | Used for |
+| --- | --- |
+| `docs/reference-art/world-expedition/painted-v1/expressions/<id>/<id>_{idle,happy,thinking,cheer,discover,tryAgain}.png` (runtime copies in `games/zoo-sprint/assets/world-expedition/characters-painted/<id>/`) | The buddy bust on the left of the overlay, shown through the existing `Character` class unchanged (painted, else production, else code-drawn fallback). No new expression art. |
+| `docs/reference-art/world-expedition/painted-v1/all-expressions.jpg` | Which expression goes with which moment: thinking on a question, happy or cheer on a strike, discover on the special move, tryAgain on a miss |
+| `docs/reference-art/world-expedition/painted-v1/cast/*_idle_front.png`, `cast-lineup.jpg` | Outline weight, soft shading and warm light the code-drawn challengers imitate; challenger height against the buddy |
+| `docs/reference-art/world-expedition/painted-v1/README.md` | Style baseline, quoted in the art requests |
+| `docs/reference-art/world-expedition/painted-v1/basecamp/basecamp-full.png` | Painted palette and light the overlay sits in |
+| `docs/reference-art/world-expedition/production-v1.1/07_Expressions_Proportions_Palettes.png` | Proportions for the challenger silhouettes |
+| `docs/reference-art/world-expedition/production-v1.1/08_UI_and_Phaser_Asset_Spec.png` | Look of hearts, meter and panels (without the rejected red X panel) |
+| `docs/CHARACTER-BIBLE.md` sections 1, 2, 4, 5, 6 (LOCKED) | No new starters (challengers are destination creatures, never selectable), Click host only (not in encounters), originality, ages 6 to 12 tone |
+| `docs/visual/07-expression-state-system.md` | The six states, reaction timing, reduced motion |
+| `docs/visual/09-palette.md` | Token colors |
+| `docs/visual/10-ui-component-style.md` | Field-kit UI; a miss is orange/amber, never red, never an X; 44 px targets; 360x640 target |
+| `docs/visual/12-destination-worlds.md` section 1 (Great Wall) | Challenger and boss palette (ridge green `#5c7c6b`, stone `#b9a98a`, mist `#dfe9e4`, dawn `#f3d9a8`, accent `#d9822b`); avoid pagoda caricature, dragon clichés, costume stereotypes |
+| `docs/visual/13-phaser-asset-spec.md` | Size and format the challenger art requests ask for |
+| `docs/visual/14-do-dont-anti-drift.md` | Review checklist: 48 px silhouette test, static fallback, no red failure styling |
+
+## Copy (PENDING)
+
+(filled in as strings are added)
+
+## Cross-lane change requests
+
+(none yet)
+
+## Open questions
+
+(none yet)
+
+---
+
+# Previous report: bake-off entry (claude), items A3 then A1
 
 Branch `bake/claude`, on top of `9ff9d70` (bakeoff/base). Sunday, November 8, 2026. Not pushed.
 
