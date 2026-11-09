@@ -250,7 +250,11 @@ export const SubmitAnswerRequestSchema = Type.Object(
   {
     attemptId: Type.String({ minLength: 8, maxLength: 64, pattern: '^[A-Za-z0-9_-]+$' }),
     questionId: Uuid,
-    response: Type.Integer({ minimum: 0, maximum: 100000 }),
+    /** The chosen value: an integer for `number` questions, the chosen string for `text` questions. */
+    response: Type.Union([
+      Type.Integer({ minimum: 0, maximum: 100000 }),
+      Type.String({ minLength: 1, maxLength: 200 }),
+    ]),
   },
   strict,
 );
