@@ -19,6 +19,8 @@ import '../basecamp/map-overlay';
 import { hotspotPlaces, interactionAt, type HotspotPlace, type Interaction } from '../presentation/hotspot-model';
 import { ParallaxLayers } from '../presentation/parallax';
 import { Walker } from '../presentation/walker';
+import { ExpeditionScene } from './ExpeditionScene';
+import { SummitScene } from './SummitScene';
 import { WalkInput, spawnDust } from '../presentation/walk-input';
 import { prefersReducedMotion } from '../presentation/motion';
 import { parchmentPanel, pill, ribbon, softShadow } from '../presentation/surfaces';
@@ -117,6 +119,9 @@ export class BasecampScene extends Phaser.Scene {
     this.reduced = prefersReducedMotion();
     this.uiCam = this.cameras.add(0, 0, this.scale.width, this.scale.height);
     this.walkInput = new WalkInput(this);
+    // The expedition scenes join the game here until the shell lists them (a no-op once index.ts does).
+    if (!this.scene.get('ExpeditionScene')) this.scene.add('ExpeditionScene', ExpeditionScene, false);
+    if (!this.scene.get('SummitScene')) this.scene.add('SummitScene', SummitScene, false);
 
     const ctx = getContext(this);
     // painted art that arrives after the timeout (slow network) replaces the code-drawn stand-in
@@ -513,7 +518,7 @@ export class BasecampScene extends Phaser.Scene {
     this.buddy.setX(this.player.x);
     this.buddy.face(this.player.facing);
     const footfall = this.buddy.puppet(delta, speed, this.player.facing, this.reduced);
-    if (footfall) spawnDust(this, this.uiCam, this.world.unit, this.player.x, this.buddy.y, this.player.facing);
+    if (footfall) spawnDust(this, this.world.unit, this.player.x, this.buddy.y, this.player.facing, { uiCam: this.uiCam });
     this.click?.puppet(delta, 0, -1, this.reduced);
 
     // landmarks, Click and the gate react to where the buddy is

@@ -71,3 +71,8 @@ const ROOT = 'games/zoo-sprint/assets/world-expedition';
 refresh(`${ROOT}/basecamp`, 'files', /\.(jpe?g|webp|png)$/);
 refresh(`${ROOT}/walk-painted`, 'files', /^[a-z]+_(walk_side|idle_front)\.(png|webp)$/);
 refresh(`${ROOT}/characters-painted`, 'files', /^([a-z]+)\/\1_(idle|happy|thinking|cheer|discover|tryAgain)\.(png|webp)$/, true);
+// Destination layers (Lane B, B7): `destinations/<id>/{far,mid,near}.<ext>` once a painted layer is approved.
+// A destination folder without a PROVENANCE.json is skipped (its layers are still drawn from the manifest's gradients).
+for (const id of ['great-wall', 'petra-rose-canyon', 'andes-cloud-terraces', 'maya-jungle-observatory', 'taj-garden', 'nile-discovery-route', 'philippine-highlands-harbor']) {
+  refresh(`${ROOT}/destinations/${id}`, 'files', /^(far|mid|near)\.(jpe?g|webp|png)$/);
+}

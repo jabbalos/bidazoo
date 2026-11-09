@@ -335,3 +335,21 @@ export function serverExpedition(results: unknown): { beaconsLit: number | null;
   const stampEarned = r?.['stampEarned'] === true && beaconsLit !== null && beaconsLit >= STAMP_BEACONS;
   return { beaconsLit, stampEarned };
 }
+
+/** What the summit card shows, read from the server's session results. Stamp and beacons come only from the server. */
+export interface SummitFacts {
+  correct: number;
+  total: number;
+  xpEarned: number;
+  coinsEarned: number;
+  /** Null until the progress lane's `beaconsLit` exists in the results. */
+  beaconsLit: number | null;
+  stampEarned: boolean;
+}
+
+export function summitFacts(results: unknown): SummitFacts | null {
+  const r = rec(results);
+  if (!r) return null;
+  const n = (k: string): number => (typeof r[k] === 'number' && Number.isFinite(r[k]) && (r[k] as number) >= 0 ? (r[k] as number) : 0);
+  return { correct: n('correct'), total: n('total'), xpEarned: n('xpEarned'), coinsEarned: n('coinsEarned'), ...serverExpedition(results) };
+}

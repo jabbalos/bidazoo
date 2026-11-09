@@ -37,11 +37,22 @@ export class WalkInput {
   }
 }
 
-/** A few dust puffs behind a footfall (on the world camera only; `uiCam` ignores them). */
-export function spawnDust(scene: Phaser.Scene, uiCam: Phaser.Cameras.Scene2D.Camera, unit: number, x: number, y: number, facing: 1 | -1): void {
+/**
+ * A few dust puffs behind a footfall. Where there is a fixed UI camera, `uiCam` ignores them so they
+ * draw once; a scene that scrolls a container instead passes that container as `parent`.
+ */
+export function spawnDust(
+  scene: Phaser.Scene,
+  unit: number,
+  x: number,
+  y: number,
+  facing: 1 | -1,
+  where: { uiCam?: Phaser.Cameras.Scene2D.Camera; parent?: Phaser.GameObjects.Container } = {},
+): void {
   for (let i = 0; i < 3; i++) {
     const puff = scene.add.circle(x - facing * unit * (0.02 + i * 0.012), y - unit * 0.004, unit * (0.012 + Math.random() * 0.008), 0xf1dfbb, 0.55).setDepth(11);
-    uiCam.ignore(puff);
+    where.uiCam?.ignore(puff);
+    where.parent?.add(puff);
     scene.tweens.add({
       targets: puff,
       x: puff.x - facing * unit * 0.05,
