@@ -1,3 +1,4 @@
+/// <reference path="../../games/zoo-sprint/src/vite-glob.d.ts" />
 import { beforeEach, describe, expect, it } from 'vitest';
 import { mapBoardLayout, TAP_FLOOR } from '../../games/zoo-sprint/src/basecamp/map-layout';
 import { overlaysAt, registerOverlay, resetOverlaysForTests } from '../../games/zoo-sprint/src/basecamp/overlays';
