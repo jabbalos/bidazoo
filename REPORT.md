@@ -107,11 +107,33 @@ files against the whole repository:
   sizes, framing, palette, references, fallback, Copy PENDING). The designs need owner approval
   (proposal rule 13).
 
+### Last stand (owner decision, November 9, 2026)
+
+When the boss's hearts reach 0 with questions left, the boss stays lost and its remaining questions are
+still asked. `encounter-flow.ts`: `lastStandQuestions(state)` (boss only, lost at 0 hearts) and a second
+loop after the main one; the view's new `lastStand(state)` shows a banner first. Each last-stand answer is
+submitted and graded by the server as usual (XP and coins as the server decides) and shown as a
+`GradedStep` with `lastStand: true` and `before === after`: no heart, strike, charge or special-move change.
+`replayExpedition` already ignores answers after the boss has ended, so beacons and the stamp are
+unchanged; no server or model change. The outcome counts last-stand answers in `asked` and `correct`
+(answered questions); `won` stays false and `heartsLeft` 0. Overlay: "Last stand" in the feedback line,
+"Correct!" instead of "Strike!", QA hooks `data-last-stand` and `data-encounter="lastStand"` (the banner).
+A last stand stops if the session ends underneath. Nodes never have one (2 questions, 3 hearts). Tests: 3
+in `encounter-flow.test.ts`; the five-nodes-plus-boss test still matches `replayExpedition`.
+
+## Screenshots for the owner (challengers)
+
+Taken about 14:30 to 14:40 CST with the current drawing code, before the load rule; no new harness run
+since. Files in my scratchpad folder `C:\Users\jonat\AppData\Local\Temp\claude\b51e069b692d60f9\c5c080ad-c1cb-48c7-b02c-20a8f6ca4e4b\scratchpad\enc-harness\shots\`:
+
+- Node, golden takin: `node-koala-390x844-01-question.png` (Koala buddy, phone portrait)
+- Boss, snow leopard: `boss-eagle-1280x720-01-question.png` (Eagle buddy, desktop)
+
 ## Tests added
 
 | File | Tests | What |
 | --- | --- | --- |
-| `tests/integration/encounter-flow.test.ts` | 12 | The turn loop against a scripted session client (Lane A's own interface, not another lane's) and a scripted view: wins, losses, hearts at 0 ends the boss after three misses, special move timing, charge carried across encounters, five nodes plus the boss over one client give the same beacons and boss result as `replayExpedition` for six sequences, failed request retried and graded once, resync on an answer from another tab, session ending underneath, a slow answer changes nothing |
+| `tests/integration/encounter-flow.test.ts` | 14 | The turn loop against a scripted session client (Lane A's own interface, not another lane's) and a scripted view: wins, losses, hearts at 0 lose the boss at once and the rest of its questions are a last stand that changes nothing, special move timing, charge carried across encounters, five nodes plus the boss over one client give the same beacons and boss result as `replayExpedition` for six sequences, failed request retried and graded once, resync on an answer from another tab, session ending underneath, a slow answer changes nothing |
 | `tests/integration/encounter-layout.test.ts` | 5 | 10 viewports (360x640 to 1920x1080, portrait and landscape) x 5 tile specs x node/boss: everything on screen, one tile per choice, tiles at least 44 px and not overlapping, face-off geometry, boss share, tile shapes |
 | `tests/integration/challengers.test.ts` | 5 | Definitions (Great Wall node and boss, none is a starter or Click), unknown-id fallback, every code-drawn picture in every pose inside its box, on the ground and facing left (recorded with a stand-in for Phaser's Graphics, which cannot load in Node), no painted files yet, no network/storage/reward words |
 
@@ -141,7 +163,11 @@ No existing test was changed.
 | --- | --- | --- |
 | 0 | 15:08 | Did not run: the path was passed unquoted through bash (`.bakecheck.ps1` not found). Not a check failure. |
 | 1 | 15:08 (logs `20261109-150820-*`) | typecheck PASS, databases PASS, **vitest FAIL** (34 of 784, all in identity, rate-limit and idempotency files; errors are `Connection terminated due to connection timeout` from PostgreSQL on 54330 and 500s caused by it), migrate-e2e PASS, **play-spec FAIL** (6 failed, 2 flaky, 16 passed, 55.1 min; the API log shows the same PostgreSQL connection timeouts on `POST /api/v1/guest`). No failure is in an encounter, challenger or session-client test. `pg_isready` on 54330 said "accepting connections" during the run: I read it as load on the shared database server, not my change. Under the timeout/connection-error rule it is rerun once and not counted toward the 3-failure stop. |
-| 2 | 16:51 | (see below) |
+| 2 | 16:51 (logs `20261109-165115-*`) | typecheck PASS, databases PASS, **vitest PASS** (learning-core 88; tests 781 passed, 3 todo of 784), migrate-e2e PASS, **play-spec FAIL** (1 failed, 1 flaky, 22 passed, 22.0 min). Failed: desktop "full run": first attempt `GET /api/v1/me` returned 500, the API log's only error being `Connection terminated due to connection timeout`; its retry ended on `boot-error`. Flaky: 360x640 "refresh mid-run" (timed out waiting for the question, passed on retry). Again only PostgreSQL connection timeouts: an environment failure (owner rule, November 9), **not counted** toward the 3-failure stop. |
+| 3 | 17:17 (logs `20261109-1717*`) | typecheck, databases, vitest, migrate-e2e PASS; play-spec was interrupted when the owner's "stop for now" ended my session (the task shows `[killed]`); no result. Afterwards no process was listening on my ports 3141, 3142, 4241 to 4243. |
+| 4 | (after the last-stand change) | (see below) |
+
+Failures counted toward the 3-failure stop: 0.
 
 ## Copy (PENDING)
 
@@ -159,6 +185,9 @@ New strings a child reads. Reused unchanged from RunScene: "Getting your questio
 | `Nice try! The path goes on.` | End banner, node lost |
 | `You beat the summit challenger!` | End banner, boss won |
 | `Good climb! Keep going.` | End banner, boss lost |
+| `Last stand! Answer the rest of the questions.` | Banner when the boss's hearts reach 0 with questions left |
+| `Last stand` | Feedback line during last-stand questions |
+| `Correct!` | Feedback for a correct last-stand answer |
 | `Hearts {h} of 3. Strikes {s} of {n}. Charge {c} of 3.` | Screen-reader status line |
 | `Ridge Takin` | Node challenger name (status bar) |
 | `Can you climb past me?` / `These steps are mine to guard!` / `Show me your best math!` | Node challenger taunts |
@@ -176,26 +205,23 @@ New strings a child reads. Reused unchanged from RunScene: "Getting your questio
    it does); it resolves today through the workspace's hoisted `node_modules`, but the dependency is
    undeclared.
 3. **Lane B (ExpeditionScene)**: call `startEncounter` with one session client for the whole run (the
-   charge meter carries per client), and pass `questions: 2` for nodes and `5` for the boss. After a lost
-   boss (hearts 0 after 3 misses) the session still has unanswered questions, so it is not completed and
-   has no results: the summit needs to either keep answering or handle an incomplete session (see Open
-   questions). The overlay restores `data-scene`/`data-hit-targets` on close, but not the accessibility
+   charge meter carries per client), and pass `questions: 2` for nodes and `5` for the boss. A lost boss now
+   asks its remaining questions as a last stand (owner decision), so the session completes as usual. The overlay restores `data-scene`/`data-hit-targets` on close, but not the accessibility
    mirror's actions: the calling scene should republish its own after the promise resolves.
 4. **Lane C/D (session length)**: a destination run needs 15 questions (5 x 2 + 5); the session total is
    10 today.
 
 ## Open questions
 
-1. **Lost boss and session completion.** Hearts 0 ends the boss after as few as 3 answers (rule from A1),
-   leaving up to 2 questions of the 15 unanswered, so the server session does not complete and no stamp
-   or results are computed. Options: the summit answers the rest outside the encounter, the boss keeps
-   asking (hearts 0 would not end it), or the server completes a session early. Owner or integration
-   decision.
+1. **Lost boss: DECIDED (owner, November 9).** When the boss's hearts reach 0 the boss stays lost and its
+   remaining questions are still asked as a "last stand"; the server grades them as usual (XP as it
+   decides); beacons and stamp unchanged; no server change. Implemented (see "Last stand" below).
 2. **Which getter did the review mean?** Both getters are in use (`session` by RunScene, `destination` by
    an existing test). Kept.
-3. **Challenger designs** (takin, snow leopard), names and taunts: need owner approval (proposal rule 13).
-4. **Hearts color**: warm rose `#f06a8a` with an empty outline when lost; not the rejected red failure
-   styling, but the owner may prefer amber.
+3. **Challenger designs** (takin, snow leopard), names and taunts: not approved yet. The owner asked for one
+   screenshot of each in the overlay; see "Screenshots for the owner". Copy approval is batched at the end
+   of the day.
+4. **Hearts color: DECIDED (owner)**: keep warm rose `#f06a8a` with an empty outline when lost.
 5. **`question_already_answered`** (another tab answered first): the client resyncs and asks the
    server's current question; that lost answer is not counted by the overlay, while the server's replay
    counts it, so the shown beacons can differ from the server's in that rare case.
