@@ -36,6 +36,13 @@
       "when": 1791841844255,
       "tag": "0004_identity_guards",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1794253669000,
+      "tag": "0005_world_expedition_progress",
+      "breakpoints": true
     }
   ]
 }

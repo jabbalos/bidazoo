@@ -10,6 +10,25 @@ import { strict } from './common';
 
 const DestinationId = Type.String({ minLength: 1, maxLength: 64 });
 
+/** A destination id, as used in the stamps and unlocks below (for example `great-wall`). */
+export const DestinationIdSchema = DestinationId;
+
+/**
+ * The seven destinations in passport order (docs/visual/12-destination-worlds.md; ids as in the
+ * world folders of docs/visual/13-phaser-asset-spec.md). The server unlocks them in this order.
+ * PENDING owner decision: the order and the unlock rule (see the progress module).
+ */
+export const EXPEDITION_DESTINATIONS = [
+  'great-wall',
+  'petra',
+  'andes',
+  'maya',
+  'taj',
+  'nile',
+  'philippine-highlands',
+] as const;
+export type ExpeditionDestination = (typeof EXPEDITION_DESTINATIONS)[number];
+
 /** One destination's passport stamp: earned when the server's replay lit at least 3 of 5 beacons. */
 export const StampSchema = Type.Object(
   {
