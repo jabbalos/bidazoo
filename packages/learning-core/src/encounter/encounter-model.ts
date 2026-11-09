@@ -40,10 +40,10 @@ export const ENCOUNTER_HEARTS = 3;
 /** Correct answers in a row that fill the charge meter. */
 export const CHARGE_FULL = 3;
 /** Strikes a correct answer is worth while the special move fires. */
-export const SPECIAL_MOVE_STRIKES = 2;
+const SPECIAL_MOVE_STRIKES = 2;
 
 /** One destination run (proposal 2.1): five node encounters of two questions, then the boss of five. */
-export const EXPEDITION_NODES = 5;
+const EXPEDITION_NODES = 5;
 export const NODE_QUESTIONS = 2;
 export const NODE_SPECIAL_MOVES = 1;
 export const BOSS_QUESTIONS = 5;
