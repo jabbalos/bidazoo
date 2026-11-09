@@ -7,7 +7,7 @@ Branch `lane/content`. Base report (the section 2.6 stubs) is preserved in git h
 | Item | Status |
 | --- | --- |
 | D3 | done, except the API service (cross-lane change request 1) |
-| D1 | done, with one open question on the item count (372, not 196) |
+| D1 | done; all 372 ship by the stated rule (owner decision), 56 `needsTable` items stay skipped |
 | Session mix | done in `packages/learning-core`; wiring into the session service is cross-lane change request 2 |
 
 `.bake\check.ps1` could NOT be run: the auto-mode permission classifier denied it (twice). So `ALL CHECKS PASSED` was not
@@ -83,12 +83,50 @@ No new strings a child reads. (Imported prompts, choices and rationales come fro
 
 ## Open questions
 
-- The brief says 196 importable items (156 in grades 2-8, 40 in K and 1). The stated rule on the current bank files gives 372
-  (333 and 39). I could not reproduce 196 with any combination of stimulus/table/readAloud/variantOf/choiceFigures exclusions. Which rule did the proposal use? I followed the stated rule.
-- Which grade's items a player gets (PENDING with the owner): it is an input everywhere.
-- Imported items need a mastery/skill-key policy (see change request 2).
+- Which grade's items a player gets (PENDING with the owner): it is an input everywhere. D4 defaults it to `IMPORTED_ITEM_GRADE = 3` in `apps/api/src/modules/sessions/imported-bank.ts` (one place).
 
 ## Commands and timing
 
 `npx vitest run` in learning-core, `npx vitest run integration/...` in tests, `npm test`, `npm run typecheck`, the CLI on the real bank. Not run: `.bake\check.ps1` (denied).
 Start about 13:50, end about 14:20 Central; about 0.5 agent-hours.
+
+## D4: session mix wired into `issueQuestion` (owner-approved extension of my file list)
+
+Files: `apps/api/src/modules/sessions/service.ts` (`issueQuestion` path only), new `apps/api/src/modules/sessions/imported-bank.ts`,
+`packages/learning-core/src/imported-skill.ts` (+ test) and `multiplication.ts` (`labelForSkillKey`), new `tests/integration/session-mix-api.test.ts`.
+
+- Plan: `buildSessionMix({ length: session.totalQuestions, grade: IMPORTED_ITEM_GRADE, items, seed: session.seed })`; slot = `mix[sequence - 1]`.
+  The plan is a pure function of the session seed, so every call sees the same plan; imported items are distinct within a session.
+  No cross-session exclusion (that would change the plan between calls); an item can come up again in a later session.
+- Imported slot: choices shuffled from the question seed (`createRng(seed:sequence:choices)`, reshuffled up to 7 times so the key avoids the previous
+  answer's position), `publicPayload = { id, sequence, prompt, type, kind, choices }`,
+  `privateGradingData = { skillKey, correctAnswer: item.key, itemId }`. `selection_reason` is new / due / review from mastery.
+- Generated slot: unchanged, except the selection history is filtered to multiplication keys, so an imported miss is never "retried" as a fact.
+- `avoidAnswerIndex` now reads the previous question's raw key (a string for text questions); it no longer goes through `readPrivateGrading`.
+- Skill key form (stable): `imp:<grade>:<Hop Quest skill tag>`, e.g. `imp:3:Place value to 100,000` (grade 0 = K). The tag is in the key, so
+  `labelForSkillKey('imp:3:Place value to 100,000')` is `Place value to 100,000` with no lookup table. `mul:AxB` is unchanged.
+- Data: `imported-bank.ts` imports `packages/content-import/data/math-items.json` by relative path (esbuild bundles it; no new workspace link needed).
+  Re-run `npm run content:import` to refresh it. The API is server-only, and the client-isolation test covers the data and package.
+- Tests: `tests/integration/session-mix-api.test.ts` (real PostgreSQL): positions follow the plan, 6 and 4, keys and skill keys stored correctly,
+  nothing secret in the response, restore returns the same question, plans vary by session, and a real answer to an imported number question
+  is graded and labelled by skill. Sessions are advanced by marking questions answered in SQL, because text-answer storage belongs to Lane C.
+
+### Expected until Lane C and the integration merge land
+- `npm run typecheck` fails at `service.ts` `submitAnswer` (`submittedResponse: body.response`): migration 0006, answer storage, `views.ts`.
+- A served `text` question reaches the client without `kind` and `readPrivateGrading` throws on a string key until Lane C widens `views.ts`
+  (`publicQuestionOf` must pass `kind` through). Answering a text question works only after migration 0006.
+- **The mix is OFF by default** (`sessionMix.enabled = false` in `imported-bank.ts`). Turning it on makes 12 tests in `gameplay-flow.test.ts` fail
+  (they call `productOf` on every prompt) and others like them, and I may not edit existing tests. The integration workspace flips
+  `sessionMix.enabled = true` (for example in `server.ts`) once those tests are updated. `session-mix-api.test.ts` enables it for its own file only.
+  `sessionMix.grade` (default `IMPORTED_ITEM_GRADE = 3`) is the one place the pending grade decision lands.
+
+### D4 results (one test process at a time)
+- Typecheck: one error only, `service.ts(363,6)` in `submitAnswer` (`submittedResponse: body.response`), the expected Lane C item.
+- `npm test` without a database: learning-core 9 files / 77 tests passed; tests workspace 19 files passed, 20 skipped, 490 passed, 293 skipped, 3 todo.
+- With PostgreSQL (`build_content_test`, my own database): `session-mix-api.test.ts` 8/8 passed; `gameplay-flow.test.ts` 15/15 passed (mix off);
+  `server-authority.test.ts` 18 of 19 passed. The one failure is the existing test `rejects values that are not strict integers or are not offered`:
+  it sends the string `"56"` and expects 400. With owner-approved text answers a string is a valid `response`, so it now reaches grading and gets 422
+  (`invalid_response`, not an offered choice). Expected consequence of D3; I did not edit the test. The integration workspace should change that
+  expectation to 422 (or use a string that cannot be a choice for a number question). One earlier run also showed one 500 on guest creation in
+  `honors an explicit allow-list`; it did not repeat on a rerun alone (database load from other lanes).
+- Not run: the rest of the DB suite and `.bake\check.ps1`; the integration workspace runs full CI at merge.
