@@ -103,9 +103,10 @@ class ScriptedSession implements SessionClient {
 }
 
 /** A view that taps the first tile at once and records what it was shown. */
-function view(): EncounterView & { steps: GradedStep[]; asked: EncounterState[]; failures: unknown[]; end: EncounterState | null } {
+function view(): EncounterView & { steps: GradedStep[]; asked: EncounterState[]; failures: unknown[]; end: EncounterState | null; stands: EncounterState[] } {
   const v = {
     steps: [] as GradedStep[],
+    stands: [] as EncounterState[],
     asked: [] as EncounterState[],
     failures: [] as unknown[],
     end: null as EncounterState | null,
@@ -120,6 +121,9 @@ function view(): EncounterView & { steps: GradedStep[]; asked: EncounterState[];
     },
     async failed(error: unknown) {
       v.failures.push(error);
+    },
+    async lastStand(state: EncounterState) {
+      v.stands.push(state);
     },
     async ended(state: EncounterState) {
       v.end = state;
@@ -166,13 +170,44 @@ describe('encounter flow: one encounter', () => {
     expect(initialState(new ScriptedSession(''), BOSS)).toMatchObject({ kind: 'boss', questions: 5, specialMovesLeft: 2, hearts: 3, charge: 0 });
   });
 
-  it('hearts at 0 end the boss at once: three misses, three questions asked, lost', async () => {
+  it('hearts at 0 lose the boss at once, then its remaining questions are asked as a last stand that changes nothing', async () => {
     const session = new ScriptedSession('FFFTT');
     const v = view();
     const outcome = await runEncounter(session, BOSS, v);
-    expect(outcome).toEqual({ won: false, correct: 0, asked: 3, bestStreak: 0, heartsLeft: 0 });
-    expect(session.calls.next).toBe(3);
-    expect(v.end?.phase).toBe('lost');
+    // all five boss questions are answered, so the session's questions are used up
+    expect(session.calls.submit).toBe(5);
+    expect(session.submitted).toHaveLength(5);
+    expect(v.stands).toHaveLength(1);
+    expect(v.stands[0]).toMatchObject({ phase: 'lost', hearts: 0, asked: 3 });
+    expect(v.steps.map((s) => s.lastStand)).toEqual([false, false, false, true, true]);
+    // last-stand answers are graded by the server but leave the encounter exactly as it was
+    for (const step of v.steps.slice(3)) {
+      expect(step.after).toBe(step.before);
+      expect(step.after).toMatchObject({ phase: 'lost', hearts: 0, strikes: 0 });
+      expect(step.specialMove).toBe(false);
+    }
+    expect(v.end).toMatchObject({ phase: 'lost', hearts: 0 });
+    expect(outcome).toEqual({ won: false, correct: 2, asked: 5, bestStreak: 0, heartsLeft: 0 });
+  });
+
+  it('no last stand when the boss is lost on its last question, when it is won, or for a node', async () => {
+    for (const [sequence, opts] of [['TFTFF', BOSS], ['TTTTT', BOSS], ['FF', NODE], ['TF', NODE]] as const) {
+      const session = new ScriptedSession(sequence);
+      const v = view();
+      await runEncounter(session, opts, v);
+      expect(v.stands, sequence).toHaveLength(0);
+      expect(v.steps.every((s) => !s.lastStand), sequence).toBe(true);
+      expect(session.submitted, sequence).toHaveLength(opts.questions);
+    }
+  });
+
+  it('a last stand stops when the session ends underneath', async () => {
+    const session = new ScriptedSession('FFFTT');
+    session.completeAfter = 4;
+    const v = view();
+    const outcome = await runEncounter(session, BOSS, v);
+    expect(v.stands).toHaveLength(1);
+    expect(outcome).toMatchObject({ won: false, asked: 4, heartsLeft: 0 });
   });
 
   it('the boss: three in a row charge the meter, the next correct answer is a special move (double strike)', async () => {

@@ -41,6 +41,8 @@ export interface GradedStep {
   after: EncounterState;
   /** This answer fired a special move (a double strike). */
   specialMove: boolean;
+  /** A last-stand answer (the boss is already lost): graded by the server, but it changes nothing in the encounter. */
+  lastStand: boolean;
 }
 
 /** What the overlay does at each point of the loop. Each promise resolves when the child (or the animation) is done. */
@@ -55,8 +57,21 @@ export interface EncounterView {
   graded(step: GradedStep): Promise<void>;
   /** A request failed; resolves when the child taps Try again (the same request is then repeated). */
   failed(error: unknown, state: EncounterState): Promise<void>;
+  /** The boss's hearts reached 0 with questions left: the last stand begins (resolves when the moment is shown). */
+  lastStand(state: EncounterState): Promise<void>;
   /** The encounter is over (won, lost, or cut short because the session ended). */
   ended(state: EncounterState): Promise<void>;
+}
+
+/**
+ * Owner decision (November 9, 2026): when the boss's hearts reach 0, the boss stays lost and its
+ * remaining questions are still asked as a "last stand", so the session's questions are all answered
+ * and it completes. The server grades them as usual (XP as it decides); they change nothing in the
+ * encounter (`applyAnswer` ignores answers after the end), and the server's replay ignores them for
+ * beacons and the stamp. Only the boss has a last stand.
+ */
+export function lastStandQuestions(state: EncounterState): number {
+  return state.kind === 'boss' && state.phase === 'lost' && state.hearts <= 0 ? Math.max(0, state.questions - state.asked) : 0;
 }
 
 /**
@@ -99,11 +114,12 @@ async function resync(session: SessionClient): Promise<boolean> {
   }
 }
 
-export function outcomeOf(state: EncounterState): EncounterOutcomeCounts {
+/** The caller's counts. Last-stand answers are counted in `asked` and `correct` (they are answered questions); the boss stays lost. */
+export function outcomeOf(state: EncounterState, lastStand: { asked: number; correct: number } = { asked: 0, correct: 0 }): EncounterOutcomeCounts {
   return {
     won: state.phase === 'won',
-    correct: state.correct,
-    asked: state.asked,
+    correct: state.correct + lastStand.correct,
+    asked: state.asked + lastStand.asked,
     bestStreak: state.bestStreak,
     heartsLeft: state.hearts,
   };
@@ -146,22 +162,47 @@ export async function runEncounter(
     }
   };
 
-  while (state.phase === 'question') {
+  /** One question: fetch, ask, submit. 'over' when the session ended; 'again' when the server's current question must be asked instead. */
+  const turn = async (): Promise<{ chosen: number | string; result: AnswerResult } | 'over' | 'again'> => {
     view.loading(state);
     const question = await request(() => session.nextQuestion());
-    if (question === 'over') break;
-    if (question === 'answered') continue;
+    if (question === 'over') return 'over';
+    if (question === 'answered') return 'again';
     const chosen = await view.ask(question, state);
     view.submitting(state);
     const result = await request(() => session.submitAnswer(chosen));
-    if (result === 'over') break;
-    if (result === 'answered') continue;
+    if (result === 'over') return 'over';
+    if (result === 'answered') return 'again';
+    return { chosen, result };
+  };
+
+  let ended = false;
+  while (state.phase === 'question') {
+    const t = await turn();
+    if (t === 'over') {
+      ended = true;
+      break;
+    }
+    if (t === 'again') continue;
     const before = state;
-    state = applyAnswer(state, { correct: result.correct });
-    await view.graded({ result, chosen, before, after: state, specialMove: state.specialMovesLeft < before.specialMovesLeft });
+    state = applyAnswer(state, { correct: t.result.correct });
+    await view.graded({ result: t.result, chosen: t.chosen, before, after: state, specialMove: state.specialMovesLeft < before.specialMovesLeft, lastStand: false });
+  }
+
+  const stand = { asked: 0, correct: 0 };
+  let left = ended ? 0 : lastStandQuestions(state);
+  if (left > 0) await view.lastStand(state);
+  while (left > 0) {
+    const t = await turn();
+    if (t === 'over') break;
+    if (t === 'again') continue;
+    stand.asked += 1;
+    if (t.result.correct) stand.correct += 1;
+    left -= 1;
+    await view.graded({ result: t.result, chosen: t.chosen, before: state, after: state, specialMove: false, lastStand: true });
   }
 
   carried.set(session, state.charge);
   await view.ended(state);
-  return outcomeOf(state);
+  return outcomeOf(state, stand);
 }

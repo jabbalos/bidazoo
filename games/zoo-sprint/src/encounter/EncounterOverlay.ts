@@ -15,7 +15,7 @@ import { challengerTextureKey, hasPaintedChallenger, type ChallengerDef, type Ch
 import { encounterLayout, type EncounterLayout } from './encounter-layout';
 import { CHARGE_SEGMENTS, TIMER_DISPLAY_MS, type EncounterView, type GradedStep } from './encounter-flow';
 
-type Phase = 'intro' | 'loading' | 'question' | 'submitting' | 'feedback' | 'error' | 'won' | 'lost';
+type Phase = 'intro' | 'loading' | 'question' | 'submitting' | 'feedback' | 'error' | 'lastStand' | 'won' | 'lost';
 
 /** How long each moment stays before the encounter moves on by itself (a tap skips it). */
 const INTRO_MS = 1800;
@@ -38,7 +38,7 @@ const BURST: Readonly<Record<CharacterId, number>> = {
 };
 
 /** QA hooks this overlay writes on the game's parent element (and removes again on close). */
-const HOOKS = ['encounter', 'node', 'hearts', 'charge', 'strikes', 'asked', 'questions', 'special-moves', 'challenger', 'challenger-art', 'buddy-art', 'question-id', 'last-correct'];
+const HOOKS = ['encounter', 'node', 'hearts', 'charge', 'strikes', 'asked', 'questions', 'special-moves', 'last-stand', 'challenger', 'challenger-art', 'buddy-art', 'question-id', 'last-correct'];
 
 /**
  * The encounter overlay (item A2, with A4's charge, special move, timer and lose state and A5's
@@ -56,6 +56,8 @@ export class EncounterOverlay implements EncounterView {
   private readonly reducedMotion = prefersReducedMotion();
   private readonly taunt: string;
   private phase: Phase = 'intro';
+  /** The boss is lost and its remaining questions are being answered (owner decision, November 9, 2026). */
+  private standing = false;
   private state: EncounterState;
   private question: PublicQuestion | null = null;
   private step: GradedStep | null = null;
@@ -154,6 +156,16 @@ export class EncounterOverlay implements EncounterView {
         resolve();
       };
     });
+  }
+
+  lastStand(state: EncounterState): Promise<void> {
+    this.state = state;
+    this.standing = true;
+    this.phase = 'lastStand';
+    this.step = null;
+    this.question = null;
+    this.render();
+    return this.hold(INTRO_MS);
   }
 
   ended(state: EncounterState): Promise<void> {
@@ -336,7 +348,7 @@ export class EncounterOverlay implements EncounterView {
     this.drawBanner(L);
 
     // a tap anywhere moves a timed moment on
-    if (this.phase === 'intro' || this.phase === 'feedback' || this.phase === 'won' || this.phase === 'lost') {
+    if (this.phase === 'intro' || this.phase === 'lastStand' || this.phase === 'feedback' || this.phase === 'won' || this.phase === 'lost') {
       const area = this.phase === 'feedback' ? { x: 0, y: L.card.y, w, h: L.card.h + L.feedback.h + 6 } : { x: 0, y: 0, w, h };
       const skip = this.scene.add.zone(area.x + area.w / 2, area.y + area.h / 2, area.w, area.h).setInteractive();
       skip.on('pointerup', () => this.onContinue?.());
@@ -555,9 +567,9 @@ export class EncounterOverlay implements EncounterView {
     let edge: number = EXP.brass;
     let color: string = EXP_CSS.white;
     if (this.phase === 'feedback' && this.step) {
-      const { result, specialMove } = this.step;
+      const { result, specialMove, lastStand } = this.step;
       if (result.correct) {
-        label = specialMove ? 'Special move! Double strike!' : result.fluent ? 'Quick strike!' : 'Strike!';
+        label = lastStand ? 'Correct!' : specialMove ? 'Special move! Double strike!' : result.fluent ? 'Quick strike!' : 'Strike!';
         fill = EXP.green;
         edge = EXP.greenDeep;
       } else {
@@ -568,7 +580,12 @@ export class EncounterOverlay implements EncounterView {
       }
     } else if (this.phase === 'submitting') label = 'Checking…';
     else if (this.phase === 'loading') label = 'Getting your question…';
-    else if (this.phase === 'question' && this.state.charge >= CHARGE_SEGMENTS && this.state.specialMovesLeft > 0) {
+    else if (this.phase === 'question' && this.standing) {
+      label = 'Last stand';
+      fill = EXP.amber;
+      edge = EXP.amberDeep;
+      color = '#4a2504';
+    } else if (this.phase === 'question' && this.state.charge >= CHARGE_SEGMENTS && this.state.specialMovesLeft > 0) {
       label = 'Special move ready!';
       fill = EXP.lantern;
       edge = EXP.amberDeep;
@@ -590,6 +607,8 @@ export class EncounterOverlay implements EncounterView {
     switch (this.phase) {
       case 'intro':
         return this.taunt;
+      case 'lastStand':
+        return 'Last stand! Answer the rest of the questions.';
       case 'won':
         return boss ? 'You beat the summit challenger!' : 'Beacon lit!';
       case 'lost':
@@ -651,6 +670,7 @@ export class EncounterOverlay implements EncounterView {
       asked: String(s.asked),
       questions: String(s.questions),
       'special-moves': String(s.specialMovesLeft),
+      'last-stand': this.standing ? 'true' : 'false',
       challenger: this.opts.challenger.id,
       'challenger-art': hasPaintedChallenger(this.scene, this.opts.challenger.id) ? 'painted' : 'drawn',
       'buddy-art': this.buddy?.artKind ?? '',
@@ -667,7 +687,7 @@ export class EncounterOverlay implements EncounterView {
         break;
       case 'feedback':
         status = this.step?.result.correct
-          ? `${this.step.specialMove ? 'Special move! Double strike!' : 'Strike!'} ${hearts}`
+          ? `${this.step.lastStand ? 'Correct!' : this.step.specialMove ? 'Special move! Double strike!' : 'Strike!'} ${hearts}`
           : `Not quite. The answer is ${this.step?.result.correctAnswer}. ${hearts}`;
         break;
       case 'question':
@@ -676,6 +696,7 @@ export class EncounterOverlay implements EncounterView {
       case 'error':
         status = this.errorMessage;
         break;
+      case 'lastStand':
       case 'won':
       case 'lost':
         status = this.bannerText();
