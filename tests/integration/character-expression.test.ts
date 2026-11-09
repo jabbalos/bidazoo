@@ -214,14 +214,23 @@ describe('character expressions: presentation only (wiring)', () => {
   });
 
   it('the answer sent to the API still has exactly attemptId, questionId and response', () => {
-    const code = sceneCode('RunScene.ts');
-    const calls = [...code.matchAll(/submitAnswer\(([^;]*)\);/g)];
+    // Owner-approved (November 8, 2026): the platform calls moved from RunScene into the session
+    // client (proposal item A3), so the request is checked where it is now built.
+    const code = codeOfPath('games/zoo-sprint/src/session-client.ts');
+    // Calls on the platform only: the client's own `submitAnswer(choice)` method is not a request.
+    const calls = [...code.matchAll(/platform\.submitAnswer\(([^;]*)\);/g)];
     expect(calls).toHaveLength(1);
     const argument = (calls[0] as RegExpMatchArray)[1] as string;
     expect(argument).toContain('attemptId, questionId: question.id, response: choice');
     expect(argument).not.toMatch(/expression|character|starter|mood|emotion|celebrat|wobble/i);
-    // The only other request RunScene makes at the start of a run carries no character either.
-    expect(code).toContain("startSession({ gameId: 'zoo-sprint', mode: 'multiplication' })");
+    // The only other request made at the start of a run carries no character either: gameId and mode only.
+    const starts = [...code.matchAll(/platform\.startSession\(([^;]*)\);/g)];
+    expect(starts).toHaveLength(1);
+    const start = (starts[0] as RegExpMatchArray)[1] as string;
+    expect(start).toBe('{ gameId: request.gameId, mode: request.mode }');
+    expect(start).not.toMatch(/expression|character|starter|mood|emotion|celebrat|wobble/i);
+    // RunScene answers through the session client, never by calling the platform directly.
+    expect(sceneCode('RunScene.ts')).not.toMatch(/platform\.submitAnswer\(/);
   });
 
   it('no backend, contract, SDK, learning, database or client-transport code knows about expressions', () => {
