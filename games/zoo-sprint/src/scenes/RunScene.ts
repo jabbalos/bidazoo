@@ -16,8 +16,9 @@ import { clampNumber, runLayout } from '../presentation/layout';
 import { prefersReducedMotion } from '../presentation/motion';
 import { coinIcon, grassLedge, parchmentPanel, pill, softShadow, starIcon, timberDeck, timberSign } from '../presentation/surfaces';
 import { getContext } from '../context';
+import { PlaySessionClient } from '../session-client';
 import { EXP, EXP_CSS } from '../theme';
-import { BUTTON_STYLES, TapButton, makeAttemptId, publishSurface, text, type ButtonBadge, type ButtonStyle, type HitTarget } from '../ui';
+import { BUTTON_STYLES, TapButton, publishSurface, text, type ButtonBadge, type ButtonStyle, type HitTarget } from '../ui';
 
 type Phase = 'loading' | 'question' | 'submitting' | 'feedback' | 'error';
 
@@ -39,8 +40,8 @@ export class RunScene extends Phaser.Scene {
   private feedback: Feedback | null = null;
   private errorMessage = '';
   private retryAction: (() => void) | null = null;
-  /** One idempotency key per question, so a retry (or double tap) is the same attempt. */
-  private readonly attemptIds = new Map<string, string>();
+  /** The platform calls (start or resume, question, answer with its idempotency key), shared with the encounter. */
+  private client!: PlaySessionClient;
   private advanceTimer: Phaser.Time.TimerEvent | null = null;
 
   private layer!: Phaser.GameObjects.Container;
@@ -59,6 +60,7 @@ export class RunScene extends Phaser.Scene {
     this.question = null;
     this.feedback = null;
     this.streak = 0;
+    this.client = new PlaySessionClient(getContext(this).platform);
     this.layer = this.add.container(0, 0);
     this.scale.on(Phaser.Scale.Events.RESIZE, this.render, this);
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
@@ -78,9 +80,9 @@ export class RunScene extends Phaser.Scene {
   private async begin(): Promise<void> {
     const ctx = getContext(this);
     try {
-      const started = await ctx.platform.startSession({ gameId: 'zoo-sprint', mode: 'multiplication' });
-      ctx.activeSessionId = started.session.id;
-      await this.show(started.session);
+      const session = await this.client.startSession({ gameId: 'zoo-sprint', mode: 'multiplication' });
+      ctx.activeSessionId = session.id;
+      await this.show(session);
     } catch (err) {
       this.fail(err, () => void this.begin());
     }
@@ -106,9 +108,8 @@ export class RunScene extends Phaser.Scene {
       this.phase = 'loading';
       this.render();
       try {
-        const next = await ctx.platform.nextQuestion(session.id);
-        this.session = next.session;
-        this.question = next.question;
+        this.question = await this.client.nextQuestion();
+        this.session = this.client.session ?? session;
       } catch (err) {
         this.fail(err, () => void this.show(session));
         return;
@@ -129,14 +130,8 @@ export class RunScene extends Phaser.Scene {
   private async submit(choice: number): Promise<void> {
     const ctx = getContext(this);
     const session = this.session as PlaySession;
-    const question = this.question as PublicQuestion;
-    let attemptId = this.attemptIds.get(question.id);
-    if (!attemptId) {
-      attemptId = makeAttemptId();
-      this.attemptIds.set(question.id, attemptId);
-    }
     try {
-      const result = await ctx.platform.submitAnswer(session.id, { attemptId, questionId: question.id, response: choice });
+      const result = await this.client.submitAnswer(choice); // one attemptId per question: retries are the same attempt
       this.session = result.session;
       ctx.totals = result.totals;
       this.streak = result.correct ? this.streak + 1 : 0;
@@ -152,7 +147,7 @@ export class RunScene extends Phaser.Scene {
         // The server already has an answer for this question (a retry that crossed with the
         // original, or another tab). Resync from the server rather than guess.
         try {
-          await this.show(await ctx.platform.getSession(session.id));
+          await this.show(await this.client.refresh(session.id));
         } catch (inner) {
           this.fail(inner, () => void this.resync());
         }
@@ -171,7 +166,7 @@ export class RunScene extends Phaser.Scene {
     try {
       const id = this.session?.id ?? ctx.activeSessionId;
       if (!id) return void this.begin();
-      await this.show(await ctx.platform.getSession(id));
+      await this.show(await this.client.refresh(id));
     } catch (err) {
       this.fail(err, () => void this.resync());
     }
