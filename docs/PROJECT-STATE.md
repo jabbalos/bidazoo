@@ -5,6 +5,18 @@ direction set). This is the short, authoritative entry point for any session (hu
 and the files in `docs/` are the source of truth, not chat history. If this file and another doc disagree
 about status, fix the other doc.
 
+**World Expedition build, day 1 (Monday, November 9, 2026).** Plan of record:
+[PROPOSAL-WORLD-EXPEDITION-FAST-TRACK.md](PROPOSAL-WORLD-EXPEDITION-FAST-TRACK.md). Branch
+`integration/world-expedition` collects four lanes (`lane/encounters`, `lane/expedition`, `lane/progression`,
+`lane/content`).
+
+- **Bake-off result (November 8, 2026).** Claude won by the decision rule (fewest review findings among
+  entries passing the required checks): Claude 3 Low, versus Gemini 1 High, 2 Medium and 6 Low. Claude was also
+  faster. The Claude entry `bake/claude` became `lane/encounters` (A3 session client, A1 encounter model).
+  Gemini is the reviewer for the build. The Gemini entry was removed.
+- `lane/encounters` at `c46015a` merged into the integration branch as `bd66cfb` (typecheck, Vitest
+  88 + 759 passed + 3 todo, play.spec 24 passed).
+
 **How to read this file.** Statements say where they are true. "Complete" and "closed" describe development
 and validation; "deployed" means running in the live closed beta; "enabled" means switched on in production.
 
