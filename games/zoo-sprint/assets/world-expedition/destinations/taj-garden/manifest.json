@@ -1,0 +1,175 @@
+{
+  "id": "taj-garden",
+  "name": "Taj Garden Expedition",
+  "order": 5,
+  "pathLength": 8,
+  "groundY": 0.82,
+  "palette": {
+    "colors": [
+      "#f4efe3",
+      "#5aa9c4",
+      "#4f9a6a",
+      "#f2c9a0"
+    ],
+    "accent": "#e8a33d"
+  },
+  "layers": [
+    {
+      "id": "far",
+      "parallax": 0.25,
+      "file": null,
+      "shapes": [
+        {
+          "kind": "gradient",
+          "stops": [
+            {
+              "at": 0,
+              "color": "#f2c9a0"
+            },
+            {
+              "at": 0.75,
+              "color": "#f4efe3"
+            },
+            {
+              "at": 1,
+              "color": "#f4efe3"
+            }
+          ]
+        },
+        {
+          "kind": "ridge",
+          "color": "#f4efe3",
+          "colorBottom": "#f4efe3",
+          "base": 0.52,
+          "amp": 0.1,
+          "waves": 3,
+          "phase": 0.3
+        },
+        {
+          "kind": "ridge",
+          "color": "#f4efe3",
+          "colorBottom": "#f4efe3",
+          "base": 0.72,
+          "amp": 0.08,
+          "waves": 2,
+          "phase": 0
+        }
+      ]
+    },
+    {
+      "id": "mid",
+      "parallax": 1,
+      "file": null,
+      "shapes": [
+        {
+          "kind": "ridge",
+          "color": "#4f9a6a",
+          "colorBottom": "#a2c5a7",
+          "base": 0.7,
+          "amp": 0.04,
+          "waves": 6,
+          "phase": 0.15
+        },
+        {
+          "kind": "ridge",
+          "color": "#4f9a6a",
+          "colorBottom": "#aac9ad",
+          "base": 0.82,
+          "amp": 0,
+          "waves": 1
+        }
+      ]
+    },
+    {
+      "id": "near",
+      "parallax": 1.25,
+      "file": null,
+      "shapes": [
+        {
+          "kind": "ridge",
+          "color": "#3c735a",
+          "colorBottom": "#325d51",
+          "base": 0.95,
+          "amp": 0.035,
+          "waves": 6,
+          "phase": 0.5
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "id": "a1",
+      "at": 0.1,
+      "type": "artifact"
+    },
+    {
+      "id": "e1",
+      "at": 0.18,
+      "type": "encounter"
+    },
+    {
+      "id": "a2",
+      "at": 0.28,
+      "type": "artifact"
+    },
+    {
+      "id": "e2",
+      "at": 0.34,
+      "type": "encounter"
+    },
+    {
+      "id": "r1",
+      "at": 0.44,
+      "type": "rest"
+    },
+    {
+      "id": "e3",
+      "at": 0.52,
+      "type": "encounter"
+    },
+    {
+      "id": "a3",
+      "at": 0.6,
+      "type": "artifact"
+    },
+    {
+      "id": "e4",
+      "at": 0.68,
+      "type": "encounter"
+    },
+    {
+      "id": "e5",
+      "at": 0.78,
+      "type": "encounter"
+    },
+    {
+      "id": "a4",
+      "at": 0.85,
+      "type": "artifact"
+    },
+    {
+      "id": "boss",
+      "at": 0.94,
+      "type": "boss"
+    }
+  ],
+  "challenger": {
+    "id": "garden-warden",
+    "name": "Garden Warden",
+    "taunts": [
+      "A calm mind makes the clearest reflection.",
+      "Think it through, one step at a time!"
+    ]
+  },
+  "unlock": {
+    "startsUnlocked": false,
+    "requires": [
+      "maya-jungle-observatory"
+    ],
+    "rule": "Earn a stamp at the Maya Observatory to open this trail."
+  },
+  "audio": {
+    "track": null
+  }
+}

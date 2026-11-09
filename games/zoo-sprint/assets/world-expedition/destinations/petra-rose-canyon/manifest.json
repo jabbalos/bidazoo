@@ -1,0 +1,173 @@
+{
+  "id": "petra-rose-canyon",
+  "name": "Petra Rose Canyon",
+  "order": 2,
+  "pathLength": 8,
+  "groundY": 0.82,
+  "palette": {
+    "colors": [
+      "#d98c78",
+      "#b8604c",
+      "#7a3b3a",
+      "#f6d6a8"
+    ],
+    "accent": "#3aa5a0"
+  },
+  "layers": [
+    {
+      "id": "far",
+      "parallax": 0.25,
+      "file": null,
+      "shapes": [
+        {
+          "kind": "gradient",
+          "stops": [
+            {
+              "at": 0,
+              "color": "#f6d6a8"
+            },
+            {
+              "at": 0.75,
+              "color": "#d98c78"
+            },
+            {
+              "at": 1,
+              "color": "#d98c78"
+            }
+          ]
+        },
+        {
+          "kind": "ridge",
+          "color": "#c77460",
+          "colorBottom": "#cf7f6b",
+          "base": 0.42,
+          "amp": 0.18,
+          "waves": 3,
+          "phase": 0.3
+        },
+        {
+          "kind": "ridge",
+          "color": "#bf6955",
+          "colorBottom": "#c97662",
+          "base": 0.62,
+          "amp": 0.144,
+          "waves": 2,
+          "phase": 0
+        }
+      ]
+    },
+    {
+      "id": "mid",
+      "parallax": 1,
+      "file": null,
+      "shapes": [
+        {
+          "kind": "ridge",
+          "color": "#d98c78",
+          "colorBottom": "#d98c78",
+          "base": 0.66,
+          "amp": 0.07,
+          "waves": 3,
+          "phase": 0.15
+        },
+        {
+          "kind": "ridge",
+          "color": "#b8604c",
+          "colorBottom": "#ca7864",
+          "base": 0.82,
+          "amp": 0,
+          "waves": 1
+        }
+      ]
+    },
+    {
+      "id": "near",
+      "parallax": 1.25,
+      "file": null,
+      "shapes": [
+        {
+          "kind": "ridge",
+          "color": "#58353b",
+          "colorBottom": "#45323c",
+          "base": 0.95,
+          "amp": 0.035,
+          "waves": 6,
+          "phase": 0.5
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "id": "a1",
+      "at": 0.1,
+      "type": "artifact"
+    },
+    {
+      "id": "e1",
+      "at": 0.18,
+      "type": "encounter"
+    },
+    {
+      "id": "a2",
+      "at": 0.28,
+      "type": "artifact"
+    },
+    {
+      "id": "e2",
+      "at": 0.34,
+      "type": "encounter"
+    },
+    {
+      "id": "r1",
+      "at": 0.44,
+      "type": "rest"
+    },
+    {
+      "id": "e3",
+      "at": 0.52,
+      "type": "encounter"
+    },
+    {
+      "id": "a3",
+      "at": 0.6,
+      "type": "artifact"
+    },
+    {
+      "id": "e4",
+      "at": 0.68,
+      "type": "encounter"
+    },
+    {
+      "id": "e5",
+      "at": 0.78,
+      "type": "encounter"
+    },
+    {
+      "id": "a4",
+      "at": 0.85,
+      "type": "artifact"
+    },
+    {
+      "id": "boss",
+      "at": 0.94,
+      "type": "boss"
+    }
+  ],
+  "challenger": {
+    "id": "canyon-keeper",
+    "name": "Canyon Keeper",
+    "taunts": [
+      "The canyon echoes every wrong answer.",
+      "Show me you can solve it!"
+    ]
+  },
+  "unlock": {
+    "startsUnlocked": true,
+    "requires": [],
+    "rule": "Open from the start."
+  },
+  "audio": {
+    "track": null
+  }
+}

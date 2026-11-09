@@ -1,0 +1,175 @@
+{
+  "id": "andes-cloud-terraces",
+  "name": "Andes Cloud Terraces",
+  "order": 3,
+  "pathLength": 8,
+  "groundY": 0.82,
+  "palette": {
+    "colors": [
+      "#6fa05a",
+      "#9aa08c",
+      "#f4f6f8",
+      "#6fb4d8"
+    ],
+    "accent": "#e0662a"
+  },
+  "layers": [
+    {
+      "id": "far",
+      "parallax": 0.25,
+      "file": null,
+      "shapes": [
+        {
+          "kind": "gradient",
+          "stops": [
+            {
+              "at": 0,
+              "color": "#6fb4d8"
+            },
+            {
+              "at": 0.75,
+              "color": "#f4f6f8"
+            },
+            {
+              "at": 1,
+              "color": "#d3e1d1"
+            }
+          ]
+        },
+        {
+          "kind": "ridge",
+          "color": "#c3c7bd",
+          "colorBottom": "#d9dcd8",
+          "base": 0.47,
+          "amp": 0.16,
+          "waves": 4,
+          "phase": 0.3
+        },
+        {
+          "kind": "ridge",
+          "color": "#acb1a2",
+          "colorBottom": "#c7cbc2",
+          "base": 0.67,
+          "amp": 0.128,
+          "waves": 3,
+          "phase": 0
+        }
+      ]
+    },
+    {
+      "id": "mid",
+      "parallax": 1,
+      "file": null,
+      "shapes": [
+        {
+          "kind": "ridge",
+          "color": "#6fa05a",
+          "colorBottom": "#6fa05a",
+          "base": 0.68,
+          "amp": 0.05,
+          "waves": 5,
+          "phase": 0.15
+        },
+        {
+          "kind": "ridge",
+          "color": "#9aa08c",
+          "colorBottom": "#82a071",
+          "base": 0.82,
+          "amp": 0,
+          "waves": 1
+        }
+      ]
+    },
+    {
+      "id": "near",
+      "parallax": 1.25,
+      "file": null,
+      "shapes": [
+        {
+          "kind": "ridge",
+          "color": "#517750",
+          "colorBottom": "#40604a",
+          "base": 0.95,
+          "amp": 0.035,
+          "waves": 6,
+          "phase": 0.5
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "id": "a1",
+      "at": 0.1,
+      "type": "artifact"
+    },
+    {
+      "id": "e1",
+      "at": 0.18,
+      "type": "encounter"
+    },
+    {
+      "id": "a2",
+      "at": 0.28,
+      "type": "artifact"
+    },
+    {
+      "id": "e2",
+      "at": 0.34,
+      "type": "encounter"
+    },
+    {
+      "id": "r1",
+      "at": 0.44,
+      "type": "rest"
+    },
+    {
+      "id": "e3",
+      "at": 0.52,
+      "type": "encounter"
+    },
+    {
+      "id": "a3",
+      "at": 0.6,
+      "type": "artifact"
+    },
+    {
+      "id": "e4",
+      "at": 0.68,
+      "type": "encounter"
+    },
+    {
+      "id": "e5",
+      "at": 0.78,
+      "type": "encounter"
+    },
+    {
+      "id": "a4",
+      "at": 0.85,
+      "type": "artifact"
+    },
+    {
+      "id": "boss",
+      "at": 0.94,
+      "type": "boss"
+    }
+  ],
+  "challenger": {
+    "id": "cloud-herder",
+    "name": "Cloud Herder",
+    "taunts": [
+      "Up here the air is thin and the puzzles are thick.",
+      "Take a deep breath and answer!"
+    ]
+  },
+  "unlock": {
+    "startsUnlocked": false,
+    "requires": [
+      "great-wall"
+    ],
+    "rule": "Earn a stamp at the Great Wall to open this trail."
+  },
+  "audio": {
+    "track": null
+  }
+}
