@@ -75,8 +75,8 @@ function propertyNames(schema: unknown): string[] {
 
 describe('contract boundaries (checked at typecheck time)', () => {
   it('PublicQuestion carries no answer-key information', () => {
-    expectTypeOf<keyof PublicQuestion>().toEqualTypeOf<'id' | 'sequence' | 'prompt' | 'type' | 'choices'>();
-    expectTypeOf<PublicQuestion['choices']>().toEqualTypeOf<number[]>();
+    expectTypeOf<keyof PublicQuestion>().toEqualTypeOf<'id' | 'sequence' | 'prompt' | 'type' | 'kind' | 'choices'>();
+    expectTypeOf<PublicQuestion['choices']>().toEqualTypeOf<number[] | string[]>();
     expect(true).toBe(true);
   });
 
@@ -112,7 +112,7 @@ describe('contract boundaries (runtime, on the real schemas)', () => {
   });
 
   it('the public question schema has no secret property and forbids extras', () => {
-    expect(propertyNames(PublicQuestionSchema).sort()).toEqual(['choices', 'id', 'prompt', 'sequence', 'type']);
+    expect(propertyNames(PublicQuestionSchema).sort()).toEqual(['choices', 'id', 'kind', 'prompt', 'sequence', 'type']);
     for (const name of SECRET_FIELD_NAMES) expect(propertyNames(PublicQuestionSchema)).not.toContain(name);
     expect((PublicQuestionSchema as { additionalProperties?: unknown }).additionalProperties).toBe(false);
   });

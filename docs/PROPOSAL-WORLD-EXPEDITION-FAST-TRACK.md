@@ -384,6 +384,7 @@ over systems that already work.
 | Content scope | 196 math items (156 four-choice, grades 2 to 8; 40 three-choice, K and 1). Reading and the other 704 math items (pictures, typed answers, multi-select, sort, order) wait until after the beta | D1, D3, A9 |
 | Question mix | Blocks of 10: 6 generated multiplication, 4 imported; a 15-question expedition is 9 and 6 | Lane D session mix |
 | Build base | `main` at `b61ad9c` (`390e0b4` plus docs-only commits) | All workspaces |
+| Text answers | The client sends the chosen value; submitAnswer(choice: number \| string); the server grades it | A3, A9, D3 |
 
 First item after the beta: the 273 math items with pictures, which need the Hop Quest figure renderer
 (`apps/hop-quest/site/js/figures.js`, 38 figure kinds) ported to the game.

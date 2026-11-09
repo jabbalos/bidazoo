@@ -32,6 +32,9 @@ import { Timestamp, Uuid, strict } from './common';
 // guest claim, legacy claim).
 export * from './identity';
 
+// World Expedition progress contracts (stamps, gear, daily route). Owned by Lane C.
+export * from './progress';
+
 // ---------------------------------------------------------------------------
 // Operational endpoints
 // ---------------------------------------------------------------------------
@@ -98,7 +101,8 @@ export type ErrorResponse = Static<typeof ErrorResponseSchema>;
  * The ONLY question shape a client may receive before answering.
  *
  * Invariant: no correct answer, no answer key, no grading data, no explanation that gives it
- * away. `choices` are the four options in the (server-shuffled) order to display. The server
+ * away. `choices` are the 3 or 4 options in the (server-shuffled) order to display: integers
+ * when `kind` is `number` (or absent, today's behavior), strings when it is `text`. The server
  * keeps the key and grades responses itself.
  */
 export const PublicQuestionSchema = Type.Object(
@@ -107,10 +111,11 @@ export const PublicQuestionSchema = Type.Object(
     sequence: Type.Integer({ minimum: 1, maximum: 100 }),
     prompt: Type.String(),
     type: Type.Literal('multipleChoice'),
-    choices: Type.Array(Type.Integer({ minimum: 0, maximum: 100000 }), {
-      minItems: 4,
-      maxItems: 4,
-    }),
+    kind: Type.Optional(Type.Union([Type.Literal('number'), Type.Literal('text')])),
+    choices: Type.Union([
+      Type.Array(Type.Integer({ minimum: 0, maximum: 100000 }), { minItems: 3, maxItems: 4 }),
+      Type.Array(Type.String(), { minItems: 3, maxItems: 4 }),
+    ]),
   },
   strict,
 );

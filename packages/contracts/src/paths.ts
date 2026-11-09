@@ -13,6 +13,11 @@ export const ApiPaths = {
   question: (sessionId: string) => `${API_PREFIX}/play-sessions/${sessionId}/question`,
   answers: (sessionId: string) => `${API_PREFIX}/play-sessions/${sessionId}/answers`,
 
+  // World Expedition progress (schemas in ./progress).
+  meExpedition: `${API_PREFIX}/me/expedition`,
+  meGear: `${API_PREFIX}/me/gear`,
+  meDaily: `${API_PREFIX}/me/daily`,
+
   // Checkpoint E: family identity.
   guardianEmailLinks: `${API_PREFIX}/guardian/email-links`,
   guardianEmailLinkConsume: `${API_PREFIX}/guardian/email-links/consume`,

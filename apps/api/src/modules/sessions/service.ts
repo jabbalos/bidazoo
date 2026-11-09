@@ -200,7 +200,7 @@ export async function issueQuestion(
     const previous = rows[rows.length - 1];
     let avoidAnswerIndex: number | undefined;
     if (previous) {
-      const previousChoices = publicQuestionOf(previous).choices;
+      const previousChoices: readonly (number | string)[] = publicQuestionOf(previous).choices;
       avoidAnswerIndex = previousChoices.indexOf(readPrivateGrading(previous).correctAnswer);
     }
     const generated = generateQuestion(selection.skillKey, questionSeed, { avoidAnswerIndex });
@@ -307,7 +307,8 @@ async function answerInTransaction(
   // --- Grade (server-side, from the stored key) ------------------------------
   const publicQuestion = publicQuestionOf(question);
   const grading = readPrivateGrading(question);
-  const graded = gradeAnswer(publicQuestion.choices, grading.correctAnswer, body.response);
+  // Every stored question is a `number` question until text grading lands (Lane D, D3).
+  const graded = gradeAnswer(publicQuestion.choices as number[], grading.correctAnswer, body.response);
   if (graded.kind === 'invalid') return { kind: 'error', error: errors.invalidResponse() };
 
   // Server-measured time: both ends are server timestamps. Nothing from the client is used.

@@ -44,3 +44,6 @@ export type { AttemptObservation, MasteryConfig, MasteryState, MasteryUpdate } f
 
 export { SELECTION_CONFIG, selectNextSkill } from './selection';
 export type { Selection, SelectionInput, SelectionReason, SessionHistoryItem } from './selection';
+
+export { applyAnswer, createEncounter, replayExpedition } from './encounter/encounter-model';
+export type { EncounterKind, EncounterPhase, EncounterState } from './encounter/encounter-model';

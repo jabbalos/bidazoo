@@ -383,7 +383,8 @@ export class RunScene extends Phaser.Scene {
     this.drawFeedback(L.feedback, painted);
 
     // --- four glossy answer buttons (2x2) ---
-    const choices = this.question && open ? this.question.choices : [];
+    // RunScene shows `number` questions only; 3/4 tiles and `text` choices arrive with Lane A.
+    const choices = this.question && open ? (this.question.choices as number[]) : [];
     choices.forEach((choice, index) => {
       const r = L.answers[index];
       if (!r) return;
