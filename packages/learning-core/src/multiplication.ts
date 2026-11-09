@@ -8,6 +8,8 @@
  * The factor range is intentionally limited for the first vertical slice.
  */
 
+import { parseImportedSkillKey } from './imported-skill';
+
 export const FACTOR_MIN = 2;
 export const FACTOR_MAX = 9;
 
@@ -64,8 +66,13 @@ export function factLabel(fact: MultiplicationFact, swapped = false): string {
   return swapped ? `${fact.b} × ${fact.a}` : `${fact.a} × ${fact.b}`;
 }
 
-/** Display text for a skill key, in canonical order. Returns the key itself if unknown. */
+/**
+ * Display text for a skill key, in canonical order: "7 × 8" for a multiplication fact, the Hop Quest
+ * skill tag for an imported skill (`imp:<grade>:<skill>`). Returns the key itself if unknown.
+ */
 export function labelForSkillKey(skillKey: string): string {
   const fact = parseSkillKey(skillKey);
-  return fact ? factLabel(fact) : skillKey;
+  if (fact) return factLabel(fact);
+  const imported = parseImportedSkillKey(skillKey);
+  return imported ? imported.skill : skillKey;
 }
