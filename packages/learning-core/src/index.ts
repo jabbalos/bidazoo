@@ -47,3 +47,13 @@ export type { Selection, SelectionInput, SelectionReason, SessionHistoryItem } f
 
 export { applyAnswer, createEncounter, replayExpedition } from './encounter/encounter-model';
 export type { EncounterKind, EncounterPhase, EncounterState } from './encounter/encounter-model';
+
+export {
+  MIX_BLOCK_SIZE,
+  MIX_GENERATED_PER_BLOCK,
+  buildSessionMix,
+  mixCounts,
+  planSessionMix,
+  selectImportedItems,
+} from './session-mix';
+export type { BuildMixOptions, MixItem, MixSlot, MixSource, SelectImportedOptions } from './session-mix';
