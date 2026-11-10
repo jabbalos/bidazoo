@@ -17,6 +17,50 @@ about status, fix the other doc.
 - `lane/encounters` at `c46015a` merged into the integration branch as `bd66cfb` (typecheck, Vitest
   88 + 759 passed + 3 todo, play.spec 24 passed).
 
+- `lane/encounters` at `55fbadb` (A1 to A6) merged as `573068b`: typecheck, Vitest, sharded Playwright
+  276 of 276, 0 flaky (two shards at a time, 54.9 min). Gemini review 1 (`9ff9d70..bd66cfb`): 0 High, 0 Medium, 3 Low.
+- **Live-site incident, November 9, about 14:40 CST.** play.bidazoo.com went down while up to six browser test
+  stacks ran on the Studio PC; the owner stopped all lanes. No agent killed a process or used the live ports
+  (3101, 54340, 8480); the cause is not confirmed (machine load was the working hypothesis). The site was back
+  by 14:55. Since then: at most two browser test stacks at once, and every status message carries a live-site check.
+- **Standing rule (owner, November 9):** the orchestrator decides anything the plan, the proposal or approved
+  owner decisions cover, and records it below. The owner is asked only about changing an existing test, a
+  section 2.6 contract signature, live-site data, cutting scope, kid-facing copy (docs/COPY.md) and the deploy go.
+
+#### Decisions, November 9, 2026 (owner = O, orchestrator under the standing rule = R)
+
+| Decision | By | Applies to |
+| --- | --- | --- |
+| Text answers: approved; migration 0006 (`attempts.submitted_response` to text) by Lane C; `AnswerResultSchema.correctAnswer` widened at integration | O | C-text, D3 |
+| Hop Quest import: all 372 items by the stated rule (not 196); 56 `needsTable` items skipped until a table renderer exists | O | D1 |
+| Mastery for imported items: per Hop Quest skill, key `imp:<grade>:<skill tag>` | O | D4 |
+| Art references for Lanes A and B confirmed (rule 13); code-drawn and gradient art until ComfyUI layers land | O | A2-A6, B1-B5 |
+| Only Great Wall starts unlocked; Petra needs the Great Wall stamp; the other five stay locked | O | B2, B5, C1 |
+| Boss "last stand": at 0 hearts the boss stays lost and its remaining questions are still asked and graded, so the session always completes | O | A5 |
+| Code-drawn takin (node challenger) and snow leopard (boss) approved for now; names and taunts stay PENDING copy | O | A6 |
+| Load limit: at most two browser test stacks at once on the Studio PC; a check failure caused only by PostgreSQL connection timeouts does not count toward the 3-failure stop | O | all lanes, CI |
+| Question mix (6 generated, 4 imported per 10) applies only to sessions with the new mode `expedition`; the gate quiz (mode `multiplication`) stays 10 multiplication questions | O | D5 |
+| A full expedition is 15 questions (`EXPEDITION_SESSION_LENGTH`), provided no existing test changes | O | D5, B |
+| A text answer to a number question (and a number answer to a text question) is rejected with 400, so the existing server-authority test stays unchanged | R | C-text |
+| Imported grade defaults to 3 (`IMPORTED_ITEM_GRADE`, one place) until the owner sets the grade source | R | D4 |
+| Gemini review 1 (`9ff9d70..bd66cfb`): 0 High, 0 Medium, 3 Low. Low 2 (unused exports) resolved by `ff65722` and the learning-core re-export; Low 1 (destination getter) kept for now, removed at the Lane B merge if Lane B does not use it; Low 3 (RunScene literal start request no longer asserted) gets a NEW test asserting RunScene passes `{ gameId: 'zoo-sprint', mode: 'multiplication' }` (no existing test changed), Lane A next run | R | A |
+| Sharded CI runs at most two shards at a time (`E2E_SHARD_CONCURRENCY`, default 2) | R | CI |
+| Starting a session with a different mode expires the player's active session of the other mode (one active session per player and game; same mode still resumes). Accepted from Lane D (D5) | R | D5 |
+| Merge order for day 1: A, then C (C1, C2, C4, C-text: unblocks the API typecheck), then D (with the `correctAnswer` widening applied at integration), then B (scene registration, expedition mode in its start call) | R | integration |
+| `SessionResultsSchema` gains OPTIONAL `beaconsLit` (0-5), `stampEarned`, `level`, `levelUp` (proposal 3 Lane C calls for them; no existing test pins the results keys; the 2.6 `results()` signature is unchanged) | R | C2, C4, B4 |
+| The server learns an expedition's destination through a new route `POST /api/v1/me/expedition/runs` { sessionId, destination } (checks ownership and unlock, records an `expedition_events` 'start' row), not through the start request, whose keys an existing test pins | R | C2, A (session client) |
+| Accepted from Lane C run 2: one-line `database/schema/attempts.ts` type edit; 400 `invalid_request` on an answer-kind mismatch; level curve placeholder xpStep 100, cap 50 (PENDING owner tuning) | R | C-text, C4 |
+
+#### Graphics to replace (placeholder visuals; never block a merge or deploy)
+
+| Placeholder | Where | Replace with |
+| --- | --- | --- |
+| Great Wall node challenger (golden takin), code-drawn | `games/zoo-sprint/src/encounter/challengers.ts` `drawTakin` | Painted file per `docs/art-requests/great-wall/challenger.md` |
+| Great Wall boss (snow leopard), code-drawn | `challengers.ts` `drawSnowLeopard` | Painted file per `docs/art-requests/great-wall/boss.md` |
+| Encounter backdrop (sky, peaks, wall, beacon tower, ledge), code-drawn | `EncounterOverlay.ts` `drawStage` | Lane B's painted Great Wall layers |
+| Hearts, charge meter, strike pips, special-move burst, banners, code-drawn | `EncounterOverlay.ts` | Optional UI art (docs/visual/13); the owner keeps warm rose hearts |
+| Seven destination backdrops, palette gradients | `games/zoo-sprint/assets/world-expedition/destinations/*/manifest.json` | Owner's ComfyUI layers per `docs/art-requests/<destination>/` (B7) |
+
 **How to read this file.** Statements say where they are true. "Complete" and "closed" describe development
 and validation; "deployed" means running in the live closed beta; "enabled" means switched on in production.
 

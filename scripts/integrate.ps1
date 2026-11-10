@@ -93,6 +93,14 @@ if ($ok) {
     Remove-Item Env:TEST_DATABASE_URL -ErrorAction SilentlyContinue
   }
 }
+# Owner's load limit (November 9): at most two browser test stacks on this PC. Lane checks count one each;
+# this CI takes the slots that are free (two shards at a time, or one), and waits while none is free.
+function Get-OtherStacks { @(Get-CimInstance Win32_Process | Where-Object { $_.Name -eq 'powershell.exe' -and $_.CommandLine -match 'check\.ps1' }).Count }
+if ($ok -and -not $env:E2E_SHARD_CONCURRENCY) {
+  while (($others = Get-OtherStacks) -ge 2) { Log 'two test stacks are running; waiting 10 minutes for a free slot'; Start-Sleep -Seconds 600 }
+  $env:E2E_SHARD_CONCURRENCY = [string](2 - $others)
+  Log "e2e shards at most $env:E2E_SHARD_CONCURRENCY at a time"
+}
 if ($ok) { $ok = Step 'e2e-sharded' { npm.cmd run test:e2e:sharded } }
 
 $summary = ($results.GetEnumerator() | ForEach-Object { "$($_.Key): $($_.Value)" }) -join '; '
@@ -112,7 +120,7 @@ $body = @(
   "CI ($stamp): $summary",
   ''
 ) + $Note + @('', 'Files changed:', $files, '', 'Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>')
-Set-Content -Path $msgFile -Value ($body -join "`n") -Encoding utf8
+[IO.File]::WriteAllText($msgFile, ($body -join "`n"), (New-Object System.Text.UTF8Encoding($false)))
 git commit -F $msgFile *>&1 | Tee-Object -Append -FilePath $log | Out-Host
 if ($LASTEXITCODE -ne 0) { Quit 1 'commit failed (merge left staged); see log' }
 Remove-Item (Join-Path $logs 'integrate-pending.json') -ErrorAction SilentlyContinue
