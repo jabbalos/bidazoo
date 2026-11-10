@@ -115,7 +115,7 @@ Files: `apps/api/src/modules/sessions/service.ts` (`issueQuestion` path only), n
 - `npm run typecheck` fails at `service.ts` `submitAnswer` (`submittedResponse: body.response`): migration 0006, answer storage, `views.ts`.
 - A served `text` question reaches the client without `kind` and `readPrivateGrading` throws on a string key until Lane C widens `views.ts`
   (`publicQuestionOf` must pass `kind` through). Answering a text question works only after migration 0006.
-- **The mix is OFF by default** (`sessionMix.enabled = false` in `imported-bank.ts`). Turning it on makes 12 tests in `gameplay-flow.test.ts` fail
+- (Superseded by D5 below: the mix is tied to mode, the global switch is gone.) **The mix was OFF by default** (`sessionMix.enabled = false` in `imported-bank.ts`). Turning it on makes 12 tests in `gameplay-flow.test.ts` fail
   (they call `productOf` on every prompt) and others like them, and I may not edit existing tests. The integration workspace flips
   `sessionMix.enabled = true` (for example in `server.ts`) once those tests are updated. `session-mix-api.test.ts` enables it for its own file only.
   `sessionMix.grade` (default `IMPORTED_ITEM_GRADE = 3`) is the one place the pending grade decision lands.
@@ -130,3 +130,17 @@ Files: `apps/api/src/modules/sessions/service.ts` (`issueQuestion` path only), n
   expectation to 422 (or use a string that cannot be a choice for a number question). One earlier run also showed one 500 on guest creation in
   `honors an explicit allow-list`; it did not repeat on a rerun alone (database load from other lanes).
 - Not run: the rest of the DB suite and `.bake\check.ps1`; the integration workspace runs full CI at merge.
+
+## D5: the mix applies to expedition sessions only (owner-approved Nov 9)
+
+- `packages/contracts/src/paths.ts`: added `MODE_EXPEDITION = 'expedition'`, `EXPEDITION_SESSION_LENGTH = 15` (`SESSION_LENGTH` stays 10).
+- `packages/contracts/src/index.ts`: `StartPlaySessionRequestSchema.mode` is `Union(Literal(multiplication), Literal(expedition))`. The only other lines touched are
+  the existing `export { ... } from './paths'` and `import { ... } from './paths'` lines, which now also name the two new constants.
+- `service.ts`: `startOrResumeSession` sets `totalQuestions` to 15 for expedition and 10 otherwise (mode already stored in `play_sessions.mode`);
+  if the player's active session has a DIFFERENT mode it is marked `expired` and a new one starts (one active session per player and game, so otherwise
+  an expedition start would resume the quiz). Same mode still resumes. `issueQuestion` uses `buildSessionMix` only when `session.mode === 'expedition'`
+  (9 generated, 6 imported). The global `sessionMix.enabled` switch is removed; `sessionMix.grade` remains (default 3, Open questions).
+- Tests (`session-mix-api.test.ts`, real PostgreSQL): expedition stores mode and 15 questions, 9 and 6 in planned positions; multiplication unchanged
+  (10, all `mul:`); unknown mode, wrong-case mode, missing mode and an extra key get 400; mode switch expires the old session. Result: 24/24 with `contracts-boundary`.
+- Existing tests: `gameplay-flow` 15/15 unchanged and passing; `server-authority` 18/19, the one failure is still the D3 string-response expectation (400 now 422).
+- `.bake\check.ps1` NOT run: two check.ps1 stacks (other lanes) were already running, and typecheck still fails at `service.ts` `submitAnswer` until Lane C lands migration 0006.
