@@ -252,3 +252,9 @@ coins"; "Wear {name}"; "Take off {name}"; "Close the outfitter". API error messa
 - Prices vs earnings: a perfect 10-question session earns 30 coins today (10 x 2 + 10), so the PENDING prices
   mean 1 to 4 sessions per item.
 - Bust gear has no hook yet (request 4).
+
+## Check and time (C3)
+
+Check (`.bake/check.ps1`, 23:29 to 23:40 CST, on e78e6b1): ALL CHECKS PASSED (typecheck; vitest 40 files passed, 1 skipped, 821 tests passed, 3 todo, including the 26 new C3 tests; migrate-e2e; play-spec 24 passed). No existing test changed. Before it, waited about 3 h 10 min for the integration CI's two stacks (polled every 10 minutes). Also run during the work: `npm run typecheck` (exit 0) and the gear, expedition and database-guard test files on the test database (43 passed).
+
+Run 4: 20:07 to 23:42 CST, about 3.6 agent-hours (of which about 3.2 h waiting for a test slot).
