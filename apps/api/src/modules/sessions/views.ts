@@ -1,10 +1,12 @@
-import { and, asc, eq, isNull } from 'drizzle-orm';
+import { and, asc, eq, isNull, sql } from 'drizzle-orm';
 import type { PlaySession, PublicQuestion, SessionResults } from '@bidazoo/contracts';
-import { attempts, playSessions, servedQuestions } from '@bidazoo/database/schema';
+import { attempts, playSessions, servedQuestions, xpEvents } from '@bidazoo/database/schema';
 import { labelForSkillKey } from '@bidazoo/learning-core';
 import type { Executor } from '../../context';
 import { getSessionTotals } from '../rewards';
 import { skillsMasteredSince } from '../learning';
+import { levelForXp, levelUpBetween } from '../progress/level';
+import { getExpeditionRunOutcome } from '../progress/service';
 
 export type SessionRow = typeof playSessions.$inferSelect;
 export type QuestionRow = typeof servedQuestions.$inferSelect;
@@ -48,6 +50,24 @@ export function publicQuestionOf(row: QuestionRow): PublicQuestion {
   } as PublicQuestion;
 }
 
+/**
+ * The player's total XP as of the end of this session: every XP event written at or before this
+ * session's last one. Later sessions write later events (the database stamps them at commit time),
+ * so they never change an older session's level, and a re-read result shows the same level-up.
+ */
+async function xpAtEndOfSession(executor: Executor, session: SessionRow): Promise<number> {
+  const [row] = await executor
+    .select({ total: sql<string>`coalesce(sum(${xpEvents.amount}), 0)` })
+    .from(xpEvents)
+    .where(
+      and(
+        eq(xpEvents.playerId, session.playerId),
+        sql`${xpEvents.createdAt} <= (select max(e.created_at) from xp_events e where e.play_session_id = ${session.id})`,
+      ),
+    );
+  return Number(row?.total ?? 0);
+}
+
 async function buildResults(executor: Executor, session: SessionRow): Promise<SessionResults> {
   const rows = await executor
     .select({
@@ -63,6 +83,10 @@ async function buildResults(executor: Executor, session: SessionRow): Promise<Se
   const earned = await getSessionTotals(executor, session.id);
   const bonus = await getSessionTotals(executor, session.id, 'session_completion');
   const mastered = await skillsMasteredSince(executor, session.playerId, session.startedAt);
+  const xpAfter = await xpAtEndOfSession(executor, session);
+  const xpBefore = Math.max(0, xpAfter - earned.xp);
+  // Present only for a session with a recorded expedition run (see recordExpeditionRun).
+  const expedition = await getExpeditionRunOutcome(executor, session.id);
   return {
     correct: session.correctCount,
     total: session.totalQuestions,
@@ -77,6 +101,9 @@ async function buildResults(executor: Executor, session: SessionRow): Promise<Se
       correct: row.correct,
       fluent: row.fluent,
     })),
+    ...(expedition === null ? {} : { beaconsLit: expedition.beaconsLit, stampEarned: expedition.stampEarned }),
+    level: levelForXp(xpAfter),
+    levelUp: levelUpBetween(xpBefore, xpAfter),
   };
 }
 
