@@ -33,14 +33,19 @@ confirmed; no image file was generated, added or edited.
 | Item | Status | Commit(s) |
 | --- | --- | --- |
 | 1. Gemini review, Low findings | done | `ff65722` |
-| 2. Art references (rule 13) | done (listed above; no owner confirmation received, so code-drawn art only) | `8bec346` |
+| 2. Art references (rule 13) | done (owner confirmed; code-drawn art only) | `8bec346` |
 | 3. A2 overlay with code-drawn art | done | `34ffded` |
 | 4. A4 charge, special move, timer, lose state | done | `34ffded` |
-| 5. A5 boss node | done | `34ffded` |
-| 6. A6 challengers and art requests | done (painted loading has no files to load yet) | `b019b3d`, `2a167e5` |
+| 5. A5 boss node (with the owner's last stand) | done | `34ffded`, `bb3a336` |
+| 6. A6 challengers and art requests | done (code-drawn challengers approved by the owner for now; painted loading has no files to load yet) | `b019b3d`, `2a167e5` |
 
-Times (Central): started 14:05; owner's stop order about 14:41; resumed about 15:0x; agent time about
-1.5 hours plus the check run. No STOP.md was needed.
+Final check: run 4, started 17:52 CST (logs `.bake\logs61109-175207-*`): **ALL CHECKS PASSED**
+(typecheck PASS; databases PASS; vitest PASS, learning-core 88 passed, tests 783 passed and 3 todo of
+786; migrate-e2e PASS; play-spec PASS, 24 passed in 8.8 min).
+
+Times (Central): started 14:05; owner's stop order about 14:41; resumed about 15:00; stopped about 17:20
+("stop for now"); resumed about 17:45; finished 18:05. About 1.5 hours of agent work; the rest was check
+runs and waits. No STOP.md was needed.
 
 ### 1. Gemini review (Low findings)
 
@@ -121,13 +126,17 @@ unchanged; no server or model change. The outcome counts last-stand answers in `
 A last stand stops if the session ends underneath. Nodes never have one (2 questions, 3 hearts). Tests: 3
 in `encounter-flow.test.ts`; the five-nodes-plus-boss test still matches `replayExpedition`.
 
-## Screenshots for the owner (challengers)
+## Graphics to replace (placeholder visuals, for docs/PROJECT-STATE.md)
 
-Taken about 14:30 to 14:40 CST with the current drawing code, before the load rule; no new harness run
-since. Files in my scratchpad folder `C:\Users\jonat\AppData\Local\Temp\claude\b51e069b692d60f9\c5c080ad-c1cb-48c7-b02c-20a8f6ca4e4b\scratchpad\enc-harness\shots\`:
+The owner approved the code-drawn challengers for now; placeholder art never blocks a merge or deploy.
+`docs/PROJECT-STATE.md` is outside this lane's file list, so the orchestrator adds these:
 
-- Node, golden takin: `node-koala-390x844-01-question.png` (Koala buddy, phone portrait)
-- Boss, snow leopard: `boss-eagle-1280x720-01-question.png` (Eagle buddy, desktop)
+| Placeholder | Where | Replace with |
+| --- | --- | --- |
+| Great Wall node challenger (golden takin), code-drawn | `games/zoo-sprint/src/encounter/challengers.ts` `drawTakin` | Painted file per `docs/art-requests/great-wall/challenger.md` (`destinations/great-wall/challengers/great-wall-takin.webp`; loads automatically) |
+| Great Wall boss (snow leopard), code-drawn | `challengers.ts` `drawSnowLeopard` | Painted file per `docs/art-requests/great-wall/boss.md` (`great-wall-snow-leopard.webp`) |
+| Face-off backdrop (dawn sky, misty peaks, ridge wall, beacon tower, stone ledge), code-drawn | `EncounterOverlay.ts` `drawStage` | Lane B's painted Great Wall layers when they exist |
+| Hearts, charge meter, strike pips, special-move burst (rings and streak), banners, code-drawn | `EncounterOverlay.ts` | Optional UI art (UI atlas, docs/visual/13); the owner keeps warm rose hearts |
 
 ## Tests added
 
@@ -165,7 +174,7 @@ No existing test was changed.
 | 1 | 15:08 (logs `20261109-150820-*`) | typecheck PASS, databases PASS, **vitest FAIL** (34 of 784, all in identity, rate-limit and idempotency files; errors are `Connection terminated due to connection timeout` from PostgreSQL on 54330 and 500s caused by it), migrate-e2e PASS, **play-spec FAIL** (6 failed, 2 flaky, 16 passed, 55.1 min; the API log shows the same PostgreSQL connection timeouts on `POST /api/v1/guest`). No failure is in an encounter, challenger or session-client test. `pg_isready` on 54330 said "accepting connections" during the run: I read it as load on the shared database server, not my change. Under the timeout/connection-error rule it is rerun once and not counted toward the 3-failure stop. |
 | 2 | 16:51 (logs `20261109-165115-*`) | typecheck PASS, databases PASS, **vitest PASS** (learning-core 88; tests 781 passed, 3 todo of 784), migrate-e2e PASS, **play-spec FAIL** (1 failed, 1 flaky, 22 passed, 22.0 min). Failed: desktop "full run": first attempt `GET /api/v1/me` returned 500, the API log's only error being `Connection terminated due to connection timeout`; its retry ended on `boot-error`. Flaky: 360x640 "refresh mid-run" (timed out waiting for the question, passed on retry). Again only PostgreSQL connection timeouts: an environment failure (owner rule, November 9), **not counted** toward the 3-failure stop. |
 | 3 | 17:17 (logs `20261109-1717*`) | typecheck, databases, vitest, migrate-e2e PASS; play-spec was interrupted when the owner's "stop for now" ended my session (the task shows `[killed]`); no result. Afterwards no process was listening on my ports 3141, 3142, 4241 to 4243. |
-| 4 | (after the last-stand change) | (see below) |
+| 4 | 17:52 (logs `20261109-175207-*`) | **ALL CHECKS PASSED**. Before starting, no other `check.ps1` or sharded e2e process was running (2-stack limit). |
 
 Failures counted toward the 3-failure stop: 0.
 
