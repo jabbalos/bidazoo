@@ -103,3 +103,5 @@ None (no new kid-facing text).
 
 - A different destination for the same session returns 409 with the existing code `idempotency_key_conflict`. Say if you want a dedicated error code.
 - The level is not stored, so a changed curve changes old results' `level` on re-read (levelUp is recomputed the same way). Intended, but worth knowing.
+
+Check (`.bake/check.ps1`, 19:51 to 20:04 CST, on d42ba54 plus the REPORT commit): ALL CHECKS PASSED (typecheck, vitest incl. 13 new tests, play-spec 24 passed). No existing test changed. Waited about 50 minutes for the integration CI's two stacks (retried every 10 minutes) before starting.
