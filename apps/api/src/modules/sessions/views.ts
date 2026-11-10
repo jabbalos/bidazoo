@@ -12,15 +12,18 @@ export type QuestionRow = typeof servedQuestions.$inferSelect;
 /** The server-only answer key stored with each served question. */
 export interface PrivateGrading {
   skillKey: string;
-  correctAnswer: number;
+  /** A number for a number question, a non-empty string for a text question. */
+  correctAnswer: number | string;
 }
 
 export function readPrivateGrading(row: QuestionRow): PrivateGrading {
   const data = row.privateGradingData as Partial<PrivateGrading> | null;
-  if (!data || typeof data.skillKey !== 'string' || !Number.isInteger(data.correctAnswer)) {
+  const answer = data?.correctAnswer;
+  const wellFormed = Number.isInteger(answer) || (typeof answer === 'string' && answer.length > 0);
+  if (!data || typeof data.skillKey !== 'string' || !wellFormed) {
     throw new Error('served question has malformed grading data');
   }
-  return { skillKey: data.skillKey, correctAnswer: data.correctAnswer as number };
+  return { skillKey: data.skillKey, correctAnswer: answer as number | string };
 }
 
 /**
@@ -28,14 +31,22 @@ export function readPrivateGrading(row: QuestionRow): PrivateGrading {
  * ever stored in the payload column by mistake, it would not be forwarded from here.
  */
 export function publicQuestionOf(row: QuestionRow): PublicQuestion {
-  const payload = row.publicPayload as { prompt?: unknown; choices?: unknown };
+  const payload = row.publicPayload as { prompt?: unknown; choices?: unknown; kind?: unknown };
+  // Choices are numbers (number questions) or strings (text questions); anything else is dropped.
+  const choices = (payload.choices as unknown[]).filter(
+    (choice): choice is number | string => typeof choice === 'number' || typeof choice === 'string',
+  );
+  // `kind` is forwarded only when the stored payload carries it. The contract type still says
+  // number[] until Lane D widens PublicQuestion, hence the cast.
+  const kind = payload.kind === 'number' || payload.kind === 'text' ? payload.kind : undefined;
   return {
     id: row.id,
     sequence: row.sequence,
     prompt: String(payload.prompt),
     type: 'multipleChoice',
-    choices: (payload.choices as number[]).slice(),
-  };
+    ...(kind === undefined ? {} : { kind }),
+    choices,
+  } as unknown as PublicQuestion;
 }
 
 async function buildResults(executor: Executor, session: SessionRow): Promise<SessionResults> {
