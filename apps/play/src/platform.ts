@@ -4,6 +4,7 @@ import {
   type AnswerResult,
   type BidaZooPlatform,
   type ExpeditionProgress,
+  type Gear,
   type StartExpeditionRunRequest,
   type StartExpeditionRunResponse,
   type GuestResponse,
@@ -12,6 +13,7 @@ import {
   type StartPlaySessionRequest,
   type StartPlaySessionResponse,
   type SubmitAnswerRequest,
+  type UpdateGearRequest,
 } from '@bidazoo/game-sdk';
 
 /**
@@ -21,7 +23,7 @@ import {
  * stores, or sends a token (there is nothing for it to see). Requests are same-origin: the dev
  * server and the production reverse proxy forward /api to the API.
  */
-async function call<T>(method: 'GET' | 'POST', path: string, body?: unknown): Promise<T> {
+async function call<T>(method: 'GET' | 'POST' | 'PUT', path: string, body?: unknown): Promise<T> {
   let response: Response;
   try {
     response = await fetch(path, {
@@ -80,5 +82,9 @@ export function createHttpPlatform(): BidaZooPlatform {
 
     startExpeditionRun: (request: StartExpeditionRunRequest) =>
       call<StartExpeditionRunResponse>('POST', ApiPaths.meExpeditionRuns, request),
+
+    getGear: () => call<Gear>('GET', ApiPaths.meGear),
+
+    updateGear: (request: UpdateGearRequest) => call<Gear>('PUT', ApiPaths.meGear, request),
   };
 }

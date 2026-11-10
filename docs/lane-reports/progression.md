@@ -105,3 +105,156 @@ None (no new kid-facing text).
 - The level is not stored, so a changed curve changes old results' `level` on re-read (levelUp is recomputed the same way). Intended, but worth knowing.
 
 Check (`.bake/check.ps1`, 19:51 to 20:04 CST, on d42ba54 plus the REPORT commit): ALL CHECKS PASSED (typecheck, vitest incl. 13 new tests, play-spec 24 passed). No existing test changed. Waited about 50 minutes for the integration CI's two stacks (retried every 10 minutes) before starting.
+
+
+---
+
+# Lane C (progression), run 4 (Opus, November 9, 2026)
+
+Item: C3 (gear catalog, GET/PUT /api/v1/me/gear with a server-side coin debit, OutfitterOverlay, gear
+drawn as code sprites). Started 20:07 CST.
+
+## Art references
+
+Listed before any visual change (rule 13). The OutfitterOverlay and the code-drawn gear sprites will use
+only these:
+
+- `docs/CHARACTER-BIBLE.md` sections 2, 4 and 5 (LOCKED anchors win: Dino has exactly one backpack,
+  Koala has no backpack, Tarsier's goggles, Eagle's white head and green "A" jacket, Bronco's maroon
+  bandana; no new starters; Click is host only, so Click never wears gear).
+- `docs/visual/09-palette.md` (platform and World Expedition tokens for gear colors).
+- `docs/visual/10-ui-component-style.md` (field-kit panels: parchment card, brass edge, timber;
+  `TapButton` and `BUTTON_STYLES` reused, hit targets published).
+- `docs/visual/14-do-dont-anti-drift.md` (what gear must not do to a character).
+- `docs/visual/20-basecamp-walk.md` (walker anchoring at the feet, puppet motion, painted walker and
+  painted bust fitting).
+- `games/zoo-sprint/assets/world-expedition/walk-painted/<id>_walk_side.webp` for the five starters
+  (anchor points on the painted walker; read only, not edited).
+- `games/zoo-sprint/assets/world-expedition/characters-painted/<id>/<id>_idle.webp` for the five
+  starters (anchor points on the painted bust; read only, not edited).
+
+No image file is added or changed: gear is drawn with Phaser Graphics.
+
+Owner confirmation of the art references (relayed by the orchestrator, November 9): confirmed exactly as
+listed, with the held "trail stick" in place of a pack. Orchestrator decision: no gear may cover or replace a
+LOCKED feature; a unit test checks every anchor.
+
+## Files changed (C3)
+
+Server (commit cc7ad31):
+
+- `packages/contracts/src/progress.ts`: `GearItemSchema` (new); `GearSchema` grows `coins` and `catalog`
+  (Lane C's shape to grow, per `contracts.check.ts`; exported names unchanged); `UpdateGearRequestSchema` (new:
+  `{ buy?: itemId, equipped: itemId[] }`, strict, no price or coins field).
+- `apps/api/src/modules/progress/gear-catalog.ts` (new): the server-side catalog, 3 slots (`hat`, `scarf`,
+  `stick`) x 4 items, frozen. Names and prices PENDING.
+- `apps/api/src/modules/progress/gear.ts` (new): `getGear` (read-only, writes nothing), `updateGear` (one
+  transaction: lock the `player_progress` row FOR UPDATE, optional purchase, equip validation, save).
+- `apps/api/src/modules/progress/routes.ts`: `GET` and `PUT /api/v1/me/gear`. `index.ts`: exports.
+- `database/migrations/0007_gear_purchases.sql` (new) + `meta/_journal.json`: `wallet_transactions_source_ck`
+  also allows `gear_purchase`; new `wallet_transactions_debit_ck` (a row is negative exactly when it is a gear
+  purchase) and `wallet_transactions_gear_ck` (a purchase is keyed to the paying player).
+- `tests/integration/progress-gear.test.ts` (new, 16 tests: 3 pure + 13 on real PostgreSQL).
+
+Client (commit e34498f), all under `games/zoo-sprint/src/basecamp/outfitter/` (new):
+
+- `index.ts`: `registerOverlay('outfitter', { hotspot: 'lodge-door', open: openOutfitter })`, plus exports.
+- `OutfitterOverlay.ts`: parchment panel, coin pill (the server's balance), 3 rows x 4 item cards (code-drawn
+  icon, name, price or Owned/Wearing), Close. Tap = buy and wear, wear, or take off. Emits `'close'` before it
+  destroys itself; publishes `data-outfitter` and `data-outfitter-targets`; sets the a11y mirror (one real
+  button per card, and Close). MINIMAL code-drawn version from the listed references.
+- `gear-model.ts`: pure. Per starter and view (`walk`, `bust`): the LOCKED features as rectangles (fractions of
+  the painted picture) and the slot anchors that clear them; `SKIPPED` with reasons; `GEAR_LOOKS` (colors per
+  item); `gearPlacements`.
+- `gear-sprites.ts`: Phaser Graphics only (no image file): `buildGearLayer` (walker or bust), `syncGearLayer`
+  (follows the walker's bob, lean, squash and facing), `drawGearIcon`.
+- `gear-client.ts`: `gearPlatform(platform)` (null until the platform has `getGear`/`updateGear`; then the
+  outfitter says it is closed and no gear is drawn), `loadGear`, `currentGear`, `equippedGear`,
+  `onGearChange`, `requestForTap` (pure).
+- `tests/integration/gear-anchors.test.ts` (new, 10 unit tests).
+
+## Behavior (C3)
+
+- Purchase: the item must be in the catalog (400). Already owned: no charge, 200 (retries and concurrent
+  repeats never double-charge; the ledger's unique key also forbids a second debit). Otherwise the server
+  compares ITS price with ITS coin total (the sum of the ledger) under the row lock: short = 409
+  `invalid_request` "Not enough coins." and nothing written; else one ledger row `amount = -price`,
+  `source_type = 'gear_purchase'`, `source_id = player`, `reason = 'gear:<id>'`, no session. `/me` totals and
+  the GET show the debited balance. Concurrent purchases cannot spend the same coins twice (tested).
+- Equip: catalog items only, no duplicates, one per slot (400); owned only (403 `forbidden`). An invalid equip
+  list rolls back a purchase made in the same request.
+- Guests work (everything keys off the player id; the tests use guests). A cross-site PUT gets 403
+  `forbidden_origin` (existing hook).
+- Gear on the buddy: anchors clear every LOCKED feature (unit-tested). Not drawn, by design: Dino hat (the head
+  top is the dorsal crest), Tarsier hat (goggles), Eagle hat (white head) and scarf (jacket collar), Bronco
+  scarf (maroon bandana). The stick is a held item: walker only, never on a bust. Click never wears gear.
+  Koala and Bronco wear the hat over their painted hats (not LOCKED).
+
+## Copy (PENDING)
+
+Item names (server catalog, `gear-catalog.ts`) and prices in coins (placeholders):
+
+| id | name | price |
+| --- | --- | --- |
+| hat-sun | Sun Hat | 20 |
+| hat-ranger | Ranger Hat | 40 |
+| hat-beanie | Wool Beanie | 60 |
+| hat-explorer | Explorer Helmet | 90 |
+| scarf-red | Red Scarf | 15 |
+| scarf-striped | Striped Scarf | 30 |
+| scarf-woven | Woven Scarf | 50 |
+| scarf-silk | Silk Scarf | 80 |
+| stick-bamboo | Bamboo Stick | 25 |
+| stick-oak | Oak Trail Stick | 45 |
+| stick-lantern | Lantern Stick | 70 |
+| stick-compass | Compass Stick | 100 |
+
+Outfitter strings (`OUTFITTER_COPY` in `OutfitterOverlay.ts`): "Outfitter"; "Hats"; "Scarves"; "Trail Sticks";
+"Owned"; "Wearing"; "Close"; "Opening the outfitter..."; "The outfitter is closed right now. Come back soon!";
+"Not enough coins yet. Play a run to earn more!"; "That did not work. Please try again."; screen reader:
+"Outfitter. You have {n} coins. Tap an item to buy it, wear it, or take it off."; "Buy {name} for {price}
+coins"; "Wear {name}"; "Take off {name}"; "Close the outfitter". API error message: "Not enough coins."
+
+## Cross-lane change requests (C3)
+
+1. `games/zoo-sprint/src/index.ts` (startup): add `import './basecamp/outfitter';` (registers the overlay).
+2. `packages/game-sdk/src/index.ts`: in `BidaZooPlatform` add `getGear(): Promise<Gear>;` and
+   `updateGear(request: UpdateGearRequest): Promise<Gear>;`, and add `Gear`, `GearItem`, `UpdateGearRequest`
+   to the type imports and re-exports from `@bidazoo/contracts`. `apps/play/src/platform.ts`: widen `call`'s
+   method to `'GET' | 'POST' | 'PUT'` and add `getGear: () => call<Gear>('GET', ApiPaths.meGear),` and
+   `updateGear: (request: UpdateGearRequest) => call<Gear>('PUT', ApiPaths.meGear, request),`. Until then the
+   outfitter shows its "closed" line and no gear is drawn (there is no stand-in fetch in the game). Any test
+   fake that implements `BidaZooPlatform` then needs the two methods.
+3. `games/zoo-sprint/src/scenes/BasecampScene.ts` (Lane B), importing `loadGear`, `equippedGear`,
+   `buildGearLayer`, `syncGearLayer` from `../basecamp/outfitter`:
+   - in `create()`: `void loadGear(ctx.platform).then(() => { if (this.sys.isActive() && this.ready) this.build(false); });`
+   - in `Walker`'s constructor, only when `this.painted`, after the figure:
+     `this.gear = buildGearLayer(scene, id, 'walk', equippedGear(), { x: -this.bodyW / 2, y: -this.bodyH, w: this.bodyW, h: this.bodyH }); this.add(this.gear);`
+     and at the end of `puppet()` and `face()`: `if (this.gear) syncGearLayer(this.gear, this.figure, this.baseScale, facing);`
+     (`face` passes `dir`; `hop` tweens the figure only, so tween the gear layer with it).
+   - when an overlay container emits `'close'`: restore the Basecamp a11y actions and `this.build(false)` so new
+     gear shows. Pause walking (arrow keys) while an overlay is open.
+4. Busts (`games/zoo-sprint/src/characters.ts`, painted-expression path): after the painted image is fitted, for
+   the five starters only, add `buildGearLayer(scene, id, 'bust', equippedGear(), <the displayed picture's
+   bounds in the Character's local coordinates>)` above the image.
+5. `database/schema/ledger.ts`: mirror migration 0007 in the Drizzle definition (the source check gains
+   `'gear_purchase'`; add `wallet_transactions_debit_ck` and `wallet_transactions_gear_ck`). No behavior depends
+   on it today (my file list allows only a new migration under `database/`).
+6. Still open from run 3: `apps/api/src/modules/index.ts` registers `progressModule` (the gear routes ride on it;
+   my tests register it themselves when it is missing).
+
+## Open questions (C3)
+
+- No dedicated error code for "not enough coins": it is 409 `invalid_request` with the fixed message "Not enough
+  coins." An `insufficient_coins` code would be a contracts change (`ErrorCodeSchema`).
+- Hats are drawn only on Koala and Bronco; Dino, Tarsier and Eagle wear no hat, Eagle and Bronco no scarf
+  (LOCKED features). Owner: are these skips right, or should painted gear later find another spot?
+- Prices vs earnings: a perfect 10-question session earns 30 coins today (10 x 2 + 10), so the PENDING prices
+  mean 1 to 4 sessions per item.
+- Bust gear has no hook yet (request 4).
+
+## Check and time (C3)
+
+Check (`.bake/check.ps1`, 23:29 to 23:40 CST, on e78e6b1): ALL CHECKS PASSED (typecheck; vitest 40 files passed, 1 skipped, 821 tests passed, 3 todo, including the 26 new C3 tests; migrate-e2e; play-spec 24 passed). No existing test changed. Before it, waited about 3 h 10 min for the integration CI's two stacks (polled every 10 minutes). Also run during the work: `npm run typecheck` (exit 0) and the gear, expedition and database-guard test files on the test database (43 passed).
+
+Run 4: 20:07 to 23:42 CST, about 3.6 agent-hours (of which about 3.2 h waiting for a test slot).

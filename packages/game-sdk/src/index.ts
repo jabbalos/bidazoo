@@ -22,8 +22,10 @@ import type {
   StartPlaySessionResponse,
   SubmitAnswerRequest,
   ExpeditionProgress,
+  Gear,
   StartExpeditionRunRequest,
   StartExpeditionRunResponse,
+  UpdateGearRequest,
 } from '@bidazoo/contracts';
 
 export type {
@@ -40,6 +42,9 @@ export type {
   SubmitAnswerRequest,
   Totals,
   ExpeditionProgress,
+  Gear,
+  GearItem,
+  UpdateGearRequest,
   StartExpeditionRunRequest,
   StartExpeditionRunResponse,
 } from '@bidazoo/contracts';
@@ -69,6 +74,10 @@ export interface BidaZooPlatform {
    * completion from its own replay of the answers.
    */
   startExpeditionRun?(request: StartExpeditionRunRequest): Promise<StartExpeditionRunResponse>;
+  /** World Expedition (optional): the player's gear, coin balance and the server-side catalog. */
+  getGear?(): Promise<Gear>;
+  /** World Expedition (optional): buy one item (the server debits its own price) and set what is worn. */
+  updateGear?(request: UpdateGearRequest): Promise<Gear>;
 }
 
 export interface MountOptions {

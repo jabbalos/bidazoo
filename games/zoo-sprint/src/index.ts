@@ -4,6 +4,8 @@ import { A11yMirror } from './a11y';
 import type { GameContext } from './context';
 import { loadCharacter } from './roster';
 import { COLORS, hex } from './theme';
+// The outfitter registers itself at the lodge door (Lane C, C3).
+import './basecamp/outfitter';
 import { BasecampScene } from './scenes/BasecampScene';
 import { BootScene } from './scenes/BootScene';
 import { ExpeditionScene } from './scenes/ExpeditionScene';
