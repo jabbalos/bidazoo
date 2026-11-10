@@ -1,6 +1,6 @@
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { buildSessionMix, importedSkillKey, labelForSkillKey } from '@bidazoo/learning-core';
-import { IMPORTED_ITEMS, IMPORTED_ITEM_GRADE, importedItemById, sessionMix } from '../../apps/api/src/modules/sessions/imported-bank';
+import { IMPORTED_ITEMS, IMPORTED_ITEM_GRADE, importedItemById } from '../../apps/api/src/modules/sessions/imported-bank';
 import {
   HAS_DB,
   PATHS,
@@ -9,27 +9,31 @@ import {
   issue,
   makeHarness,
   newPlayer,
-  sql,
   startSession,
+  sql,
   type Harness,
   type TestBrowser,
 } from './support/harness';
 
 /**
- * D4: the session mix on the real API and PostgreSQL. Blocks of 10: 6 generated multiplication,
- * 4 imported. These tests advance a session by marking served questions answered directly in the
+ * D4: the session mix on the real API and PostgreSQL. Expedition sessions (15 questions):
+ * 9 generated multiplication, 6 imported. These tests advance a session by marking served questions answered directly in the
  * database, because the answer-storage path for text answers belongs to Lane C.
  */
 describe.skipIf(!HAS_DB)('session mix (API -> PostgreSQL)', () => {
   let h: Harness;
   beforeAll(async () => {
-    sessionMix.enabled = true;
     h = await makeHarness();
   });
   afterAll(async () => {
-    sessionMix.enabled = false;
     await h.close();
   });
+
+  async function startExpedition(browser: TestBrowser): Promise<string> {
+    const res = await browser.request('POST', PATHS.sessions, { gameId: 'zoo-sprint', mode: 'expedition' });
+    if (res.status !== 201 && res.status !== 200) throw new Error(`start failed: ${res.status} ${res.raw}`);
+    return res.body.session.id as string;
+  }
 
   async function seedOf(sessionId: string): Promise<string> {
     const [row] = await sql<{ seed: string }>(h, 'select seed from play_sessions where id = $1', [sessionId]);
@@ -47,15 +51,15 @@ describe.skipIf(!HAS_DB)('session mix (API -> PostgreSQL)', () => {
     return row!;
   }
 
-  it('a 10-question session is 6 generated and 4 imported, in the planned positions', async () => {
+  it('an expedition session is 15 questions: 9 generated and 6 imported, in the planned positions', async () => {
     const player = await newPlayer(h);
-    const sessionId = await startSession(player);
+    const sessionId = await startExpedition(player);
     const seed = await seedOf(sessionId);
-    const plan = buildSessionMix({ length: 10, grade: IMPORTED_ITEM_GRADE, items: IMPORTED_ITEMS, seed });
-    expect(plan.filter((s) => s.source === 'imported')).toHaveLength(4);
+    const plan = buildSessionMix({ length: 15, grade: IMPORTED_ITEM_GRADE, items: IMPORTED_ITEMS, seed });
+    expect(plan.filter((s) => s.source === 'imported')).toHaveLength(6);
 
     const importedIds: string[] = [];
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 15; i++) {
       const question = await issue(player, sessionId);
       const row = await servedRow(question.id);
       const slot = plan[i]!;
@@ -78,8 +82,8 @@ describe.skipIf(!HAS_DB)('session mix (API -> PostgreSQL)', () => {
       }
       await skipQuestion(sessionId, question.id);
     }
-    expect(importedIds).toHaveLength(4);
-    expect(new Set(importedIds).size).toBe(4);
+    expect(importedIds).toHaveLength(6);
+    expect(new Set(importedIds).size).toBe(6);
     for (const id of importedIds) {
       expect(importedItemById(id)!.grade).toBe(IMPORTED_ITEM_GRADE);
       expect(importedItemById(id)!.needsTable).toBe(false);
@@ -88,10 +92,10 @@ describe.skipIf(!HAS_DB)('session mix (API -> PostgreSQL)', () => {
 
   it('never sends the key, the item id or the rationale to the client', async () => {
     const player = await newPlayer(h);
-    const sessionId = await startSession(player);
+    const sessionId = await startExpedition(player);
     const seed = await seedOf(sessionId);
-    const plan = buildSessionMix({ length: 10, grade: IMPORTED_ITEM_GRADE, items: IMPORTED_ITEMS, seed });
-    for (let i = 0; i < 10; i++) {
+    const plan = buildSessionMix({ length: 15, grade: IMPORTED_ITEM_GRADE, items: IMPORTED_ITEMS, seed });
+    for (let i = 0; i < 15; i++) {
       const res = await player.request('POST', PATHS.question(sessionId), {});
       expect(res.status).toBe(200);
       const keys = allKeys(res.body);
@@ -109,9 +113,9 @@ describe.skipIf(!HAS_DB)('session mix (API -> PostgreSQL)', () => {
 
   it('restoring an outstanding imported question returns it unchanged (same choices, same order)', async () => {
     const player = await newPlayer(h);
-    const sessionId = await startSession(player);
+    const sessionId = await startExpedition(player);
     const seed = await seedOf(sessionId);
-    const plan = buildSessionMix({ length: 10, grade: IMPORTED_ITEM_GRADE, items: IMPORTED_ITEMS, seed });
+    const plan = buildSessionMix({ length: 15, grade: IMPORTED_ITEM_GRADE, items: IMPORTED_ITEMS, seed });
     for (let i = 0; i < plan.length; i++) {
       const question = await issue(player, sessionId);
       if (plan[i]!.source === 'imported') {
@@ -127,8 +131,8 @@ describe.skipIf(!HAS_DB)('session mix (API -> PostgreSQL)', () => {
     const firstImported = new Set<string>();
     for (let n = 0; n < 6; n++) {
       const player = await newPlayer(h);
-      const sessionId = await startSession(player);
-      const plan = buildSessionMix({ length: 10, grade: IMPORTED_ITEM_GRADE, items: IMPORTED_ITEMS, seed: await seedOf(sessionId) });
+      const sessionId = await startExpedition(player);
+      const plan = buildSessionMix({ length: 15, grade: IMPORTED_ITEM_GRADE, items: IMPORTED_ITEMS, seed: await seedOf(sessionId) });
       const slot = plan.find((s) => s.source === 'imported');
       if (slot && slot.source === 'imported') firstImported.add(slot.itemId);
     }
@@ -143,8 +147,8 @@ describe.skipIf(!HAS_DB)('session mix (API -> PostgreSQL)', () => {
     let item = importedItemById('none');
     for (let n = 0; n < 40 && !item; n++) {
       player = await newPlayer(h);
-      sessionId = await startSession(player);
-      const plan = buildSessionMix({ length: 10, grade: IMPORTED_ITEM_GRADE, items: IMPORTED_ITEMS, seed: await seedOf(sessionId) });
+      sessionId = await startExpedition(player);
+      const plan = buildSessionMix({ length: 15, grade: IMPORTED_ITEM_GRADE, items: IMPORTED_ITEMS, seed: await seedOf(sessionId) });
       position = plan.findIndex((s) => s.source === 'imported');
       const slot = plan[position];
       const candidate = slot && slot.source === 'imported' ? importedItemById(slot.itemId) : undefined;
@@ -169,5 +173,49 @@ describe.skipIf(!HAS_DB)('session mix (API -> PostgreSQL)', () => {
       importedSkillKey(item.grade, item.skill),
     ]).catch(() => []);
     if (rows.length > 0) expect(rows[0]).toMatchObject({ skill_key: importedSkillKey(item.grade, item.skill), box: 1 });
+  });
+
+  it('an expedition session stores mode expedition and has 15 questions', async () => {
+    const player = await newPlayer(h);
+    const sessionId = await startExpedition(player);
+    const [row] = await sql<Record<string, any>>(h, 'select mode, total_questions from play_sessions where id = $1', [sessionId]);
+    expect(row).toMatchObject({ mode: 'expedition', total_questions: 15 });
+    const res = await player.request('GET', PATHS.session(sessionId));
+    expect(res.body.session?.total ?? res.body.total).toBe(15);
+  });
+
+  it('a multiplication session is unchanged: 10 questions, all generated multiplication, mode stored', async () => {
+    const player = await newPlayer(h);
+    const sessionId = await startSession(player);
+    const [row] = await sql<Record<string, any>>(h, 'select mode, total_questions from play_sessions where id = $1', [sessionId]);
+    expect(row).toMatchObject({ mode: 'multiplication', total_questions: 10 });
+    for (let i = 0; i < 10; i++) {
+      const question = await issue(player, sessionId);
+      expect(question.prompt).toMatch(/^\d+ × \d+$/);
+      expect((await servedRow(question.id)).skill_key).toMatch(/^mul:/);
+      await skipQuestion(sessionId, question.id);
+    }
+  });
+
+  it('an unknown mode is rejected with 400, and so is an extra key', async () => {
+    const player = await newPlayer(h);
+    for (const body of [
+      { gameId: 'zoo-sprint', mode: 'reading' },
+      { gameId: 'zoo-sprint', mode: 'Expedition' },
+      { gameId: 'zoo-sprint' },
+      { gameId: 'zoo-sprint', mode: 'expedition', length: 99 },
+    ]) {
+      expect((await player.request('POST', PATHS.sessions, body)).status, JSON.stringify(body)).toBe(400);
+    }
+  });
+
+  it('starting the other mode replaces the active session instead of resuming the wrong mode', async () => {
+    const player = await newPlayer(h);
+    const first = await startSession(player);
+    const second = await startExpedition(player);
+    expect(second).not.toBe(first);
+    const [old] = await sql<Record<string, any>>(h, 'select status from play_sessions where id = $1', [first]);
+    expect(old?.status).toBe('expired');
+    expect(await startExpedition(player)).toBe(second); // same mode still resumes
   });
 });
