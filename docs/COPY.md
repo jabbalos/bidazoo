@@ -66,6 +66,31 @@ Reused unchanged from RunScene (already live): "Getting your question…", "Chec
 
 Imported Hop Quest math items (372, owner-owned bank) are shown as written in the bank. No new interface strings.
 
-## Progression (Lane C)
+## Progression and gear (Lane C, C3 merged with the outfitter)
 
-No kid-facing strings yet. Gear names and prices arrive with C3.
+Item names and prices are placeholders. A full, perfect session earns about 30 coins, so items cost 1 to 4 sessions.
+
+| String | Where | Status |
+| --- | --- | --- |
+| Sun Hat (20 coins) | Gear: hat | PENDING |
+| Ranger Hat (40 coins) | Gear: hat | PENDING |
+| Wool Beanie (60 coins) | Gear: hat | PENDING |
+| Explorer Helmet (90 coins) | Gear: hat | PENDING |
+| Red Scarf (15 coins) | Gear: scarf | PENDING |
+| Striped Scarf (30 coins) | Gear: scarf | PENDING |
+| Woven Scarf (50 coins) | Gear: scarf | PENDING |
+| Silk Scarf (80 coins) | Gear: scarf | PENDING |
+| Bamboo Stick (25 coins) | Gear: trail stick | PENDING |
+| Oak Trail Stick (45 coins) | Gear: trail stick | PENDING |
+| Lantern Stick (70 coins) | Gear: trail stick | PENDING |
+| Compass Stick (100 coins) | Gear: trail stick | PENDING |
+| Outfitter | Outfitter title | PENDING |
+| Hats / Scarves / Trail Sticks | Outfitter section labels | PENDING |
+| Owned / Wearing / Close | Outfitter card states and button | PENDING |
+| Opening the outfitter... | Outfitter loading line | PENDING |
+| The outfitter is closed right now. Come back soon! | Outfitter unavailable | PENDING |
+| Not enough coins yet. Play a run to earn more! | Purchase refused | PENDING |
+| That did not work. Please try again. | Outfitter error | PENDING |
+| Outfitter. You have {n} coins. Tap an item to buy it, wear it, or take it off. | Screen reader | PENDING |
+| Buy {name} for {price} coins / Wear {name} / Take off {name} / Close the outfitter | Screen reader | PENDING |
+| Not enough coins. | API error message (shown through the outfitter) | PENDING |
