@@ -105,3 +105,32 @@ None (no new kid-facing text).
 - The level is not stored, so a changed curve changes old results' `level` on re-read (levelUp is recomputed the same way). Intended, but worth knowing.
 
 Check (`.bake/check.ps1`, 19:51 to 20:04 CST, on d42ba54 plus the REPORT commit): ALL CHECKS PASSED (typecheck, vitest incl. 13 new tests, play-spec 24 passed). No existing test changed. Waited about 50 minutes for the integration CI's two stacks (retried every 10 minutes) before starting.
+
+
+---
+
+# Lane C (progression), run 4 (Opus, November 9, 2026)
+
+Item: C3 (gear catalog, GET/PUT /api/v1/me/gear with a server-side coin debit, OutfitterOverlay, gear
+drawn as code sprites). Started 20:07 CST.
+
+## Art references
+
+Listed before any visual change (rule 13). The OutfitterOverlay and the code-drawn gear sprites will use
+only these:
+
+- `docs/CHARACTER-BIBLE.md` sections 2, 4 and 5 (LOCKED anchors win: Dino has exactly one backpack,
+  Koala has no backpack, Tarsier's goggles, Eagle's white head and green "A" jacket, Bronco's maroon
+  bandana; no new starters; Click is host only, so Click never wears gear).
+- `docs/visual/09-palette.md` (platform and World Expedition tokens for gear colors).
+- `docs/visual/10-ui-component-style.md` (field-kit panels: parchment card, brass edge, timber;
+  `TapButton` and `BUTTON_STYLES` reused, hit targets published).
+- `docs/visual/14-do-dont-anti-drift.md` (what gear must not do to a character).
+- `docs/visual/20-basecamp-walk.md` (walker anchoring at the feet, puppet motion, painted walker and
+  painted bust fitting).
+- `games/zoo-sprint/assets/world-expedition/walk-painted/<id>_walk_side.webp` for the five starters
+  (anchor points on the painted walker; read only, not edited).
+- `games/zoo-sprint/assets/world-expedition/characters-painted/<id>/<id>_idle.webp` for the five
+  starters (anchor points on the painted bust; read only, not edited).
+
+No image file is added or changed: gear is drawn with Phaser Graphics.
