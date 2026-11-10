@@ -447,6 +447,13 @@ export class ExpeditionScene extends Phaser.Scene {
     this.refreshA11y();
   }
 
+  /** Republishes the surface and the screen-reader actions after an encounter overlay has closed. */
+  private refreshA11yAfterOverlay(): void {
+    this.lastPublish = '';
+    this.refreshA11y();
+    this.publish(true);
+  }
+
   private refreshA11y(): void {
     const ctx = getContext(this);
     const name = characterName(ctx.character);
@@ -531,16 +538,29 @@ export class ExpeditionScene extends Phaser.Scene {
     const client = this.client;
     if (!client) return;
     let outcome: EncounterOutcome;
+    const total = questionsFor(node.type);
     try {
-      outcome = await startEncounter(this, {
-        session: client,
-        questions: questionsFor(node.type),
-        kind: node.type === 'boss' ? 'boss' : 'node',
-        challenger: this.manifest.challenger.id,
-        buddy: ctx.character,
-      });
+      const run = (questions: number): Promise<EncounterOutcome> =>
+        startEncounter(this, {
+          session: client,
+          questions,
+          kind: node.type === 'boss' ? 'boss' : 'node',
+          challenger: this.manifest.challenger.id,
+          buddy: ctx.character,
+        });
+      outcome = await run(total);
+      // A lost boss still asks its remaining questions (the "last stand", owner decision), so the
+      // session completes normally. If the overlay already asked all of them this loop never runs.
+      let asked = outcome.asked;
+      while (node.type === 'boss' && asked < total) {
+        const rest = await run(total - asked);
+        if (rest.asked <= 0) break;
+        asked += rest.asked;
+        outcome = { ...outcome, won: false, correct: outcome.correct + rest.correct, asked, bestStreak: Math.max(outcome.bestStreak, rest.bestStreak), heartsLeft: 0 };
+      }
     } catch {
       // the encounter could not run: offer the same node again, or the way home
+      this.refreshA11yAfterOverlay();
       this.seen.delete(node.id);
       this.queue = [];
       this.showPanel('Something went wrong with the question.', [
@@ -549,6 +569,8 @@ export class ExpeditionScene extends Phaser.Scene {
       ]);
       return;
     }
+    // the overlay restores data-scene and the hit targets but not the mirror's actions
+    this.refreshA11yAfterOverlay();
     this.setMark(node, outcome.won ? 'won' : 'lost');
     if (node.type === 'boss') await this.finish();
   }
