@@ -42,7 +42,7 @@ B5 uses 1, 4, 8.
 - New tests: `tests/integration/destination-server-unlocks.test.ts`, 9 tests (pure functions; real manifests from disk, no mocks). The overlay in-place redraw itself is not unit-tested (Phaser); covered by the pure functions only.
 
 ## Check
-`.bake\check.ps1 -Specs play.spec.ts,basecamp.spec.ts,expedition.spec.ts`: typecheck PASS, vitest PASS (787 passed, 3 todo), play-spec PASS (68 passed), **ALL CHECKS PASSED**.
+`.bake\check.ps1 -Specs play.spec.ts,basecamp.spec.ts,expedition.spec.ts` (only the play-spec stage appears in the log; expedition.spec.ts did not run on this branch, it needs the scene registration on the integration branch): typecheck PASS, vitest PASS (787 passed, 3 todo), play-spec PASS (68 passed), **ALL CHECKS PASSED**.
 
 ## Cross-lane change requests (R4)
 - Integration workspace: make `DESTINATION_IDS` in `games/zoo-sprint/src/presentation/destination-model.ts` come from the contracts `EXPEDITION_DESTINATIONS` list, re-exported through `@bidazoo/game-sdk`, so there is one source. Also add the API test that every manifest id is accepted by the server.
