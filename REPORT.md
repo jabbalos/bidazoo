@@ -58,3 +58,48 @@ No check failed, so there is no STOP.md.
 C1 check: `.bake/check.ps1` at 18:23 to 18:37 CST: ALL CHECKS PASSED (36 files, 765 tests; play-spec 24 passed). C2: not started (blocked, see Open questions). C4: level curve done, results data blocked. C-text: done; check at 18:44 to 18:55 CST on 1d9d5b0: ALL CHECKS PASSED (37 files, 782 tests; play-spec passed). Full details in the final message to the orchestrator.
 
 Files: `packages/learning-core/src/progression/{level,level.test,index}.ts`; `database/migrations/0006_text_answers.sql`, `meta/_journal.json`, `database/schema/attempts.ts` (type only); `apps/api/src/modules/sessions/{service,views}.ts`; `tests/integration/text-answers.test.ts`.
+
+
+---
+
+# Lane C (progression), run 3 (Sonnet, November 9, 2026)
+
+Items: C2 (expedition completion hook) and C4 (level data in the results). Orchestrator-authorized contract edits.
+
+## Files changed
+
+- `packages/contracts/src/index.ts`: `SessionResultsSchema` gains OPTIONAL `beaconsLit` (0 to 5), `stampEarned`, `level` (>= 1), `levelUp` (null or `{ fromLevel, toLevel, gained }`, strict). Nothing else in the file.
+- `packages/contracts/src/paths.ts`: `ApiPaths.meExpeditionRuns` (addition only).
+- `packages/contracts/src/progress.ts`: `StartExpeditionRunRequestSchema`, `StartExpeditionRunResponseSchema` (additions only).
+- `apps/api/src/modules/progress/{service,routes,index}.ts`: `POST /api/v1/me/expedition/runs`, `startExpeditionRun`, `getSessionDestination`, `getExpeditionRunOutcome`.
+- `apps/api/src/modules/progress/level.ts` (new): the one place the API reaches the level curve (see cross-lane requests).
+- `apps/api/src/modules/sessions/service.ts`: the one hook (`recordExpeditionIfStarted`, inside the completion transaction).
+- `apps/api/src/modules/sessions/views.ts`: results carry `level`, `levelUp`, and (when a run was recorded) `beaconsLit`, `stampEarned`. Re-reading a finished session returns the same facts.
+- `tests/integration/expedition-completion.test.ts` (new, 13 tests, real PostgreSQL). `replayExpedition` is MOCKED (it is a stub on this branch); everything else is real.
+
+## Behavior
+
+- Route: session must be the caller's (404 otherwise, same answer as missing) and active (409). Destination unknown or locked: 403. One `expedition_events` row, kind `start`, payload `{ destination }`; repeat with the same destination is 200 and idempotent; a different destination is 409 `idempotency_key_conflict` (reused existing code, no new ErrorCode). First call 201. Guests work.
+- Unlock rule used is the existing `unlockedDestinations` (great-wall always, each next one after a stamp on the previous). This equals "petra after a great-wall stamp"; andes onward need a prior stamp chain, so they are effectively locked for now.
+- Hook: at the completing answer, if a `start` event exists, the stored answers are replayed in order (`replayExpedition`), `recordExpeditionRun` is called in the same transaction (exactly-once via its unique event), and bestStreak is the longest correct run. No start event: no replay, no stamp, fields absent.
+- Level: derived from the xp ledger as of the end of this session (events written at or before the session's last xp event), so later sessions never change an older session's `levelUp`. Curve unchanged (xpStep 100, maxLevel 50), still PENDING owner tuning.
+
+## Art references
+
+None (no visual work).
+
+## Copy (PENDING)
+
+None (no new kid-facing text).
+
+## Cross-lane change requests
+
+1. `packages/learning-core/src/index.ts`: add `export * from './progression';` (or `export { LEVEL_CURVE, levelForXp, levelProgress, levelUpBetween, xpForLevel } from './progression'; export type { LevelProgress, LevelUp } from './progression';`). Then replace the single line in `apps/api/src/modules/progress/level.ts` with `export { levelForXp, levelUpBetween } from '@bidazoo/learning-core';` (it imports by relative path until then).
+2. `apps/api/src/modules/index.ts`: register `{ name: 'progress', plugin: progressModule }` (import from `./progress`). My tests register it themselves when it is missing.
+3. `games/zoo-sprint/src/session-client.ts` (Lane A): right after `startSession` succeeds, when a destination is given, call
+   `await http.post(ApiPaths.meExpeditionRuns, { sessionId: session.id, destination })` (same cookie/credentials as the other calls; 201 or 200 means recorded; 403 means locked, 409 means a different destination was already recorded for that session). Then results carry `beaconsLit` and `stampEarned` for the end screen, and `level` and `levelUp` for every session.
+
+## Open questions
+
+- A different destination for the same session returns 409 with the existing code `idempotency_key_conflict`. Say if you want a dedicated error code.
+- The level is not stored, so a changed curve changes old results' `level` on re-read (levelUp is recomputed the same way). Intended, but worth knowing.
