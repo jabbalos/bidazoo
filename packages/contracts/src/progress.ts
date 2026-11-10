@@ -6,7 +6,7 @@
  * the server decided. Hour-1 shapes; Lane C may add to them.
  */
 import { Type, type Static } from 'typebox';
-import { strict } from './common';
+import { strict, Uuid } from './common';
 
 const DestinationId = Type.String({ minLength: 1, maxLength: 64 });
 
@@ -71,3 +71,16 @@ export const DailySchema = Type.Object(
   strict,
 );
 export type Daily = Static<typeof DailySchema>;
+
+/** POST /api/v1/me/expedition/runs: records which destination an active session is playing. */
+export const StartExpeditionRunRequestSchema = Type.Object(
+  { sessionId: Uuid, destination: DestinationId },
+  strict,
+);
+export type StartExpeditionRunRequest = Static<typeof StartExpeditionRunRequestSchema>;
+
+export const StartExpeditionRunResponseSchema = Type.Object(
+  { sessionId: Uuid, destination: DestinationId },
+  strict,
+);
+export type StartExpeditionRunResponse = Static<typeof StartExpeditionRunResponseSchema>;

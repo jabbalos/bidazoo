@@ -15,6 +15,7 @@ export const ApiPaths = {
 
   // World Expedition progress (schemas in ./progress).
   meExpedition: `${API_PREFIX}/me/expedition`,
+  meExpeditionRuns: `${API_PREFIX}/me/expedition/runs`,
   meGear: `${API_PREFIX}/me/gear`,
   meDaily: `${API_PREFIX}/me/daily`,
 

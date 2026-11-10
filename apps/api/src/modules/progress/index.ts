@@ -16,10 +16,14 @@ export const progressModule: FastifyPluginAsync<ModuleOptions> = async (app, opt
 
 export {
   EXPEDITION_RUN_EVENT,
+  EXPEDITION_START_EVENT,
   STAMP_MIN_BEACONS,
   getExpeditionProgress,
+  getExpeditionRunOutcome,
+  getSessionDestination,
   isExpeditionDestination,
   recordExpeditionRun,
+  startExpeditionRun,
   unlockedDestinations,
 } from './service';
 export type { ExpeditionRun } from './service';

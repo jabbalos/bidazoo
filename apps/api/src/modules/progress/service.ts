@@ -1,11 +1,13 @@
 import { and, asc, eq, sql } from 'drizzle-orm';
+import { playSessions } from '@bidazoo/database/schema';
 import {
   EXPEDITION_DESTINATIONS,
   type ExpeditionDestination,
   type ExpeditionProgress,
   type Stamp,
 } from '@bidazoo/contracts';
-import type { Executor, Tx } from '../../context';
+import type { Db, Executor, Tx } from '../../context';
+import { errors } from '../../http/errors';
 import { destinationStamps, expeditionEvents, type DestinationStampRow } from './tables';
 
 /** Owner decision (proposal section 10): a stamp needs at least 3 of the 5 beacons lit. */
@@ -116,4 +118,73 @@ export async function recordExpeditionRun(tx: Tx, run: ExpeditionRun): Promise<{
       });
   }
   return { stampEarned };
+}
+
+/** The event kind written when a client says which destination an active session is playing. */
+export const EXPEDITION_START_EVENT = 'start';
+
+/** The destination recorded for a session by its 'start' event, or null when there is none. */
+export async function getSessionDestination(executor: Executor, playSessionId: string): Promise<string | null> {
+  const [row] = await executor
+    .select({ payload: expeditionEvents.payload })
+    .from(expeditionEvents)
+    .where(and(eq(expeditionEvents.playSessionId, playSessionId), eq(expeditionEvents.kind, EXPEDITION_START_EVENT)));
+  const destination = row?.payload['destination'];
+  return typeof destination === 'string' ? destination : null;
+}
+
+/**
+ * POST /api/v1/me/expedition/runs. Records which destination an active session plays.
+ *
+ * The session must belong to the caller and be active (404 for missing or someone else's, 409 when
+ * not active). The destination must be known and unlocked for this player (403 otherwise). A repeat
+ * with the same destination is idempotent (created: false); a different destination is a 409.
+ */
+export async function startExpeditionRun(
+  db: Db,
+  playerId: string,
+  sessionId: string,
+  destination: string,
+): Promise<{ created: boolean }> {
+  return db.transaction(async (tx) => {
+    const [session] = await tx
+      .select()
+      .from(playSessions)
+      .where(and(eq(playSessions.id, sessionId), eq(playSessions.playerId, playerId)))
+      .for('update');
+    if (!session) throw errors.notFound();
+    if (session.status !== 'active') throw errors.sessionNotActive();
+    if (!isExpeditionDestination(destination)) throw errors.forbidden();
+    const progress = await getExpeditionProgress(tx, playerId);
+    if (!progress.unlocked.includes(destination)) throw errors.forbidden();
+
+    const existing = await getSessionDestination(tx, sessionId);
+    if (existing !== null) {
+      if (existing !== destination) throw errors.idempotencyConflict();
+      return { created: false };
+    }
+    await tx.insert(expeditionEvents).values({
+      playSessionId: sessionId,
+      playerId,
+      kind: EXPEDITION_START_EVENT,
+      payload: { destination },
+    });
+    return { created: true };
+  });
+}
+
+/** What a completed expedition session shows in its results, read from its recorded run. */
+export async function getExpeditionRunOutcome(
+  executor: Executor,
+  playSessionId: string,
+): Promise<{ beaconsLit: number; stampEarned: boolean } | null> {
+  const [row] = await executor
+    .select({ payload: expeditionEvents.payload })
+    .from(expeditionEvents)
+    .where(and(eq(expeditionEvents.playSessionId, playSessionId), eq(expeditionEvents.kind, EXPEDITION_RUN_EVENT)));
+  if (!row) return null;
+  const beaconsLit = row.payload['beaconsLit'];
+  return typeof beaconsLit === 'number'
+    ? { beaconsLit, stampEarned: row.payload['stampEarned'] === true }
+    : null;
 }
