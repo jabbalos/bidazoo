@@ -19,8 +19,8 @@
 import { Type, type Static } from 'typebox';
 
 // Paths and constants live in ./paths so clients can import them without TypeBox.
-export { ACCOUNT_PAGE_PATH, API_PREFIX, ApiPaths, GAME_ID, LINK_FRAGMENT_KEY, MODE_MULTIPLICATION, SESSION_LENGTH } from './paths';
-import { GAME_ID, MODE_MULTIPLICATION } from './paths';
+export { ACCOUNT_PAGE_PATH, API_PREFIX, ApiPaths, EXPEDITION_SESSION_LENGTH, GAME_ID, LINK_FRAGMENT_KEY, MODE_EXPEDITION, MODE_MULTIPLICATION, SESSION_LENGTH } from './paths';
+import { GAME_ID, MODE_EXPEDITION, MODE_MULTIPLICATION } from './paths';
 
 // ---------------------------------------------------------------------------
 // Shared building blocks
@@ -153,7 +153,7 @@ export type GuestResponse = Static<typeof GuestResponseSchema>;
 export const StartPlaySessionRequestSchema = Type.Object(
   {
     gameId: Type.Literal(GAME_ID),
-    mode: Type.Literal(MODE_MULTIPLICATION),
+    mode: Type.Union([Type.Literal(MODE_MULTIPLICATION), Type.Literal(MODE_EXPEDITION)]),
   },
   strict,
 );
