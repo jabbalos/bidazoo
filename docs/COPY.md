@@ -34,7 +34,7 @@ Reused unchanged from RunScene (already live): "Getting your question…", "Chec
 | Only the bravest reach the top! | Boss taunt | PENDING |
 | Five questions stand between you and the summit. | Boss taunt | PENDING |
 
-## Expedition, map board and summit (Lane B, `lane/expedition` at `67ce214`, not merged yet)
+## Expedition, map board and summit (Lane B, merged `a4111a2`)
 
 | String | Where | Status |
 | --- | --- | --- |

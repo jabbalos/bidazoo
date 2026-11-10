@@ -51,6 +51,60 @@ about status, fix the other doc.
 | The server learns an expedition's destination through a new route `POST /api/v1/me/expedition/runs` { sessionId, destination } (checks ownership and unlock, records an `expedition_events` 'start' row), not through the start request, whose keys an existing test pins | R | C2, A (session client) |
 | Accepted from Lane C run 2: one-line `database/schema/attempts.ts` type edit; 400 `invalid_request` on an answer-kind mismatch; level curve placeholder xpStep 100, cap 50 (PENDING owner tuning) | R | C-text, C4 |
 
+#### Decisions, continued (November 9 to 10, 2026)
+
+| Decision | By | Applies to |
+| --- | --- | --- |
+| `SessionResultsSchema` gains OPTIONAL `beaconsLit` (0-5), `stampEarned`, `level`, `levelUp` (proposal 3 Lane C calls for them; no existing test pins the results keys; the 2.6 `results()` signature is unchanged) | R | C2, C4, B4 |
+| The server learns an expedition's destination through `POST /api/v1/me/expedition/runs` { sessionId, destination } (ownership and unlock checked; an `expedition_events` 'start' row), not through the start request, whose keys an existing test pins | R | C2, session client |
+| Accepted from Lane C: the one-line `database/schema/attempts.ts` type edit; 400 `invalid_request` on an answer-kind mismatch; level curve placeholder xpStep 100, cap 50 (PENDING owner tuning); the existing `idempotency_key_conflict` code for a second destination on one session; level computed on read, not stored | R | C-text, C2, C4 |
+| Each lane's REPORT.md is kept as `docs/lane-reports/<lane>.md`; integrate.ps1 resolves that one conflict and aborts on any other. Textual conflicts between lanes are resolved by the integration workspace, then gated by CI | R | integration |
+| Gear: the third slot is a held "trail stick", not a pack (LOCKED: Dino exactly one backpack, Koala none); no gear covers a LOCKED feature | R (LOCKED rules win) | C3 |
+| Lane C C3 art references confirmed (rule 13) | O | C3 |
+| Text answers: the client sends them; one existing test (session-client.test.ts, the refusal check) changed to check the text value is sent | O | A3, D3 |
+| The expedition question mix stays OFF in any deploy until A9 (text-choice tiles) is merged and a Playwright test shows a child answering a text question in an expedition. Implemented as `expeditionMixEnabled()`: off under NODE_ENV=production unless EXPEDITION_MIX=1 | O | D5, deploy |
+| Client-bundle scan gains the markers `content-import` and `math-items` | O | validator tooling |
+| Validator baseline counts: unit 126, integration 937 + 3 todo, Playwright 292 in 4 projects (all increases are new test files; see commit 67d2367) | O | validator |
+
+#### End of day 1 (written November 10, 2026, about 07:15 CST)
+
+Integration tip: `83be761` (all four lanes merged: A1 to A6, B1 to B5 with B3 and B4, C1, C2, C3, C4 and text
+answers, D1, D3, D4, D5 and the session mix). Every merge passed typecheck, Vitest on real PostgreSQL and the
+sharded Playwright suite (latest: 291 passed + 1 flaky of 292). Nothing deployed.
+
+**Full validator: NOT RUN yet.** `scripts/validate-studio.ps1 -Recreate` asks a person to type "yes" before it
+drops `bidazoo_test`/`bidazoo_e2e`, so an agent cannot run it unattended. It goes to the owner with the exact
+command. Known risk: `tests/e2e/cast-production-flow.spec.ts:370` ("a run with <starter> starts and takes an
+answer, with the production art loaded") was flaky twice in sharded CI under load (bronco, then koala); the
+validator fails on any flaky test.
+
+Actual versus estimated agent-hours (Appendix A; actuals from the lane reports, mostly waiting on checks):
+
+| Item | Estimate | Actual |
+| --- | --- | --- |
+| A3 + A1 (bake-off) | 5 | 0.9 |
+| A review Lows, A2, A4, A5, A6 | 12.5 | about 3 (14:05 to 18:00, including the outage stop and four check runs) |
+| B registry, B1, B2, B5, B3, B4 | 16 | about 4.7 elapsed (14:07 to 18:50, including the outage stop); agent-hours not reported |
+| C1 | 4 | 1.2 active |
+| C-text and C4 curve (run 2) | (C4: 2) | 0.6 |
+| C2 and C4 results (run 3) | 2 | about 1.1 |
+| C3 | 5 | 3.6 (3.2 of it waiting for a test slot) |
+| D3, D1, session mix | 9 | 0.5 |
+| D4, D5 (added November 9) | none | about 0.7 |
+| Playwright sharding (integration) | 2 | about 1.5 |
+
+Measured productivity is above the Appendix A rate on every item, so the re-plan stop condition does not apply.
+Wall-clock time was lost to the 14:40 outage stop and to queueing under the two-stack limit.
+
+Open items:
+- Owner: run the full validator (command in the day-1 summary); deploy only on the owner's go.
+- Gemini reviews 2, 3 and 4 queued in `.bake/review-queue/` (owner-run).
+- Day 2: gear drawn on the Basecamp walker and bust (Lane B), A9 text-choice tiles plus the Playwright proof the
+  owner asked for before the mix is turned on, A7, A8, B6, B7 as ComfyUI layers land, C5 to C8, Lane A's
+  `ce33088` (new RunScene start test) to merge.
+- All kid-facing copy in `docs/COPY.md` is PENDING owner approval; nothing PENDING ships.
+- The identity flag stays off (C7 not started), so the deploy script's `identity absent` check is unchanged.
+
 #### Graphics to replace (placeholder visuals; never block a merge or deploy)
 
 | Placeholder | Where | Replace with |
