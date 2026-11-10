@@ -62,8 +62,8 @@ if (-not $Continue) {
       $laneName = ($Lane -replace '^lane/', '')
       New-Item -ItemType Directory -Force -Path (Join-Path $root 'docs\lane-reports') | Out-Null
       $dest = "docs/lane-reports/$laneName.md"
-      [IO.File]::WriteAllText((Join-Path $root $dest), ((git show "${tip}:REPORT.md") -join "`n") + "`n", (New-Object System.Text.UTF8Encoding($false)))
-      [IO.File]::WriteAllText((Join-Path $root 'REPORT.md'), ((git show ':2:REPORT.md') -join "`n") + "`n", (New-Object System.Text.UTF8Encoding($false)))
+      cmd.exe /c "git show ${tip}:REPORT.md > `"$($dest -replace '/', '\')`""
+      cmd.exe /c "git show HEAD:REPORT.md > REPORT.md"
       git add REPORT.md $dest
       Log "REPORT.md conflict resolved: integration keeps its REPORT.md; the lane's report is $dest"
     } else {
