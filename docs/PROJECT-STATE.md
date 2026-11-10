@@ -121,6 +121,20 @@ Open items:
     `expedition-completion.test.ts:55`, `progress-gear.test.ts:60` (removing it is an existing-test change).
   - R4: gear is saved but not drawn on the walker or bust (already the day-2 Lane B item).
   - R2: the `as number` cast on `correctAnswer` was already removed in `ed3f41b` (no action).
+- Gemini re-review 5 (High and Medium fixes, `5a7f1b2..64a4a46`): clean, 0 High, 0 Medium. Two Lows, open:
+  - `tests/scripts/refresh-painted-provenance.mjs:76` hardcodes the seven ids instead of reading the destination
+    folders or `EXPEDITION_DESTINATIONS`.
+  - `isUnlocked` and the manifest fields `unlock.startsUnlocked`/`unlock.requires` are no longer used at runtime
+    (only by `destination-model.test.ts`). The Andes lock text ("Earn a stamp at the Great Wall to open this
+    trail.") does not match the server, which opens Andes only after Petra too; the text is kid-facing copy
+    (PENDING in `docs/COPY.md`), so the fix goes with the owner's copy review.
+- Lane C quick Lows (`lane/progression` at `9f25511`) are NOT merged yet. The first CI run was red on one
+  Playwright test unrelated to Lane C (`expedition.spec.ts:113`, phone: under load the buddy walked past the first
+  artifact into the first encounter before the test pressed "next stop"; the same test passed in all four
+  projects one hour earlier). The re-run was stopped by the orchestrator so the owner's validator runs with no
+  other checks. Merge after the validator. That test is a flake risk for the validator; making it robust is an
+  existing-test change and needs the owner.
+- Load rule slip (November 10): Lane C ran two of its own check stacks at once by mistake while doing the Lows.
 
 #### Graphics to replace (placeholder visuals; never block a merge or deploy)
 
