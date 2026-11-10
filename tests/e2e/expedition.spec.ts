@@ -69,7 +69,7 @@ test('the map board lists seven destinations: one open, six locked, every tile b
     expect(t.y + t.h).toBeLessThanOrEqual(vp.h);
   }
   // the screen reader sees the unlock rule on a locked tile
-  await expect(action(page, 'map-tile-andes-cloud-terraces')).toContainText('Locked');
+  await expect(action(page, 'map-tile-andes')).toContainText('Locked');
   await expect(action(page, 'map-tile-great-wall')).toContainText('Open');
   // closing returns to the walk
   await action(page, 'map-close').dispatchEvent('click');
@@ -80,7 +80,7 @@ test('the map board lists seven destinations: one open, six locked, every tile b
 test('a locked tile does nothing; an unlocked tile opens the trailhead card; Back returns to the board', async ({ page }) => {
   await bootToBasecamp(page);
   await openMap(page);
-  await action(page, 'map-tile-andes-cloud-terraces').dispatchEvent('click');
+  await action(page, 'map-tile-andes').dispatchEvent('click');
   await expect(action(page, 'trailhead-start')).toHaveCount(0);
   await action(page, 'map-tile-great-wall').dispatchEvent('click');
   await expect(action(page, 'trailhead-start')).toBeAttached();
