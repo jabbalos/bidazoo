@@ -35,7 +35,8 @@ export const attempts = pgTable(
       .notNull()
       .references(() => players.id, { onDelete: 'cascade' }),
     idempotencyKey: text('idempotency_key').notNull(),
-    submittedResponse: integer('submitted_response').notNull(),
+    /** The answer as String(response): '56' for a number answer, the word itself for a text answer. */
+    submittedResponse: text('submitted_response').notNull(),
     correct: boolean('correct').notNull(),
     /** correct AND response_ms within the fluency window. */
     fluent: boolean('fluent').notNull(),

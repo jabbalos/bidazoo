@@ -56,3 +56,6 @@ export {
   BOSS_SPECIAL_MOVES,
 } from './encounter/encounter-model';
 export type { EncounterKind, EncounterPhase, EncounterState } from './encounter/encounter-model';
+
+export { LEVEL_CURVE, levelForXp, levelProgress, levelUpBetween, xpForLevel } from './progression';
+export type { LevelProgress, LevelUp } from './progression';

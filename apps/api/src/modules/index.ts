@@ -8,6 +8,7 @@ import { rewardsModule } from './rewards';
 import { inventoryModule } from './inventory';
 import { contentModule } from './content';
 import { analyticsModule } from './analytics';
+import { progressModule } from './progress';
 
 export interface ApiModule {
   name: string;
@@ -28,4 +29,5 @@ export const modules: readonly ApiModule[] = [
   { name: 'inventory', plugin: inventoryModule },
   { name: 'content', plugin: contentModule },
   { name: 'analytics', plugin: analyticsModule },
+  { name: 'progress', plugin: progressModule },
 ];

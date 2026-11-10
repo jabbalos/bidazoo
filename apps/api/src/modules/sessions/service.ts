@@ -40,6 +40,36 @@ import {
 
 export const SESSION_TTL_MS = 2 * 60 * 60 * 1000;
 
+/** What a player can answer with: a number for number questions, a string for text questions. */
+export type AnswerValue = number | string;
+
+export type SubmittedGrade =
+  | { kind: 'graded'; correct: boolean }
+  /** The response type does not match the question's kind: a request error (400). */
+  | { kind: 'wrong_type' }
+  /** Right type, but not one of the offered choices: 422, and the question stays open. */
+  | { kind: 'invalid' };
+
+/**
+ * Grades a response against the server-held key. The question's kind is the type of its answer key,
+ * so a string for a number question (or a number for a text question) is `wrong_type`. Number
+ * questions go through learning-core's gradeAnswer unchanged.
+ */
+export function gradeSubmitted(
+  offeredChoices: readonly AnswerValue[],
+  correctAnswer: AnswerValue,
+  response: AnswerValue,
+): SubmittedGrade {
+  if (typeof response !== typeof correctAnswer) return { kind: 'wrong_type' };
+  if (typeof correctAnswer === 'number') {
+    const numbers = offeredChoices.filter((choice): choice is number => typeof choice === 'number');
+    const graded = gradeAnswer(numbers, correctAnswer, response as number);
+    return graded.kind === 'invalid' ? { kind: 'invalid' } : { kind: 'graded', correct: graded.correct };
+  }
+  if (!offeredChoices.includes(response)) return { kind: 'invalid' };
+  return { kind: 'graded', correct: response === correctAnswer };
+}
+
 // ---------------------------------------------------------------------------
 // Helpers
 // ---------------------------------------------------------------------------
@@ -285,7 +315,7 @@ async function answerInTransaction(
     if (
       sameKey.playSessionId !== sessionId ||
       sameKey.servedQuestionId !== body.questionId ||
-      sameKey.submittedResponse !== body.response
+      sameKey.submittedResponse !== String(body.response)
     ) {
       return { kind: 'error', error: errors.idempotencyConflict() };
     }
@@ -307,8 +337,8 @@ async function answerInTransaction(
   // --- Grade (server-side, from the stored key) ------------------------------
   const publicQuestion = publicQuestionOf(question);
   const grading = readPrivateGrading(question);
-  // Every stored question is a `number` question until text grading lands (Lane D, D3).
-  const graded = gradeAnswer(publicQuestion.choices as number[], grading.correctAnswer, body.response);
+  const graded = gradeSubmitted(publicQuestion.choices, grading.correctAnswer, body.response);
+  if (graded.kind === 'wrong_type') return { kind: 'error', error: new ApiError(400, 'invalid_request') };
   if (graded.kind === 'invalid') return { kind: 'error', error: errors.invalidResponse() };
 
   // Server-measured time: both ends are server timestamps. Nothing from the client is used.
@@ -326,7 +356,7 @@ async function answerInTransaction(
       playSessionId: session.id,
       playerId,
       idempotencyKey: body.attemptId,
-      submittedResponse: body.response,
+      submittedResponse: String(body.response),
       correct: graded.correct,
       fluent: update.fluent,
       responseMs,
@@ -376,7 +406,8 @@ async function answerInTransaction(
       correct: graded.correct,
       fluent: update.fluent,
       responseMs,
-      correctAnswer: grading.correctAnswer,
+      // A string for a text question; the contract field is still an integer (cross-lane request).
+      correctAnswer: grading.correctAnswer as number,
       rewards,
       mastery: toMasterySummary(grading.skillKey, update.state),
       totals: await getTotals(tx, playerId),
@@ -411,7 +442,7 @@ async function replayResult(
     correct: attempt.correct,
     fluent: attempt.fluent,
     responseMs: attempt.responseMs,
-    correctAnswer: grading.correctAnswer,
+    correctAnswer: grading.correctAnswer as number,
     rewards,
     mastery: toMasterySummary(grading.skillKey, mastery),
     totals: await getTotals(tx, session.playerId),
