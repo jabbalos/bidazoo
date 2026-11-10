@@ -29,3 +29,6 @@ export {
 export type { ExpeditionRun } from './service';
 export { destinationStamps, expeditionEvents, playerProgress } from './tables';
 export type { GearState } from './tables';
+export { GEAR_PURCHASE_SOURCE, gearPurchaseReason, getGear, updateGear } from './gear';
+export { GEAR_CATALOG, GEAR_SLOTS, gearItem, publicCatalog } from './gear-catalog';
+export type { CatalogItem, GearSlot } from './gear-catalog';

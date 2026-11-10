@@ -50,6 +50,13 @@
       "when": 1794270000000,
       "tag": "0006_text_answers",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1794280000000,
+      "tag": "0007_gear_purchases",
+      "breakpoints": true
     }
   ]
 }

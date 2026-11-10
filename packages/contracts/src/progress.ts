@@ -51,15 +51,54 @@ export const ExpeditionProgressSchema = Type.Object(
 );
 export type ExpeditionProgress = Static<typeof ExpeditionProgressSchema>;
 
-/** GET/PUT /api/v1/me/gear: item ids from the server-side catalog. Purchases debit coins server-side. */
+const GearItemId = Type.String({ minLength: 1, maxLength: 64 });
+
+/**
+ * One item of the server-side gear catalog. `price` is in coins and is the SERVER's price: a client
+ * never sends a price, it only names the item it wants (PUT body `buy`). Names and prices are
+ * PENDING owner placeholders.
+ */
+export const GearItemSchema = Type.Object(
+  {
+    id: GearItemId,
+    slot: Type.String({ minLength: 1, maxLength: 32 }),
+    name: Type.String(),
+    price: Type.Integer({ minimum: 0 }),
+  },
+  strict,
+);
+export type GearItem = Static<typeof GearItemSchema>;
+
+/**
+ * GET/PUT /api/v1/me/gear: item ids from the server-side catalog. Purchases debit coins server-side.
+ * `coins` is the player's spendable balance (the sum of the coin ledger, after purchases) and
+ * `catalog` is everything the outfitter sells, in slot order.
+ */
 export const GearSchema = Type.Object(
   {
-    owned: Type.Array(Type.String()),
-    equipped: Type.Array(Type.String()),
+    owned: Type.Array(GearItemId),
+    equipped: Type.Array(GearItemId),
+    coins: Type.Integer({ minimum: 0 }),
+    catalog: Type.Array(GearItemSchema),
   },
   strict,
 );
 export type Gear = Static<typeof GearSchema>;
+
+/**
+ * PUT /api/v1/me/gear. `buy` (optional) names ONE catalog item to purchase; the server debits its
+ * own price from its own coin totals, and buying an item already owned charges nothing. `equipped`
+ * is the full list to wear afterwards: owned items only, at most one per slot. There is no field
+ * for a price, coins or ownership, so a body such as { "coins": 999 } is rejected.
+ */
+export const UpdateGearRequestSchema = Type.Object(
+  {
+    buy: Type.Optional(GearItemId),
+    equipped: Type.Array(GearItemId, { maxItems: 8 }),
+  },
+  strict,
+);
+export type UpdateGearRequest = Static<typeof UpdateGearRequestSchema>;
 
 /** GET /api/v1/me/daily: today's route (UTC day) and whether it is done. */
 export const DailySchema = Type.Object(
