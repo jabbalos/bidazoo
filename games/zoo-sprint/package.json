@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@bidazoo/game-sdk": "*",
+    "@bidazoo/learning-core": "*",
     "phaser": "^3.90.0"
   }
 }

@@ -1,9 +1,10 @@
 import type { CharacterId } from '../roster';
 import type { SessionClient } from '../session-client';
-import { EXP_CSS } from '../theme';
-import { BUTTON_STYLES, TapButton, text } from '../ui';
+import { challengerFor, loadChallengerArt } from './challengers';
+import { EncounterOverlay } from './EncounterOverlay';
+import { initialState, runEncounter } from './encounter-flow';
 
-/** A challenger id from Lane A's challenger definitions. */
+/** A challenger id from Lane A's challenger definitions (challengers.ts). */
 export type ChallengerId = string;
 
 export interface EncounterOutcome {
@@ -14,52 +15,35 @@ export interface EncounterOutcome {
   heartsLeft: number;
 }
 
-const HEARTS = 3;
-
 /**
  * Runs one encounter over the current play session (proposal 2.6 item 1; Lane A owns it, Lane B
  * calls it). Each question comes from and is graded by the server through `opts.session`.
  *
- * Hour-1 stub: a plain overlay with the prompt and one answer tile per choice, `questions` times,
- * resolving with the counts. Won means every answer was correct; the encounter model, challenger
- * and buddy art arrive with Lane A.
+ * The overlay shows the challenger on the right and the buddy's painted bust on the left, with
+ * hearts, the charge meter, a display-only timer and the answer tiles. Hearts, strikes, charge and
+ * special moves come from the encounter model in `@bidazoo/learning-core` applied to the server's
+ * grades (one special move for a node, two for the boss; the charge meter carries from encounter to
+ * encounter while the same session client is used). Hearts at 0 end the encounter at once: lost,
+ * nothing else happens; the session itself continues. The outcome is for presentation only: the
+ * server replays its own answers for beacons and stamps.
  */
 export async function startEncounter(
   scene: Phaser.Scene,
   opts: { session: SessionClient; questions: number; kind: 'node' | 'boss'; challenger: ChallengerId; buddy: CharacterId },
 ): Promise<EncounterOutcome> {
-  const { width, height } = scene.scale;
-  const overlay = scene.add.container(0, 0).setDepth(1000);
-  overlay.add(scene.add.rectangle(width / 2, height / 2, width, height, 0x000000, 0.6).setInteractive());
-  let correct = 0;
-  let asked = 0;
-  let streak = 0;
-  let bestStreak = 0;
+  const challenger = challengerFor(opts.challenger, opts.kind);
+  await loadChallengerArt(scene, [challenger.id]);
+  const overlay = new EncounterOverlay(scene, {
+    kind: opts.kind,
+    questions: opts.questions,
+    buddy: opts.buddy,
+    challenger,
+    initial: initialState(opts.session, opts),
+  });
   try {
-    while (asked < opts.questions) {
-      const question = await opts.session.nextQuestion();
-      const choice = await new Promise<number | string>((resolve) => {
-        const prompt = text(scene, question.prompt, EXP_CSS.white, { weight: 800, size: 36, align: 'center' });
-        prompt.setOrigin(0.5).setPosition(width / 2, height * 0.3);
-        overlay.add(prompt);
-        const w = Math.min(160, (width - 40) / question.choices.length - 12);
-        question.choices.forEach((value: number | string, index: number) => {
-          const x = width / 2 + (index - (question.choices.length - 1) / 2) * (w + 12);
-          overlay.add(new TapButton(scene, `answer-${index}`, x, height * 0.6, w, 72, String(value), BUTTON_STYLES.answer, () => resolve(value), 0.5));
-        });
-      });
-      if (typeof choice !== 'number') throw new Error('Text questions are not supported by the encounter stub.');
-      const result = await opts.session.submitAnswer(choice);
-      asked += 1;
-      if (result.correct) {
-        correct += 1;
-        streak += 1;
-        bestStreak = Math.max(bestStreak, streak);
-      } else streak = 0;
-      overlay.removeBetween(1, undefined, true);
-    }
+    await overlay.intro();
+    return await runEncounter(opts.session, { questions: opts.questions, kind: opts.kind }, overlay);
   } finally {
-    overlay.destroy(true);
+    overlay.close();
   }
-  return { won: correct === asked, correct, asked, bestStreak, heartsLeft: Math.max(0, HEARTS - (asked - correct)) };
 }
