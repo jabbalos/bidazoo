@@ -1,0 +1,175 @@
+{
+  "id": "philippine-highlands-harbor",
+  "name": "Philippine Highlands & Lantern Harbor",
+  "order": 7,
+  "pathLength": 8,
+  "groundY": 0.82,
+  "palette": {
+    "colors": [
+      "#5fa84a",
+      "#c9b45a",
+      "#2aa7a1",
+      "#5a3d7a"
+    ],
+    "accent": "#ffb03a"
+  },
+  "layers": [
+    {
+      "id": "far",
+      "parallax": 0.25,
+      "file": null,
+      "shapes": [
+        {
+          "kind": "gradient",
+          "stops": [
+            {
+              "at": 0,
+              "color": "#5a3d7a"
+            },
+            {
+              "at": 0.75,
+              "color": "#f08a5d"
+            },
+            {
+              "at": 1,
+              "color": "#cc9258"
+            }
+          ]
+        },
+        {
+          "kind": "ridge",
+          "color": "#a09b53",
+          "colorBottom": "#c59357",
+          "base": 0.5,
+          "amp": 0.12,
+          "waves": 5,
+          "phase": 0.3
+        },
+        {
+          "kind": "ridge",
+          "color": "#7ca24e",
+          "colorBottom": "#a89954",
+          "base": 0.7,
+          "amp": 0.096,
+          "waves": 4,
+          "phase": 0
+        }
+      ]
+    },
+    {
+      "id": "mid",
+      "parallax": 1,
+      "file": null,
+      "shapes": [
+        {
+          "kind": "ridge",
+          "color": "#c9b45a",
+          "colorBottom": "#94ae52",
+          "base": 0.68,
+          "amp": 0.05,
+          "waves": 5,
+          "phase": 0.15
+        },
+        {
+          "kind": "ridge",
+          "color": "#c9b45a",
+          "colorBottom": "#8fad51",
+          "base": 0.82,
+          "amp": 0,
+          "waves": 1
+        }
+      ]
+    },
+    {
+      "id": "near",
+      "parallax": 1.25,
+      "file": null,
+      "shapes": [
+        {
+          "kind": "ridge",
+          "color": "#477c45",
+          "colorBottom": "#396343",
+          "base": 0.95,
+          "amp": 0.035,
+          "waves": 6,
+          "phase": 0.5
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "id": "a1",
+      "at": 0.1,
+      "type": "artifact"
+    },
+    {
+      "id": "e1",
+      "at": 0.18,
+      "type": "encounter"
+    },
+    {
+      "id": "a2",
+      "at": 0.28,
+      "type": "artifact"
+    },
+    {
+      "id": "e2",
+      "at": 0.34,
+      "type": "encounter"
+    },
+    {
+      "id": "r1",
+      "at": 0.44,
+      "type": "rest"
+    },
+    {
+      "id": "e3",
+      "at": 0.52,
+      "type": "encounter"
+    },
+    {
+      "id": "a3",
+      "at": 0.6,
+      "type": "artifact"
+    },
+    {
+      "id": "e4",
+      "at": 0.68,
+      "type": "encounter"
+    },
+    {
+      "id": "e5",
+      "at": 0.78,
+      "type": "encounter"
+    },
+    {
+      "id": "a4",
+      "at": 0.85,
+      "type": "artifact"
+    },
+    {
+      "id": "boss",
+      "at": 0.94,
+      "type": "boss"
+    }
+  ],
+  "challenger": {
+    "id": "lantern-keeper",
+    "name": "Lantern Keeper",
+    "taunts": [
+      "Every lantern needs a right answer to glow.",
+      "Light the harbor with your thinking!"
+    ]
+  },
+  "unlock": {
+    "startsUnlocked": false,
+    "requires": [
+      "nile-discovery-route"
+    ],
+    "rule": "Earn a stamp at the Nile Route to open this trail."
+  },
+  "audio": {
+    "track": null
+  }
+}

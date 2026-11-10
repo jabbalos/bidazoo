@@ -1,0 +1,173 @@
+{
+  "id": "great-wall",
+  "name": "Great Wall Mountain Expedition",
+  "order": 1,
+  "pathLength": 8,
+  "groundY": 0.82,
+  "palette": {
+    "colors": [
+      "#5c7c6b",
+      "#b9a98a",
+      "#dfe9e4",
+      "#f3d9a8"
+    ],
+    "accent": "#d9822b"
+  },
+  "layers": [
+    {
+      "id": "far",
+      "parallax": 0.25,
+      "file": null,
+      "shapes": [
+        {
+          "kind": "gradient",
+          "stops": [
+            {
+              "at": 0,
+              "color": "#f3d9a8"
+            },
+            {
+              "at": 0.75,
+              "color": "#dfe9e4"
+            },
+            {
+              "at": 1,
+              "color": "#becec6"
+            }
+          ]
+        },
+        {
+          "kind": "ridge",
+          "color": "#97ada1",
+          "colorBottom": "#b8c8c0",
+          "base": 0.47,
+          "amp": 0.14,
+          "waves": 4,
+          "phase": 0.3
+        },
+        {
+          "kind": "ridge",
+          "color": "#769283",
+          "colorBottom": "#9eb3a8",
+          "base": 0.67,
+          "amp": 0.112,
+          "waves": 3,
+          "phase": 0
+        }
+      ]
+    },
+    {
+      "id": "mid",
+      "parallax": 1,
+      "file": null,
+      "shapes": [
+        {
+          "kind": "ridge",
+          "color": "#b9a98a",
+          "colorBottom": "#8b937b",
+          "base": 0.68,
+          "amp": 0.06,
+          "waves": 4,
+          "phase": 0.15
+        },
+        {
+          "kind": "ridge",
+          "color": "#b9a98a",
+          "colorBottom": "#869079",
+          "base": 0.82,
+          "amp": 0,
+          "waves": 1
+        }
+      ]
+    },
+    {
+      "id": "near",
+      "parallax": 1.25,
+      "file": null,
+      "shapes": [
+        {
+          "kind": "ridge",
+          "color": "#45605b",
+          "colorBottom": "#384f52",
+          "base": 0.95,
+          "amp": 0.035,
+          "waves": 6,
+          "phase": 0.5
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "id": "a1",
+      "at": 0.1,
+      "type": "artifact"
+    },
+    {
+      "id": "e1",
+      "at": 0.18,
+      "type": "encounter"
+    },
+    {
+      "id": "a2",
+      "at": 0.28,
+      "type": "artifact"
+    },
+    {
+      "id": "e2",
+      "at": 0.34,
+      "type": "encounter"
+    },
+    {
+      "id": "r1",
+      "at": 0.44,
+      "type": "rest"
+    },
+    {
+      "id": "e3",
+      "at": 0.52,
+      "type": "encounter"
+    },
+    {
+      "id": "a3",
+      "at": 0.6,
+      "type": "artifact"
+    },
+    {
+      "id": "e4",
+      "at": 0.68,
+      "type": "encounter"
+    },
+    {
+      "id": "e5",
+      "at": 0.78,
+      "type": "encounter"
+    },
+    {
+      "id": "a4",
+      "at": 0.85,
+      "type": "artifact"
+    },
+    {
+      "id": "boss",
+      "at": 0.94,
+      "type": "boss"
+    }
+  ],
+  "challenger": {
+    "id": "ridge-guardian",
+    "name": "Ridge Guardian",
+    "taunts": [
+      "Halt! Count your steps on my wall.",
+      "Only a sharp mind lights the beacon."
+    ]
+  },
+  "unlock": {
+    "startsUnlocked": true,
+    "requires": [],
+    "rule": "Open from the start."
+  },
+  "audio": {
+    "track": null
+  }
+}

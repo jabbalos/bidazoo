@@ -1,0 +1,175 @@
+{
+  "id": "nile-discovery-route",
+  "name": "Nile Discovery Route",
+  "order": 6,
+  "pathLength": 8,
+  "groundY": 0.82,
+  "palette": {
+    "colors": [
+      "#3b8fa8",
+      "#e0c28a",
+      "#7fae5a",
+      "#f6e0b0"
+    ],
+    "accent": "#2f55a4"
+  },
+  "layers": [
+    {
+      "id": "far",
+      "parallax": 0.25,
+      "file": null,
+      "shapes": [
+        {
+          "kind": "gradient",
+          "stops": [
+            {
+              "at": 0,
+              "color": "#f6e0b0"
+            },
+            {
+              "at": 0.75,
+              "color": "#e0c28a"
+            },
+            {
+              "at": 1,
+              "color": "#b7b592"
+            }
+          ]
+        },
+        {
+          "kind": "ridge",
+          "color": "#e0c28a",
+          "colorBottom": "#e0c28a",
+          "base": 0.54,
+          "amp": 0.08,
+          "waves": 3,
+          "phase": 0.3
+        },
+        {
+          "kind": "ridge",
+          "color": "#e0c28a",
+          "colorBottom": "#e0c28a",
+          "base": 0.74,
+          "amp": 0.064,
+          "waves": 2,
+          "phase": 0
+        }
+      ]
+    },
+    {
+      "id": "mid",
+      "parallax": 1,
+      "file": null,
+      "shapes": [
+        {
+          "kind": "ridge",
+          "color": "#3b8fa8",
+          "colorBottom": "#3b8fa8",
+          "base": 0.7,
+          "amp": 0.03,
+          "waves": 4,
+          "phase": 0.15
+        },
+        {
+          "kind": "ridge",
+          "color": "#e0c28a",
+          "colorBottom": "#85a69b",
+          "base": 0.82,
+          "amp": 0,
+          "waves": 1
+        }
+      ]
+    },
+    {
+      "id": "near",
+      "parallax": 1.25,
+      "file": null,
+      "shapes": [
+        {
+          "kind": "ridge",
+          "color": "#5c8050",
+          "colorBottom": "#47664a",
+          "base": 0.95,
+          "amp": 0.035,
+          "waves": 6,
+          "phase": 0.5
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "id": "a1",
+      "at": 0.1,
+      "type": "artifact"
+    },
+    {
+      "id": "e1",
+      "at": 0.18,
+      "type": "encounter"
+    },
+    {
+      "id": "a2",
+      "at": 0.28,
+      "type": "artifact"
+    },
+    {
+      "id": "e2",
+      "at": 0.34,
+      "type": "encounter"
+    },
+    {
+      "id": "r1",
+      "at": 0.44,
+      "type": "rest"
+    },
+    {
+      "id": "e3",
+      "at": 0.52,
+      "type": "encounter"
+    },
+    {
+      "id": "a3",
+      "at": 0.6,
+      "type": "artifact"
+    },
+    {
+      "id": "e4",
+      "at": 0.68,
+      "type": "encounter"
+    },
+    {
+      "id": "e5",
+      "at": 0.78,
+      "type": "encounter"
+    },
+    {
+      "id": "a4",
+      "at": 0.85,
+      "type": "artifact"
+    },
+    {
+      "id": "boss",
+      "at": 0.94,
+      "type": "boss"
+    }
+  ],
+  "challenger": {
+    "id": "river-pilot",
+    "name": "River Pilot",
+    "taunts": [
+      "Steer true, the river is watching.",
+      "Chart the right course!"
+    ]
+  },
+  "unlock": {
+    "startsUnlocked": false,
+    "requires": [
+      "taj-garden"
+    ],
+    "rule": "Earn a stamp at the Taj Garden to open this trail."
+  },
+  "audio": {
+    "track": null
+  }
+}

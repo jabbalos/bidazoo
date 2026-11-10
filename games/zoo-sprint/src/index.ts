@@ -6,9 +6,11 @@ import { loadCharacter } from './roster';
 import { COLORS, hex } from './theme';
 import { BasecampScene } from './scenes/BasecampScene';
 import { BootScene } from './scenes/BootScene';
+import { ExpeditionScene } from './scenes/ExpeditionScene';
 import { MenuScene } from './scenes/MenuScene';
 import { ResultsScene } from './scenes/ResultsScene';
 import { RunScene } from './scenes/RunScene';
+import { SummitScene } from './scenes/SummitScene';
 
 /**
  * Build-time switch, set by apps/play/vite.config.ts ONLY for `--mode character-lab`. In every
@@ -76,7 +78,7 @@ function mount({ parent, platform }: MountOptions): MountedGame {
     };
   }
 
-  const game = createGame(parent, context, [BootScene, MenuScene, BasecampScene, RunScene, ResultsScene]);
+  const game = createGame(parent, context, [BootScene, MenuScene, BasecampScene, RunScene, ResultsScene, ExpeditionScene, SummitScene]);
 
   return {
     destroy() {
