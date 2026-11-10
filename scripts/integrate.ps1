@@ -55,8 +55,21 @@ if (-not $Continue) {
   Log "integrate $Lane at $tip onto $Integration at $before"
   git merge --no-ff --no-commit $tip *>&1 | Tee-Object -Append -FilePath $log | Out-Host
   if ($LASTEXITCODE -ne 0) {
-    git merge --abort *>&1 | Out-Null
-    Quit 1 "MERGE CONFLICT: merge aborted; hand the conflict back to $Lane"
+    # Every lane keeps its own REPORT.md at its root. On the integration branch the root REPORT.md stays as it is
+    # and the lane's report is kept as docs/lane-reports/<lane>.md. Any other conflict aborts the merge.
+    $conflicts = @(git diff --name-only --diff-filter=U)
+    if ($conflicts.Count -eq 1 -and $conflicts[0] -eq 'REPORT.md') {
+      $laneName = ($Lane -replace '^lane/', '')
+      New-Item -ItemType Directory -Force -Path (Join-Path $root 'docs\lane-reports') | Out-Null
+      $dest = "docs/lane-reports/$laneName.md"
+      [IO.File]::WriteAllText((Join-Path $root $dest), ((git show "${tip}:REPORT.md") -join "`n") + "`n", (New-Object System.Text.UTF8Encoding($false)))
+      [IO.File]::WriteAllText((Join-Path $root 'REPORT.md'), ((git show ':2:REPORT.md') -join "`n") + "`n", (New-Object System.Text.UTF8Encoding($false)))
+      git add REPORT.md $dest
+      Log "REPORT.md conflict resolved: integration keeps its REPORT.md; the lane's report is $dest"
+    } else {
+      git merge --abort *>&1 | Out-Null
+      Quit 1 ("MERGE CONFLICT in {0}: merge aborted; hand the conflict back to $Lane" -f ($conflicts -join ', '))
+    }
   }
   Set-Content -Path (Join-Path $logs 'integrate-pending.json') -Value (@{ lane = $Lane; tip = $tip; before = $before; stamp = $stamp } | ConvertTo-Json)
   if ($MergeOnly) { Quit 0 'merge staged (not committed). Apply cross-lane edits, git add them, then rerun with -Continue.' }
