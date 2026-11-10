@@ -180,6 +180,26 @@ export const SessionResultsSchema = Type.Object(
         strict,
       ),
     ),
+    /** Expedition sessions only (a destination was recorded): beacons lit, 0 to 5. */
+    beaconsLit: Type.Optional(Type.Integer({ minimum: 0, maximum: 5 })),
+    /** Expedition sessions only: true when at least 3 beacons were lit (decided by the server). */
+    stampEarned: Type.Optional(Type.Boolean()),
+    /** The player's level after this session (derived from XP on the server). */
+    level: Type.Optional(Type.Integer({ minimum: 1 })),
+    /** Null when this session did not change the level. */
+    levelUp: Type.Optional(
+      Type.Union([
+        Type.Null(),
+        Type.Object(
+          {
+            fromLevel: Type.Integer({ minimum: 1 }),
+            toLevel: Type.Integer({ minimum: 1 }),
+            gained: Type.Integer({ minimum: 1 }),
+          },
+          strict,
+        ),
+      ]),
+    ),
   },
   strict,
 );

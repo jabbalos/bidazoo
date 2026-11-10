@@ -15,6 +15,7 @@ import {
   generateQuestion,
   gradeAnswer,
   labelForSkillKey,
+  replayExpedition,
   selectNextSkill,
   type MasteryState,
   type SelectionReason,
@@ -22,6 +23,7 @@ import {
 } from '@bidazoo/learning-core';
 import type { AppContext, Executor, Tx } from '../../context';
 import { ApiError, errors, isUniqueViolation } from '../../http/errors';
+import { getSessionDestination, recordExpeditionRun } from '../progress/service';
 import { loadMasteryForUpdate, loadMasteryMap, saveMastery } from '../learning';
 import {
   appendGrants,
@@ -397,6 +399,7 @@ async function answerInTransaction(
         grantsForCompletion(),
       )),
     );
+    await recordExpeditionIfStarted(tx, session);
   }
 
   return {
@@ -415,6 +418,38 @@ async function answerInTransaction(
       replayed: false,
     },
   };
+}
+
+/**
+ * Expedition hook (item C2). A session with a recorded destination (its 'start' event) is replayed
+ * on the server from its stored answers, in order, and the run is recorded with the stamp decision.
+ * No start event: nothing happens. Runs inside the completion transaction and is exactly-once.
+ */
+async function recordExpeditionIfStarted(tx: Tx, session: SessionRow): Promise<void> {
+  const destination = await getSessionDestination(tx, session.id);
+  if (destination === null) return;
+  const rows = await tx
+    .select({ correct: attempts.correct })
+    .from(attempts)
+    .innerJoin(servedQuestions, eq(attempts.servedQuestionId, servedQuestions.id))
+    .where(eq(attempts.playSessionId, session.id))
+    .orderBy(asc(servedQuestions.sequence));
+  const answers = rows.map((row) => ({ correct: row.correct }));
+  const replay = replayExpedition(answers);
+  let streak = 0;
+  let bestStreak = 0;
+  for (const answer of answers) {
+    streak = answer.correct ? streak + 1 : 0;
+    bestStreak = Math.max(bestStreak, streak);
+  }
+  await recordExpeditionRun(tx, {
+    playerId: session.playerId,
+    playSessionId: session.id,
+    destination,
+    beaconsLit: replay.beaconsLit,
+    bossWon: replay.bossWon,
+    bestStreak,
+  });
 }
 
 /** Rebuilds the response for an attempt that was already committed. Awards nothing. */
