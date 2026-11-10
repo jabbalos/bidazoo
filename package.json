@@ -26,7 +26,8 @@
     "db:migrate": "npm run migrate -w @bidazoo/database",
     "check": "npm run typecheck && npm run test && npm run build",
     "playthrough": "node tests/scripts/api-playthrough.mjs",
-    "scan:client": "node tests/scripts/scan-client-bundle.mjs"
+    "scan:client": "node tests/scripts/scan-client-bundle.mjs",
+    "test:e2e:sharded": "node scripts/test-e2e-sharded.mjs"
   },
   "devDependencies": {
     "@types/node": "^22.19.0",

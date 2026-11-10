@@ -5,6 +5,16 @@ import { API_PORT, ID_API_PORT, ID_PLAY_PORT, LAB_PORT, PLAY_PORT } from './port
 const executablePath = process.env['PW_CHROMIUM_EXECUTABLE'];
 
 /**
+ * CI SHARDS ONLY (scripts/test-e2e-sharded.mjs): E2E_SKIP_BUILD=1 means the API, client and character lab were
+ * already built once by the shard runner, so the web servers below only start them (several shards must not
+ * rebuild dist/ under each other's preview servers). E2E_OUTPUT_DIR gives each shard its own output folder.
+ * Both unset (every other run, including the validator): unchanged behavior. No spec is affected.
+ */
+const skipBuild = process.env['E2E_SKIP_BUILD'] === '1';
+const build = (command: string): string => (skipBuild ? '' : `${command} && `);
+const outputDir = process.env['E2E_OUTPUT_DIR'];
+
+/**
  * OFFICIAL RUN: leave PW_CHROMIUM_EXECUTABLE unset. Playwright then uses the Chromium build it
  * pins (`npx playwright install chromium`). That is the only run that counts as validation.
  *
@@ -27,6 +37,7 @@ export default defineConfig({
   forbidOnly: !!process.env['CI'],
   retries: process.env['CI'] ? 1 : 0,
   reporter: [['list']],
+  ...(outputDir ? { outputDir } : {}),
   timeout: 90_000,
   expect: { timeout: 10_000 },
   use: {
@@ -54,7 +65,7 @@ export default defineConfig({
   ],
   webServer: [
     {
-      command: 'npm run build -w @bidazoo/api && node apps/api/dist/server.js',
+      command: `${build('npm run build -w @bidazoo/api')}node apps/api/dist/server.js`,
       url: `http://127.0.0.1:${API_PORT}/ready`,
       cwd: '../..',
       env: {
@@ -71,7 +82,7 @@ export default defineConfig({
       timeout: 120_000,
     },
     {
-      command: `npm run build -w @bidazoo/play && npm run preview -w @bidazoo/play -- --port ${PLAY_PORT} --strictPort`,
+      command: `${build('npm run build -w @bidazoo/play')}npm run preview -w @bidazoo/play -- --port ${PLAY_PORT} --strictPort`,
       url: `http://127.0.0.1:${PLAY_PORT}`,
       cwd: '../..',
       env: { API_PROXY_TARGET: `http://127.0.0.1:${API_PORT}` },
@@ -80,7 +91,7 @@ export default defineConfig({
     },
     // Developer character lab: a separate build (`--mode character-lab`) of the same client, same CSP.
     {
-      command: `npm run build:character-lab -w @bidazoo/play && npm run preview:character-lab -w @bidazoo/play -- --port ${LAB_PORT} --strictPort`,
+      command: `${build('npm run build:character-lab -w @bidazoo/play')}npm run preview:character-lab -w @bidazoo/play -- --port ${LAB_PORT} --strictPort`,
       url: `http://127.0.0.1:${LAB_PORT}`,
       cwd: '../..',
       env: { API_PROXY_TARGET: `http://127.0.0.1:${API_PORT}` },
