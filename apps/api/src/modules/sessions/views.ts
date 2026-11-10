@@ -36,8 +36,7 @@ export function publicQuestionOf(row: QuestionRow): PublicQuestion {
   const choices = (payload.choices as unknown[]).filter(
     (choice): choice is number | string => typeof choice === 'number' || typeof choice === 'string',
   );
-  // `kind` is forwarded only when the stored payload carries it. The contract type still says
-  // number[] until Lane D widens PublicQuestion, hence the cast.
+  // `kind` is forwarded only when the stored payload carries it (number questions stay as before).
   const kind = payload.kind === 'number' || payload.kind === 'text' ? payload.kind : undefined;
   return {
     id: row.id,
@@ -46,7 +45,7 @@ export function publicQuestionOf(row: QuestionRow): PublicQuestion {
     type: 'multipleChoice',
     ...(kind === undefined ? {} : { kind }),
     choices,
-  } as unknown as PublicQuestion;
+  } as PublicQuestion;
 }
 
 async function buildResults(executor: Executor, session: SessionRow): Promise<SessionResults> {

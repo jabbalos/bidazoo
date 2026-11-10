@@ -49,3 +49,12 @@ No check failed, so there is no STOP.md.
 - The section 10 row was added verbatim. Its `number | string` contains an unescaped `|`, so Markdown renders
   that row with an extra cell. Escaping it as `\|` would fix the rendering; I did not, because the row was
   specified exactly.
+
+
+---
+
+# Lane C (progression), run 2 (Sonnet, November 9, 2026)
+
+C1 check: `.bake/check.ps1` at 18:23 to 18:37 CST: ALL CHECKS PASSED (36 files, 765 tests; play-spec 24 passed). C2: not started (blocked, see Open questions). C4: level curve done, results data blocked. C-text: done; check at 18:44 to 18:55 CST on 1d9d5b0: ALL CHECKS PASSED (37 files, 782 tests; play-spec passed). Full details in the final message to the orchestrator.
+
+Files: `packages/learning-core/src/progression/{level,level.test,index}.ts`; `database/migrations/0006_text_answers.sql`, `meta/_journal.json`, `database/schema/attempts.ts` (type only); `apps/api/src/modules/sessions/{service,views}.ts`; `tests/integration/text-answers.test.ts`.
