@@ -2,7 +2,7 @@
 .SYNOPSIS
   One-click Studio PC validation for BidaZoo: the FINAL RELEASE CANDIDATE validator (Checkpoint B baseline
   01b7d41 and later). It validates ONE exact, immutable commit, supplied with -CandidateSha, against the approved
-  baseline: 126 unit, 937 integration + 3 todo, 292 Playwright in 4 projects, Chromium 156.0.8078.4,
+  baseline: 126 unit, 955 integration + 3 todo, 292 Playwright in 4 projects, Chromium 156.0.8078.4,
   Playwright 1.64.0, PostgreSQL 16.15. Any deviation from that baseline is a FAILURE, not a warning.
 
 .DESCRIPTION
@@ -110,7 +110,7 @@ $PortsExplicit = $PSBoundParameters.ContainsKey('ApiPort') -or $PSBoundParameter
 $Ports = Get-E2ePorts $ApiPort $PlayPort
 $PortsNote = ''
 $ExpectedUnit = 126
-$ExpectedIntegration = 937
+$ExpectedIntegration = 955
 $ExpectedTodo = 3
 $ExpectedPlaywright = 292
 $ExpectedProjects = 4

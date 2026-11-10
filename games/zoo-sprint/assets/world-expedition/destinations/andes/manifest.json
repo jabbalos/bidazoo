@@ -167,7 +167,7 @@
     "requires": [
       "great-wall"
     ],
-    "rule": "Earn a stamp at the Great Wall to open this trail."
+    "rule": "Earn the Petra stamp."
   },
   "audio": {
     "track": null
