@@ -60,6 +60,11 @@ export class PlaySessionClient implements SessionClient {
     const started = await this.platform.startSession({ gameId: request.gameId, mode: request.mode });
     this.chosenDestination = destination ?? null;
     this.adopt(started.session);
+    // An expedition tells the server its destination, so the server can stamp it at completion from its own
+    // replay of the answers. The server checks ownership and the unlock; a refusal surfaces as an error.
+    if (destination && request.mode === 'expedition' && this.platform.startExpeditionRun) {
+      await this.platform.startExpeditionRun({ sessionId: started.session.id, destination });
+    }
     return started.session;
   }
 
@@ -77,10 +82,6 @@ export class PlaySessionClient implements SessionClient {
     const session = this.requireSession();
     const question = this.question;
     if (!question) throw new Error('There is no outstanding question to answer; call nextQuestion() first.');
-    if (typeof choice !== 'number') {
-      // SubmitAnswerRequest.response is an integer until text grading lands (Lane D, item D3).
-      throw new Error('Text answers are not accepted by the server yet.');
-    }
     let attemptId = this.attemptIds.get(question.id);
     if (!attemptId) {
       attemptId = makeAttemptId();

@@ -163,6 +163,27 @@ function open(scene: BasecampScene): Phaser.GameObjects.Container {
   // test and debugging hook: which tile is open or locked, and where each one is on screen
   ctx.parent.setAttribute('data-map-tiles', JSON.stringify(tiles.map((t, i) => ({ id: t.id, unlocked: t.unlocked, x: Math.round(L.tiles[i]!.x), y: Math.round(L.tiles[i]!.y), w: L.tiles[i]!.w, h: L.tiles[i]!.h }))));
   root.once(Phaser.GameObjects.Events.DESTROY, () => ctx.parent.removeAttribute('data-map-tiles'));
+
+  // Passport stamps come from the server's records (GET /api/v1/me/expedition), fetched when the board
+  // opens, never at Basecamp start. The board only shows them: the server decides every unlock. When the
+  // stamps differ from what was drawn and the board is still open, it is drawn again once.
+  const platform = ctx.platform;
+  if (platform.getExpedition) {
+    void platform
+      .getExpedition()
+      .then((progress) => {
+        const fresh = new Set(progress.stamps.filter((st) => st.count > 0).map((st) => st.destination));
+        const same = fresh.size === stamped.size && [...fresh].every((d) => stamped.has(d));
+        scene.registry.set('expeditionStamps', fresh);
+        if (!same && root.scene) {
+          scene.closeOverlay();
+          scene.openOverlay('map');
+        }
+      })
+      .catch(() => {
+        // Offline or signed out: the board keeps what it drew (the destinations open from the start).
+      });
+  }
   return root;
 }
 

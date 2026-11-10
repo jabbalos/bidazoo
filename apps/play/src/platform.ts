@@ -3,6 +3,9 @@ import {
   PlatformError,
   type AnswerResult,
   type BidaZooPlatform,
+  type ExpeditionProgress,
+  type StartExpeditionRunRequest,
+  type StartExpeditionRunResponse,
   type GuestResponse,
   type PlaySession,
   type QuestionResponse,
@@ -72,5 +75,10 @@ export function createHttpPlatform(): BidaZooPlatform {
       }
       throw lastError;
     },
+
+    getExpedition: () => call<ExpeditionProgress>('GET', ApiPaths.meExpedition),
+
+    startExpeditionRun: (request: StartExpeditionRunRequest) =>
+      call<StartExpeditionRunResponse>('POST', ApiPaths.meExpeditionRuns, request),
   };
 }

@@ -21,6 +21,9 @@ import type {
   StartPlaySessionRequest,
   StartPlaySessionResponse,
   SubmitAnswerRequest,
+  ExpeditionProgress,
+  StartExpeditionRunRequest,
+  StartExpeditionRunResponse,
 } from '@bidazoo/contracts';
 
 export type {
@@ -36,6 +39,9 @@ export type {
   StartPlaySessionResponse,
   SubmitAnswerRequest,
   Totals,
+  ExpeditionProgress,
+  StartExpeditionRunRequest,
+  StartExpeditionRunResponse,
 } from '@bidazoo/contracts';
 
 /** What the platform offers a game. The shell supplies an implementation (HTTP, or a fake in tests). */
@@ -52,6 +58,17 @@ export interface BidaZooPlatform {
    * award twice, so implementations may retry network failures safely.
    */
   submitAnswer(sessionId: string, request: SubmitAnswerRequest): Promise<AnswerResult>;
+  /**
+   * World Expedition (optional: a shell without it plays expeditions without stamps). The player's
+   * passport stamps and unlocked destinations, from the server's own records.
+   */
+  getExpedition?(): Promise<ExpeditionProgress>;
+  /**
+   * World Expedition (optional). Tells the server which destination an expedition session is for; the
+   * server checks the session is this player's and the destination is unlocked, and stamps it at
+   * completion from its own replay of the answers.
+   */
+  startExpeditionRun?(request: StartExpeditionRunRequest): Promise<StartExpeditionRunResponse>;
 }
 
 export interface MountOptions {

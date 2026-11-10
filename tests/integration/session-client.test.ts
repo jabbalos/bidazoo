@@ -233,12 +233,19 @@ describe('session client (proposal 2.6 item 2)', () => {
     expect(server.count('submitAnswer')).toBe(0);
   });
 
-  it('does not send a text answer while the server accepts integers only', async () => {
+  // Owner-approved change (November 9, 2026): text answers are graded by the server since D3, so the client
+  // now sends the chosen text value exactly as chosen (the earlier version of this test pinned a refusal).
+  it('sends a text answer as the chosen value, with the same request shape as a number', async () => {
     const client = new PlaySessionClient(server);
     await client.startSession(START);
-    await client.nextQuestion();
-    await expect(client.submitAnswer('seven')).rejects.toThrow(/Text answers/);
-    expect(server.count('submitAnswer')).toBe(0);
+    const question = await client.nextQuestion();
+    await client.submitAnswer('seven');
+    expect(server.count('submitAnswer')).toBe(1);
+    const [sessionId, request] = server.calls.find((c) => c.method === 'submitAnswer')!.args as [string, SubmitAnswerRequest];
+    expect(sessionId).toBe(SESSION_ID);
+    expect(Object.keys(request).sort()).toEqual(['attemptId', 'questionId', 'response']);
+    expect(request.questionId).toBe(question.id);
+    expect(request.response).toBe('seven');
   });
 
   it('results() is null while the run is active and the server results once it is completed', async () => {

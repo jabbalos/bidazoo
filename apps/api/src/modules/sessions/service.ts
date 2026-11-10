@@ -246,7 +246,7 @@ export async function issueQuestion(
 
     // Session mix (6 generated : 4 imported per block of 10). The plan is a pure function of the
     // session seed, so every call for this session sees the same plan and the same imported items.
-    const mix = session.mode === MODE_EXPEDITION
+    const mix = session.mode === MODE_EXPEDITION && sessionMix.enabled
       ? buildSessionMix({
           length: session.totalQuestions,
           grade: sessionMix.grade,

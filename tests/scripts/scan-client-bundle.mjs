@@ -26,6 +26,8 @@ const FORBIDDEN = [
   ['wallet_transactions', 'database table'],
   ['xp_events', 'database table'],
   ['served_questions', 'database table'],
+  ['content-import', 'server-only Hop Quest importer (answer keys and rationales; owner-approved November 9, 2026)'],
+  ['math-items', 'server-only imported math items file (answer keys and rationales; owner-approved November 9, 2026)'],
   ['DATABASE_URL', 'server environment variable'],
   ['postgres://', 'connection string'],
   ['postgresql://', 'connection string'],

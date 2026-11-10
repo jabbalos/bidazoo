@@ -19,7 +19,21 @@ export const IMPORTED_ITEM_GRADE = 3;
  * The session mix applies to EXPEDITION sessions only (mode 'expedition'); the multiplication gate
  * quiz stays all generated multiplication. `sessionMix.grade` is the grade the mix draws from.
  */
-export const sessionMix = { grade: IMPORTED_ITEM_GRADE };
+/**
+ * Whether expedition sessions mix in imported items. Owner decision (November 9, 2026): the mix stays
+ * OFF in any deploy until text-choice tiles (A9) are merged and a Playwright test shows a child can see
+ * and answer a text question in an expedition. So: EXPEDITION_MIX=1 or 0 decides when set; otherwise it
+ * is off under NODE_ENV=production and on in development and test (where the mix is built and tested).
+ * When off, an expedition session is all generated multiplication (still 15 questions).
+ */
+export function expeditionMixEnabled(source: Record<string, string | undefined> = process.env): boolean {
+  const raw = source['EXPEDITION_MIX']?.trim().toLowerCase();
+  if (raw === '1' || raw === 'true') return true;
+  if (raw === '0' || raw === 'false') return false;
+  return source['NODE_ENV'] !== 'production';
+}
+
+export const sessionMix = { grade: IMPORTED_ITEM_GRADE, enabled: expeditionMixEnabled() };
 
 export const IMPORTED_ITEMS: readonly ImportedItem[] = (data as { items: ImportedItem[] }).items;
 
