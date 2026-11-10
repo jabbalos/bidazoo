@@ -16,12 +16,10 @@ import data from '../../../../../packages/content-import/data/math-items.json';
 export const IMPORTED_ITEM_GRADE = 3;
 
 /**
- * Switch for the 6:4 session mix. OFF by default because existing integration tests assume every
- * question of a session is generated multiplication (and may not be edited). The integration
- * workspace turns it on (`sessionMix.enabled = true`, e.g. in server.ts) when those tests are
- * updated. Setting `sessionMix.grade` overrides the grade for this process.
+ * The session mix applies to EXPEDITION sessions only (mode 'expedition'); the multiplication gate
+ * quiz stays all generated multiplication. `sessionMix.grade` is the grade the mix draws from.
  */
-export const sessionMix = { enabled: false, grade: IMPORTED_ITEM_GRADE };
+export const sessionMix = { grade: IMPORTED_ITEM_GRADE };
 
 export const IMPORTED_ITEMS: readonly ImportedItem[] = (data as { items: ImportedItem[] }).items;
 

@@ -1,6 +1,8 @@
 import { randomBytes, randomUUID } from 'node:crypto';
 import { and, asc, eq, lte } from 'drizzle-orm';
 import {
+  EXPEDITION_SESSION_LENGTH,
+  MODE_EXPEDITION,
   SESSION_LENGTH,
   type AnswerResult,
   type MasterySummary,
@@ -108,7 +110,12 @@ export async function startOrResumeSession(
         .from(playSessions)
         .where(and(sameGame, eq(playSessions.status, 'active')));
 
-    const [existing] = await findActive();
+    let [existing] = await findActive();
+    if (existing && existing.mode !== request.mode) {
+      // One active session per player and game: starting the other mode abandons the old one.
+      await tx.update(playSessions).set({ status: 'expired' }).where(eq(playSessions.id, existing.id));
+      existing = undefined;
+    }
     if (existing) return { session: await buildSessionView(tx, existing), resumed: true };
 
     // The partial unique index allows one active session per player and game. If two requests
@@ -120,7 +127,7 @@ export async function startOrResumeSession(
         gameId: request.gameId,
         mode: request.mode,
         seed: randomBytes(16).toString('hex'),
-        totalQuestions: SESSION_LENGTH,
+        totalQuestions: request.mode === MODE_EXPEDITION ? EXPEDITION_SESSION_LENGTH : SESSION_LENGTH,
         startedAt: now,
         expiresAt: new Date(now.getTime() + SESSION_TTL_MS),
       })
@@ -207,7 +214,7 @@ export async function issueQuestion(
 
     // Session mix (6 generated : 4 imported per block of 10). The plan is a pure function of the
     // session seed, so every call for this session sees the same plan and the same imported items.
-    const mix = sessionMix.enabled
+    const mix = session.mode === MODE_EXPEDITION
       ? buildSessionMix({
           length: session.totalQuestions,
           grade: sessionMix.grade,
