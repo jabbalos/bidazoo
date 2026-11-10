@@ -65,6 +65,9 @@ about status, fix the other doc.
 | The expedition question mix stays OFF in any deploy until A9 (text-choice tiles) is merged and a Playwright test shows a child answering a text question in an expedition. Implemented as `expeditionMixEnabled()`: off under NODE_ENV=production unless EXPEDITION_MIX=1 | O | D5, deploy |
 | Client-bundle scan gains the markers `content-import` and `math-items` | O | validator tooling |
 | Validator baseline counts: unit 126, integration 937 + 3 todo, Playwright 292 in 4 projects (all increases are new test files; see commit 67d2367) | O | validator |
+| Gemini review 4 High: destination ids come from ONE list, `EXPEDITION_DESTINATIONS` in `@bidazoo/contracts`, which the game imports (via `@bidazoo/game-sdk`). Short ids everywhere: great-wall, petra, andes, maya, taj, nile, philippine-highlands (matches docs/visual/13). The 6 asset folders are renamed. Existing-test edits approved, id strings only: `expedition.spec.ts` lines 72 and 83, `destination-model.test.ts` lines 126-133. No 2.6 signature changes (`DestinationId` stays `string`). New integration test: every manifest id is accepted by `POST /api/v1/me/expedition/runs` | O (Nov 10) | Lane B, integration |
+| Gemini review 4 Medium: the map board shows unlocks from the server's `progress.unlocked` (registry `expeditionUnlocked`, set from `getExpedition()`); manifests give only the lock-screen text; until the server answers, only Great Wall is open; tiles update in place | O (Nov 10) | Lane B, integration |
+| Quick Lows fixed in the same pass (Lane C): a retried answer with the other JSON type is a 400, not a replay; `POST .../expedition/runs` is a 409 once the session has answers; Drizzle `ledger.ts` mirrors migration 0007's checks. Doc typo in the content report (316 usable, not 296) | R | Lane C, docs |
 
 #### End of day 1 (written November 10, 2026, about 07:15 CST)
 
@@ -104,6 +107,20 @@ Open items:
   `ce33088` (new RunScene start test) to merge.
 - All kid-facing copy in `docs/COPY.md` is PENDING owner approval; nothing PENDING ships.
 - The identity flag stays off (C7 not started), so the deploy script's `identity absent` check is unchanged.
+- Gemini Lows NOT fixed in the quick pass (results in `.bake/review-results/`):
+  - R3: `POST .../expedition/runs` does not check `mode === 'expedition'`; adding it changes existing tests in
+    `expedition-completion.test.ts` (they start runs on multiplication sessions), so it needs the owner. The
+    mid-session part is fixed (409 once answered).
+  - R3: `xpAtEndOfSession` (`sessions/views.ts`) returns 0 if a completed session had no XP events (not reachable
+    today: completion always grants 25 XP).
+  - R3: `gradeSubmitted` duplicates the string-answer check instead of calling the widened `gradeAnswer`.
+  - R2/R3 unused code: `playerProgress`/`GearState` exports, `DestinationIdSchema`, `LEVEL_CURVE`/`xpForLevel`/
+    `levelProgress` (tests only), `isImportedSkillKey`, `excludeIds`, `progress/index.ts` re-exports that
+    callers bypass, `PlaySessionClient.destination` getter (Lane A).
+  - R2/R3/R4: an unreachable `app.register(progressModule)` line in `progress-expedition.test.ts:60`,
+    `expedition-completion.test.ts:55`, `progress-gear.test.ts:60` (removing it is an existing-test change).
+  - R4: gear is saved but not drawn on the walker or bust (already the day-2 Lane B item).
+  - R2: the `as number` cast on `correctAnswer` was already removed in `ed3f41b` (no action).
 
 #### Graphics to replace (placeholder visuals; never block a merge or deploy)
 

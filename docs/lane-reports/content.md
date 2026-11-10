@@ -43,7 +43,7 @@ Note: the brief names `apps/hop-quest/lib/bank.js`; the file is actually `Hop-Qu
   (the bare root form `npm run content:import -- <path>` needs change request 3).
 - Real run: 372 imported of 1869 math items. Per grade: K 9, 1 30, 2 28, 3 38, 4 62, 5 59, 6 47, 7 51, 8 48. 98 number, 274 text.
   Rejects: type not mc 900, figure 516, choiceFigures/other 0 (the 3 or 4 choice rule rejected none). 56 imported items carry a
-  table the prompt cannot show: kept and flagged `needsTable`; selection skips them (296 usable).
+  table the prompt cannot show: kept and flagged `needsTable`; selection skips them (316 usable; corrected from 296 after Gemini review 3).
 - Tests: `tests/integration/content-import.test.ts` (17 tests, fixture bank in `tests/integration/fixtures/bank`): filtering,
   reasons, key conversion, report text, determinism, CLI run (and bank folder untouched), and the client-isolation proof:
   no file in `apps/play` (src, dist if built, package.json), `games`, `packages/ui|game-sdk|contracts|assets` references
