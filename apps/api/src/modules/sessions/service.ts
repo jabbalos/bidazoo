@@ -1,6 +1,8 @@
 import { randomBytes, randomUUID } from 'node:crypto';
 import { and, asc, eq, lte } from 'drizzle-orm';
 import {
+  EXPEDITION_SESSION_LENGTH,
+  MODE_EXPEDITION,
   SESSION_LENGTH,
   type AnswerResult,
   type MasterySummary,
@@ -12,9 +14,13 @@ import {
 import { attempts, playSessions, servedQuestions } from '@bidazoo/database/schema';
 import {
   applyAttempt,
+  buildSessionMix,
+  createRng,
   generateQuestion,
   gradeAnswer,
+  importedSkillKey,
   labelForSkillKey,
+  parseSkillKey,
   replayExpedition,
   selectNextSkill,
   type MasteryState,
@@ -33,6 +39,7 @@ import {
   grantsForSource,
   type Grant,
 } from '../rewards';
+import { IMPORTED_ITEMS, importedItemById, sessionMix } from './imported-bank';
 import {
   buildSessionView,
   publicQuestionOf,
@@ -135,7 +142,12 @@ export async function startOrResumeSession(
         .from(playSessions)
         .where(and(sameGame, eq(playSessions.status, 'active')));
 
-    const [existing] = await findActive();
+    let [existing] = await findActive();
+    if (existing && existing.mode !== request.mode) {
+      // One active session per player and game: starting the other mode abandons the old one.
+      await tx.update(playSessions).set({ status: 'expired' }).where(eq(playSessions.id, existing.id));
+      existing = undefined;
+    }
     if (existing) return { session: await buildSessionView(tx, existing), resumed: true };
 
     // The partial unique index allows one active session per player and game. If two requests
@@ -147,7 +159,7 @@ export async function startOrResumeSession(
         gameId: request.gameId,
         mode: request.mode,
         seed: randomBytes(16).toString('hex'),
-        totalQuestions: SESSION_LENGTH,
+        totalQuestions: request.mode === MODE_EXPEDITION ? EXPEDITION_SESSION_LENGTH : SESSION_LENGTH,
         startedAt: now,
         expiresAt: new Date(now.getTime() + SESSION_TTL_MS),
       })
@@ -219,40 +231,74 @@ export async function issueQuestion(
       .innerJoin(attempts, eq(attempts.servedQuestionId, servedQuestions.id))
       .where(eq(servedQuestions.playSessionId, session.id))
       .orderBy(asc(servedQuestions.sequence));
-    const history: SessionHistoryItem[] = answeredRows.map((row) => ({
-      skillKey: row.skillKey,
-      reason: row.reason as SelectionReason,
-      correct: row.correct,
-    }));
+    // Selection of generated multiplication looks only at multiplication history: an imported
+    // question must never be picked up as a "retry" of a fact.
+    const history: SessionHistoryItem[] = answeredRows
+      .filter((row) => parseSkillKey(row.skillKey) !== null)
+      .map((row) => ({
+        skillKey: row.skillKey,
+        reason: row.reason as SelectionReason,
+        correct: row.correct,
+      }));
 
     const mastery = await loadMasteryMap(tx, playerId);
     const questionSeed = `${session.seed}:${sequence}`;
-    const selection = selectNextSkill({ seed: questionSeed, now, mastery, history });
+
+    // Session mix (6 generated : 4 imported per block of 10). The plan is a pure function of the
+    // session seed, so every call for this session sees the same plan and the same imported items.
+    const mix = session.mode === MODE_EXPEDITION
+      ? buildSessionMix({
+          length: session.totalQuestions,
+          grade: sessionMix.grade,
+          items: IMPORTED_ITEMS,
+          seed: session.seed,
+        })
+      : [];
+    const slot = mix[sequence - 1];
+    const importedItem = slot && slot.source === 'imported' ? importedItemById(slot.itemId) : undefined;
 
     const previous = rows[rows.length - 1];
     let avoidAnswerIndex: number | undefined;
     if (previous) {
-      const previousChoices: readonly (number | string)[] = publicQuestionOf(previous).choices;
-      avoidAnswerIndex = previousChoices.indexOf(readPrivateGrading(previous).correctAnswer);
+      // Read the raw key: it is a string for a text question.
+      const previousChoices = (previous.publicPayload as { choices: readonly (number | string)[] }).choices;
+      const previousKey = (previous.privateGradingData as { correctAnswer: number | string }).correctAnswer;
+      avoidAnswerIndex = previousChoices.indexOf(previousKey);
     }
-    const generated = generateQuestion(selection.skillKey, questionSeed, { avoidAnswerIndex });
 
     const id = randomUUID();
-    const publicPayload = {
-      id,
-      sequence,
-      prompt: generated.prompt,
-      type: 'multipleChoice',
-      choices: generated.choices,
-    };
+    let skillKey: string;
+    let reason: SelectionReason;
+    let publicPayload: Record<string, unknown>;
+    let privateGradingData: Record<string, unknown>;
+    if (importedItem) {
+      skillKey = importedSkillKey(importedItem.grade, importedItem.skill);
+      const state = mastery.get(skillKey);
+      reason = !state || state.attempts === 0 ? 'new' : now.getTime() >= state.nextReviewAt.getTime() ? 'due' : 'review';
+      const offered = importedItem.choices as (number | string)[];
+      // Choices are shuffled from the session seed; the key avoids the previous answer's slot.
+      let choices = createRng(`${questionSeed}:choices`).shuffle(offered);
+      for (let attempt = 1; attempt < 8 && choices.indexOf(importedItem.key) === avoidAnswerIndex; attempt++) {
+        choices = createRng(`${questionSeed}:choices:${attempt}`).shuffle(offered);
+      }
+      publicPayload = { id, sequence, prompt: importedItem.prompt, type: 'multipleChoice', kind: importedItem.kind, choices };
+      privateGradingData = { skillKey, correctAnswer: importedItem.key, itemId: importedItem.id };
+    } else {
+      const selection = selectNextSkill({ seed: questionSeed, now, mastery, history });
+      const generated = generateQuestion(selection.skillKey, questionSeed, { avoidAnswerIndex });
+      skillKey = generated.skillKey;
+      reason = selection.reason;
+      publicPayload = { id, sequence, prompt: generated.prompt, type: 'multipleChoice', choices: generated.choices };
+      privateGradingData = { skillKey: generated.skillKey, correctAnswer: generated.correctAnswer };
+    }
     await tx.insert(servedQuestions).values({
       id,
       playSessionId: session.id,
       sequence,
-      skillKey: generated.skillKey,
-      selectionReason: selection.reason,
+      skillKey,
+      selectionReason: reason,
       publicPayload,
-      privateGradingData: { skillKey: generated.skillKey, correctAnswer: generated.correctAnswer },
+      privateGradingData,
       servedAt: now,
     });
 
@@ -409,8 +455,7 @@ async function answerInTransaction(
       correct: graded.correct,
       fluent: update.fluent,
       responseMs,
-      // A string for a text question; the contract field is still an integer (cross-lane request).
-      correctAnswer: grading.correctAnswer as number,
+      correctAnswer: grading.correctAnswer,
       rewards,
       mastery: toMasterySummary(grading.skillKey, update.state),
       totals: await getTotals(tx, playerId),
@@ -477,7 +522,7 @@ async function replayResult(
     correct: attempt.correct,
     fluent: attempt.fluent,
     responseMs: attempt.responseMs,
-    correctAnswer: grading.correctAnswer as number,
+    correctAnswer: grading.correctAnswer,
     rewards,
     mastery: toMasterySummary(grading.skillKey, mastery),
     totals: await getTotals(tx, session.playerId),

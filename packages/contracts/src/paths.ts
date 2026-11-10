@@ -56,4 +56,7 @@ export const GAME_ID = 'zoo-sprint';
 export const MODE_MULTIPLICATION = 'multiplication';
 /** Questions in one play session. The server enforces it; the client only displays it. */
 export const SESSION_LENGTH = 10;
+/** Expedition sessions: the question mix (9 generated, 6 imported) applies to these only. */
+export const MODE_EXPEDITION = 'expedition';
+export const EXPEDITION_SESSION_LENGTH = 15;
 

@@ -1,0 +1,14 @@
+{
+  "name": "@bidazoo/content-import",
+  "version": "0.0.0",
+  "private": true,
+  "description": "SERVER-SIDE ONLY. Reads Hop Quest math bank files (read-only) into answer-keyed items. Never imported by the game or any client bundle.",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json",
+    "content:import": "node --import tsx src/cli.ts"
+  }
+}

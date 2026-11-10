@@ -19,8 +19,8 @@
 import { Type, type Static } from 'typebox';
 
 // Paths and constants live in ./paths so clients can import them without TypeBox.
-export { ACCOUNT_PAGE_PATH, API_PREFIX, ApiPaths, GAME_ID, LINK_FRAGMENT_KEY, MODE_MULTIPLICATION, SESSION_LENGTH } from './paths';
-import { GAME_ID, MODE_MULTIPLICATION } from './paths';
+export { ACCOUNT_PAGE_PATH, API_PREFIX, ApiPaths, EXPEDITION_SESSION_LENGTH, GAME_ID, LINK_FRAGMENT_KEY, MODE_EXPEDITION, MODE_MULTIPLICATION, SESSION_LENGTH } from './paths';
+import { GAME_ID, MODE_EXPEDITION, MODE_MULTIPLICATION } from './paths';
 
 // ---------------------------------------------------------------------------
 // Shared building blocks
@@ -153,7 +153,7 @@ export type GuestResponse = Static<typeof GuestResponseSchema>;
 export const StartPlaySessionRequestSchema = Type.Object(
   {
     gameId: Type.Literal(GAME_ID),
-    mode: Type.Literal(MODE_MULTIPLICATION),
+    mode: Type.Union([Type.Literal(MODE_MULTIPLICATION), Type.Literal(MODE_EXPEDITION)]),
   },
   strict,
 );
@@ -270,7 +270,11 @@ export const SubmitAnswerRequestSchema = Type.Object(
   {
     attemptId: Type.String({ minLength: 8, maxLength: 64, pattern: '^[A-Za-z0-9_-]+$' }),
     questionId: Uuid,
-    response: Type.Integer({ minimum: 0, maximum: 100000 }),
+    /** The chosen value: an integer for `number` questions, the chosen string for `text` questions. */
+    response: Type.Union([
+      Type.Integer({ minimum: 0, maximum: 100000 }),
+      Type.String({ minLength: 1, maxLength: 200 }),
+    ]),
   },
   strict,
 );
@@ -310,7 +314,7 @@ export const AnswerResultSchema = Type.Object(
     /** Server-measured: answered_at minus served_at. */
     responseMs: Type.Integer({ minimum: 0 }),
     /** Revealed only AFTER grading. */
-    correctAnswer: Type.Integer({ minimum: 0 }),
+    correctAnswer: Type.Union([Type.Integer({ minimum: 0 }), Type.String({ minLength: 1 })]),
     rewards: Type.Array(RewardGrantSchema),
     mastery: MasterySummarySchema,
     totals: TotalsSchema,
