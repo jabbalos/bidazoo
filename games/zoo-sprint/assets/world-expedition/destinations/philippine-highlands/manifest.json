@@ -1,5 +1,5 @@
 {
-  "id": "philippine-highlands-harbor",
+  "id": "philippine-highlands",
   "name": "Philippine Highlands & Lantern Harbor",
   "order": 7,
   "pathLength": 8,
@@ -165,7 +165,7 @@
   "unlock": {
     "startsUnlocked": false,
     "requires": [
-      "nile-discovery-route"
+      "nile"
     ],
     "rule": "Earn a stamp at the Nile Route to open this trail."
   },

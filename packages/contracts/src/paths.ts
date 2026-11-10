@@ -60,3 +60,18 @@ export const SESSION_LENGTH = 10;
 export const MODE_EXPEDITION = 'expedition';
 export const EXPEDITION_SESSION_LENGTH = 15;
 
+/**
+ * The seven destinations in passport order (docs/visual/12-destination-worlds.md; ids as in the
+ * world folders of docs/visual/13-phaser-asset-spec.md and the game's destination folders). The server
+ * unlocks them in this order.
+ * PENDING owner decision: the order and the unlock rule (see the progress module).
+ */
+export const EXPEDITION_DESTINATIONS = [
+  'great-wall',
+  'petra',
+  'andes',
+  'maya',
+  'taj',
+  'nile',
+  'philippine-highlands',
+] as const;

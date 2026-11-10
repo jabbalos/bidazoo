@@ -123,14 +123,14 @@ describe('the map board tiles', () => {
   });
 
   it('opens a locked destination once every destination it requires has a stamp', () => {
-    const andes = manifests().find((m) => m.id === 'andes-cloud-terraces')!;
+    const andes = manifests().find((m) => m.id === 'andes')!;
     expect(isUnlocked(andes)).toBe(false);
-    expect(isUnlocked(andes, new Set(['petra-rose-canyon']))).toBe(false);
+    expect(isUnlocked(andes, new Set(['petra']))).toBe(false);
     expect(isUnlocked(andes, new Set(andes.unlock.requires))).toBe(true);
   });
 
   it('never locks Great Wall, even if its manifest said otherwise', () => {
-    const gw = { ...manifests()[0]!, unlock: { startsUnlocked: false, requires: ['andes-cloud-terraces'], rule: 'x' } };
+    const gw = { ...manifests()[0]!, unlock: { startsUnlocked: false, requires: ['andes'], rule: 'x' } };
     expect(isUnlocked(gw)).toBe(true);
   });
 });

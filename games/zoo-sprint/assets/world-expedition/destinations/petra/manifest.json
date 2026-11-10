@@ -1,17 +1,17 @@
 {
-  "id": "nile-discovery-route",
-  "name": "Nile Discovery Route",
-  "order": 6,
+  "id": "petra",
+  "name": "Petra Rose Canyon",
+  "order": 2,
   "pathLength": 8,
   "groundY": 0.82,
   "palette": {
     "colors": [
-      "#3b8fa8",
-      "#e0c28a",
-      "#7fae5a",
-      "#f6e0b0"
+      "#d98c78",
+      "#b8604c",
+      "#7a3b3a",
+      "#f6d6a8"
     ],
-    "accent": "#2f55a4"
+    "accent": "#3aa5a0"
   },
   "layers": [
     {
@@ -24,33 +24,33 @@
           "stops": [
             {
               "at": 0,
-              "color": "#f6e0b0"
+              "color": "#f6d6a8"
             },
             {
               "at": 0.75,
-              "color": "#e0c28a"
+              "color": "#d98c78"
             },
             {
               "at": 1,
-              "color": "#b7b592"
+              "color": "#d98c78"
             }
           ]
         },
         {
           "kind": "ridge",
-          "color": "#e0c28a",
-          "colorBottom": "#e0c28a",
-          "base": 0.54,
-          "amp": 0.08,
+          "color": "#c77460",
+          "colorBottom": "#cf7f6b",
+          "base": 0.42,
+          "amp": 0.18,
           "waves": 3,
           "phase": 0.3
         },
         {
           "kind": "ridge",
-          "color": "#e0c28a",
-          "colorBottom": "#e0c28a",
-          "base": 0.74,
-          "amp": 0.064,
+          "color": "#bf6955",
+          "colorBottom": "#c97662",
+          "base": 0.62,
+          "amp": 0.144,
           "waves": 2,
           "phase": 0
         }
@@ -63,17 +63,17 @@
       "shapes": [
         {
           "kind": "ridge",
-          "color": "#3b8fa8",
-          "colorBottom": "#3b8fa8",
-          "base": 0.7,
-          "amp": 0.03,
-          "waves": 4,
+          "color": "#d98c78",
+          "colorBottom": "#d98c78",
+          "base": 0.66,
+          "amp": 0.07,
+          "waves": 3,
           "phase": 0.15
         },
         {
           "kind": "ridge",
-          "color": "#e0c28a",
-          "colorBottom": "#85a69b",
+          "color": "#b8604c",
+          "colorBottom": "#ca7864",
           "base": 0.82,
           "amp": 0,
           "waves": 1
@@ -87,8 +87,8 @@
       "shapes": [
         {
           "kind": "ridge",
-          "color": "#5c8050",
-          "colorBottom": "#47664a",
+          "color": "#58353b",
+          "colorBottom": "#45323c",
           "base": 0.95,
           "amp": 0.035,
           "waves": 6,
@@ -155,19 +155,19 @@
     }
   ],
   "challenger": {
-    "id": "river-pilot",
-    "name": "River Pilot",
+    "id": "canyon-keeper",
+    "name": "Canyon Keeper",
     "taunts": [
-      "Steer true, the river is watching.",
-      "Chart the right course!"
+      "The canyon echoes every wrong answer.",
+      "Show me you can solve it!"
     ]
   },
   "unlock": {
     "startsUnlocked": false,
     "requires": [
-      "taj-garden"
+      "great-wall"
     ],
-    "rule": "Earn a stamp at the Taj Garden to open this trail."
+    "rule": "Earn the Great Wall stamp."
   },
   "audio": {
     "track": null

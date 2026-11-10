@@ -7,6 +7,7 @@
  */
 import { Type, type Static } from 'typebox';
 import { strict, Uuid } from './common';
+import { EXPEDITION_DESTINATIONS } from './paths';
 
 const DestinationId = Type.String({ minLength: 1, maxLength: 64 });
 
@@ -14,19 +15,10 @@ const DestinationId = Type.String({ minLength: 1, maxLength: 64 });
 export const DestinationIdSchema = DestinationId;
 
 /**
- * The seven destinations in passport order (docs/visual/12-destination-worlds.md; ids as in the
- * world folders of docs/visual/13-phaser-asset-spec.md). The server unlocks them in this order.
- * PENDING owner decision: the order and the unlock rule (see the progress module).
+ * The seven destinations in passport order. The list itself lives in ./paths (no TypeBox) so the game
+ * imports the SAME list (Gemini review 4, High; owner decision November 10, 2026: short ids).
  */
-export const EXPEDITION_DESTINATIONS = [
-  'great-wall',
-  'petra',
-  'andes',
-  'maya',
-  'taj',
-  'nile',
-  'philippine-highlands',
-] as const;
+export { EXPEDITION_DESTINATIONS };
 export type ExpeditionDestination = (typeof EXPEDITION_DESTINATIONS)[number];
 
 /** One destination's passport stamp: earned when the server's replay lit at least 3 of 5 beacons. */

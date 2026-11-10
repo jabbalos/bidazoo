@@ -1,17 +1,17 @@
 {
-  "id": "taj-garden",
-  "name": "Taj Garden Expedition",
-  "order": 5,
+  "id": "maya",
+  "name": "Maya Jungle Observatory",
+  "order": 4,
   "pathLength": 8,
   "groundY": 0.82,
   "palette": {
     "colors": [
-      "#f4efe3",
-      "#5aa9c4",
-      "#4f9a6a",
-      "#f2c9a0"
+      "#8d9a7b",
+      "#1f6f4a",
+      "#2bb5b0",
+      "#4a5a8c"
     ],
-    "accent": "#e8a33d"
+    "accent": "#ffc83d"
   },
   "layers": [
     {
@@ -24,34 +24,34 @@
           "stops": [
             {
               "at": 0,
-              "color": "#f2c9a0"
+              "color": "#4a5a8c"
             },
             {
               "at": 0.75,
-              "color": "#f4efe3"
+              "color": "#ffc83d"
             },
             {
               "at": 1,
-              "color": "#f4efe3"
+              "color": "#e3bd4d"
             }
           ]
         },
         {
           "kind": "ridge",
-          "color": "#f4efe3",
-          "colorBottom": "#f4efe3",
+          "color": "#849744",
+          "colorBottom": "#bcad41",
           "base": 0.52,
           "amp": 0.1,
-          "waves": 3,
+          "waves": 6,
           "phase": 0.3
         },
         {
           "kind": "ridge",
-          "color": "#f4efe3",
-          "colorBottom": "#f4efe3",
+          "color": "#4c8147",
+          "colorBottom": "#8f9c44",
           "base": 0.72,
           "amp": 0.08,
-          "waves": 2,
+          "waves": 5,
           "phase": 0
         }
       ]
@@ -63,17 +63,17 @@
       "shapes": [
         {
           "kind": "ridge",
-          "color": "#4f9a6a",
-          "colorBottom": "#a2c5a7",
-          "base": 0.7,
-          "amp": 0.04,
-          "waves": 6,
+          "color": "#8d9a7b",
+          "colorBottom": "#8d9a7b",
+          "base": 0.66,
+          "amp": 0.08,
+          "waves": 3,
           "phase": 0.15
         },
         {
           "kind": "ridge",
-          "color": "#4f9a6a",
-          "colorBottom": "#aac9ad",
+          "color": "#8d9a7b",
+          "colorBottom": "#8d9a7b",
           "base": 0.82,
           "amp": 0,
           "waves": 1
@@ -87,8 +87,8 @@
       "shapes": [
         {
           "kind": "ridge",
-          "color": "#3c735a",
-          "colorBottom": "#325d51",
+          "color": "#1d5745",
+          "colorBottom": "#1c4a43",
           "base": 0.95,
           "amp": 0.035,
           "waves": 6,
@@ -155,19 +155,19 @@
     }
   ],
   "challenger": {
-    "id": "garden-warden",
-    "name": "Garden Warden",
+    "id": "star-watcher",
+    "name": "Star Watcher",
     "taunts": [
-      "A calm mind makes the clearest reflection.",
-      "Think it through, one step at a time!"
+      "The stars wait for the right answer.",
+      "Look up, then look closely!"
     ]
   },
   "unlock": {
     "startsUnlocked": false,
     "requires": [
-      "maya-jungle-observatory"
+      "andes"
     ],
-    "rule": "Earn a stamp at the Maya Observatory to open this trail."
+    "rule": "Earn a stamp at the Andes to open this trail."
   },
   "audio": {
     "track": null

@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 import { getContext } from '../context';
-import { ENCOUNTER_NODES, mapTiles, type DestinationManifest, type MapTile } from '../presentation/destination-model';
+import { ENCOUNTER_NODES, EXPEDITION_UNLOCKED_KEY, mapTiles, serverUnlockedIds, type DestinationManifest, type MapTile } from '../presentation/destination-model';
 import { parchmentPanel, softShadow } from '../presentation/surfaces';
 import type { BasecampScene } from '../scenes/BasecampScene';
 import { EXP, EXP_CSS, mix } from '../theme';
@@ -14,19 +14,13 @@ import { registerOverlay } from './overlays';
  * Basecamp through the overlay registry. Locked tiles show a silhouette and the unlock rule. Tapping
  * an unlocked tile opens the trailhead card; "start" begins the expedition (ExpeditionScene).
  *
- * Which destinations are unlocked comes from manifest data plus the passport stamps the progress
- * lane reports. Stamps are read from `scene.registry.get('expeditionStamps')` (a Set or array of
- * destination ids) when the shell provides them; without it only the destinations that start
- * unlocked are open. PRESENTATION ONLY: unlocking here never grants anything, the server does.
+ * Which destinations are unlocked comes ONLY from the server: the scene registry key
+ * 'expeditionUnlocked' (an array of destination ids, set by the shell from the server's expedition
+ * progress when the map opens). The manifest supplies only the lock-screen text. Until the key is set,
+ * only Great Wall is open. When the key changes while the board is open, the tiles update in place.
+ * PRESENTATION ONLY: unlocking here never grants anything, the server does.
  */
 const hexNum = (h: string): number => parseInt(h.slice(1), 16);
-
-function stampsOf(scene: Phaser.Scene): Set<string> {
-  const raw = scene.registry.get('expeditionStamps') as unknown;
-  if (raw instanceof Set) return new Set([...raw].filter((v): v is string => typeof v === 'string'));
-  if (Array.isArray(raw)) return new Set(raw.filter((v): v is string => typeof v === 'string'));
-  return new Set();
-}
 
 /** The sky colors of a destination, drawn as soft bands. */
 function paintTileArt(g: Phaser.GameObjects.Graphics, r: Rect, m: DestinationManifest, locked: boolean): void {
@@ -59,8 +53,8 @@ function open(scene: BasecampScene): Phaser.GameObjects.Container {
   const ctx = getContext(scene);
   const { width: w, height: h } = scene.scale;
   const manifests = allDestinations();
-  const stamped = stampsOf(scene);
-  const tiles = mapTiles(manifests, stamped);
+  const readTiles = (): MapTile[] => mapTiles(manifests, serverUnlockedIds(scene.registry.get(EXPEDITION_UNLOCKED_KEY)));
+  let tiles = readTiles();
   const L = mapBoardLayout(w, h, tiles.length);
   const root = scene.add.container(0, 0);
   const unit = Math.min(w, h);
@@ -126,62 +120,76 @@ function open(scene: BasecampScene): Phaser.GameObjects.Container {
     ]);
   };
 
-  tiles.forEach((t: MapTile, i) => {
-    const r = L.tiles[i]!;
-    const m = destinationById(t.id)!;
-    const cell = scene.add.container(r.x, r.y);
-    const g = scene.add.graphics();
-    softShadow(g, { x: 0, y: 0, w: r.w, h: r.h }, 14, 6, 0.25);
-    g.fillStyle(t.unlocked ? EXP.brass : EXP.dimDeep, 1);
-    g.fillRoundedRect(-2, -2, r.w + 4, r.h + 4, 14);
-    // art, clipped to the tile by drawing inside it
-    paintTileArt(g, { x: 0, y: 0, w: r.w, h: r.h }, m, !t.unlocked);
-    g.fillStyle(t.unlocked ? EXP.parchment : EXP.dim, 1);
-    g.fillRect(0, r.h * 0.58, r.w, r.h * 0.42);
-    cell.add(g);
-    const nameSize = Math.max(11, Math.round(Math.min(r.h * 0.12, r.w * 0.085)));
-    const name = text(scene, t.name, t.unlocked ? EXP_CSS.navy : EXP_CSS.muted, { weight: 800, size: nameSize, align: 'center', wrapWidth: r.w * 0.92 }).setOrigin(0.5, 0);
-    name.setPosition(r.w / 2, r.h * 0.6);
-    cell.add(name);
-    if (!t.unlocked) {
-      const rule = text(scene, t.rule, EXP_CSS.muted, { weight: 700, size: Math.max(10, Math.round(nameSize * 0.82)), align: 'center', wrapWidth: r.w * 0.9 }).setOrigin(0.5, 0);
-      rule.setPosition(r.w / 2, name.y + name.height + 2);
-      cell.add(rule);
-    }
-    cell.setSize(r.w, r.h).setInteractive(new Phaser.Geom.Rectangle(0, 0, r.w, r.h), Phaser.Geom.Rectangle.Contains);
-    if (t.unlocked) {
-      cell.input!.cursor = 'pointer';
-      cell.on('pointerup', () => openCard(m));
-    }
-    surface.add(cell);
-  });
+  const drawTiles = (): void => {
+    surface.removeAll(true);
+    tiles.forEach((t: MapTile, i) => {
+      const r = L.tiles[i]!;
+      const m = destinationById(t.id)!;
+      const cell = scene.add.container(r.x, r.y);
+      const g = scene.add.graphics();
+      softShadow(g, { x: 0, y: 0, w: r.w, h: r.h }, 14, 6, 0.25);
+      g.fillStyle(t.unlocked ? EXP.brass : EXP.dimDeep, 1);
+      g.fillRoundedRect(-2, -2, r.w + 4, r.h + 4, 14);
+      // art, clipped to the tile by drawing inside it
+      paintTileArt(g, { x: 0, y: 0, w: r.w, h: r.h }, m, !t.unlocked);
+      g.fillStyle(t.unlocked ? EXP.parchment : EXP.dim, 1);
+      g.fillRect(0, r.h * 0.58, r.w, r.h * 0.42);
+      cell.add(g);
+      const nameSize = Math.max(11, Math.round(Math.min(r.h * 0.12, r.w * 0.085)));
+      const name = text(scene, t.name, t.unlocked ? EXP_CSS.navy : EXP_CSS.muted, { weight: 800, size: nameSize, align: 'center', wrapWidth: r.w * 0.92 }).setOrigin(0.5, 0);
+      name.setPosition(r.w / 2, r.h * 0.6);
+      cell.add(name);
+      if (!t.unlocked) {
+        const rule = text(scene, t.rule, EXP_CSS.muted, { weight: 700, size: Math.max(10, Math.round(nameSize * 0.82)), align: 'center', wrapWidth: r.w * 0.9 }).setOrigin(0.5, 0);
+        rule.setPosition(r.w / 2, name.y + name.height + 2);
+        cell.add(rule);
+      }
+      cell.setSize(r.w, r.h).setInteractive(new Phaser.Geom.Rectangle(0, 0, r.w, r.h), Phaser.Geom.Rectangle.Contains);
+      if (t.unlocked) {
+        cell.input!.cursor = 'pointer';
+        cell.on('pointerup', () => openCard(m));
+      }
+      surface.add(cell);
+    });
+  };
 
   const setA11yTiles = (): void =>
     setA11y(tiles.map((t) => ({ id: `map-tile-${t.id}`, label: t.unlocked ? `${t.name}. Open.` : `${t.name}. Locked. ${t.rule}`, onClick: () => { if (t.unlocked) openCard(destinationById(t.id)!); } })));
+  const publishHook = (): void =>
+    ctx.parent.setAttribute('data-map-tiles', JSON.stringify(tiles.map((t, i) => ({ id: t.id, unlocked: t.unlocked, x: Math.round(L.tiles[i]!.x), y: Math.round(L.tiles[i]!.y), w: L.tiles[i]!.w, h: L.tiles[i]!.h }))));
+  drawTiles();
   setA11yTiles();
-
   // test and debugging hook: which tile is open or locked, and where each one is on screen
-  ctx.parent.setAttribute('data-map-tiles', JSON.stringify(tiles.map((t, i) => ({ id: t.id, unlocked: t.unlocked, x: Math.round(L.tiles[i]!.x), y: Math.round(L.tiles[i]!.y), w: L.tiles[i]!.w, h: L.tiles[i]!.h }))));
-  root.once(Phaser.GameObjects.Events.DESTROY, () => ctx.parent.removeAttribute('data-map-tiles'));
+  publishHook();
+  // the server's list changed while the board is open: update the tiles in place (no close and reopen)
+  const onUnlockedChange = (_parent: unknown, key: string): void => {
+    if (key !== EXPEDITION_UNLOCKED_KEY) return;
+    tiles = readTiles();
+    drawTiles();
+    publishHook();
+    if (!card) setA11yTiles();
+  };
+  // Phaser emits 'setdata' when the key is first set and 'changedata' when it changes later
+  scene.registry.events.on('setdata', onUnlockedChange);
+  scene.registry.events.on('changedata', onUnlockedChange);
+  root.once(Phaser.GameObjects.Events.DESTROY, () => {
+    scene.registry.events.off('setdata', onUnlockedChange);
+    scene.registry.events.off('changedata', onUnlockedChange);
+    ctx.parent.removeAttribute('data-map-tiles');
+  });
 
-  // Passport stamps come from the server's records (GET /api/v1/me/expedition), fetched when the board
-  // opens, never at Basecamp start. The board only shows them: the server decides every unlock. When the
-  // stamps differ from what was drawn and the board is still open, it is drawn again once.
+  // Unlocks come from the server's records (GET /api/v1/me/expedition), fetched when the board opens,
+  // never at Basecamp start. The board only shows them (Gemini review 4, Medium): the server's
+  // progress.unlocked goes into the registry and the listener above updates the tiles in place.
   const platform = ctx.platform;
   if (platform.getExpedition) {
     void platform
       .getExpedition()
       .then((progress) => {
-        const fresh = new Set(progress.stamps.filter((st) => st.count > 0).map((st) => st.destination));
-        const same = fresh.size === stamped.size && [...fresh].every((d) => stamped.has(d));
-        scene.registry.set('expeditionStamps', fresh);
-        if (!same && root.scene) {
-          scene.closeOverlay();
-          scene.openOverlay('map');
-        }
+        scene.registry.set(EXPEDITION_UNLOCKED_KEY, [...progress.unlocked]);
       })
       .catch(() => {
-        // Offline or signed out: the board keeps what it drew (the destinations open from the start).
+        // Offline or signed out: the board keeps what it drew (Great Wall, or the last server list).
       });
   }
   return root;

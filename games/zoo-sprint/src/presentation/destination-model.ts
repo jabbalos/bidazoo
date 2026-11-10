@@ -10,17 +10,11 @@
  * Beacons lit and the stamp are the server's facts (SummitScene reads them from the session
  * results). The client's own win/lose marks below only light the path while it is walked.
  */
+import { EXPEDITION_DESTINATIONS } from '@bidazoo/game-sdk';
 import type { WorldSpec } from './explore-model';
 
-export const DESTINATION_IDS = [
-  'great-wall',
-  'petra-rose-canyon',
-  'andes-cloud-terraces',
-  'maya-jungle-observatory',
-  'taj-garden',
-  'nile-discovery-route',
-  'philippine-highlands-harbor',
-] as const;
+/** The server's list itself (@bidazoo/contracts via the SDK): one source for game and server. */
+export const DESTINATION_IDS = EXPEDITION_DESTINATIONS;
 export type KnownDestinationId = (typeof DESTINATION_IDS)[number];
 
 /** Great Wall is the first real destination and is always unlocked. */
@@ -201,6 +195,7 @@ export function parseDestinationManifest(raw: unknown): DestinationManifest | nu
 // ---------------------------------------------------------------------------
 
 /**
+ * Legacy manifest-rule check, NOT used by the map board (the server decides unlocks). Kept for its test.
  * Unlocked when the manifest says it starts unlocked, when it is Great Wall, or when every
  * destination it requires has a stamp. `stamped` is whatever Lane C's progress reports; with no
  * progress the board shows only the destinations that start unlocked.
@@ -215,15 +210,32 @@ export interface MapTile {
   name: string;
   order: number;
   unlocked: boolean;
-  /** The unlock rule, for locked tiles. */
+  /** The lock-screen text for locked tiles (manifest `unlock.rule`; text only, never decides anything). */
   rule: string;
 }
 
-/** The map board's tiles in board order, from the manifests. */
-export function mapTiles(manifests: readonly DestinationManifest[], stamped: ReadonlySet<string> = new Set()): MapTile[] {
+/** Scene registry key the shell sets (from the server's expedition progress) with the unlocked destination ids. */
+export const EXPEDITION_UNLOCKED_KEY = 'expeditionUnlocked';
+
+/**
+ * The unlocked destination ids as the server reports them. `raw` is the registry value (an array or
+ * Set of ids). Anything else (not set yet, wrong shape) reads as "only Great Wall". Great Wall is always in.
+ */
+export function serverUnlockedIds(raw: unknown): Set<string> {
+  const ids = new Set<string>([ALWAYS_UNLOCKED]);
+  const list = raw instanceof Set ? [...raw] : Array.isArray(raw) ? raw : [];
+  for (const v of list) if (typeof v === 'string') ids.add(v);
+  return ids;
+}
+
+/**
+ * The map board's tiles in board order. A tile is unlocked only when its id is in the server's list;
+ * the manifest only supplies the lock text. Without a list, only Great Wall is open.
+ */
+export function mapTiles(manifests: readonly DestinationManifest[], unlockedByServer: ReadonlySet<string> = new Set([ALWAYS_UNLOCKED])): MapTile[] {
   return [...manifests]
     .sort((a, b) => a.order - b.order)
-    .map((m) => ({ id: m.id, name: m.name, order: m.order, unlocked: isUnlocked(m, stamped), rule: m.unlock.rule }));
+    .map((m) => ({ id: m.id, name: m.name, order: m.order, unlocked: unlockedByServer.has(m.id), rule: m.unlock.rule }));
 }
 
 // ---------------------------------------------------------------------------

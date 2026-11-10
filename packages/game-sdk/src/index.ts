@@ -49,6 +49,9 @@ export type {
   StartExpeditionRunResponse,
 } from '@bidazoo/contracts';
 
+/** The destination ids, the one list the server also uses (from the TypeBox-free contracts module). */
+export { EXPEDITION_DESTINATIONS } from '@bidazoo/contracts/paths';
+
 /** What the platform offers a game. The shell supplies an implementation (HTTP, or a fake in tests). */
 export interface BidaZooPlatform {
   /** Make sure this browser has a guest identity; returns who it is and the saved totals. */
