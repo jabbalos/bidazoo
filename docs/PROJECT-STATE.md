@@ -136,6 +136,22 @@ Open items:
   existing-test change and needs the owner.
 - Load rule slip (November 10): Lane C ran two of its own check stacks at once by mistake while doing the Lows.
 
+#### Release candidate 2fcf73e (November 10, 2026)
+
+- Full validator: run 20261110-161337 FAIL on counts only (integration 955 vs 937; owner approved 955 in `2fcf73e`);
+  run 20261110-162537 FAIL on one `net::ERR_NO_BUFFER_SPACE` browser error (play.spec, tablet; passed on retry);
+  **run 20261110-173132 PASS on `2fcf73ecffb016ada40edcfee904acd4587e82f8`** (owner-run). Owner go to deploy.
+- Deploy prepared, not run: `Documents\BidaZoo-release\deploy-2fcf73e.ps1/.bat` (copy of `deploy-390e0b4`,
+  candidate 2fcf73e, rollback target 390e0b4, pg_dump backup kept). Added checks: migrations 5 -> 8 (0005, 0006,
+  0007) and their schema effects; `api.env` must set `NODE_ENV=production` and must not set `EXPEDITION_MIX` (mix
+  OFF); identity variables absent (identity OFF, unchanged). The live clone fetches from GitHub, so the owner pushes
+  `integration/world-expedition` first.
+- Full rollback prepared: `rollback-2fcf73e.ps1/.bat` (safety dump of the current database, app to 390e0b4, restore
+  of the pre-release dump in one transaction after dropping the three 0005 tables). Needed because 0006 changes
+  `attempts.submitted_response` to text, which 390e0b4 reads as an integer. Rehearsed on a scratch database on the
+  build cluster (54330, never live): schema back to 5 migrations and integer, pre-deploy rows restored, re-deploy
+  migrates again cleanly.
+
 #### Graphics to replace (placeholder visuals; never block a merge or deploy)
 
 | Placeholder | Where | Replace with |
