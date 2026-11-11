@@ -185,8 +185,8 @@ test and no validator file was changed. Nothing is deployed; the owner decides t
   (buy and wear the Red Scarf, checked against `GET /api/v1/me/gear`), two more turns and walking in Basecamp.
   **It must pass on every Playwright project before any deploy.** The deploy script lives outside the repository
   (`Documents\BidaZoo-release`), so this gate is a rule for the owner's checklist until the script checks it.
-- Validator baselines (owner approval needed, not changed here): Playwright 292 -> 316 (6 new tests x 4
-  projects); Vitest integration 955 -> 965 (`tests/integration/outfitter-layout.test.ts`).
+- Validator baselines (owner-approved November 11, 2026, changed in the commit after `b7d9b38`): Playwright 292 -> 316 (6 new
+  tests x 4 projects); Vitest integration 955 -> 965 (`tests/integration/outfitter-layout.test.ts`, 10 tests).
 - Test stacks used: this worktree's own ports 3131/4231 and 3141/4241 with databases on the build cluster
   (54330); never a live port; at most two stacks at once.
 - Results on the final code (November 11, 2026, early morning): typecheck PASS; Vitest unit 126, integration 965
