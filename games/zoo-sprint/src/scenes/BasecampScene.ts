@@ -16,7 +16,7 @@ import {
 import { buildMedallion } from '../presentation/hero-stage';
 import { HOTSPOT_PROMPTS, overlaysAt, type OverlayHotspot, type OverlayId } from '../basecamp/overlays';
 import '../basecamp/map-overlay';
-import { hotspotPlaces, interactionAt, type HotspotPlace, type Interaction } from '../presentation/hotspot-model';
+import { hotspotPlaces, hotspotRadius, interactionAt, type HotspotPlace, type Interaction } from '../presentation/hotspot-model';
 import { ParallaxLayers } from '../presentation/parallax';
 import { Walker } from '../presentation/walker';
 import { WalkInput, spawnDust } from '../presentation/walk-input';
@@ -149,9 +149,9 @@ export class BasecampScene extends Phaser.Scene {
   private build(initial: boolean): void {
     const { width: w, height: h } = this.scale;
     this.uiCam.setSize(w, h);
-    // an open overlay was laid out for the old size: it is closed and opened again at the end
-    const reopen = this.overlay?.id ?? null;
-    this.closeOverlay();
+    // An open overlay stays open through a rebuild: every overlay lays itself out again on the
+    // resize event (it fires after this one). Closing and re-opening it here lost whatever it was
+    // doing, such as a purchase whose answer was still on its way (owner bug 1, November 10, 2026).
     for (const o of this.objs) o.destroy();
     this.objs = [];
     this.parallax.clear();
@@ -224,10 +224,9 @@ export class BasecampScene extends Phaser.Scene {
     this.camX = cameraTargetScroll(this.player.x, this.player.facing, w, this.world.width);
     cam.setScroll(this.camX, 0);
     this.paintedStage = !!painted;
-    this.publishA11y();
+    if (!this.overlay) this.publishA11y();
     this.lastPublish = '';
     this.publish(true);
-    if (reopen) this.openOverlay(reopen);
   }
 
   /** The painted backdrop laid out for this view, or null when it is not available (code-drawn fallback). */
@@ -378,10 +377,15 @@ export class BasecampScene extends Phaser.Scene {
   }
 
   private setChip(line: string | null, kind: 'hint' | 'landmark' | 'gate' | 'action' = 'landmark', onTap: () => void = () => this.enterGate(), targetId = 'enter-gate'): void {
-    const chip = this.chip;
-    if (!chip) return;
-    chip.removeAll(true);
-    chip.disableInteractive();
+    const old = this.chip;
+    if (!old || !this.hud) return;
+    // A fresh container every time. Re-using one kept every earlier prompt's tap listener and its
+    // first hit area, so one tap on "Open the map" also fired "Visit the lodge" from a few steps
+    // back, and the lodge won (owner bug 2, November 10, 2026).
+    const chip = this.add.container(old.x, old.y);
+    old.destroy(true);
+    this.hud.add(chip);
+    this.chip = chip;
     this.chipTarget = null;
     if (!line) return;
     const unit = Math.min(this.scale.width, this.scale.height);
@@ -447,6 +451,11 @@ export class BasecampScene extends Phaser.Scene {
     const container = def.open(this).setDepth(200);
     this.cameras.main.ignore(container);
     this.overlay = { id, container };
+    // An overlay that closes itself says so with 'close' (the outfitter does); the scene then lets
+    // the buddy walk again. Without this the scene kept a dead overlay and nothing worked afterwards.
+    container.once('close', () => {
+      if (this.overlay?.container === container) this.closeOverlay();
+    });
     this.lastPublish = '';
     this.publish(true);
   }
@@ -569,6 +578,9 @@ export class BasecampScene extends Phaser.Scene {
       'walk-max-x': String(this.world.maxX),
       'gate-x': String(this.gateX),
       'gate-core': String(this.world.gateCoreRadius),
+      // test and debugging hook: where each overlay hotspot stands (world x) and how close is "at" it
+      hotspots: JSON.stringify(this.places.map((p) => ({ id: p.hotspot, x: p.x }))),
+      'hotspot-radius': String(hotspotRadius(this.world)),
       near: this.lastNear ?? '',
       overlay: this.overlay?.id ?? '',
       moved: String(this.moved),

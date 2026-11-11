@@ -152,6 +152,52 @@ Open items:
   build cluster (54330, never live): schema back to 5 migrations and integer, pre-deploy rows restored, re-deploy
   migrates again cleanly.
 
+#### Live QA of 2fcf73e: four owner-found blockers (November 10, 2026, evening)
+
+The owner played the live build 2fcf73e on play.bidazoo.com and found four blocking bugs. Each has a browser
+test with REAL taps (touch on the phone and tablet projects, mouse on desktop) that failed on 2fcf73e and passes
+with the fix: `tests/e2e/world-expedition-qa.spec.ts` (helpers in `tests/e2e/world-helpers.ts`). No existing
+test and no validator file was changed. Nothing is deployed; the owner decides the deploy.
+
+| Owner's bug | Root cause (from the code and the live proxy log) | Fix |
+| --- | --- | --- |
+| 1. Outfitter purchase never confirms | Every purchase PUT on live returned 200 (Caddy access log, 20:46 to 20:51 CST). A viewport change (the browser bar collapsing on a phone, a rotation) made `BasecampScene.build` close and re-open the overlay, so the answer landed on a dead overlay and the fresh one showed the pre-purchase state. | An open overlay survives a rebuild; every overlay lays itself out again on the resize event (the map board gained that; the outfitter already had it). |
+| 2. "Open the map" opens the outfitter, then the game locks up | The Basecamp prompt chip was re-used and kept every earlier prompt's tap listener (and its first hit area), so one tap at the map board also fired "Visit the lodge" from a few steps back, and the lodge won. The outfitter's Close destroyed itself without telling the scene, which kept a dead overlay: walking stayed off, nothing opened. | A fresh chip container per prompt. `openOverlay` listens for the container's `close` event and closes properly. |
+| 3. After the boss the game dies instead of the summit | `SummitScene.build` returned early on `sys.isActive()`, which is false inside `create()` (Phaser reports CREATING, not RUNNING), so the summit drew nothing until a resize. | Draw in `create()`; only the resize path checks the scene is still alive. |
+| 4. Layout breaks after rotating | On a phone turned on its side the outfitter squeezed its three slot rows to 32 px cards (under the 48 px tap floor). The resize path also destroyed and re-opened overlays (see 1). | Pure `outfitterLayout()` (`outfitter-layout.ts`, unit-tested on nine views): slot rows in portrait, slot columns in a short landscape; cards never under the floor. |
+
+- Also found by the rotation tests, rarely (a handful of times in some forty rotation-heavy runs; at the summit, in
+  an encounter, in Basecamp): the window turned but the canvas never followed, with no error anywhere. The cause
+  is in Phaser 3.90's Scale Manager: `updateScale()` ends with `getParentBounds()`, which records the element's
+  size as already seen and drops the answer, so a second size change that lands while the first is being applied
+  (a turn, then the browser's own relayout) is never applied: `parentSize` says landscape, the canvas stays
+  portrait, nothing is dirty, and no later frame fixes it (captured in `data-scale-refresh-last`:
+  element 640x360, parentSize 640x360, game 360x640, dirty false). On a phone this is "the layout breaks after
+  rotating": a canvas left at the old size in a turned window. The game shell now runs `keepFittedAndAlive`
+  (`games/zoo-sprint/src/index.ts`): after every window resize (150 and 600 ms later) and twice a second, a
+  canvas that is not the size of its element gets `scale.refresh()`; a frame counter that does not move for three
+  browser frames gets the loop restarted. It publishes `data-scale-refreshes`, `data-loop-restarts` and
+  `data-scale-refresh-last`. Worth reporting upstream to Phaser.
+- Test hooks added (presentation only): `data-hotspots` and `data-hotspot-radius` on Basecamp (where the map
+  board, lodge door and banner stand), so a test can walk to the map board without blundering into the gate.
+- Whole-loop test (owner requirement): `tests/e2e/world-loop.spec.ts` plays Basecamp, map board, Great Wall, five
+  encounters and the boss (fifteen real-tap answers), the summit turned to landscape and back, the outfitter
+  (buy and wear the Red Scarf, checked against `GET /api/v1/me/gear`), two more turns and walking in Basecamp.
+  **It must pass on every Playwright project before any deploy.** The deploy script lives outside the repository
+  (`Documents\BidaZoo-release`), so this gate is a rule for the owner's checklist until the script checks it.
+- Validator baselines (owner approval needed, not changed here): Playwright 292 -> 316 (6 new tests x 4
+  projects); Vitest integration 955 -> 965 (`tests/integration/outfitter-layout.test.ts`).
+- Test stacks used: this worktree's own ports 3131/4231 and 3141/4241 with databases on the build cluster
+  (54330); never a live port; at most two stacks at once.
+- Results on the final code (November 11, 2026, early morning): typecheck PASS; Vitest unit 126, integration 965
+  passed + 3 todo; `world-expedition-qa.spec.ts` 5 of 5 and `world-loop.spec.ts` 1 of 1 on all four Playwright
+  projects (bug 2a's walk also 3 of 3 at 1440x900 and once more on each touch project with the final helper);
+  rotation sampling 4 of 4 more at 360x640 with the refit firing at most once per run. Existing specs
+  (basecamp, expedition, play), run alone with no retries: tablet 17 of 17; phone-small 16 of 17 and desktop 16
+  of 17, each miss a known load-sensitive race of an unchanged test (play.spec full run's feedback capture;
+  basecamp.spec's walk into the gate) that then passed 3 of 3 when rerun alone. Under two concurrent stacks the
+  same two walk-based tests and expedition.spec's first-artifact walk flake, as already recorded above.
+
 #### Graphics to replace (placeholder visuals; never block a merge or deploy)
 
 | Placeholder | Where | Replace with |

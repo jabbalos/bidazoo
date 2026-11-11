@@ -47,9 +47,9 @@ export class SummitScene extends Phaser.Scene {
 
   create(): void {
     this.build();
-    this.scale.on(Phaser.Scale.Events.RESIZE, this.build, this);
+    this.scale.on(Phaser.Scale.Events.RESIZE, this.onResize, this);
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
-      this.scale.off(Phaser.Scale.Events.RESIZE, this.build, this);
+      this.scale.off(Phaser.Scale.Events.RESIZE, this.onResize, this);
       for (const key of this.textureKeys) if (this.textures.exists(key)) this.textures.remove(key);
     });
   }
@@ -66,8 +66,17 @@ export class SummitScene extends Phaser.Scene {
     this.scene.start('ExpeditionScene', { destination: this.manifest.id });
   }
 
+  /** A turn of the device (or a window resize) lays the card out again; never after the scene has left. */
+  private onResize(): void {
+    if (this.sys.isActive()) this.build();
+  }
+
+  /**
+   * Draws the card. Called from create() too, when Phaser still reports the scene as CREATING (not
+   * yet RUNNING): an "is active" guard here left the summit blank after the boss (owner bug 3,
+   * November 10, 2026). Only the resize path checks the scene is still alive.
+   */
   private build(): void {
-    if (!this.sys.isActive()) return;
     for (const o of this.objs) o.destroy();
     this.objs = [];
     const { width: w, height: h } = this.scale;

@@ -8,6 +8,7 @@ import type { BasecampScene } from '../../scenes/BasecampScene';
 import { gearPlatform, requestForTap, setCurrentGear } from './gear-client';
 import { GEAR_LOOKS } from './gear-model';
 import { drawGearIcon } from './gear-sprites';
+import { outfitterLayout } from './outfitter-layout';
 
 /**
  * The outfitter (Lane C item C3): opened from the lodge door through the Basecamp overlay registry.
@@ -135,26 +136,20 @@ class OutfitterOverlay extends Phaser.GameObjects.Container {
     );
     this.content.add(dim);
 
-    const pw = Math.min(w - 32, 760);
-    const ph = Math.min(h - 32, 660);
-    const px = (w - pw) / 2;
-    const py = (h - ph) / 2;
+    // one pure layout for every view (owner bug 4, November 10, 2026: a phone on its side squeezed the
+    // cards under the tap floor); the overlay only draws what it says
+    const rows = SLOT_ORDER.map((slot) => ({ slot, items: this.gear?.catalog.filter((i) => i.slot === slot) ?? [] })).filter((r) => r.items.length > 0);
+    const L = outfitterLayout(w, h, rows.length > 0 ? rows.map((r) => r.items.length) : [4, 4, 4]);
+    const { panel: P, pad } = L;
     const g = scene.add.graphics();
-    parchmentPanel(g, { x: px, y: py, w: pw, h: ph });
+    parchmentPanel(g, P);
     this.content.add(g);
 
-    const pad = Math.max(12, pw * 0.035);
-    const headerH = Math.max(44, ph * 0.11);
-    this.content.add(
-      text(scene, OUTFITTER_COPY.title, EXP_CSS.navy, { weight: 800, size: Math.round(headerH * 0.55) })
-        .setOrigin(0, 0.5)
-        .setPosition(px + pad, py + pad + headerH / 2),
-    );
+    this.content.add(text(scene, OUTFITTER_COPY.title, EXP_CSS.navy, { weight: 800, size: L.title.size }).setOrigin(0, 0.5).setPosition(L.title.x, L.title.y));
 
     // the coin balance (the server's number)
     const coins = this.gear?.coins ?? this.ctx.totals.coins;
-    const pillW = Math.max(90, headerH * 2.3);
-    const pillBox = { x: px + pw - pad - pillW, y: py + pad + headerH * 0.15, w: pillW, h: headerH * 0.7 };
+    const pillBox = L.coinPill;
     const pg = scene.add.graphics();
     pill(pg, pillBox, EXP.timber, EXP.timberDeep);
     coinIcon(pg, pillBox.x + pillBox.h * 0.55, pillBox.y + pillBox.h / 2, pillBox.h * 0.3);
@@ -165,48 +160,39 @@ class OutfitterOverlay extends Phaser.GameObjects.Container {
         .setPosition(pillBox.x + pillBox.w * 0.6, pillBox.y + pillBox.h / 2),
     );
 
-    const closeH = Math.max(44, ph * 0.09);
-    const closeW = Math.min(220, pw * 0.4);
-    const close = new TapButton(scene, 'outfitter-close', px + pw / 2, py + ph - pad - closeH / 2, closeW, closeH, OUTFITTER_COPY.close, BUTTON_STYLES.primary, () => this.close());
+    const close = new TapButton(scene, 'outfitter-close', L.close.x + L.close.w / 2, L.close.y + L.close.h / 2, L.close.w, L.close.h, OUTFITTER_COPY.close, BUTTON_STYLES.primary, () => this.close());
     this.content.add(close);
     this.targets.push({ ...close.hitTarget(), label: OUTFITTER_COPY.closeLabel });
 
-    const messageH = Math.max(22, ph * 0.05);
-    const gridTop = py + pad + headerH + pad * 0.5;
-    const gridBottom = py + ph - pad - closeH - messageH - pad * 0.5;
     const status = this.gear ? '' : this.message || OUTFITTER_COPY.loading;
     this.content.add(
-      text(scene, this.gear ? this.message : '', EXP_CSS.navy, { weight: 700, size: Math.round(messageH * 0.7), align: 'center', wrapWidth: pw - pad * 2 })
+      text(scene, this.gear ? this.message : '', EXP_CSS.navy, { weight: 700, size: Math.round(L.message.h * 0.7), align: 'center', wrapWidth: L.message.w })
         .setOrigin(0.5)
-        .setPosition(px + pw / 2, gridBottom + messageH / 2 + pad * 0.25),
+        .setPosition(L.message.x + L.message.w / 2, L.message.y + L.message.h / 2),
     );
 
     if (!this.gear) {
       this.content.add(
-        text(scene, status, EXP_CSS.navy, { weight: 700, size: Math.round(Math.max(16, ph * 0.04)), align: 'center', wrapWidth: pw - pad * 2 })
+        text(scene, status, EXP_CSS.navy, { weight: 700, size: Math.round(Math.max(16, P.h * 0.04)), align: 'center', wrapWidth: P.w - pad * 2 })
           .setOrigin(0.5)
-          .setPosition(px + pw / 2, (gridTop + gridBottom) / 2),
+          .setPosition(L.grid.x + L.grid.w / 2, L.grid.y + L.grid.h / 2),
       );
       this.content.setScrollFactor(0, 0, true);
       this.publish(this.message ? 'unavailable' : 'loading', status);
       return;
     }
 
-    const rows = SLOT_ORDER.map((slot) => ({ slot, items: this.gear!.catalog.filter((i) => i.slot === slot) })).filter((r) => r.items.length > 0);
-    const rowH = (gridBottom - gridTop) / Math.max(1, rows.length);
-    const labelH = Math.min(26, rowH * 0.2);
     rows.forEach((row, ri) => {
-      const top = gridTop + ri * rowH;
+      const block = L.blocks[ri]!;
       this.content.add(
-        text(scene, OUTFITTER_COPY.slots[row.slot] ?? row.slot, EXP_CSS.navy, { weight: 800, size: Math.round(labelH * 0.85) })
+        text(scene, OUTFITTER_COPY.slots[row.slot] ?? row.slot, EXP_CSS.navy, { weight: 800, size: Math.round(block.label.h * 0.85) })
           .setOrigin(0, 0)
-          .setPosition(px + pad, top),
+          .setPosition(block.label.x, block.label.y),
       );
-      const cols = row.items.length;
-      const gap = Math.max(6, pw * 0.015);
-      const cardW = (pw - pad * 2 - gap * (cols - 1)) / cols;
-      const cardH = rowH - labelH - gap;
-      row.items.forEach((item, ci) => this.card(item, px + pad + ci * (cardW + gap), top + labelH + gap * 0.5, cardW, cardH));
+      row.items.forEach((item, ci) => {
+        const r = block.cards[ci]!;
+        this.card(item, r.x, r.y, r.w, r.h);
+      });
     });
     this.content.setScrollFactor(0, 0, true);
     this.publish('open', OUTFITTER_COPY.status(this.gear.coins) + (this.message ? ` ${this.message}` : ''));

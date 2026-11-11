@@ -51,29 +51,16 @@ function paintTileArt(g: Phaser.GameObjects.Graphics, r: Rect, m: DestinationMan
 
 function open(scene: BasecampScene): Phaser.GameObjects.Container {
   const ctx = getContext(scene);
-  const { width: w, height: h } = scene.scale;
   const manifests = allDestinations();
   const readTiles = (): MapTile[] => mapTiles(manifests, serverUnlockedIds(scene.registry.get(EXPEDITION_UNLOCKED_KEY)));
   let tiles = readTiles();
-  const L = mapBoardLayout(w, h, tiles.length);
   const root = scene.add.container(0, 0);
-  const unit = Math.min(w, h);
-
-  // a dim backdrop that also swallows taps, so nothing behind the board is touched
-  const dim = scene.add.rectangle(w / 2, h / 2, w, h, 0x0b2233, 0.55).setInteractive();
-  root.add(dim);
-  const panel = scene.add.graphics();
-  parchmentPanel(panel, L.panel, {});
-  root.add(panel);
-  const title = text(scene, 'Choose your expedition', EXP_CSS.navy, { weight: 800, size: Math.round(Math.min(L.title.h * 0.55, unit * 0.06)) }).setOrigin(0, 0.5);
-  title.setPosition(L.title.x, L.title.y + L.title.h / 2);
-  root.add(title);
-  root.add(new TapButton(scene, 'map-close', L.close.x + L.close.w / 2, L.close.y + L.close.h / 2, L.close.w, L.close.h, 'X', BUTTON_STYLES.card, () => scene.closeOverlay(), 0.5));
-
-  const surface = scene.add.container(0, 0);
-  root.add(surface);
-  let card: Phaser.GameObjects.Container | null = null;
   const TAP_BUTTON_H = 48;
+  // laid out again on every resize (a turn of the device); the open trailhead card survives it
+  let L = mapBoardLayout(scene.scale.width, scene.scale.height, tiles.length);
+  let surface: Phaser.GameObjects.Container | null = null;
+  let card: Phaser.GameObjects.Container | null = null;
+  let cardFor: DestinationManifest | null = null;
 
   const setA11y = (extra: Array<{ id: string; label: string; onClick: () => void }>): void =>
     ctx.a11y.set('Map board. Choose a destination to start an expedition.', [...extra, { id: 'map-close', label: 'Close the map', onClick: () => scene.closeOverlay() }]);
@@ -81,6 +68,7 @@ function open(scene: BasecampScene): Phaser.GameObjects.Container {
   const closeCard = (): void => {
     card?.destroy(true);
     card = null;
+    cardFor = null;
     setA11yTiles();
   };
 
@@ -92,9 +80,12 @@ function open(scene: BasecampScene): Phaser.GameObjects.Container {
   };
 
   const openCard = (m: DestinationManifest): void => {
+    const { width: w, height: h } = scene.scale;
+    const unit = Math.min(w, h);
     card?.destroy(true);
     const c = scene.add.container(0, 0);
     card = c;
+    cardFor = m;
     c.add(scene.add.rectangle(w / 2, h / 2, w, h, 0x0b2233, 0.35).setInteractive());
     const cw = Math.min(w * 0.9, unit * 1.1);
     const ch = Math.min(h * 0.8, cw * 0.95);
@@ -121,7 +112,9 @@ function open(scene: BasecampScene): Phaser.GameObjects.Container {
   };
 
   const drawTiles = (): void => {
-    surface.removeAll(true);
+    const into = surface;
+    if (!into) return;
+    into.removeAll(true);
     tiles.forEach((t: MapTile, i) => {
       const r = L.tiles[i]!;
       const m = destinationById(t.id)!;
@@ -149,18 +142,41 @@ function open(scene: BasecampScene): Phaser.GameObjects.Container {
         cell.input!.cursor = 'pointer';
         cell.on('pointerup', () => openCard(m));
       }
-      surface.add(cell);
+      into.add(cell);
     });
   };
 
   const setA11yTiles = (): void =>
     setA11y(tiles.map((t) => ({ id: `map-tile-${t.id}`, label: t.unlocked ? `${t.name}. Open.` : `${t.name}. Locked. ${t.rule}`, onClick: () => { if (t.unlocked) openCard(destinationById(t.id)!); } })));
+  // test and debugging hook: which tile is open or locked, and where each one is on screen
   const publishHook = (): void =>
     ctx.parent.setAttribute('data-map-tiles', JSON.stringify(tiles.map((t, i) => ({ id: t.id, unlocked: t.unlocked, x: Math.round(L.tiles[i]!.x), y: Math.round(L.tiles[i]!.y), w: L.tiles[i]!.w, h: L.tiles[i]!.h }))));
-  drawTiles();
-  setA11yTiles();
-  // test and debugging hook: which tile is open or locked, and where each one is on screen
-  publishHook();
+
+  /** The board for the current view: the dim, the panel, the title, Close and the tiles (and the card again, if one was open). */
+  const layout = (): void => {
+    const { width: w, height: h } = scene.scale;
+    const unit = Math.min(w, h);
+    L = mapBoardLayout(w, h, tiles.length);
+    root.removeAll(true);
+    card = null;
+    // a dim backdrop that also swallows taps, so nothing behind the board is touched
+    root.add(scene.add.rectangle(w / 2, h / 2, w, h, 0x0b2233, 0.55).setInteractive());
+    const panel = scene.add.graphics();
+    parchmentPanel(panel, L.panel, {});
+    root.add(panel);
+    const title = text(scene, 'Choose your expedition', EXP_CSS.navy, { weight: 800, size: Math.round(Math.min(L.title.h * 0.55, unit * 0.06)) }).setOrigin(0, 0.5);
+    title.setPosition(L.title.x, L.title.y + L.title.h / 2);
+    root.add(title);
+    root.add(new TapButton(scene, 'map-close', L.close.x + L.close.w / 2, L.close.y + L.close.h / 2, L.close.w, L.close.h, 'X', BUTTON_STYLES.card, () => scene.closeOverlay(), 0.5));
+    surface = scene.add.container(0, 0);
+    root.add(surface);
+    drawTiles();
+    publishHook();
+    if (cardFor) openCard(cardFor);
+    else setA11yTiles();
+  };
+  layout();
+
   // the server's list changed while the board is open: update the tiles in place (no close and reopen)
   const onUnlockedChange = (_parent: unknown, key: string): void => {
     if (key !== EXPEDITION_UNLOCKED_KEY) return;
@@ -172,9 +188,15 @@ function open(scene: BasecampScene): Phaser.GameObjects.Container {
   // Phaser emits 'setdata' when the key is first set and 'changedata' when it changes later
   scene.registry.events.on('setdata', onUnlockedChange);
   scene.registry.events.on('changedata', onUnlockedChange);
+  // a turn of the device: the same board, laid out for the new size (the scene no longer re-opens it)
+  const onResize = (): void => {
+    if (root.active) layout();
+  };
+  scene.scale.on(Phaser.Scale.Events.RESIZE, onResize);
   root.once(Phaser.GameObjects.Events.DESTROY, () => {
     scene.registry.events.off('setdata', onUnlockedChange);
     scene.registry.events.off('changedata', onUnlockedChange);
+    scene.scale.off(Phaser.Scale.Events.RESIZE, onResize);
     ctx.parent.removeAttribute('data-map-tiles');
   });
 
